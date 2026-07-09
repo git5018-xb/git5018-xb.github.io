@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>Allind 会员代充店 · ChatGPT / Claude 等 AI 会员</title>
+<title>Allind 会员代充店 · GPT / Claude / Gemini AI 会员代充</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
@@ -53,19 +53,32 @@
   h2::before { content: ""; width: 4px; height: 15px; border-radius: 2px; background: linear-gradient(#ffd166, #ff8a3d); }
 
   /* ===== 价目表 ===== */
+  .group-title {
+    font-size: 13.5px; font-weight: 700; color: #ffd88a;
+    margin: 16px 0 10px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .group-title.first { margin-top: 0; }
   .price-item {
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
     background: rgba(255, 255, 255, .04);
     border: 1px solid rgba(255, 255, 255, .07);
     border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 10px;
+    padding: 13px 14px;
+    margin-bottom: 8px;
   }
-  .price-item:last-of-type { margin-bottom: 0; }
-  .p-name { font-size: 15.5px; font-weight: 600; }
-  .p-desc { font-size: 12px; color: #96a0bf; margin-top: 5px; line-height: 1.5; }
-  .p-price { font-size: 20px; font-weight: 700; color: #ffd166; white-space: nowrap; }
+  .p-name { font-size: 15px; font-weight: 600; }
+  .p-desc { font-size: 12px; color: #96a0bf; margin-top: 4px; line-height: 1.5; }
+  .p-price { font-size: 19px; font-weight: 700; color: #ffd166; white-space: nowrap; }
   .p-price span { font-size: 12px; font-weight: 400; color: #96a0bf; }
+  .note-box {
+    margin: 2px 0 6px;
+    font-size: 12.5px; color: #b8c1dd; line-height: 1.8;
+    background: rgba(255, 209, 102, .06);
+    border: 1px dashed rgba(255, 209, 102, .35);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
   .price-note { margin-top: 12px; font-size: 12.5px; color: #96a0bf; text-align: center; }
 
   /* ===== 联系方式 ===== */
@@ -81,7 +94,6 @@
     transition: transform .08s;
   }
   .contact-row:active { transform: scale(.98); }
-  .contact-row:last-of-type { margin-bottom: 0; }
   .contact-icon {
     width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
@@ -98,6 +110,15 @@
     padding: 6px 12px; border-radius: 999px;
   }
   .contact-tip { margin-top: 12px; font-size: 12.5px; color: #96a0bf; text-align: center; }
+  .qr-box {
+    margin-top: 12px; text-align: center;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 14px;
+    padding: 14px;
+  }
+  .qr-box img { width: 200px; max-width: 80%; border-radius: 10px; display: block; margin: 0 auto; }
+  .qr-box p { font-size: 12.5px; color: #96a0bf; margin-top: 10px; }
 
   /* ===== 购买流程 ===== */
   .steps { list-style: none; }
@@ -112,8 +133,21 @@
   }
   .steps .text { font-size: 14px; color: #cdd6ee; line-height: 1.6; }
 
-  /* ===== 温馨提示 ===== */
-  .notice { font-size: 13px; color: #96a0bf; line-height: 2; }
+  /* ===== 售后规则 ===== */
+  .as-block { margin-bottom: 16px; }
+  .as-block:last-child { margin-bottom: 0; }
+  .as-block h3 {
+    font-size: 13.5px; color: #ffd88a; font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .as-block p { font-size: 13px; color: #a5aec9; line-height: 1.95; }
+  .as-block .example {
+    margin-top: 8px;
+    font-size: 12.5px; color: #96a0bf; line-height: 1.8;
+    background: rgba(255, 255, 255, .04);
+    border-radius: 10px;
+    padding: 9px 12px;
+  }
 
   footer { margin-top: 22px; text-align: center; font-size: 12px; color: #5d6784; line-height: 1.9; }
 
@@ -137,20 +171,31 @@
   <header>
     <div class="logo">AI</div>
     <h1>Allind 会员代充店</h1>
-    <p class="slogan">各种 AI 会员 · 低价代充 · 稳定使用</p>
+    <p class="slogan">GPT · Claude · Gemini 会员代充</p>
     <div class="badges">
-      <span class="badge">✓ 专线稳定</span>
+      <span class="badge">✓ 官方直充</span>
       <span class="badge">✓ 极速到账</span>
       <span class="badge">✓ 售后保障</span>
+      <span class="badge">✓ 诚信经营</span>
     </div>
   </header>
 
   <section>
     <h2>价目表</h2>
 
+    <div class="group-title first">🟢 GPT 代充</div>
+
     <div class="price-item">
       <div>
-        <div class="p-name">ChatGPT Plus</div>
+        <div class="p-name">GPT Plus 一日体验</div>
+        <div class="p-desc">质保首登</div>
+      </div>
+      <div class="p-price">¥6<span> /日</span></div>
+    </div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">GPT Plus</div>
         <div class="p-desc">官方 $20/月 档</div>
       </div>
       <div class="p-price">¥158<span> /月</span></div>
@@ -158,7 +203,7 @@
 
     <div class="price-item">
       <div>
-        <div class="p-name">ChatGPT 5x</div>
+        <div class="p-name">GPT 5x Pro</div>
         <div class="p-desc">$100/月 档</div>
       </div>
       <div class="p-price">¥840<span> /月</span></div>
@@ -166,26 +211,50 @@
 
     <div class="price-item">
       <div>
-        <div class="p-name">ChatGPT 20x</div>
+        <div class="p-name">GPT 20x Pro</div>
         <div class="p-desc">$200/月 档</div>
       </div>
       <div class="p-price">¥1580<span> /月</span></div>
     </div>
 
+    <div class="group-title">🔵 Gemini 代充</div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">Gemini Pro 一年</div>
+        <div class="p-desc">年付特惠 · 无质保</div>
+      </div>
+      <div class="p-price">¥288<span> /年</span></div>
+    </div>
+
+    <div class="group-title">🟠 Claude 代充</div>
+
     <div class="price-item">
       <div>
         <div class="p-name">Claude Pro</div>
-        <div class="p-desc">专线 + 会员 · 稳定使用</div>
+        <div class="p-desc">官方 $20/月 档</div>
       </div>
-      <div class="p-price">¥300<span> /月</span></div>
+      <div class="p-price">¥220<span> /月</span></div>
     </div>
 
     <div class="price-item">
       <div>
-        <div class="p-name">Claude 5x</div>
+        <div class="p-name">Claude 5 Max</div>
         <div class="p-desc">$100/月 档 · Pro 的 5 倍用量</div>
       </div>
       <div class="p-price">¥880<span> /月</span></div>
+    </div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">Claude 20 Max</div>
+        <div class="p-desc">$200/月 档 · Pro 的 20 倍用量</div>
+      </div>
+      <div class="p-price">¥1680<span> /月</span></div>
+    </div>
+
+    <div class="note-box">
+      📶 Claude 需配合本店专线使用：日本线 ¥80/月 · 美国线 ¥180/月。质保掉订阅，已实测稳定运行。
     </div>
 
     <p class="price-note">更多 AI 会员均可代充，价格请咨询客服～</p>
@@ -212,6 +281,13 @@
       <span class="copy-chip">复制</span>
     </div>
 
+    <!-- 微信二维码：图片文件到位后取消下面的注释，并把 wx-qr.png 放到同目录
+    <div class="qr-box">
+      <img src="wx-qr.png" alt="微信二维码" />
+      <p>扫一扫，直接加微信</p>
+    </div>
+    -->
+
     <p class="contact-tip">加好友请备注「代充」，看到消息会尽快回复</p>
   </section>
 
@@ -219,24 +295,49 @@
     <h2>购买流程</h2>
     <ol class="steps">
       <li><span class="step-num">1</span><span class="text">复制上方微信号 / QQ 号，添加客服</span></li>
-      <li><span class="step-num">2</span><span class="text">告知需要开通的套餐（ChatGPT Plus / Claude Pro / Max 等）</span></li>
+      <li><span class="step-num">2</span><span class="text">告知需要开通的套餐（GPT / Claude / Gemini）</span></li>
       <li><span class="step-num">3</span><span class="text">提供充值账号，付款后开始充值</span></li>
-      <li><span class="step-num">4</span><span class="text">到账后自行登录确认，有问题随时售后</span></li>
+      <li><span class="step-num">4</span><span class="text">到账后自行登录确认，有问题按售后规则处理</span></li>
     </ol>
   </section>
 
   <section>
-    <h2>温馨提示</h2>
-    <p class="notice">
-      · 充值前请核对好账号信息，充错账号无法退回<br>
-      · Claude 套餐含专线，到手即用、稳定使用<br>
-      · 一般几分钟内到账，高峰期请耐心等待<br>
-      · 长期合作老客户可享更低价格
-    </p>
+    <h2>售后规则（购买前请务必阅读）</h2>
+
+    <div class="as-block">
+      <h3>GPT 售后方式</h3>
+      <p>
+        · 直充到你的个人账号，款项进入官网账户<br>
+        · 如遇封号 / 掉订阅：请自行联系 OpenAI 官网申诉退款，退款到账后本店原路返还给你<br>
+        · 请爱惜账号：不要多人共享、不要涉及敏感话题、自觉遵守 OpenAI 使用规则
+      </p>
+    </div>
+
+    <div class="as-block">
+      <h3>Claude 售后规则</h3>
+      <p>
+        · 代充前必须配备本店专线（日本 ¥80/月 · 美国 ¥180/月）<br>
+        · 质保掉订阅；封号属于账号本身问题<br>
+        · 一个月内遭官网封号：按已使用天数扣费后退款，另收 ¥35 手续费
+      </p>
+      <div class="example">
+        退费示例：¥220 套餐使用 3 天遇封号，按 220÷30≈7.3 元/天计算，退您 220 − 3×7.3 − 35 ≈ <b>¥163.1</b>
+      </div>
+    </div>
+
+    <div class="as-block">
+      <h3>通用须知</h3>
+      <p>
+        1. Code / 使用问题请自行解决，不提供技术教程<br>
+        2. 产品无质量问题不支持无理由退款（虚拟商品无法二次销售）<br>
+        3. 使用说明与用量限制，详情以各官网为准<br>
+        4. 触发身份验证请自行解决，不予售后
+      </p>
+    </div>
   </section>
 
   <footer>
-    Allind 会员代充店 · 诚信经营<br>
+    Allind 会员代充店 · 诚信经营 · 长期稳定<br>
     收藏本页面，随时找到我
   </footer>
 
