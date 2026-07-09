@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Allind 会员代充店 · ChatGPT / Claude 等 AI 会员</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    background: #0b1020;
+    background-image: radial-gradient(ellipse 120% 60% at 50% -10%, rgba(99, 118, 255, .28), transparent 65%);
+    min-height: 100vh;
+    color: #e8ecf8;
+    display: flex;
+    justify-content: center;
+    padding: 30px 16px 44px;
+  }
+  .page { width: 100%; max-width: 430px; }
+
+  /* ===== 头部 ===== */
+  header { text-align: center; padding: 8px 0 4px; }
+  .logo {
+    width: 72px; height: 72px; margin: 0 auto 14px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #ffd166, #ff8a3d);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px; font-weight: 800; color: #201200; letter-spacing: 1px;
+    box-shadow: 0 8px 28px rgba(255, 150, 60, .35);
+  }
+  h1 { font-size: 25px; letter-spacing: 1px; }
+  .slogan { margin-top: 8px; color: #a9b3d0; font-size: 14px; letter-spacing: 2px; }
+  .badges { display: flex; justify-content: center; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .badge {
+    font-size: 12px; color: #ffd88a;
+    border: 1px solid rgba(255, 209, 102, .45);
+    background: rgba(255, 209, 102, .08);
+    padding: 4px 10px; border-radius: 999px;
+  }
+
+  /* ===== 通用区块 ===== */
+  section {
+    margin-top: 16px;
+    background: rgba(255, 255, 255, .05);
+    border: 1px solid rgba(255, 255, 255, .09);
+    border-radius: 18px;
+    padding: 18px 16px;
+  }
+  h2 {
+    font-size: 15px; color: #cdd6ee; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  h2::before { content: ""; width: 4px; height: 15px; border-radius: 2px; background: linear-gradient(#ffd166, #ff8a3d); }
+
+  /* ===== 价目表 ===== */
+  .price-item {
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 14px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+  .price-item:last-of-type { margin-bottom: 0; }
+  .p-name { font-size: 15.5px; font-weight: 600; }
+  .p-desc { font-size: 12px; color: #96a0bf; margin-top: 5px; line-height: 1.5; }
+  .p-price { font-size: 20px; font-weight: 700; color: #ffd166; white-space: nowrap; }
+  .p-price span { font-size: 12px; font-weight: 400; color: #96a0bf; }
+  .price-note { margin-top: 12px; font-size: 12.5px; color: #96a0bf; text-align: center; }
+
+  /* ===== 联系方式 ===== */
+  .contact-row {
+    display: flex; align-items: center; gap: 12px;
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid rgba(255, 255, 255, .07);
+    border-radius: 14px;
+    padding: 13px 14px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform .08s;
+  }
+  .contact-row:active { transform: scale(.98); }
+  .contact-row:last-of-type { margin-bottom: 0; }
+  .contact-icon {
+    width: 42px; height: 42px; border-radius: 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 700; color: #fff;
+  }
+  .wx { background: #07c160; }
+  .qq { background: #12b7f5; }
+  .contact-info { flex: 1; min-width: 0; }
+  .contact-label { font-size: 12px; color: #96a0bf; }
+  .contact-value { font-size: 17px; font-weight: 600; margin-top: 3px; word-break: break-all; letter-spacing: .5px; }
+  .copy-chip {
+    flex-shrink: 0; font-size: 12.5px; color: #ffd88a;
+    border: 1px solid rgba(255, 209, 102, .5);
+    padding: 6px 12px; border-radius: 999px;
+  }
+  .contact-tip { margin-top: 12px; font-size: 12.5px; color: #96a0bf; text-align: center; }
+
+  /* ===== 购买流程 ===== */
+  .steps { list-style: none; }
+  .steps li { display: flex; gap: 12px; padding: 7px 0; align-items: baseline; }
+  .step-num {
+    flex-shrink: 0;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, #ffd166, #ff8a3d);
+    color: #201200; font-size: 12.5px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    transform: translateY(3px);
+  }
+  .steps .text { font-size: 14px; color: #cdd6ee; line-height: 1.6; }
+
+  /* ===== 温馨提示 ===== */
+  .notice { font-size: 13px; color: #96a0bf; line-height: 2; }
+
+  footer { margin-top: 22px; text-align: center; font-size: 12px; color: #5d6784; line-height: 1.9; }
+
+  /* 复制成功的提示条 */
+  #toast {
+    position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%) translateY(20px);
+    background: rgba(20, 28, 52, .95);
+    border: 1px solid rgba(255, 209, 102, .5);
+    color: #ffd88a; font-size: 14px;
+    padding: 10px 22px; border-radius: 999px;
+    opacity: 0; pointer-events: none;
+    transition: opacity .25s, transform .25s;
+    z-index: 99;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="logo">AI</div>
+    <h1>Allind 会员代充店</h1>
+    <p class="slogan">各种 AI 会员 · 低价代充 · 稳定使用</p>
+    <div class="badges">
+      <span class="badge">✓ 专线稳定</span>
+      <span class="badge">✓ 极速到账</span>
+      <span class="badge">✓ 售后保障</span>
+    </div>
+  </header>
+
+  <section>
+    <h2>价目表</h2>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">ChatGPT Plus</div>
+        <div class="p-desc">官方 $20/月 档</div>
+      </div>
+      <div class="p-price">¥158<span> /月</span></div>
+    </div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">Claude Pro</div>
+        <div class="p-desc">专线 + 会员 · 稳定使用</div>
+      </div>
+      <div class="p-price">¥300<span> /月</span></div>
+    </div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">Claude Max 5x</div>
+        <div class="p-desc">$100/月 档 · Pro 的 5 倍用量</div>
+      </div>
+      <div class="p-price">¥840<span> /月</span></div>
+    </div>
+
+    <div class="price-item">
+      <div>
+        <div class="p-name">Claude Max 20x</div>
+        <div class="p-desc">$200/月 档 · Pro 的 20 倍用量</div>
+      </div>
+      <div class="p-price">¥1580<span> /月</span></div>
+    </div>
+
+    <p class="price-note">更多 AI 会员均可代充，价格请咨询客服～</p>
+  </section>
+
+  <section>
+    <h2>联系方式（点一下即可复制）</h2>
+
+    <div class="contact-row" data-copy="19209314612">
+      <div class="contact-icon wx">微</div>
+      <div class="contact-info">
+        <div class="contact-label">微信号</div>
+        <div class="contact-value">19209314612</div>
+      </div>
+      <span class="copy-chip">复制</span>
+    </div>
+
+    <div class="contact-row" data-copy="2824864826">
+      <div class="contact-icon qq">Q</div>
+      <div class="contact-info">
+        <div class="contact-label">QQ 号</div>
+        <div class="contact-value">2824864826</div>
+      </div>
+      <span class="copy-chip">复制</span>
+    </div>
+
+    <p class="contact-tip">加好友请备注「代充」，看到消息会尽快回复</p>
+  </section>
+
+  <section>
+    <h2>购买流程</h2>
+    <ol class="steps">
+      <li><span class="step-num">1</span><span class="text">复制上方微信号 / QQ 号，添加客服</span></li>
+      <li><span class="step-num">2</span><span class="text">告知需要开通的套餐（ChatGPT Plus / Claude Pro / Max 等）</span></li>
+      <li><span class="step-num">3</span><span class="text">提供充值账号，付款后开始充值</span></li>
+      <li><span class="step-num">4</span><span class="text">到账后自行登录确认，有问题随时售后</span></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>温馨提示</h2>
+    <p class="notice">
+      · 充值前请核对好账号信息，充错账号无法退回<br>
+      · Claude 套餐含专线，到手即用、稳定使用<br>
+      · 一般几分钟内到账，高峰期请耐心等待<br>
+      · 长期合作老客户可享更低价格
+    </p>
+  </section>
+
+  <footer>
+    Allind 会员代充店 · 诚信经营<br>
+    收藏本页面，随时找到我
+  </footer>
+
+</div>
+
+<div id="toast">已复制 ✓</div>
+
+<script>
+  var toastTimer = null;
+  function showToast(msg) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 1600);
+  }
+
+  function copyText(text) {
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast('已复制 ✓'); }
+      catch (e) { showToast('复制失败，请长按手动复制'); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text)
+        .then(function () { showToast('已复制 ✓'); })
+        .catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  var rows = document.querySelectorAll('.contact-row');
+  for (var i = 0; i < rows.length; i++) {
+    (function (row) {
+      row.addEventListener('click', function () {
+        copyText(row.getAttribute('data-copy'));
+      });
+    })(rows[i]);
+  }
+</script>
+</body>
+</html>
