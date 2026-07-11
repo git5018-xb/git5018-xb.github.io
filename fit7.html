@@ -1,0 +1,1095 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>燃脂七日 · 减脂塑形训练</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+  :root{
+    --bg:#F1F2EE;
+    --surface:#FFFFFF;
+    --surface2:#F7F7F3;
+    --ink:#1D242B;
+    --muted:#64707B;
+    --line:#E2E3DB;
+    --accent:#9A6A00;
+    --accent-vivid:#E89B12;
+    --accent-bg:rgba(232,155,18,.13);
+    --ok:#2C8A4E;
+    --ok-bg:rgba(44,138,78,.12);
+    --rest:#2C6E8A;
+    --rest-bg:rgba(44,110,138,.12);
+    --shadow:0 1px 3px rgba(29,36,43,.08);
+    --font-body:-apple-system,BlinkMacSystemFont,"PingFang SC","HarmonyOS Sans SC","MiSans","Segoe UI","Microsoft YaHei","Noto Sans CJK SC",sans-serif;
+    --font-num:"Bahnschrift","DIN Alternate","DIN Condensed","Arial Narrow","sans-serif-condensed","Segoe UI",sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#14171A;
+      --surface:#1D2126;
+      --surface2:#22272D;
+      --ink:#E9ECEE;
+      --muted:#9AA5AE;
+      --line:#2B3138;
+      --accent:#F5A524;
+      --accent-vivid:#F5A524;
+      --accent-bg:rgba(245,165,36,.14);
+      --ok:#5BC47A;
+      --ok-bg:rgba(91,196,122,.14);
+      --rest:#6FBEDD;
+      --rest-bg:rgba(111,190,221,.13);
+      --shadow:0 1px 3px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#14171A;
+    --surface:#1D2126;
+    --surface2:#22272D;
+    --ink:#E9ECEE;
+    --muted:#9AA5AE;
+    --line:#2B3138;
+    --accent:#F5A524;
+    --accent-vivid:#F5A524;
+    --accent-bg:rgba(245,165,36,.14);
+    --ok:#5BC47A;
+    --ok-bg:rgba(91,196,122,.14);
+    --rest:#6FBEDD;
+    --rest-bg:rgba(111,190,221,.13);
+    --shadow:0 1px 3px rgba(0,0,0,.35);
+  }
+  :root[data-theme="light"]{
+    --bg:#F1F2EE;
+    --surface:#FFFFFF;
+    --surface2:#F7F7F3;
+    --ink:#1D242B;
+    --muted:#64707B;
+    --line:#E2E3DB;
+    --accent:#9A6A00;
+    --accent-vivid:#E89B12;
+    --accent-bg:rgba(232,155,18,.13);
+    --ok:#2C8A4E;
+    --ok-bg:rgba(44,138,78,.12);
+    --rest:#2C6E8A;
+    --rest-bg:rgba(44,110,138,.12);
+    --shadow:0 1px 3px rgba(29,36,43,.08);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:15px;
+    line-height:1.6;
+    -webkit-tap-highlight-color:transparent;
+  }
+  button{
+    font-family:inherit;
+    font-size:inherit;
+    color:inherit;
+    background:none;
+    border:none;
+    padding:0;
+    cursor:pointer;
+  }
+  button:focus-visible, summary:focus-visible{
+    outline:2px solid var(--accent-vivid);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+  .num{font-family:var(--font-num);font-variant-numeric:tabular-nums;letter-spacing:.02em}
+
+  .wrap{max-width:560px;margin:0 auto;padding:0 14px calc(40px + env(safe-area-inset-bottom))}
+
+  /* ---------- header ---------- */
+  header.app{padding:22px 2px 14px}
+  .eyebrow{
+    font-family:var(--font-num);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  h1{
+    margin:2px 0 4px;
+    font-size:30px;
+    font-weight:800;
+    letter-spacing:.02em;
+    text-wrap:balance;
+  }
+  .sub{color:var(--muted);font-size:13px;margin:0}
+  .week-progress{margin-top:14px}
+  .week-progress .row{
+    display:flex;justify-content:space-between;align-items:baseline;
+    font-size:12px;color:var(--muted);margin-bottom:5px;
+  }
+  .week-progress .row b{color:var(--ink);font-weight:600}
+  .bar{
+    height:6px;border-radius:3px;background:var(--line);overflow:hidden;
+  }
+  .bar > i{
+    display:block;height:100%;width:0;
+    background:linear-gradient(90deg,var(--accent-vivid),var(--ok));
+    border-radius:3px;
+    transition:width .4s ease;
+  }
+
+  /* ---------- day tabs ---------- */
+  nav.days{
+    position:sticky;top:0;z-index:20;
+    background:var(--bg);
+    padding:8px 0 10px;
+    display:flex;gap:6px;
+    overflow-x:auto;
+    scrollbar-width:none;
+  }
+  nav.days::-webkit-scrollbar{display:none}
+  .day-tab{
+    flex:1 0 64px;
+    display:flex;flex-direction:column;align-items:center;gap:2px;
+    padding:8px 4px 7px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--muted);
+    transition:border-color .15s,background .15s;
+  }
+  .day-tab .d{font-weight:700;font-size:14px;color:var(--ink)}
+  .day-tab .f{font-size:10.5px;letter-spacing:.04em}
+  .day-tab .dot{
+    width:5px;height:5px;border-radius:50%;
+    background:var(--line);margin-top:2px;
+  }
+  .day-tab.partial .dot{background:var(--accent-vivid)}
+  .day-tab.done .dot{background:var(--ok)}
+  .day-tab.active{
+    border-color:var(--accent-vivid);
+    background:var(--accent-bg);
+  }
+  .day-tab.active .f{color:var(--accent)}
+
+  /* ---------- day header ---------- */
+  .day-head{padding:16px 2px 4px}
+  .day-head .top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .day-head h2{margin:0;font-size:21px;font-weight:800;letter-spacing:.01em}
+  .day-head .dur{font-size:12px;color:var(--muted);white-space:nowrap}
+  .day-head .intro{margin:4px 0 8px;color:var(--muted);font-size:13px}
+  .day-head .meter{display:flex;align-items:center;gap:10px}
+  .day-head .meter .bar{flex:1}
+  .day-head .meter .cnt{font-size:12px;color:var(--muted);white-space:nowrap}
+  .day-reset{
+    font-size:12px;color:var(--muted);text-decoration:underline;
+    text-underline-offset:3px;
+  }
+
+  /* ---------- blocks ---------- */
+  section.block{margin:16px 0}
+  .block-head{
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+    margin:0 2px 8px;
+  }
+  .block-head h3{
+    margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;
+    color:var(--muted);
+  }
+  .block-head h3 .accent{color:var(--accent)}
+  .block-note{margin:-4px 2px 8px;font-size:12.5px;color:var(--muted)}
+
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+  .card + .card{margin-top:8px}
+
+  /* plain list (warmup / stretch) */
+  ul.plain{list-style:none;margin:0;padding:4px 0}
+  ul.plain li{
+    display:flex;justify-content:space-between;gap:12px;
+    padding:8px 14px;
+    font-size:14px;
+  }
+  ul.plain li + li{border-top:1px solid var(--line)}
+  ul.plain .n{flex:1}
+  ul.plain .v{color:var(--muted);white-space:nowrap;font-size:13px}
+
+  /* exercise row */
+  .ex{border-top:1px solid var(--line)}
+  .ex:first-child{border-top:none}
+  .ex-row{
+    display:flex;align-items:flex-start;gap:11px;
+    padding:12px 14px 11px;
+    cursor:pointer;
+  }
+  .chk{
+    flex:0 0 auto;
+    width:24px;height:24px;margin-top:2px;
+    border-radius:8px;
+    border:2px solid var(--line);
+    background:var(--surface2);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .15s,border-color .15s;
+  }
+  .chk svg{width:14px;height:14px;stroke:#fff;stroke-width:3;fill:none;opacity:0;transition:opacity .15s}
+  .ex.checked .chk{background:var(--ok);border-color:var(--ok)}
+  .ex.checked .chk svg{opacity:1}
+  .ex.checked .ex-name{color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
+  .ex-main{flex:1;min-width:0}
+  .ex-name{font-weight:600;font-size:15px;line-height:1.4}
+  .ex-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px;align-items:center}
+  .tag{
+    font-size:11px;padding:1.5px 8px;border-radius:99px;
+    background:var(--accent-bg);color:var(--accent);
+    letter-spacing:.03em;
+  }
+  .meta{
+    font-family:var(--font-num);font-variant-numeric:tabular-nums;
+    font-size:13.5px;color:var(--ink);font-weight:600;letter-spacing:.03em;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:4px;
+    font-size:12px;padding:3.5px 10px;border-radius:99px;
+    border:1px solid var(--line);
+    background:var(--surface2);
+    color:var(--rest);
+    font-weight:600;
+    white-space:nowrap;
+  }
+  .chip.rest{color:var(--rest);background:var(--rest-bg);border-color:transparent}
+  .chip.timed{color:var(--accent);background:var(--accent-bg);border-color:transparent}
+  .chip .num{font-size:12.5px}
+  .caret{
+    flex:0 0 auto;margin-top:6px;
+    width:9px;height:9px;
+    border-right:1.8px solid var(--muted);
+    border-bottom:1.8px solid var(--muted);
+    transform:rotate(45deg);
+    transition:transform .2s;
+  }
+  .ex.open .caret{transform:rotate(-135deg) translate(-2px,-2px)}
+  .cues{
+    display:grid;grid-template-rows:0fr;
+    transition:grid-template-rows .25s ease;
+  }
+  .ex.open .cues{grid-template-rows:1fr}
+  .cues > div{overflow:hidden}
+  .cues p{
+    margin:0;padding:0 14px 12px 49px;
+    font-size:13px;color:var(--muted);line-height:1.7;
+  }
+  .cues p b{color:var(--ink);font-weight:600}
+
+  /* circuit */
+  .circuit-bar{
+    display:flex;align-items:center;gap:11px;
+    padding:12px 14px;
+    background:var(--surface2);
+    border-bottom:1px solid var(--line);
+  }
+  .circuit-bar .info{flex:1;min-width:0}
+  .circuit-bar .t{font-weight:700;font-size:14px}
+  .circuit-bar .s{font-size:12px;color:var(--muted);margin-top:1px}
+  .btn-go{
+    display:inline-flex;align-items:center;gap:6px;
+    background:var(--accent-vivid);
+    color:#1A1205;
+    font-weight:700;font-size:13.5px;
+    padding:8px 15px;border-radius:99px;
+    white-space:nowrap;
+    box-shadow:var(--shadow);
+  }
+  .btn-go:active{transform:scale(.97)}
+  .circuit .ex-row{cursor:pointer}
+  .circuit .idx{
+    flex:0 0 auto;width:24px;height:24px;margin-top:2px;
+    border-radius:8px;background:var(--surface2);border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-num);font-size:12.5px;font-weight:700;color:var(--muted);
+  }
+
+  /* footer */
+  footer{margin-top:30px;padding:0 2px}
+  details.tips{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:0 14px;
+    box-shadow:var(--shadow);
+  }
+  details.tips + details.tips{margin-top:8px}
+  details.tips summary{
+    list-style:none;cursor:pointer;
+    padding:13px 0;
+    font-weight:700;font-size:14px;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  details.tips summary::-webkit-details-marker{display:none}
+  details.tips summary::after{
+    content:"";width:8px;height:8px;
+    border-right:1.8px solid var(--muted);
+    border-bottom:1.8px solid var(--muted);
+    transform:rotate(45deg);
+    transition:transform .2s;
+  }
+  details.tips[open] summary::after{transform:rotate(-135deg)}
+  details.tips ul{margin:0 0 14px;padding-left:18px;font-size:13.5px;color:var(--muted)}
+  details.tips li{margin:7px 0;line-height:1.7}
+  details.tips li b{color:var(--ink);font-weight:600}
+  .foot-actions{margin-top:16px;text-align:center}
+  .foot-actions button{
+    font-size:12.5px;color:var(--muted);
+    text-decoration:underline;text-underline-offset:3px;
+  }
+  .disclaimer{
+    margin-top:14px;text-align:center;
+    font-size:11.5px;color:var(--muted);opacity:.8;
+    line-height:1.7;
+  }
+
+  /* ---------- timer sheet ---------- */
+  .sheet{
+    position:fixed;inset:auto 0 0 0;z-index:50;
+    display:flex;justify-content:center;
+    padding:0 10px calc(10px + env(safe-area-inset-bottom));
+    pointer-events:none;
+  }
+  .sheet-card{
+    pointer-events:auto;
+    width:100%;max-width:540px;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:0 -6px 30px rgba(0,0,0,.25);
+    padding:16px 18px 14px;
+    transform:translateY(120%);
+    transition:transform .3s ease;
+  }
+  .sheet.show .sheet-card{transform:translateY(0)}
+  .sheet-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:2px}
+  .seg-kind{
+    font-size:11.5px;font-weight:700;letter-spacing:.14em;
+    padding:2.5px 10px;border-radius:99px;
+  }
+  .seg-kind.work{background:var(--accent-bg);color:var(--accent)}
+  .seg-kind.rest{background:var(--rest-bg);color:var(--rest)}
+  .seg-kind.done{background:var(--ok-bg);color:var(--ok)}
+  .seg-round{font-size:12.5px;color:var(--muted);font-weight:600;letter-spacing:.06em}
+  .seg-name{
+    font-size:19px;font-weight:800;margin-top:6px;
+    text-wrap:balance;line-height:1.3;
+  }
+  .seg-time{
+    font-family:var(--font-num);font-variant-numeric:tabular-nums;
+    font-size:64px;font-weight:700;line-height:1.05;
+    letter-spacing:.01em;
+    margin:2px 0 6px;
+  }
+  .seg-time.work{color:var(--accent-vivid)}
+  .seg-time.rest{color:var(--rest)}
+  .seg-time.done{color:var(--ok)}
+  .sheet-bar{height:5px;border-radius:3px;background:var(--line);overflow:hidden;margin-bottom:8px}
+  .sheet-bar > i{display:block;height:100%;width:0;background:var(--accent-vivid);border-radius:3px}
+  .seg-next{font-size:12.5px;color:var(--muted);min-height:1.5em}
+  .sheet-btns{display:flex;gap:8px;margin-top:10px}
+  .sheet-btns button{
+    flex:1;
+    padding:10px 0;border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--surface2);
+    font-weight:700;font-size:13.5px;
+  }
+  .sheet-btns button:active{transform:scale(.97)}
+  .sheet-btns .stop{color:#C24040;border-color:transparent;background:rgba(194,64,64,.1)}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;animation:none !important}
+  }
+</style>
+
+<div class="wrap">
+  <header class="app">
+    <div class="eyebrow">7-Day Fat-Burn Program</div>
+    <h1>燃脂七日</h1>
+    <p class="sub">减脂塑形 · 力量 + 有氧 · 一副哑铃在家就能练</p>
+    <div class="week-progress">
+      <div class="row"><span>本周训练进度</span><b><span id="wkDone" class="num">0</span> / <span id="wkTotal" class="num">0</span> 项</b></div>
+      <div class="bar"><i id="wkFill"></i></div>
+    </div>
+  </header>
+
+  <nav class="days" id="dayTabs" aria-label="选择训练日"></nav>
+
+  <main id="dayView"></main>
+
+  <footer>
+    <details class="tips">
+      <summary>减脂原则 · 三分练七分吃</summary>
+      <ul>
+        <li><b>热量缺口是核心</b>:每天比消耗少吃 300–500 大卡,一周稳定减 0.3–0.5 公斤最健康。练得再狠,吃超了也白练。</li>
+        <li><b>蛋白质吃够</b>:每公斤体重 1.2–1.6 克蛋白质(60kg ≈ 80–100g),优先鸡胸、鱼虾、鸡蛋、豆制品、脱脂奶,保住肌肉不掉。</li>
+        <li><b>主食别断</b>:选糙米、燕麦、红薯等慢碳,训练日适当多一点;戒含糖饮料和油炸。</li>
+        <li><b>睡够 7–8 小时</b>:睡眠不足会升高皮质醇,直接拖慢减脂。</li>
+        <li><b>拍照 &gt; 称重</b>:前两周体重可能不动,但围度和体态先变。每周同角度拍一张对比照。</li>
+      </ul>
+    </details>
+    <details class="tips">
+      <summary>训练原则 · 怎么越练越有效</summary>
+      <ul>
+        <li><b>渐进超负荷</b>:某个动作能轻松完成组数上限时,下周加一点重量,或每组多做 2 次。</li>
+        <li><b>力量优先于有氧</b>:力量训练保住肌肉、提高基础代谢,塑形全靠它;有氧是加速器不是主食。</li>
+        <li><b>燃脂心率区间</b>:最大心率 ≈ 220 − 年龄,有氧维持在其 60–75%(能说话但略喘)效率最高。</li>
+        <li><b>组间休息要掐表</b>:点动作旁的蓝色休息标签,会自动倒计时。休息过长会掉训练密度。</li>
+        <li><b>动作质量 &gt; 重量</b>:每个动作点开都有要领说明,先把姿势做标准,再谈加重。</li>
+      </ul>
+    </details>
+    <details class="tips">
+      <summary>器材与替代 · 没有哑铃怎么办</summary>
+      <ul>
+        <li><b>最低配置</b>:一副可调哑铃(女 2–8kg / 男 5–15kg 起)+ 一把稳固的椅子。</li>
+        <li><b>没有哑铃</b>:用装满水的大瓶子、装书的双肩包代替;弯举划船类动作都可以做。</li>
+        <li><b>没有跳绳</b>:做无绳模拟跳,双手照常摇,效果接近。</li>
+        <li><b>做不了引体向上</b>:换弹力带高位下拉,或桌下反身划船(身体钻到结实的桌子下,拉桌沿)。</li>
+      </ul>
+    </details>
+    <div class="foot-actions">
+      <button id="resetWeek">重置本周全部打卡</button>
+    </div>
+    <p class="disclaimer">进度每周一自动清零,打卡记录只保存在你自己的手机里。<br>训练请量力而行,关节刺痛立即停止;有基础疾病请先咨询医生。</p>
+  </footer>
+</div>
+
+<div class="sheet" id="sheet" aria-live="polite">
+  <div class="sheet-card">
+    <div class="sheet-top">
+      <span id="segKind" class="seg-kind work">动作</span>
+      <span id="segRound" class="seg-round num"></span>
+    </div>
+    <div id="segName" class="seg-name"></div>
+    <div id="segTime" class="seg-time work num">00:00</div>
+    <div class="sheet-bar"><i id="sheetFill"></i></div>
+    <div id="segNext" class="seg-next"></div>
+    <div class="sheet-btns">
+      <button id="btnPause">暂停</button>
+      <button id="btnPlus">+20 秒</button>
+      <button id="btnSkip">跳过</button>
+      <button id="btnStop" class="stop">结束</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ================= 训练数据 ================= */
+
+const WARMUP_STD = [
+  ["原地慢跑 / 高抬腿踏步", "2 分钟"],
+  ["开合跳", "2 × 30 秒"],
+  ["手臂大绕环(前后)", "各 15 次"],
+  ["体侧伸展 + 转体", "各 8 次"],
+  ["徒手深蹲(慢速)", "15 次"]
+];
+
+const DAYS = [
+  {
+    label:"周一", short:"一", focus:"上肢推", dur:"约 50 分钟",
+    intro:"胸、肩、三头为主的推力日,最后 8 分钟循环把心率拉起来收尾燃脂。",
+    blocks:[
+      { type:"list", title:"热身 · 6 分钟", items:WARMUP_STD },
+      { type:"main", title:"力量主课 · 推力", items:[
+        { name:"标准俯卧撑", tag:"胸 · 三头", meta:"4 组 × 12–15 次", rest:60,
+          cues:"双手略宽于肩,从头到脚一条直线,核心收紧不塌腰。下放到胸口离地约一拳,再推起。<b>做不满次数就改跪姿俯卧撑</b>,标准比数量重要。" },
+        { name:"哑铃地板卧推", tag:"胸", meta:"4 组 × 10–12 次", rest:75,
+          cues:"仰卧屈膝,肩胛下沉后收,哑铃下放至大臂轻触地面,推起时手肘不完全锁死。有训练凳就做平板卧推。<b>没有哑铃:换下斜俯卧撑(脚垫高)。</b>" },
+        { name:"坐姿哑铃推举", tag:"肩", meta:"3 组 × 10–12 次", rest:60,
+          cues:"核心收紧、腰不反弓,哑铃从耳朵高度推到头顶正上方,慢放回耳侧。站姿做时更要收腹防腰代偿。" },
+        { name:"哑铃侧平举", tag:"肩中束", meta:"3 组 × 12–15 次", rest:45,
+          cues:"手肘微屈,像端水一样向两侧抬到与肩同高,顶端停 1 秒,<b>用 3 秒慢慢放下</b>。重量宜轻,耸肩说明太重了。" },
+        { name:"椅上臂屈伸", tag:"三头", meta:"3 组 × 10–12 次", rest:60,
+          cues:"背对椅子双手撑椅边,臀部贴着椅子垂直下放,手肘向正后方弯曲不外张,下放到大臂约平行地面再撑起。腿伸得越直越难。" },
+        { name:"平板支撑", tag:"核心", meta:"3 组 × 40–60 秒", rest:45, timed:45,
+          cues:"手肘在肩正下方,收腹、夹臀,身体一条直线。<b>宁可时间短也不要塌腰</b>,腰酸就先休息。" }
+      ]},
+      { type:"circuit", title:"燃脂收尾 · 约 8 分钟",
+        note:"每个动作 40 秒 · 间歇 20 秒 · 共 2 轮 · 轮间休 60 秒",
+        timer:{ work:40, rest:20, rounds:2, roundRest:60 },
+        moves:[
+          { name:"开合跳", cues:"落地前脚掌缓冲,保持呼吸节奏,别憋气。" },
+          { name:"高抬腿", cues:"膝盖抬到髋部高度,摆臂配合,躯干挺直不后仰。" },
+          { name:"登山跑", cues:"平板撑姿势交替提膝,臀部压平不要撅起,核心全程绷紧。" }
+        ]},
+      { type:"list", title:"放松拉伸", items:[
+        ["门框胸部拉伸", "每侧 30 秒"],
+        ["三头过顶拉伸", "每侧 30 秒"],
+        ["颈肩侧向拉伸", "每侧 30 秒"],
+        ["婴儿式放松", "60 秒"]
+      ]}
+    ]
+  },
+  {
+    label:"周二", short:"二", focus:"下肢臀腿", dur:"约 55 分钟",
+    intro:"全身最大的肌群在腿和臀,练它们最耗热量、最提代谢,是减脂日程的重头戏。",
+    blocks:[
+      { type:"list", title:"热身 · 8 分钟", items:[
+        ...WARMUP_STD,
+        ["髋部绕环", "每向 10 次"],
+        ["弓步转体", "每侧 8 次"]
+      ]},
+      { type:"main", title:"力量主课 · 臀腿", items:[
+        { name:"深蹲(可抱哑铃)", tag:"股四头 · 臀", meta:"4 组 × 12–15 次", rest:75,
+          cues:"双脚略宽于肩、脚尖微外八,坐着往下蹲到大腿约平行地面,膝盖始终与脚尖同方向,重心在全脚掌偏脚跟。<b>进阶:胸前抱一只哑铃做高脚杯深蹲。</b>" },
+        { name:"哑铃罗马尼亚硬拉", tag:"腘绳 · 臀", meta:"4 组 × 10–12 次", rest:75,
+          cues:"膝盖微屈保持角度不变,<b>以髋为轴向后推臀</b>,哑铃贴着腿面下滑,背全程挺直。感到大腿后侧明显拉伸即到位,起身时夹臀站直。" },
+        { name:"箭步蹲", tag:"臀 · 股四头", meta:"每腿 3 组 × 12 次", rest:60,
+          cues:"前后脚成弓步,后膝垂直下沉接近地面,前膝大致对齐脚尖,躯干直立不前扑。原地或行走均可,扶墙保持平衡不丢分。" },
+        { name:"臀桥", tag:"臀大肌", meta:"3 组 × 15–20 次", rest:45,
+          cues:"仰卧屈膝,脚跟发力把髋顶起,<b>顶端夹臀停 2 秒</b>,肋骨下收、腰不过度反弓。太轻松就把哑铃放在髋上,或做单腿臀桥。" },
+        { name:"站姿提踵", tag:"小腿", meta:"3 组 × 18–20 次", rest:30,
+          cues:"前脚掌踩在台阶边缘效果最好,顶到最高点停 1 秒,慢慢下放到脚跟低于台阶、感受小腿拉伸。" }
+      ]},
+      { type:"main", title:"有氧 · 15–20 分钟", items:[
+        { name:"上坡快走 / 爬楼梯 / 椭圆机", tag:"中低强度", meta:"15–20 分钟",
+          cues:"腿部训练后接坡度有氧,燃脂效率高且不伤膝。心率保持在最大心率的 65–75%——<b>能说话但略微喘</b>就是对的强度。" }
+      ]},
+      { type:"list", title:"放松拉伸", items:[
+        ["股四头拉伸(扶墙勾脚)", "每侧 30 秒"],
+        ["站姿体前屈(腘绳)", "30 秒"],
+        ["鸽子式(臀)", "每侧 45 秒"],
+        ["小腿撑墙拉伸", "每侧 30 秒"]
+      ]}
+    ]
+  },
+  {
+    label:"周三", short:"三", focus:"有氧核心", dur:"约 50 分钟",
+    intro:"中等强度稳态有氧刷热量缺口,再用核心循环雕刻腰腹线条。",
+    blocks:[
+      { type:"main", title:"有氧主课 · 30–40 分钟", items:[
+        { name:"慢跑 / 动感单车 / 快走坡度", tag:"稳态有氧", meta:"30–40 分钟",
+          cues:"任选一种或组合,心率维持在最大心率的 65–75%(最大心率 ≈ 220 − 年龄)。<b>跳绳版:跳 3 分钟 + 歇 1 分钟,循环 8 轮</b>,对场地要求最低。" }
+      ]},
+      { type:"circuit", title:"核心循环 · 共 3 轮",
+        note:"按次数完成一轮所有动作 · 轮间休 90 秒(点右侧按钮可用 40s/20s 计时模式做)",
+        timer:{ work:40, rest:20, rounds:3, roundRest:90 },
+        moves:[
+          { name:"卷腹 15–20 次", cues:"下背始终贴地,用腹肌把肩胛卷离地面即可,双手轻扶耳侧,不要抱头借力。" },
+          { name:"俄罗斯转体 左右各 10 次", cues:"屈膝坐姿、上身后仰约 45°,双手交替转向两侧触地。进阶:双脚离地。" },
+          { name:"仰卧抬腿 12–15 次", cues:"双腿并拢抬到 90° 再缓慢下放,<b>腰部全程贴地</b>,腰离地就减小下放幅度。" },
+          { name:"平板支撑 40–60 秒", cues:"肘在肩正下方,收腹夹臀一条直线,自然呼吸不憋气。" }
+        ]},
+      { type:"list", title:"放松拉伸", items:[
+        ["眼镜蛇式(腹部)", "45 秒"],
+        ["猫牛式", "10 次"],
+        ["仰卧躯干扭转", "每侧 30 秒"]
+      ]}
+    ]
+  },
+  {
+    label:"周四", short:"四", focus:"上肢拉", dur:"约 50 分钟",
+    intro:"背、二头、后肩的拉力日——背练好了,体态挺拔,腰看起来更细。",
+    blocks:[
+      { type:"list", title:"热身 · 6 分钟", items:WARMUP_STD },
+      { type:"main", title:"力量主课 · 拉力", items:[
+        { name:"单臂哑铃划船", tag:"背阔肌", meta:"每侧 4 组 × 10–12 次", rest:75,
+          cues:"单手撑在椅子上、背放平,想象<b>用手肘把哑铃拉向髋部口袋</b>,顶端肩胛收紧停 1 秒再慢放。躯干不要旋转借力。" },
+        { name:"引体向上 / 弹力带下拉", tag:"背 · 二头", meta:"4 组 × 力竭(4–10 次)", rest:90,
+          cues:"先沉肩再发力拉,下巴过杠,用 3 秒慢慢下放。<b>做不了:弹力带辅助引体、弹力带高位下拉,或钻到结实桌下做反身划船。</b>" },
+        { name:"俯身哑铃飞鸟", tag:"后肩 · 上背", meta:"3 组 × 12–15 次", rest:45,
+          cues:"俯身背平,手肘微屈向两侧打开,想象两侧肩胛骨向中间夹一支笔。重量一定要轻,甩起来就无效了。" },
+        { name:"哑铃弯举", tag:"二头", meta:"3 组 × 10–12 次", rest:60,
+          cues:"大臂贴紧身体不动,只有前臂运动,顶端停 1 秒、3 秒慢放。身体前后摇摆 = 重量太大。" },
+        { name:"锤式弯举", tag:"二头 · 前臂", meta:"2 组 × 12–15 次", rest:45,
+          cues:"掌心相对握哑铃像握锤子,同样禁止身体借力,练二头外侧和前臂线条。" },
+        { name:"哑铃耸肩", tag:"斜方肌", meta:"2 组 × 15 次", rest:45,
+          cues:"双肩垂直向耳朵方向耸起,顶端停 2 秒再放下,<b>直上直下、不要绕圈</b>。" }
+      ]},
+      { type:"circuit", title:"跳绳间歇 · 约 9 分钟",
+        note:"跳 60 秒 · 歇 30 秒 · 共 6 轮(没有绳就做无绳模拟跳)",
+        timer:{ work:60, rest:30, rounds:6, roundRest:0 },
+        moves:[
+          { name:"跳绳 / 无绳模拟跳", cues:"前脚掌落地、膝盖微屈缓冲,手腕摇绳而不是整条手臂。跳不动就降速,不要停。" }
+        ]},
+      { type:"list", title:"放松拉伸", items:[
+        ["背阔侧向伸展(扶门框)", "每侧 30 秒"],
+        ["二头贴墙拉伸", "每侧 30 秒"],
+        ["婴儿式放松", "60 秒"]
+      ]}
+    ]
+  },
+  {
+    label:"周五", short:"五", focus:"全身HIIT", dur:"约 30 分钟",
+    intro:"一周强度最高的一天:6 个动作 × 4 轮,30 分钟榨干糖原,训练后仍持续燃脂。",
+    blocks:[
+      { type:"list", title:"充分热身 · 8 分钟", items:[
+        ...WARMUP_STD,
+        ["弓步转体", "每侧 8 次"],
+        ["慢速波比(不跳)", "5 次"]
+      ]},
+      { type:"circuit", title:"HIIT 主课 · 4 轮",
+        note:"每动作 40 秒 · 间歇 20 秒 · 轮间休 2 分钟 · 体力不足做 3 轮",
+        timer:{ work:40, rest:20, rounds:4, roundRest:120 },
+        moves:[
+          { name:"波比跳", cues:"下蹲撑地 → 后跳成平板 → 收腿站起并跳。太累就去掉俯卧撑和跳跃,做慢速版,<b>动作不停就是胜利</b>。" },
+          { name:"深蹲跳", cues:"蹲到大腿平行地面再向上跳,<b>落地轻缓、屈膝缓冲</b>,膝盖不内扣。膝盖不适就换成快速徒手深蹲。" },
+          { name:"登山跑", cues:"平板撑姿势快速交替提膝,核心绷紧、臀部压平,手腕在肩正下方。" },
+          { name:"俯卧撑", cues:"标准或跪姿都可以,力竭后用跪姿把 40 秒填满。" },
+          { name:"高抬腿", cues:"膝盖抬到髋部高度、摆臂配合,尽量保持频率,躯干挺直。" },
+          { name:"平板开合跳", cues:"平板撑姿势下双脚向外跳开再收回,肩膀稳定,臀部不要上下晃。" }
+        ]},
+      { type:"list", title:"放松拉伸 · 8 分钟", items:[
+        ["股四头拉伸", "每侧 30 秒"],
+        ["站姿体前屈", "30 秒"],
+        ["门框胸部拉伸", "每侧 30 秒"],
+        ["鸽子式", "每侧 45 秒"],
+        ["婴儿式放松", "60 秒"]
+      ]}
+    ]
+  },
+  {
+    label:"周六", short:"六", focus:"有氧雕刻", dur:"约 60 分钟",
+    intro:"低强度长时间有氧扩大热量缺口,再加一组臀部与深层核心的雕刻小课。",
+    blocks:[
+      { type:"main", title:"有氧主课 · 40–50 分钟", items:[
+        { name:"快走 / 骑行 / 游泳 / 徒步", tag:"低强度稳态", meta:"40–50 分钟",
+          cues:"任选喜欢的一种,心率在最大心率的 60–70%,<b>以能全程聊天为准</b>。约朋友一起走路聊天,是最容易坚持的燃脂方式。" }
+      ]},
+      { type:"circuit", title:"臀核心雕刻 · 共 3 轮",
+        note:"按次数完成一轮所有动作 · 轮间休 60 秒",
+        timer:{ work:40, rest:15, rounds:3, roundRest:60 },
+        moves:[
+          { name:"侧卧抬腿 每侧 15 次", cues:"侧卧、身体一条直线,上腿缓慢抬到约 45° 停 1 秒,感受臀部外侧(臀中肌)发力,不要用腰。" },
+          { name:"跪姿后踢腿 每侧 15 次", cues:"四足跪姿,一侧脚跟朝天花板方向蹬起,<b>腰保持平直不塌</b>,用臀发力而不是甩腿。" },
+          { name:"死虫 每侧 10 次", cues:"仰卧、手脚朝天,对侧手和脚同时缓慢下放到接近地面再收回,<b>腰部全程压实地面</b>。" },
+          { name:"单腿臀桥 每侧 12 次", cues:"一条腿屈膝踩地、另一腿伸直,脚跟发力顶髋,骨盆保持水平不歪斜。" }
+        ]},
+      { type:"list", title:"放松拉伸", items:[
+        ["鸽子式", "每侧 45 秒"],
+        ["蝴蝶式(髋内侧)", "60 秒"],
+        ["猫牛式", "10 次"]
+      ]}
+    ]
+  },
+  {
+    label:"周日", short:"日", focus:"休息恢复", dur:"约 30 分钟",
+    intro:"肌肉在休息时生长、代谢在恢复中变好——今天的任务就是好好放松。",
+    blocks:[
+      { type:"main", title:"主动恢复(可选)", items:[
+        { name:"户外散步", tag:"恢复", meta:"20–30 分钟",
+          cues:"轻松配速即可,晒晒太阳、顺便消化一周的疲劳。完全不想动也没关系,休息本身就是计划的一部分。" }
+      ]},
+      { type:"list", title:"全身拉伸 · 10–15 分钟", items:[
+        ["猫牛式", "10 次"],
+        ["下犬式", "45 秒"],
+        ["鸽子式", "每侧 45 秒"],
+        ["仰卧躯干扭转", "每侧 30 秒"],
+        ["颈肩放松", "每侧 30 秒"],
+        ["婴儿式收尾", "60 秒"]
+      ]},
+      { type:"list", title:"恢复清单", items:[
+        ["泡沫轴放松(如有)", "5–10 分钟"],
+        ["睡眠", "7–8 小时"],
+        ["备餐:下周的鸡胸 / 鸡蛋 / 蔬菜", "顺手准备"]
+      ]}
+    ]
+  }
+];
+
+/* ================= 状态存取 ================= */
+
+const LS_KEY = "fit7-state-v1";
+
+function weekKey(){
+  const d = new Date();
+  d.setHours(0,0,0,0);
+  d.setDate(d.getDate() + 3 - ((d.getDay() + 6) % 7)); // ISO week: Thursday trick
+  const week1 = new Date(d.getFullYear(), 0, 4);
+  const wk = 1 + Math.round(((d - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+  return d.getFullYear() + "-W" + String(wk).padStart(2, "0");
+}
+
+let state;
+function loadState(){
+  let s = null;
+  try{ s = JSON.parse(localStorage.getItem(LS_KEY)); }catch(e){}
+  const wk = weekKey();
+  if(!s || s.week !== wk) s = { week: wk, done:{} };
+  state = s;
+}
+function saveState(){
+  try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){}
+}
+
+/* 可打卡项 id 列表 */
+function checkables(dayIdx){
+  const ids = [];
+  DAYS[dayIdx].blocks.forEach((b, bi) => {
+    if(b.type === "main") b.items.forEach((_, ii) => ids.push(`d${dayIdx}b${bi}i${ii}`));
+    if(b.type === "circuit") ids.push(`d${dayIdx}b${bi}c`);
+  });
+  return ids;
+}
+
+/* ================= 渲染 ================= */
+
+const $ = sel => document.querySelector(sel);
+let currentDay = (new Date().getDay() + 6) % 7; // 周一=0 … 周日=6
+
+function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;"); }
+
+function renderTabs(){
+  const nav = $("#dayTabs");
+  nav.innerHTML = DAYS.map((d, i) => {
+    const ids = checkables(i);
+    const done = ids.filter(id => state.done[id]).length;
+    const cls = done === 0 ? "" : (done === ids.length ? "done" : "partial");
+    return `<button class="day-tab ${cls} ${i === currentDay ? "active" : ""}" data-day="${i}" aria-label="${d.label} ${d.focus}">
+      <span class="d">${d.short}</span><span class="f">${d.focus.slice(0,4)}</span><span class="dot"></span>
+    </button>`;
+  }).join("");
+}
+
+function chipRest(sec){
+  return `<button class="chip rest" data-rest="${sec}" aria-label="开始 ${sec} 秒组间休息">休息 <span class="num">${sec}s</span></button>`;
+}
+function chipTimed(sec){
+  return `<button class="chip timed" data-timed="${sec}" aria-label="开始 ${sec} 秒计时">⏱ 计时 <span class="num">${sec}s</span></button>`;
+}
+
+function renderDay(){
+  const d = DAYS[currentDay];
+  const ids = checkables(currentDay);
+  const done = ids.filter(id => state.done[id]).length;
+  let html = `
+    <div class="day-head">
+      <div class="top"><h2>${d.label} · ${d.focus}</h2><span class="dur">${d.dur}</span></div>
+      <p class="intro">${d.intro}</p>
+      <div class="meter">
+        <div class="bar"><i style="width:${ids.length ? Math.round(done / ids.length * 100) : 0}%"></i></div>
+        <span class="cnt"><span class="num">${done}/${ids.length}</span> 项</span>
+        <button class="day-reset" data-reset-day="${currentDay}">重置</button>
+      </div>
+    </div>`;
+
+  d.blocks.forEach((b, bi) => {
+    if(b.type === "list"){
+      html += `<section class="block">
+        <div class="block-head"><h3>${b.title}</h3></div>
+        <div class="card"><ul class="plain">${
+          b.items.map(([n, v]) => `<li><span class="n">${n}</span><span class="v num">${v}</span></li>`).join("")
+        }</ul></div>
+      </section>`;
+    }
+    if(b.type === "main"){
+      html += `<section class="block">
+        <div class="block-head"><h3>${b.title}</h3></div>
+        <div class="card">${b.items.map((it, ii) => {
+          const id = `d${currentDay}b${bi}i${ii}`;
+          const checked = state.done[id] ? "checked" : "";
+          return `<div class="ex ${checked}" data-id="${id}">
+            <div class="ex-row">
+              <button class="chk" data-chk="${id}" aria-label="打卡 ${it.name}"><svg viewBox="0 0 16 16"><path d="M2.5 8.5l3.5 3.5 7-8"/></svg></button>
+              <div class="ex-main">
+                <div class="ex-name">${it.name}</div>
+                <div class="ex-tags">
+                  ${it.tag ? `<span class="tag">${it.tag}</span>` : ""}
+                  <span class="meta">${it.meta}</span>
+                  ${it.rest ? chipRest(it.rest) : ""}
+                  ${it.timed ? chipTimed(it.timed) : ""}
+                </div>
+              </div>
+              <span class="caret" aria-hidden="true"></span>
+            </div>
+            <div class="cues"><div><p>${it.cues}</p></div></div>
+          </div>`;
+        }).join("")}</div>
+      </section>`;
+    }
+    if(b.type === "circuit"){
+      const id = `d${currentDay}b${bi}c`;
+      const checked = state.done[id] ? "checked" : "";
+      html += `<section class="block circuit">
+        <div class="block-head"><h3>${b.title}</h3></div>
+        ${b.note ? `<p class="block-note">${b.note}</p>` : ""}
+        <div class="card">
+          <div class="circuit-bar">
+            <div class="ex ${checked}" data-id="${id}" style="border:none">
+              <button class="chk" data-chk="${id}" aria-label="打卡整组循环"><svg viewBox="0 0 16 16"><path d="M2.5 8.5l3.5 3.5 7-8"/></svg></button>
+            </div>
+            <div class="info">
+              <div class="t">完成整组循环后打卡</div>
+              <div class="s">跟练模式会按顺序自动计时报动作</div>
+            </div>
+            <button class="btn-go" data-circuit="${bi}">▶ 跟练计时</button>
+          </div>
+          ${b.moves.map((m, mi) => `<div class="ex" data-plain="1">
+            <div class="ex-row">
+              <span class="idx num">${mi + 1}</span>
+              <div class="ex-main"><div class="ex-name">${m.name}</div></div>
+              <span class="caret" aria-hidden="true"></span>
+            </div>
+            <div class="cues"><div><p>${m.cues}</p></div></div>
+          </div>`).join("")}
+        </div>
+      </section>`;
+    }
+  });
+  $("#dayView").innerHTML = html;
+}
+
+function renderHeader(){
+  let total = 0, done = 0;
+  DAYS.forEach((_, i) => {
+    const ids = checkables(i);
+    total += ids.length;
+    done += ids.filter(id => state.done[id]).length;
+  });
+  $("#wkDone").textContent = done;
+  $("#wkTotal").textContent = total;
+  $("#wkFill").style.width = (total ? Math.round(done / total * 100) : 0) + "%";
+}
+
+function renderAll(){
+  renderTabs();
+  renderDay();
+  renderHeader();
+}
+
+/* ================= 计时引擎 ================= */
+
+const timer = { segs:[], idx:0, endAt:0, remain:0, dur:0, paused:false, tid:null, wakeLock:null };
+
+let audioCtx = null;
+function beep(freq, dur, when){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state === "suspended") audioCtx.resume();
+    const t = audioCtx.currentTime + (when || 0);
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = "sine"; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.001, t);
+    g.gain.exponentialRampToValueAtTime(0.28, t + 0.015);
+    g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(audioCtx.destination);
+    o.start(t); o.stop(t + dur + 0.05);
+  }catch(e){}
+}
+function vibrate(ms){ try{ navigator.vibrate && navigator.vibrate(ms); }catch(e){} }
+
+async function grabWakeLock(){
+  try{ timer.wakeLock = await navigator.wakeLock.request("screen"); }catch(e){}
+}
+function releaseWakeLock(){
+  try{ timer.wakeLock && timer.wakeLock.release(); }catch(e){}
+  timer.wakeLock = null;
+}
+
+function fmt(s){
+  s = Math.max(0, s);
+  return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
+}
+
+function showSheet(){ const sh = $("#sheet"); sh.hidden = false; requestAnimationFrame(() => sh.classList.add("show")); }
+function hideSheet(){
+  const sh = $("#sheet");
+  sh.classList.remove("show");
+  setTimeout(() => { sh.hidden = true; }, 320);
+}
+
+function paintSegment(){
+  const seg = timer.segs[timer.idx];
+  const kindTxt = { work:"动作", rest:"休息", roundRest:"轮间休息", simple:"计时", srest:"组间休息" }[seg.kind] || "计时";
+  const kindCls = (seg.kind === "work" || seg.kind === "simple") ? "work" : "rest";
+  $("#segKind").textContent = kindTxt;
+  $("#segKind").className = "seg-kind " + kindCls;
+  $("#segTime").className = "seg-time num " + kindCls;
+  $("#segName").textContent = seg.name;
+  $("#segRound").textContent = seg.round || "";
+  const next = timer.segs[timer.idx + 1];
+  $("#segNext").textContent = next ? "下一个:" + next.name : "最后一段,坚持!";
+  $("#sheetFill").style.background = kindCls === "work" ? "var(--accent-vivid)" : "var(--rest)";
+}
+
+function paintTime(){
+  $("#segTime").textContent = fmt(timer.remain);
+  const pct = timer.dur ? (1 - timer.remain / timer.dur) * 100 : 0;
+  $("#sheetFill").style.width = pct + "%";
+}
+
+function startSegment(){
+  const seg = timer.segs[timer.idx];
+  timer.dur = seg.secs;
+  timer.remain = seg.secs;
+  timer.endAt = Date.now() + seg.secs * 1000;
+  paintSegment();
+  paintTime();
+}
+
+function tick(){
+  if(timer.paused) return;
+  const r = Math.max(0, Math.ceil((timer.endAt - Date.now()) / 1000));
+  if(r !== timer.remain){
+    timer.remain = r;
+    paintTime();
+    if(r > 0 && r <= 3) beep(880, 0.08);
+    if(r === 0){
+      if(timer.idx < timer.segs.length - 1){
+        beep(1318, 0.22); vibrate(180);
+        timer.idx++;
+        startSegment();
+      }else{
+        finishTimer();
+      }
+    }
+  }
+}
+
+function finishTimer(){
+  clearInterval(timer.tid); timer.tid = null;
+  beep(1318, 0.18); beep(1760, 0.3, 0.2); vibrate([160, 80, 240]);
+  $("#segKind").textContent = "完成";
+  $("#segKind").className = "seg-kind done";
+  $("#segTime").className = "seg-time num done";
+  $("#segTime").textContent = "00:00";
+  $("#segName").textContent = "训练段完成,漂亮!💪";
+  $("#segNext").textContent = "";
+  $("#sheetFill").style.width = "100%";
+  releaseWakeLock();
+  setTimeout(() => { if(!timer.tid) hideSheet(); }, 2200);
+}
+
+function startTimer(segs){
+  clearInterval(timer.tid);
+  timer.segs = segs;
+  timer.idx = 0;
+  timer.paused = false;
+  $("#btnPause").textContent = "暂停";
+  startSegment();
+  showSheet();
+  grabWakeLock();
+  beep(1046, 0.12);
+  timer.tid = setInterval(tick, 200);
+}
+
+function stopTimer(){
+  clearInterval(timer.tid); timer.tid = null;
+  releaseWakeLock();
+  hideSheet();
+}
+
+/* 单段计时(组间休息 / 平板计时) */
+function startSimple(name, secs, kind){
+  startTimer([{ kind: kind, name: name, secs: secs, round: "" }]);
+}
+
+/* 循环计时:按 timer 配置展开分段 */
+function buildCircuitSegs(block){
+  const { work, rest, rounds, roundRest } = block.timer;
+  const segs = [];
+  for(let r = 1; r <= rounds; r++){
+    block.moves.forEach((m, i) => {
+      segs.push({ kind:"work", name: m.name, secs: work, round: `第 ${r}/${rounds} 轮` });
+      const lastMove = i === block.moves.length - 1;
+      if(!lastMove) segs.push({ kind:"rest", name:"休息一下", secs: rest, round: `第 ${r}/${rounds} 轮` });
+    });
+    if(r < rounds && roundRest > 0){
+      segs.push({ kind:"roundRest", name:"轮间休息 · 喝口水", secs: roundRest, round: `第 ${r}/${rounds} 轮` });
+    }else if(r < rounds && roundRest === 0){
+      segs.push({ kind:"rest", name:"休息一下", secs: rest, round: `第 ${r}/${rounds} 轮` });
+    }
+  }
+  return segs;
+}
+
+/* ================= 事件 ================= */
+
+document.addEventListener("click", e => {
+  const t = e.target;
+
+  const tab = t.closest(".day-tab");
+  if(tab){
+    currentDay = +tab.dataset.day;
+    renderTabs(); renderDay();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    return;
+  }
+
+  const chk = t.closest("[data-chk]");
+  if(chk){
+    const id = chk.dataset.chk;
+    if(state.done[id]) delete state.done[id]; else state.done[id] = true;
+    saveState(); renderAll();
+    return;
+  }
+
+  const restBtn = t.closest("[data-rest]");
+  if(restBtn){
+    startSimple("组间休息 · 调整呼吸", +restBtn.dataset.rest, "srest");
+    return;
+  }
+
+  const timedBtn = t.closest("[data-timed]");
+  if(timedBtn){
+    const name = timedBtn.closest(".ex").querySelector(".ex-name").textContent;
+    startSimple(name, +timedBtn.dataset.timed, "simple");
+    return;
+  }
+
+  const go = t.closest("[data-circuit]");
+  if(go){
+    const block = DAYS[currentDay].blocks[+go.dataset.circuit];
+    startTimer(buildCircuitSegs(block));
+    return;
+  }
+
+  const resetDay = t.closest("[data-reset-day]");
+  if(resetDay){
+    checkables(+resetDay.dataset.resetDay).forEach(id => delete state.done[id]);
+    saveState(); renderAll();
+    return;
+  }
+
+  const row = t.closest(".ex-row");
+  if(row){
+    row.parentElement.classList.toggle("open");
+    return;
+  }
+});
+
+$("#btnPause").addEventListener("click", () => {
+  if(!timer.tid) return;
+  timer.paused = !timer.paused;
+  if(timer.paused){
+    timer.remain = Math.max(0, Math.ceil((timer.endAt - Date.now()) / 1000));
+    $("#btnPause").textContent = "继续";
+  }else{
+    timer.endAt = Date.now() + timer.remain * 1000;
+    $("#btnPause").textContent = "暂停";
+  }
+});
+$("#btnPlus").addEventListener("click", () => {
+  if(!timer.tid) return;
+  timer.endAt += 20000;
+  timer.dur += 20;
+  timer.remain = Math.max(0, Math.ceil((timer.endAt - Date.now()) / 1000));
+  paintTime();
+});
+$("#btnSkip").addEventListener("click", () => {
+  if(!timer.tid) return;
+  if(timer.idx < timer.segs.length - 1){ timer.idx++; startSegment(); }
+  else finishTimer();
+});
+$("#btnStop").addEventListener("click", stopTimer);
+
+$("#resetWeek").addEventListener("click", () => {
+  if(confirm("确定清空本周所有打卡记录吗?")){
+    state.done = {};
+    saveState(); renderAll();
+  }
+});
+
+/* ================= 启动 ================= */
+loadState();
+renderAll();
+</script>
