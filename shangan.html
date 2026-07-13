@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#14405E">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>上岸打卡 · 西安体育教师编制</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>">
+<style>
+  :root{
+    --bg:#F2F4F6; --card:#FFFFFF; --ink:#1B2733; --muted:#66737F;
+    --line:#E1E7EB; --blue:#17629E; --blue-deep:#14405E; --orange:#E8722A;
+    --green:#2F8A57; --chip:#E8F1F8; --done:#9FB2BF;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0E141A; --card:#171F27; --ink:#E7EDF2; --muted:#8FA0AD;
+      --line:#28333D; --blue:#5FA8D8; --blue-deep:#8CC4E8; --orange:#F08A48;
+      --green:#6FC08F; --chip:#1D2A36; --done:#546472;
+    }
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",-apple-system,sans-serif;
+    font-size:15px; line-height:1.6;
+    padding-bottom:calc(64px + env(safe-area-inset-bottom));
+  }
+  .app{max-width:480px; margin:0 auto; padding:14px 14px 0;}
+  /* ---------- header ---------- */
+  .top{display:flex; justify-content:space-between; align-items:flex-start; padding:6px 2px 10px;}
+  .top h1{font-size:19px; margin:0; font-weight:700;}
+  .top .date{font-size:12.5px; color:var(--muted);}
+  .streak{
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:6px 12px; text-align:center; line-height:1.3;
+  }
+  .streak b{font-size:17px; color:var(--orange);}
+  .streak span{display:block; font-size:10.5px; color:var(--muted);}
+  .phasebar{
+    background:linear-gradient(135deg, var(--blue-deep), var(--blue));
+    color:#fff; border-radius:14px; padding:12px 16px; margin-bottom:12px;
+  }
+  .phasebar .ptag{font-size:11.5px; opacity:.85; letter-spacing:.1em;}
+  .phasebar .pname{font-size:16.5px; font-weight:700; margin:1px 0;}
+  .phasebar .ptheme{font-size:12.5px; opacity:.92;}
+  /* ---------- countdown ---------- */
+  .cds{display:flex; gap:8px; margin-bottom:12px;}
+  .cd{flex:1; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:8px 10px; text-align:center;}
+  .cd b{font-size:18px; color:var(--blue-deep); font-variant-numeric:tabular-nums;}
+  .cd span{display:block; font-size:10.5px; color:var(--muted); white-space:nowrap;}
+  /* ---------- progress ---------- */
+  .prog{display:flex; align-items:center; gap:14px; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px 16px; margin-bottom:12px;}
+  .ring{width:64px; height:64px; flex:0 0 auto;}
+  .ring circle{fill:none; stroke-width:7;}
+  .ring .bgc{stroke:var(--line);}
+  .ring .fgc{stroke:var(--orange); stroke-linecap:round; transform:rotate(-90deg); transform-origin:50% 50%; transition:stroke-dashoffset .3s;}
+  .ring text{font-size:15px; font-weight:700; fill:var(--ink);}
+  .prog .msg b{display:block; font-size:15px;}
+  .prog .msg span{font-size:12.5px; color:var(--muted);}
+  /* ---------- checklist ---------- */
+  .sect-title{font-size:12.5px; letter-spacing:.12em; color:var(--muted); margin:16px 4px 8px; font-weight:600;}
+  .tasks{display:flex; flex-direction:column; gap:8px;}
+  .task{
+    display:flex; align-items:flex-start; gap:12px;
+    background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:12px 14px; cursor:pointer; user-select:none;
+  }
+  .task .box{
+    width:22px; height:22px; border-radius:7px; border:2px solid var(--blue);
+    flex:0 0 auto; margin-top:2px; display:flex; align-items:center; justify-content:center;
+    color:#fff; font-size:14px; font-weight:700;
+  }
+  .task.done .box{background:var(--green); border-color:var(--green);}
+  .task .txt b{display:block; font-size:14.5px; font-weight:600;}
+  .task .txt span{font-size:12px; color:var(--muted);}
+  .task.done .txt{color:var(--done); text-decoration:line-through; text-decoration-color:var(--line);}
+  .task.done .txt span{color:var(--done);}
+  .allclear{
+    background:var(--chip); border:1px dashed var(--green); color:var(--green);
+    border-radius:12px; padding:14px; text-align:center; font-weight:700; margin-top:10px; display:none;
+  }
+  /* ---------- plan tab ---------- */
+  .pcard{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:10px;}
+  .pcard.now{border-color:var(--orange); border-width:2px;}
+  .pcard .head{display:flex; justify-content:space-between; align-items:baseline; gap:8px;}
+  .pcard .head b{font-size:15px;}
+  .pcard .head small{color:var(--muted); font-size:11.5px; white-space:nowrap;}
+  .pcard p{margin:.35em 0 0; font-size:13px; color:var(--muted);}
+  .nowtag{display:inline-block; font-size:10.5px; background:var(--orange); color:#fff; border-radius:5px; padding:0 6px; margin-right:6px; vertical-align:1px;}
+  .wklist{margin:6px 0 0; padding:0; list-style:none;}
+  .wklist li{font-size:13px; padding:7px 0; border-bottom:1px solid var(--line); color:var(--muted);}
+  .wklist li:last-child{border-bottom:none;}
+  .wklist li.cur{color:var(--ink); font-weight:600;}
+  .wklist li.cur::before{content:"▶ "; color:var(--orange);}
+  .wklist b{color:var(--blue-deep); font-weight:600;}
+  /* ---------- history tab ---------- */
+  .stats{display:flex; gap:8px; margin-bottom:12px;}
+  .stat{flex:1; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:10px; text-align:center;}
+  .stat b{font-size:20px; color:var(--blue-deep); font-variant-numeric:tabular-nums;}
+  .stat span{display:block; font-size:11px; color:var(--muted);}
+  .calnav{display:flex; justify-content:space-between; align-items:center; margin:8px 2px;}
+  .calnav b{font-size:15px;}
+  .calnav button{
+    background:var(--card); border:1px solid var(--line); color:var(--ink);
+    border-radius:9px; padding:4px 14px; font-size:15px; cursor:pointer;
+  }
+  .cal{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:12px;}
+  .cal .grid{display:grid; grid-template-columns:repeat(7,1fr); gap:5px;}
+  .cal .wd{text-align:center; font-size:10.5px; color:var(--muted); padding:2px 0;}
+  .cell{
+    aspect-ratio:1; border-radius:8px; display:flex; align-items:center; justify-content:center;
+    font-size:11.5px; color:var(--muted); background:var(--bg); font-variant-numeric:tabular-nums;
+  }
+  .cell.l1{background:var(--chip); color:var(--ink);}
+  .cell.l2{background:color-mix(in srgb, var(--blue) 45%, var(--card)); color:#fff;}
+  .cell.l3{background:var(--green); color:#fff; font-weight:700;}
+  .cell.today{outline:2px solid var(--orange); outline-offset:1px;}
+  .cell.empty{background:transparent;}
+  .legend{display:flex; gap:12px; justify-content:center; font-size:11px; color:var(--muted); margin-top:10px;}
+  .legend i{display:inline-block; width:11px; height:11px; border-radius:3px; margin-right:4px; vertical-align:-1px; font-style:normal;}
+  /* ---------- bottom nav ---------- */
+  nav{
+    position:fixed; bottom:0; left:0; right:0; z-index:50;
+    background:var(--card); border-top:1px solid var(--line);
+    display:flex; justify-content:space-around;
+    padding:6px 0 calc(6px + env(safe-area-inset-bottom));
+  }
+  nav button{
+    background:none; border:none; color:var(--muted); font-size:11px; cursor:pointer;
+    display:flex; flex-direction:column; align-items:center; gap:1px; padding:2px 18px;
+    font-family:inherit;
+  }
+  nav button .ico{font-size:20px; line-height:1.1;}
+  nav button.on{color:var(--blue-deep); font-weight:700;}
+  .tab{display:none;} .tab.on{display:block;}
+  footer{color:var(--muted); font-size:11px; text-align:center; padding:18px 10px 10px;}
+  footer a{color:var(--blue-deep);}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="top">
+    <div>
+      <h1>上岸打卡 🏀</h1>
+      <div class="date" id="dateLine">—</div>
+    </div>
+    <div class="streak"><b id="streakN">0</b>🔥<span>连续打卡</span></div>
+  </div>
+
+  <!-- ============ 今日 ============ -->
+  <div class="tab on" id="tab-today">
+    <div class="phasebar">
+      <div class="ptag" id="pTag">阶段</div>
+      <div class="pname" id="pName">—</div>
+      <div class="ptheme" id="pTheme">—</div>
+    </div>
+
+    <div class="cds" id="cds"></div>
+
+    <div class="prog">
+      <svg class="ring" viewBox="0 0 72 72">
+        <circle class="bgc" cx="36" cy="36" r="30"></circle>
+        <circle class="fgc" id="ringFg" cx="36" cy="36" r="30" stroke-dasharray="188.5" stroke-dashoffset="188.5"></circle>
+        <text x="36" y="41" text-anchor="middle" id="ringTxt">0%</text>
+      </svg>
+      <div class="msg"><b id="progMsg">开始今天的任务</b><span id="progSub">完成 80% 即算打卡成功</span></div>
+    </div>
+
+    <div class="sect-title" id="taskTitle">今日任务</div>
+    <div class="tasks" id="taskList"></div>
+    <div class="allclear" id="allClear">🎉 今日收工！明天见。</div>
+  </div>
+
+  <!-- ============ 计划 ============ -->
+  <div class="tab" id="tab-plan">
+    <div class="sect-title">六个阶段 · 三层保险</div>
+    <div id="phaseCards"></div>
+    <div class="sect-title">关键节点</div>
+    <div class="pcard">
+      <ul class="wklist" id="mileList"></ul>
+    </div>
+    <div class="sect-title">书单（共6本+粉笔APP）</div>
+    <div class="pcard">
+      <ul class="wklist">
+        <li><b>职测D类</b>（粉笔/中公）— 7月起全程</li>
+        <li><b>综应D类</b>（粉笔/中公）— 7月起全程，动笔写</li>
+        <li><b>D类历年真题10套+</b> — 8月起，寒假清空</li>
+        <li><b>山香《教育理论基础知识》</b> — 8–12月（秋招/特岗）</li>
+        <li><b>义教体育课标2022</b> — 全程精读2遍（试讲弹药库）</li>
+        <li><b>山香《体育学科知识》</b> — 10–12月查漏</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ 记录 ============ -->
+  <div class="tab" id="tab-hist">
+    <div class="stats">
+      <div class="stat"><b id="stDays">0</b><span>累计打卡成功</span></div>
+      <div class="stat"><b id="stStreak">0</b><span>当前连续 🔥</span></div>
+      <div class="stat"><b id="stRate">–</b><span>平均完成率</span></div>
+    </div>
+    <div class="calnav">
+      <button id="calPrev" aria-label="上个月">‹</button>
+      <b id="calTitle">—</b>
+      <button id="calNext" aria-label="下个月">›</button>
+    </div>
+    <div class="cal">
+      <div class="grid" id="calGrid"></div>
+      <div class="legend">
+        <span><i style="background:var(--bg)"></i>未打卡</span>
+        <span><i style="background:var(--chip)"></i>&lt;50%</span>
+        <span><i style="background:color-mix(in srgb, var(--blue) 45%, var(--card))"></i>50–79%</span>
+        <span><i style="background:var(--green)"></i>≥80% ✓</span>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    数据保存在本机浏览器（localStorage），换设备不同步。<br>
+    完整作战手册：<a href="https://claude.ai/code/artifact/6dba11a8-0ed3-4d0b-ad0f-a262376614ed">阶段规划详情</a> · 2027年节点以官方公告为准
+  </footer>
+</div>
+
+<nav>
+  <button id="nav-today" class="on"><span class="ico">✅</span>今日</button>
+  <button id="nav-plan"><span class="ico">🗺️</span>计划</button>
+  <button id="nav-hist"><span class="ico">📅</span>记录</button>
+</nav>
+
+<script>
+"use strict";
+/* ================= 日期工具 ================= */
+function pd(s){ var a=s.split('-'); return new Date(+a[0], +a[1]-1, +a[2]); }
+function fmt(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function addDays(d,n){ var x=new Date(d); x.setDate(x.getDate()+n); return x; }
+function dayDiff(a,b){ return Math.round((pd(fmt(b))-pd(fmt(a)))/864e5); }
+var WD=['日','一','二','三','四','五','六'];
+
+/* ================= 阶段定义 ================= */
+var PHASES=[
+ {n:1, name:'暑假打地基',   from:'2026-07-13', to:'2026-08-31', theme:'每天4.5–5小时 · 把D类两科骨架搭起来'},
+ {n:2, name:'九月强化',     from:'2026-09-01', to:'2026-09-30', theme:'白天归论文，早晚归考编 · 月底真题模考定位'},
+ {n:3, name:'秋招实战',     from:'2026-10-01', to:'2026-12-31', theme:'每周投3–5家 · 12月底前拿≥1个员额offer'},
+ {n:4, name:'寒假冲刺',     from:'2027-01-01', to:'2027-02-28', theme:'隔天一套全真模考 · 10套D类真题清空'},
+ {n:5, name:'联考决战',     from:'2027-03-01', to:'2027-03-31', theme:'选岗：限制越多越报 · 3月下旬笔试'},
+ {n:6, name:'面试+第二战场', from:'2027-04-01', to:'2027-07-31', theme:'试讲+技能是你的主场 · 5月高层次 · 6月特岗兜底'}
+];
+var MILES=[
+ {d:'2026-10-01', t:'秋招启动（各集团校招公告）'},
+ {d:'2026-12-31', t:'秋招收官：手握≥1个员额offer'},
+ {d:'2027-02-25', t:'联考公告（预计，2月底盯紧）'},
+ {d:'2027-03-25', t:'联考笔试（预计3月下旬）'},
+ {d:'2027-05-15', t:'高层次人才招聘报名（预计）'},
+ {d:'2027-06-14', t:'高层次笔试 / 特岗报名（预计）'}
+];
+/* 阶段一 逐周主题（从2026-07-13起，每周一换） */
+var P1WEEKS=[
+ '职测·图形推理+定义判断｜报救生员班、买书、建岗位库',
+ '职测·类比+逻辑判断｜课标精读①、篮球示范套路v1',
+ '职测·言语片段阅读｜真题第1套、课标精读②',
+ '职测·逻辑填空+常识｜真题第2套、高中课标通读',
+ '职测·资料分析（重中之重）｜救生员证考试、真题第3套',
+ '职测·数学运算+策略选择｜山香教育学1–4章、真题第4套',
+ '全真模拟+错题总清｜简历定稿、试讲稿2套并录像'
+];
+
+/* ================= 每日任务生成 ================= */
+/* 返回 [{id, b:标题, s:说明}]，id 必须对同一天稳定 */
+function tasksFor(dt){
+  var ds=fmt(dt), day=dt.getDay(), mon=dt.getMonth()+1, ph=phaseOf(dt);
+  if(!ph) return {phase:null, list:[]};
+  /* 周日 = 复盘日（所有阶段通用） */
+  if(day===0){
+    return {phase:ph, title:'周日复盘（30分钟）+ 下午放假', list:[
+      {id:'sun1', b:'本周职测正确率 vs 上周', s:'涨了什么模块、掉了什么模块'},
+      {id:'sun2', b:'本周计划完成率', s:'没完成的挪到下周第一天，不积压'},
+      {id:'sun3', b:'定下周最弱模块与专项安排', s:''},
+      {id:'sun4', b:'公告巡查6入口', s:'西安人事考试网/陕西人社厅/西咸/高新/曲江/本地宝'},
+      {id:'sun5', b:'本周技能训练≥2次、试讲≥1次？', s:'没达标下周补'},
+      {id:'sun6', b:'下午放假，好好休息', s:'身体是面试的本钱'}
+    ]};
+  }
+  var L=[];
+  if(ph.n===1){
+    var wk=Math.min(Math.floor(dayDiff(pd('2026-07-13'),dt)/7), P1WEEKS.length-1);
+    L=[
+      {id:'p1a', b:'职测D模块学习 90分钟', s:'本周主题：'+P1WEEKS[Math.max(wk,0)].split('｜')[0]},
+      {id:'p1b', b:'职测限时刷题 40题', s:'10:10–11:00 当场对答案标错因'},
+      {id:'p1c', b:'综应D精写 1题', s:'辨析/案例动笔写，不许只看'},
+      {id:'p1d', b:'论文 / 导师任务', s:'14:30–16:00'},
+      {id:'p1e', b:'技能训练 90分钟', s:'篮球示范/田径/游泳轮换；7月穿插救生员培训'},
+      {id:'p1f', b: mon===7?'课标2022精读 60分钟':'教综背诵 60分钟（山香）', s:'19:30–20:30'},
+      {id:'p1g', b:'粉笔APP 30分钟 + 错题入本', s:'昨日错题重做一遍才算清账'},
+      {id:'p1h', b:'记录正确率 + 列明日清单', s:'写在纸上'}
+    ];
+  } else if(ph.n===2){
+    var xie=(day===2||day===5);
+    L=[
+      {id:'p2a', b:'教综晨背 30分钟', s:'07:50–08:20 心理学→教育心理学'},
+      {id:'p2b', b:'论文 / 实验 / 导师任务', s:'研三主业，白天'},
+      {id:'p2c', b:'职测专项刷题 60分钟', s:'19:00–20:00 按弱项'},
+      {id:'p2d', b: xie?'综应精写 1篇大题':'综应范文精读拆结构', s: xie?'今天是写作日（周二/周五）':'20:00–20:45'},
+      {id:'p2e', b:'粉笔APP + 错题', s:'20:45–21:15'},
+      {id:'p2f', b:'西体就业网一刷 + 列明日清单', s:'秋招前哨'}
+    ];
+    if(day===6) L=[
+      {id:'p2s1', b:'周六上午：全真模拟或弱项大练', s:'严格计时'},
+      {id:'p2s2', b:'周六下午：技能训练', s:'篮球/田径/游泳'},
+      {id:'p2s3', b:'粉笔APP + 错题', s:''},
+      {id:'p2s4', b:'列明日清单', s:''}
+    ];
+  } else if(ph.n===3){
+    L=[
+      {id:'p3a', b:'教综晨背 30分钟', s:'10月教育学收尾→11月法规→12月总滚动'},
+      {id:'p3b', b:'招聘信息一刷', s:'西体就业网+各集团公众号，有场次优先投递/赴考'},
+      {id:'p3c', b:'职测保温 40题', s:'19:00–19:45 只维持手感'},
+      {id:'p3d', b:'教综刷题 45分钟', s:'秋招笔试主体'},
+      {id:'p3e', b:'课标/体育学科知识 15分钟', s:'校招学科笔试用'},
+      {id:'p3f', b:'错题入本 + 列明日清单', s:''}
+    ];
+    if(day===6) L=[
+      {id:'p3s1', b:'模拟试讲 1次（录像复盘）', s:'口令规范/精讲多练/安全提示三条自查'},
+      {id:'p3s2', b:'技能训练', s:'篮球示范套路+田径交替'},
+      {id:'p3s3', b:'本周投递结清（≥3家）', s:'西咸/高新/曲江/经开/浐灞/名校邮箱'},
+      {id:'p3s4', b:'职测保温 40题', s:''}
+    ];
+  } else if(ph.n===4){
+    var mock=(dt.getDate()%2===1);
+    L= mock?[
+      {id:'p4m1', b:'职测全真一套', s:'08:30–10:00 严格按考试时间'},
+      {id:'p4m2', b:'综应全真一套', s:'10:10–12:00'},
+      {id:'p4m3', b:'下午错题深挖 3小时', s:'每道错题写一句错因'},
+      {id:'p4m4', b:'教综滚动背 30分钟，早睡', s:''}
+    ]:[
+      {id:'p4r1', b:'弱项专练 2小时', s:'资料分析/逻辑判断优先'},
+      {id:'p4r2', b:'综应范文精读 + 重写昨日最差一题', s:''},
+      {id:'p4r3', b:'教综 1小时', s:''},
+      {id:'p4r4', b:'粉笔APP + 明日安排', s:''}
+    ];
+    if(ds>='2027-02-20') L.push({id:'p4gg', b:'巡查公告：西安人事考试网+陕西人社厅', s:'联考公告随时出'});
+  } else if(ph.n===5){
+    var mock5=(dt.getDate()%2===1);
+    L=[
+      {id:'p5a', b: mock5?'全真模考一套（8:30–12:00）':'错题复盘 + 弱项专练', s:'隔日交替，考前3天停新题只看错题本'},
+      {id:'p5b', b:'综应三套模板背一遍', s:'辨析/案例/方案设计，15分钟能套写'},
+      {id:'p5c', b:'教综/课标维持 30分钟', s:'核心素养表述要脱口而出'},
+      {id:'p5d', b:'公告与岗位表检查', s:'报名/缴费/准考证节点一个都不能漏'}
+    ];
+  } else {
+    L=[
+      {id:'p6a', b:'试讲：写逐字稿或全流程模拟 1次', s:'10篇稿：田径×3/篮球×3/体操/足球/游泳安全/武术'},
+      {id:'p6b', b:'技能展示打磨', s:'运球绕桩→急停跳投→行进间上篮 连贯套路'},
+      {id:'p6c', b:'答辩题 5问', s:'中考体育训练/运动损伤处理/大课间/双减体育作业'},
+      {id:'p6d', b:'招聘公告巡查', s:'联考面试/高层次/春招/特岗节点'}
+    ];
+    if(mon>=5) L.push({id:'p6e', b:'《综合能力测试》1.5小时', s:'高层次笔试备考：市直真题+公基速记'});
+  }
+  return {phase:ph, title:'今日任务', list:L};
+}
+function phaseOf(dt){
+  var ds=fmt(dt);
+  if(ds<PHASES[0].from) return PHASES[0];
+  for(var i=0;i<PHASES.length;i++) if(ds>=PHASES[i].from && ds<=PHASES[i].to) return PHASES[i];
+  return null;
+}
+
+/* ================= 存储 ================= */
+function getDone(ds){ try{ return JSON.parse(localStorage.getItem('sk27:'+ds)||'[]'); }catch(e){ return []; } }
+function setDone(ds,arr){ try{ localStorage.setItem('sk27:'+ds, JSON.stringify(arr)); }catch(e){} }
+function dayScore(dt){
+  var t=tasksFor(dt); if(!t.phase||!t.list.length) return null;
+  var done=getDone(fmt(dt)); var n=t.list.filter(function(x){return done.indexOf(x.id)>=0;}).length;
+  return {checked:n, total:t.list.length, pct:n/t.list.length};
+}
+function isHit(dt){ var s=dayScore(dt); return s && s.pct>=0.8; }
+function streak(today){
+  var n=0, d=new Date(today);
+  if(isHit(d)) { n++; d=addDays(d,-1); } else { d=addDays(d,-1); }
+  while(fmt(d)>='2026-07-13' && isHit(d)){ n++; d=addDays(d,-1); }
+  return n;
+}
+
+/* ================= 渲染：今日 ================= */
+var TODAY=new Date();
+function renderToday(){
+  var dt=TODAY, ds=fmt(dt);
+  document.getElementById('dateLine').textContent=ds+' 周'+WD[dt.getDay()];
+  var t=tasksFor(dt), ph=t.phase;
+  if(!ph){
+    document.getElementById('pName').textContent='计划期已结束';
+    document.getElementById('pTheme').textContent='2027年7月之后——愿你已经上岸 🎓';
+    document.getElementById('taskList').innerHTML='';
+    return;
+  }
+  document.getElementById('pTag').textContent='阶段 '+ph.n+' / 6 · '+ph.from.slice(5).replace('-','.')+'–'+ph.to.slice(5).replace('-','.');
+  document.getElementById('pName').textContent=ph.name;
+  var themeLine=ph.theme;
+  if(ph.n===1){
+    var wk=Math.floor(dayDiff(pd('2026-07-13'),dt)/7);
+    if(wk>=0&&wk<P1WEEKS.length) themeLine='第'+(wk+1)+'周：'+P1WEEKS[wk];
+  }
+  if(ph.n===4) themeLine=(dt.getDate()%2===1?'今天是【模考日】':'今天是【复盘日】')+' · '+ph.theme;
+  if(ds<PHASES[0].from) themeLine='7月13日正式开跑，先把书买齐';
+  document.getElementById('pTheme').textContent=themeLine;
+  document.getElementById('taskTitle').textContent=t.title||'今日任务';
+
+  /* 倒计时（取未来最近3个节点） */
+  var cds=document.getElementById('cds'); cds.innerHTML='';
+  MILES.filter(function(m){return m.d>=ds;}).slice(0,3).forEach(function(m){
+    var days=dayDiff(dt,pd(m.d));
+    var div=document.createElement('div'); div.className='cd';
+    div.innerHTML='<b>'+(days===0?'今天':days+'天')+'</b><span>'+m.t.split('（')[0]+'</span>';
+    cds.appendChild(div);
+  });
+
+  /* 任务列表 */
+  var done=getDone(ds), list=document.getElementById('taskList'); list.innerHTML='';
+  t.list.forEach(function(x){
+    var d=document.createElement('div');
+    d.className='task'+(done.indexOf(x.id)>=0?' done':'');
+    d.innerHTML='<div class="box">'+(done.indexOf(x.id)>=0?'✓':'')+'</div><div class="txt"><b>'+x.b+'</b>'+(x.s?'<span>'+x.s+'</span>':'')+'</div>';
+    d.addEventListener('click',function(){
+      var arr=getDone(ds), i=arr.indexOf(x.id);
+      if(i>=0) arr.splice(i,1); else arr.push(x.id);
+      setDone(ds,arr); renderToday(); renderHeader();
+    });
+    list.appendChild(d);
+  });
+  /* 进度环 */
+  var s=dayScore(dt)||{checked:0,total:1,pct:0};
+  var pct=Math.round(s.pct*100), C=188.5;
+  document.getElementById('ringFg').style.strokeDashoffset=String(C*(1-s.pct));
+  document.getElementById('ringTxt').textContent=pct+'%';
+  document.getElementById('progMsg').textContent= pct===100?'今日全清！':(pct>=80?'已达标，收个尾':(s.checked===0?'开始今天的任务':'已完成 '+s.checked+' / '+s.total));
+  document.getElementById('progSub').textContent= pct>=80?'打卡成功 ✓ 已计入连续天数':'完成 80% 即算打卡成功';
+  document.getElementById('allClear').style.display= pct===100?'block':'none';
+}
+function renderHeader(){ document.getElementById('streakN').textContent=streak(TODAY); }
+
+/* ================= 渲染：计划 ================= */
+function renderPlan(){
+  var ds=fmt(TODAY), box=document.getElementById('phaseCards'); box.innerHTML='';
+  var cur=phaseOf(TODAY);
+  PHASES.forEach(function(p){
+    var now=cur&&cur.n===p.n;
+    var d=document.createElement('div'); d.className='pcard'+(now?' now':'');
+    var head='<div class="head"><b>'+(now?'<span class="nowtag">当前</span>':'')+'阶段'+'一二三四五六'[p.n-1]+' · '+p.name+'</b><small>'+p.from.slice(2)+' ~ '+p.to.slice(2)+'</small></div><p>'+p.theme+'</p>';
+    d.innerHTML=head;
+    if(now&&p.n===1){
+      var wkNow=Math.floor(dayDiff(pd('2026-07-13'),TODAY)/7);
+      var ul=document.createElement('ul'); ul.className='wklist';
+      P1WEEKS.forEach(function(w,i){
+        var li=document.createElement('li'); if(i===wkNow) li.className='cur';
+        li.innerHTML='<b>第'+(i+1)+'周</b> '+w.replace('｜',' · ');
+        ul.appendChild(li);
+      });
+      d.appendChild(ul);
+    }
+    box.appendChild(d);
+  });
+  var ml=document.getElementById('mileList'); ml.innerHTML='';
+  MILES.forEach(function(m){
+    var li=document.createElement('li');
+    var past=m.d<ds;
+    var days=dayDiff(TODAY,pd(m.d));
+    li.innerHTML='<b>'+m.d.slice(2)+'</b> '+m.t+(past?' ✓':' <span style="color:var(--orange)">'+(days===0?'今天':days+'天后')+'</span>');
+    if(!past) li.className='cur';
+    ml.appendChild(li);
+  });
+}
+
+/* ================= 渲染：记录 ================= */
+var calY=TODAY.getFullYear(), calM=TODAY.getMonth();
+function renderHist(){
+  /* 统计 */
+  var hit=0, sumPct=0, cnt=0;
+  var d=pd('2026-07-13'), end=new Date(TODAY);
+  while(fmt(d)<=fmt(end)){
+    var s=dayScore(d);
+    if(s){ if(s.checked>0){ sumPct+=s.pct; cnt++; } if(s.pct>=0.8) hit++; }
+    d=addDays(d,1);
+  }
+  document.getElementById('stDays').textContent=hit;
+  document.getElementById('stStreak').textContent=streak(TODAY);
+  document.getElementById('stRate').textContent= cnt?Math.round(sumPct/cnt*100)+'%':'–';
+  /* 日历 */
+  document.getElementById('calTitle').textContent=calY+'年'+(calM+1)+'月';
+  var g=document.getElementById('calGrid'); g.innerHTML='';
+  WD.forEach(function(w){ var e=document.createElement('div'); e.className='wd'; e.textContent=w; g.appendChild(e); });
+  var first=new Date(calY,calM,1), pad=first.getDay(), nDays=new Date(calY,calM+1,0).getDate();
+  for(var i=0;i<pad;i++){ var e0=document.createElement('div'); e0.className='cell empty'; g.appendChild(e0); }
+  for(var day=1;day<=nDays;day++){
+    var dd=new Date(calY,calM,day), dds=fmt(dd);
+    var cell=document.createElement('div'); cell.className='cell'; cell.textContent=day;
+    if(dds>=PHASES[0].from && dds<=fmt(TODAY)){
+      var sc=dayScore(dd);
+      if(sc&&sc.checked>0){
+        cell.className+= sc.pct>=0.8?' l3':(sc.pct>=0.5?' l2':' l1');
+      }
+    }
+    if(dds===fmt(TODAY)) cell.className+=' today';
+    g.appendChild(cell);
+  }
+}
+document.getElementById('calPrev').addEventListener('click',function(){ calM--; if(calM<0){calM=11;calY--;} renderHist(); });
+document.getElementById('calNext').addEventListener('click',function(){ calM++; if(calM>11){calM=0;calY++;} renderHist(); });
+
+/* ================= tab切换 ================= */
+['today','plan','hist'].forEach(function(t){
+  document.getElementById('nav-'+t).addEventListener('click',function(){
+    ['today','plan','hist'].forEach(function(x){
+      document.getElementById('tab-'+x).classList.toggle('on', x===t);
+      document.getElementById('nav-'+x).classList.toggle('on', x===t);
+    });
+    if(t==='plan') renderPlan();
+    if(t==='hist') renderHist();
+    window.scrollTo(0,0);
+  });
+});
+
+/* ================= 启动 ================= */
+renderToday(); renderHeader();
+/* 跨零点自动刷新 */
+setInterval(function(){ var now=new Date(); if(fmt(now)!==fmt(TODAY)){ TODAY=now; renderToday(); renderHeader(); } }, 60000);
+</script>
+</body>
+</html>
