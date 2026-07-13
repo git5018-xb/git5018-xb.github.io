@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141726">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Allind代充">
+<title>Allind 会员代充 · 自助下单</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛒</text></svg>">
+<style>
+  :root{
+    --bg:#F4F5FA; --card:#FFFFFF; --ink:#181B2A; --muted:#6A7185;
+    --line:#E6E8F0; --brand:#5B4BE0; --brand2:#7C6BF0; --brand-deep:#4438B8;
+    --amber:#E8890C; --price:#E23744; --green:#1FA463; --chip:#EEF0FA;
+    --shadow:0 3px 16px rgba(24,27,42,.08);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0C0E17; --card:#161A28; --ink:#E9ECF5; --muted:#8D95AC;
+      --line:#262B3D; --brand:#8878F5; --brand2:#A99BFF; --brand-deep:#A99BFF;
+      --amber:#F0A840; --price:#FF6B76; --green:#3FC488; --chip:#1D2233;
+      --shadow:0 3px 16px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:"PingFang SC","Microsoft YaHei","Segoe UI",-apple-system,sans-serif;
+    font-size:15px; line-height:1.6; padding-bottom:20px;
+  }
+  .wrap{max-width:520px; margin:0 auto; padding:0 14px;}
+  a{color:var(--brand-deep);}
+  /* header */
+  header{
+    position:sticky; top:0; z-index:30;
+    background:linear-gradient(120deg,#141726,#2A2350 55%,#3D2F6E);
+    color:#fff; padding:14px 0 13px; margin-bottom:12px;
+  }
+  header .wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo{display:flex; align-items:center; gap:9px;}
+  .logo .m{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,#7C6BF0,#5B4BE0);display:flex;align-items:center;justify-content:center;font-size:19px;}
+  .logo b{font-size:16px; display:block; line-height:1.15;}
+  .logo span{font-size:10.5px; opacity:.75;}
+  .cartbtn{position:relative; background:rgba(255,255,255,.14); border:none; color:#fff; width:40px;height:40px;border-radius:11px;font-size:19px;cursor:pointer;}
+  .cartbtn .dot{position:absolute;top:-5px;right:-5px;background:var(--price);color:#fff;font-size:10.5px;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center;padding:0 4px;font-weight:700;}
+  .trust{display:flex; gap:6px; margin-top:2px; flex-wrap:wrap;}
+  .trust span{font-size:10.5px; background:rgba(255,255,255,.12); color:#fff; padding:2px 8px; border-radius:99px;}
+  /* tabs */
+  .tabs{display:flex; gap:7px; overflow-x:auto; padding:2px 0 10px; margin-bottom:4px;}
+  .tabs button{
+    flex:0 0 auto; background:var(--card); border:1px solid var(--line); color:var(--muted);
+    border-radius:99px; padding:7px 15px; font-size:13.5px; cursor:pointer; font-family:inherit; box-shadow:var(--shadow);
+  }
+  .tabs button.on{background:var(--brand); border-color:var(--brand); color:#fff; font-weight:700;}
+  /* product */
+  .grid{display:flex; flex-direction:column; gap:10px;}
+  .prod{
+    background:var(--card); border-radius:16px; padding:14px 15px; box-shadow:var(--shadow);
+    display:flex; gap:12px; align-items:center; border:1px solid transparent;
+  }
+  .prod .ic{width:46px;height:46px;flex:0 0 auto;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--chip);}
+  .prod .info{flex:1; min-width:0;}
+  .prod .nm{font-size:15px; font-weight:700; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+  .tag{font-size:10px; padding:1px 7px; border-radius:99px; font-weight:600;}
+  .tag.hot{background:#FDECEC; color:#E23744;} .tag.warr{background:#E7F6EE; color:#1FA463;} .tag.no{background:#FBF0E4; color:#E8890C;}
+  @media (prefers-color-scheme: dark){ .tag.hot{background:#3A222633;} .tag.warr{background:#16321f;} .tag.no{background:#33260f;} }
+  .prod .desc{font-size:11.5px; color:var(--muted); margin-top:3px;}
+  .prod .pr{display:flex; align-items:baseline; gap:2px; margin-top:5px;}
+  .prod .pr b{font-size:20px; color:var(--price); font-variant-numeric:tabular-nums;}
+  .prod .pr b em{font-style:normal; font-size:12px;}
+  .prod .pr span{font-size:11.5px; color:var(--muted);}
+  .addbtn{
+    background:linear-gradient(135deg,var(--brand2),var(--brand)); border:none; color:#fff;
+    border-radius:11px; padding:9px 14px; font-size:13px; font-weight:700; cursor:pointer; font-family:inherit; flex:0 0 auto; white-space:nowrap;
+  }
+  .addbtn:active{transform:scale(.95);}
+  /* section blocks */
+  .block{background:var(--card); border-radius:16px; padding:15px 16px; box-shadow:var(--shadow); margin:14px 0;}
+  .block h3{margin:0 0 8px; font-size:14.5px;}
+  .block .li{font-size:12.5px; color:var(--muted); padding:4px 0; display:flex; gap:7px;}
+  .block .li b{color:var(--ink); font-weight:600;}
+  .safe{border-left:4px solid var(--green);}
+  /* mask + sheet */
+  .mask{position:fixed; inset:0; background:rgba(10,12,22,.55); z-index:80; display:none;}
+  .sheet{
+    position:fixed; left:0; right:0; bottom:0; z-index:81; display:none;
+    background:var(--card); border-radius:22px 22px 0 0; max-width:520px; margin:0 auto;
+    max-height:86vh; overflow-y:auto; padding:16px 16px calc(22px + env(safe-area-inset-bottom));
+    animation:up .25s ease;
+  }
+  @keyframes up{from{transform:translateY(50px);opacity:0;} to{transform:none;opacity:1;}}
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important;} }
+  .sheet .bar{width:38px;height:4px;background:var(--line);border-radius:99px;margin:0 auto 12px;}
+  .sheet h2{margin:0 0 12px; font-size:18px;}
+  .close{position:absolute; right:14px; top:14px; background:var(--chip); border:none; border-radius:99px; width:30px;height:30px;font-size:14px;cursor:pointer;color:var(--muted);}
+  /* cart items */
+  .citem{display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line);}
+  .citem .ic{width:38px;height:38px;border-radius:10px;background:var(--chip);display:flex;align-items:center;justify-content:center;font-size:19px;flex:0 0 auto;}
+  .citem .cn{flex:1; min-width:0;}
+  .citem .cn b{font-size:13.5px; display:block;}
+  .citem .cn span{font-size:11px; color:var(--muted);}
+  .qty{display:flex; align-items:center; gap:8px;}
+  .qty button{width:26px;height:26px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:15px;cursor:pointer;line-height:1;}
+  .qty b{min-width:18px; text-align:center; font-variant-numeric:tabular-nums;}
+  .citem .rm{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;padding:4px;}
+  .cartfoot{display:flex; align-items:center; justify-content:space-between; margin-top:14px; gap:12px;}
+  .cartfoot .tot{font-size:13px; color:var(--muted);}
+  .cartfoot .tot b{font-size:22px; color:var(--price); font-variant-numeric:tabular-nums;}
+  .bigbtn{
+    flex:1; background:linear-gradient(135deg,var(--brand2),var(--brand)); border:none; color:#fff;
+    border-radius:13px; padding:14px; font-size:15.5px; font-weight:700; cursor:pointer; font-family:inherit;
+  }
+  .bigbtn:disabled{opacity:.5;}
+  .bigbtn.g{background:linear-gradient(135deg,#2ec77e,#1FA463);}
+  .empty{text-align:center; color:var(--muted); padding:30px 0; font-size:13.5px;}
+  /* form */
+  label.fl{font-size:12.5px; color:var(--muted); display:block; margin:12px 0 5px; font-weight:600;}
+  input.fi, textarea.fi{
+    width:100%; background:var(--bg); border:1px solid var(--line); border-radius:11px;
+    padding:11px 13px; font-size:14px; color:var(--ink); font-family:inherit;
+  }
+  input.fi:focus, textarea.fi:focus{outline:none; border-color:var(--brand);}
+  .pays{display:flex; gap:9px; margin-top:5px;}
+  .pay{flex:1; border:1.5px solid var(--line); border-radius:12px; padding:11px; text-align:center; cursor:pointer; font-size:13.5px; background:var(--card);}
+  .pay.sel{border-color:var(--brand); background:var(--chip); font-weight:700;}
+  .pay .e{font-size:20px; display:block;}
+  .agree{display:flex; gap:8px; align-items:flex-start; margin:14px 0 4px; font-size:12px; color:var(--muted);}
+  .agree input{margin-top:2px; width:16px;height:16px; accent-color:var(--brand); flex:0 0 auto;}
+  /* order result */
+  .ordbox{text-align:center;}
+  .ordno{font-size:12px; color:var(--muted);}
+  .ordno b{color:var(--ink); font-variant-numeric:tabular-nums; letter-spacing:.03em;}
+  .payamt{font-size:34px; color:var(--price); font-weight:800; font-variant-numeric:tabular-nums; margin:6px 0;}
+  .qrbox{width:190px;height:190px;margin:12px auto;border-radius:16px;background:var(--chip);display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);font-size:12px;border:2px dashed var(--line);padding:12px;}
+  .qrbox img{width:100%;height:100%;object-fit:contain;border-radius:12px;}
+  .steps{text-align:left; background:var(--bg); border-radius:12px; padding:12px 14px; margin:12px 0; font-size:12.5px;}
+  .steps ol{margin:0; padding-left:18px;} .steps li{margin:5px 0;}
+  .contactrow{display:flex; gap:9px; margin-top:8px;}
+  .contactrow button{flex:1; border-radius:12px; padding:12px; font-size:13.5px; font-weight:700; cursor:pointer; border:none; font-family:inherit;}
+  .cc-wx{background:#07C160; color:#fff;} .cc-qq{background:#12B7F5; color:#fff;}
+  .note-sm{font-size:11px; color:var(--muted); margin-top:10px; line-height:1.6;}
+  /* my orders */
+  .myord{background:var(--card); border-radius:14px; padding:12px 14px; box-shadow:var(--shadow); margin-bottom:9px; font-size:12.5px;}
+  .myord .top{display:flex; justify-content:space-between; align-items:baseline;}
+  .myord .top b{font-size:13px;} .myord .top .st{font-size:11px; padding:1px 8px; border-radius:99px; background:var(--chip); color:var(--amber);}
+  .myord .it{color:var(--muted); margin-top:3px;}
+  /* admin */
+  .admin-link{text-align:center; font-size:11px; color:var(--muted); padding:16px 0 6px;}
+  .kmpool{width:100%; min-height:120px; font-family:Consolas,monospace; font-size:12.5px;}
+  .stockrow{display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--line); font-size:13px;}
+  .stockrow .n b{font-weight:600;} .stockrow .n span{font-size:11px; color:var(--muted);}
+  .stk{font-variant-numeric:tabular-nums; font-weight:700;}
+  .stk.low{color:var(--price);} .stk.ok{color:var(--green);}
+  .minibtn{background:var(--brand); border:none; color:#fff; border-radius:9px; padding:6px 12px; font-size:12px; cursor:pointer; font-family:inherit;}
+  .toast{position:fixed; left:50%; bottom:80px; transform:translateX(-50%); background:var(--ink); color:var(--bg); padding:10px 18px; border-radius:99px; font-size:13px; z-index:120; opacity:0; transition:opacity .2s; pointer-events:none;}
+  .toast.on{opacity:1;}
+  footer{text-align:center; color:var(--muted); font-size:11px; padding:14px 10px 4px; line-height:1.7;}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="logo">
+      <div class="m">🅰️</div>
+      <div><b>Allind 会员代充</b><span>正规质保 · 自助下单 · 快速发货</span></div>
+    </div>
+    <button class="cartbtn" id="cartBtn">🛒<span class="dot" id="cartDot" style="display:none">0</span></button>
+  </div>
+  <div class="wrap"><div class="trust"><span>✅ 官方渠道</span><span>🛡️ 质保售后</span><span>⚡ 核验秒发</span><span>💬 真人客服</span></div></div>
+</header>
+
+<div class="wrap">
+  <div class="tabs" id="tabs">
+    <button class="on" data-cat="all">全部</button>
+    <button data-cat="gpt">ChatGPT</button>
+    <button data-cat="claude">Claude</button>
+    <button data-cat="gemini">Gemini</button>
+    <button data-cat="line">专线</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="block safe">
+    <h3>🛡️ 售后规则</h3>
+    <div class="li"><b>ChatGPT</b>：封号/掉订阅走 OpenAI 官网申诉，退款后原路返还。</div>
+    <div class="li"><b>Claude</b>：一月内封号按天扣费退款，另收 ¥35 手续费；必须搭配本店专线使用。</div>
+    <div class="li"><b>Gemini</b>：年费无质保，介意勿拍。</div>
+    <div class="li"><b>通用</b>：非质量问题无理由不退款；下单视为同意以上条款。</div>
+  </div>
+
+  <div class="block">
+    <h3>🧾 我的订单</h3>
+    <div id="myOrders"><div class="empty">还没有订单，下单后可在这里查看</div></div>
+  </div>
+
+  <div class="admin-link"><a href="javascript:void(0)" id="adminOpen">· 商家后台 ·</a></div>
+</div>
+
+<!-- 购物车 -->
+<div class="mask" id="mask"></div>
+<div class="sheet" id="cartSheet">
+  <div class="bar"></div><button class="close" data-close>✕</button>
+  <h2>🛒 购物车</h2>
+  <div id="cartItems"></div>
+  <div class="cartfoot" id="cartFoot" style="display:none">
+    <div class="tot">合计 <b id="cartTotal">¥0</b></div>
+    <button class="bigbtn" id="toCheckout">去结算</button>
+  </div>
+</div>
+
+<!-- 结算 -->
+<div class="sheet" id="coSheet">
+  <div class="bar"></div><button class="close" data-close>✕</button>
+  <h2>📝 填写下单信息</h2>
+  <label class="fl">接收账号的联系方式（必填 · 我们把号发到这里）</label>
+  <input class="fi" id="coContact" placeholder="微信号 / QQ / 邮箱，填一个即可">
+  <label class="fl">备注（可选，如指定地区/时长）</label>
+  <input class="fi" id="coRemark" placeholder="选填">
+  <label class="fl">支付方式</label>
+  <div class="pays" id="payPick">
+    <div class="pay sel" data-pay="微信"><span class="e">💚</span>微信支付</div>
+    <div class="pay" data-pay="支付宝"><span class="e">💙</span>支付宝</div>
+  </div>
+  <div class="agree"><input type="checkbox" id="agreeCk"><span>我已阅读并同意上方《售后规则》，理解代充为账号类虚拟商品。</span></div>
+  <div class="cartfoot">
+    <div class="tot">应付 <b id="coTotal">¥0</b></div>
+    <button class="bigbtn" id="placeOrder" disabled>提交订单</button>
+  </div>
+</div>
+
+<!-- 订单/收款 -->
+<div class="sheet" id="paySheet">
+  <div class="bar"></div><button class="close" data-close>✕</button>
+  <div class="ordbox">
+    <h2>💰 扫码支付</h2>
+    <div class="ordno">订单号 <b id="rOrdNo">—</b></div>
+    <div class="payamt" id="rAmt">¥0</div>
+    <div class="qrbox" id="qrBox">
+      <div style="font-size:30px">💳</div>
+      <div style="margin-top:6px">收款码待商家放入<br>（见下方提示）</div>
+    </div>
+    <div id="rPayName" style="font-size:12.5px;color:var(--muted)">请用微信扫码支付上方金额</div>
+    <div class="steps">
+      <b style="font-size:12.5px">发货流程（半自动）：</b>
+      <ol>
+        <li>扫码支付 <b id="rAmt2">¥0</b>（金额要一致，方便核对）</li>
+        <li>点下方按钮，<b>复制订单</b>并发给客服</li>
+        <li>客服核对到账后，把账号密码发到你填的联系方式</li>
+      </ol>
+    </div>
+    <div class="contactrow">
+      <button class="cc-wx" id="copyWx">📋 复制订单 + 加微信</button>
+      <button class="cc-qq" id="copyQq">📋 复制订单 + 找QQ</button>
+    </div>
+    <div class="note-sm">
+      客服微信 <b>19209314612</b> · QQ <b>2824864826</b><br>
+      抖音 @Claude pro专供（2814864826b）· @ChatGPT plus直销（ad2025sports）
+    </div>
+  </div>
+</div>
+
+<!-- 商家后台 -->
+<div class="sheet" id="adminSheet">
+  <div class="bar"></div><button class="close" data-close>✕</button>
+  <h2>🔐 商家后台</h2>
+  <div id="adminGate">
+    <label class="fl">管理密码（首次输入即设定，仅存本机）</label>
+    <input class="fi" id="adminPw" type="password" placeholder="输入你的管理密码">
+    <button class="bigbtn" id="adminLogin" style="margin-top:12px">进入后台</button>
+    <div class="note-sm">密码只保存在你这台手机的浏览器里，忘了可清除数据重设。卡密库同样只存本机，不会上传任何服务器，公开商城页看不到。</div>
+  </div>
+  <div id="adminBody" style="display:none">
+    <label class="fl">选择商品，粘贴卡密库（一行一个：账号----密码 或任意格式）</label>
+    <select class="fi" id="admSel"></select>
+    <textarea class="fi kmpool" id="admPool" placeholder="user1@x.com----pass123&#10;user2@x.com----pass456&#10;每行一个，发一张少一张"></textarea>
+    <button class="minibtn" id="admSave" style="margin-top:8px">保存库存</button>
+    <h3 style="margin:16px 0 4px; font-size:14px">📦 库存总览</h3>
+    <div id="admStock"></div>
+    <h3 style="margin:16px 0 4px; font-size:14px">🚚 快速发货</h3>
+    <div class="note-sm">核对到账后，选商品点"取一张"，卡密复制到剪贴板并从库存移除，粘贴发给买家即可。</div>
+    <div style="display:flex; gap:8px; margin-top:8px">
+      <select class="fi" id="shipSel" style="flex:1"></select>
+      <button class="minibtn" id="shipBtn">取一张发货</button>
+    </div>
+    <div id="shipResult" style="margin-top:10px; font-size:13px"></div>
+    <button class="bigbtn" id="admLogout" style="margin-top:18px; background:var(--chip); color:var(--muted)">退出后台</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<footer>
+  Allind 会员代充 · 本页为自助下单，数据仅存本机浏览器<br>
+  代充为账号类虚拟商品，购买视为同意售后条款
+</footer>
+
+<script>
+"use strict";
+/* ============ 商品数据 ============ */
+var PRODUCTS=[
+ {id:'gpt1', cat:'gpt',    ic:'⚡', name:'GPT Plus 一日体验', price:6,    unit:'/日', tag:['体验'],   desc:'质保首登，先试后买'},
+ {id:'gpt2', cat:'gpt',    ic:'🤖', name:'ChatGPT Plus',      price:158,  unit:'/月', tag:['热销','质保'], desc:'GPT-5 / 高级语音 / 联网'},
+ {id:'gpt3', cat:'gpt',    ic:'🚀', name:'ChatGPT 5x Pro',    price:840,  unit:'/月', tag:['质保'], desc:'5倍额度 Pro 账号'},
+ {id:'gpt4', cat:'gpt',    ic:'👑', name:'ChatGPT 20x Pro',   price:1580, unit:'/月', tag:['质保'], desc:'20倍额度 顶配'},
+ {id:'cla1', cat:'claude', name:'Claude Pro',         ic:'🧠', price:220,  unit:'/月', tag:['热销','质保'], desc:'需搭配本店专线使用'},
+ {id:'cla2', cat:'claude', name:'Claude 5 Max',       ic:'💫', price:880,  unit:'/月', tag:['质保'], desc:'5倍用量 Max 账号'},
+ {id:'cla3', cat:'claude', name:'Claude 20 Max',      ic:'🌟', price:1680, unit:'/月', tag:['质保'], desc:'20倍用量 顶配'},
+ {id:'gem1', cat:'gemini', name:'Gemini Pro',         ic:'✨', price:288,  unit:'/年', tag:['无质保'], desc:'年费，介意勿拍'},
+ {id:'line1',cat:'line',   name:'Claude专线 · 日本',  ic:'🇯🇵', price:80,   unit:'/月', tag:[], desc:'低延迟，配 Claude 用'},
+ {id:'line2',cat:'line',   name:'Claude专线 · 美国',  ic:'🇺🇸', price:180,  unit:'/月', tag:[], desc:'原生IP，配 Claude 用'}
+];
+var WX='19209314612', QQ='2824864826';
+
+/* ============ 状态 ============ */
+function loadCart(){ try{ return JSON.parse(localStorage.getItem('al_cart')||'{}'); }catch(e){ return {}; } }
+function saveCart(c){ localStorage.setItem('al_cart', JSON.stringify(c)); }
+function loadOrders(){ try{ return JSON.parse(localStorage.getItem('al_orders')||'[]'); }catch(e){ return []; } }
+function saveOrders(o){ localStorage.setItem('al_orders', JSON.stringify(o)); }
+var cart=loadCart(), curCat='all', payMethod='微信';
+function prod(id){ return PRODUCTS.filter(function(p){return p.id===id;})[0]; }
+function money(n){ return '¥'+n; }
+function toast(msg){ var t=document.getElementById('toast'); t.textContent=msg; t.classList.add('on'); setTimeout(function(){t.classList.remove('on');},1600); }
+
+/* ============ 商品渲染 ============ */
+function tagHtml(tags){
+  return tags.map(function(t){
+    var cls = t==='无质保'?'no':(t==='质保'?'warr':'hot');
+    return '<span class="tag '+cls+'">'+t+'</span>';
+  }).join('');
+}
+function renderGrid(){
+  var g=document.getElementById('grid'); g.innerHTML='';
+  PRODUCTS.filter(function(p){return curCat==='all'||p.cat===curCat;}).forEach(function(p){
+    var d=document.createElement('div'); d.className='prod';
+    d.innerHTML=
+      '<div class="ic">'+p.ic+'</div>'+
+      '<div class="info"><div class="nm">'+p.name+' '+tagHtml(p.tag)+'</div>'+
+      '<div class="desc">'+p.desc+'</div>'+
+      '<div class="pr"><b>¥<em>'+p.price+'</em></b><span>'+p.unit+'</span></div></div>'+
+      '<button class="addbtn" data-add="'+p.id+'">加入 +</button>';
+    g.appendChild(d);
+  });
+}
+document.getElementById('tabs').addEventListener('click',function(e){
+  var b=e.target.closest('button'); if(!b) return;
+  curCat=b.dataset.cat;
+  this.querySelectorAll('button').forEach(function(x){x.classList.toggle('on',x===b);});
+  renderGrid();
+});
+document.getElementById('grid').addEventListener('click',function(e){
+  var b=e.target.closest('[data-add]'); if(!b) return;
+  var id=b.dataset.add; cart[id]=(cart[id]||0)+1; saveCart(cart); renderCartDot();
+  toast('已加入购物车'); b.textContent='已加 ✓'; setTimeout(function(){b.textContent='加入 +';},900);
+});
+
+/* ============ 购物车 ============ */
+function cartCount(){ return Object.keys(cart).reduce(function(s,k){return s+cart[k];},0); }
+function cartTotal(){ return Object.keys(cart).reduce(function(s,k){return s+prod(k).price*cart[k];},0); }
+function renderCartDot(){
+  var n=cartCount(), dot=document.getElementById('cartDot');
+  dot.style.display=n>0?'flex':'none'; dot.textContent=n;
+}
+function renderCart(){
+  var box=document.getElementById('cartItems'), keys=Object.keys(cart).filter(function(k){return cart[k]>0;});
+  if(!keys.length){ box.innerHTML='<div class="empty">购物车是空的，去挑几个吧 🛍️</div>'; document.getElementById('cartFoot').style.display='none'; return; }
+  box.innerHTML='';
+  keys.forEach(function(k){
+    var p=prod(k);
+    var d=document.createElement('div'); d.className='citem';
+    d.innerHTML=
+      '<div class="ic">'+p.ic+'</div>'+
+      '<div class="cn"><b>'+p.name+'</b><span>¥'+p.price+' '+p.unit+'</span></div>'+
+      '<div class="qty"><button data-dec="'+k+'">−</button><b>'+cart[k]+'</b><button data-inc="'+k+'">+</button></div>'+
+      '<button class="rm" data-rm="'+k+'">删</button>';
+    box.appendChild(d);
+  });
+  document.getElementById('cartFoot').style.display='flex';
+  document.getElementById('cartTotal').textContent=money(cartTotal());
+}
+document.getElementById('cartItems').addEventListener('click',function(e){
+  var inc=e.target.closest('[data-inc]'), dec=e.target.closest('[data-dec]'), rm=e.target.closest('[data-rm]');
+  if(inc){ cart[inc.dataset.inc]++; }
+  if(dec){ var k=dec.dataset.dec; cart[k]--; if(cart[k]<=0) delete cart[k]; }
+  if(rm){ delete cart[rm.dataset.rm]; }
+  saveCart(cart); renderCart(); renderCartDot();
+});
+
+/* ============ 弹层控制 ============ */
+function openSheet(id){ document.getElementById('mask').style.display='block'; document.getElementById(id).style.display='block'; }
+function closeAll(){ document.getElementById('mask').style.display='none'; document.querySelectorAll('.sheet').forEach(function(s){s.style.display='none';}); }
+document.getElementById('mask').addEventListener('click',closeAll);
+document.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click',closeAll); });
+document.getElementById('cartBtn').addEventListener('click',function(){ renderCart(); openSheet('cartSheet'); });
+document.getElementById('toCheckout').addEventListener('click',function(){
+  if(cartCount()===0) return;
+  closeAll(); document.getElementById('coTotal').textContent=money(cartTotal());
+  openSheet('coSheet'); checkAgree();
+});
+
+/* ============ 结算 ============ */
+document.getElementById('payPick').addEventListener('click',function(e){
+  var p=e.target.closest('.pay'); if(!p) return; payMethod=p.dataset.pay;
+  this.querySelectorAll('.pay').forEach(function(x){x.classList.toggle('sel',x===p);});
+});
+function checkAgree(){
+  var ok=document.getElementById('agreeCk').checked && document.getElementById('coContact').value.trim().length>0;
+  document.getElementById('placeOrder').disabled=!ok;
+}
+document.getElementById('agreeCk').addEventListener('change',checkAgree);
+document.getElementById('coContact').addEventListener('input',checkAgree);
+
+function genOrderNo(){
+  var d=new Date(), p=function(n){return String(n).padStart(2,'0');};
+  return 'AL'+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+'-'+String(Math.floor(Math.random()*9000)+1000);
+}
+var lastOrder=null;
+document.getElementById('placeOrder').addEventListener('click',function(){
+  var contact=document.getElementById('coContact').value.trim();
+  if(!contact){ toast('请填写接收联系方式'); return; }
+  var items=Object.keys(cart).filter(function(k){return cart[k]>0;}).map(function(k){
+    var p=prod(k); return {name:p.name, qty:cart[k], price:p.price, sub:p.price*cart[k]};
+  });
+  lastOrder={ no:genOrderNo(), time:new Date().toLocaleString('zh-CN'), items:items, total:cartTotal(), pay:payMethod, contact:contact, remark:document.getElementById('coRemark').value.trim(), status:'待付款/待发货' };
+  var os=loadOrders(); os.unshift(lastOrder); saveOrders(os);
+  cart={}; saveCart(cart); renderCartDot();
+  showPay(lastOrder); renderMyOrders();
+});
+
+/* ============ 收款页 ============ */
+function orderText(o){
+  var lines=o.items.map(function(i){return '  · '+i.name+' ×'+i.qty+' = ¥'+i.sub;}).join('\n');
+  return '【Allind 订单】\n单号：'+o.no+'\n'+lines+'\n合计：¥'+o.total+'\n支付：'+o.pay+'\n接收：'+o.contact+(o.remark?'\n备注：'+o.remark:'')+'\n（我已按此金额付款，请核对发货）';
+}
+function showPay(o){
+  closeAll();
+  document.getElementById('rOrdNo').textContent=o.no;
+  document.getElementById('rAmt').textContent=money(o.total);
+  document.getElementById('rAmt2').textContent=money(o.total);
+  document.getElementById('rPayName').textContent='请用'+o.pay+'扫码支付上方金额';
+  /* 收款码：商家可放入 localStorage al_qr_微信 / al_qr_支付宝（base64 图片） */
+  var qr=localStorage.getItem('al_qr_'+o.pay), box=document.getElementById('qrBox');
+  if(qr){ box.innerHTML='<img src="'+qr+'" alt="收款码">'; }
+  else{ box.innerHTML='<div style="font-size:30px">💳</div><div style="margin-top:6px">收款码待商家放入<br>先按下方按钮联系客服付款</div>'; }
+  openSheet('paySheet');
+}
+document.getElementById('copyWx').addEventListener('click',function(){ doCopyContact('wx'); });
+document.getElementById('copyQq').addEventListener('click',function(){ doCopyContact('qq'); });
+function doCopyContact(which){
+  if(!lastOrder) return;
+  var txt=orderText(lastOrder);
+  copyText(txt);
+  if(which==='wx'){ copyText(WX); toast('订单已复制 · 微信号已复制，去加 '+WX); }
+  else{ toast('订单已复制，正在打开QQ…'); setTimeout(function(){ location.href='mqqwpa://im/chat?chat_type=wpa&uin='+QQ; },400); }
+}
+function copyText(t){
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(t).catch(function(){fallbackCopy(t);}); }
+  else fallbackCopy(t);
+}
+function fallbackCopy(t){ var ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.left='-9999px'; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(ta); }
+
+/* ============ 我的订单 ============ */
+function renderMyOrders(){
+  var os=loadOrders(), box=document.getElementById('myOrders');
+  if(!os.length){ box.innerHTML='<div class="empty">还没有订单，下单后可在这里查看</div>'; return; }
+  box.innerHTML='';
+  os.slice(0,8).forEach(function(o){
+    var names=o.items.map(function(i){return i.name+'×'+i.qty;}).join('、');
+    var d=document.createElement('div'); d.className='myord';
+    d.innerHTML='<div class="top"><b>'+o.no+'</b><span class="st">'+o.status+'</span></div>'+
+      '<div class="it">'+names+' · 合计 ¥'+o.total+'</div>'+
+      '<div class="it" style="font-size:11px">'+o.time+' · 复制单号可再次联系客服</div>';
+    d.addEventListener('click',function(){ copyText(orderText(o)); toast('订单已复制'); });
+    box.appendChild(d);
+  });
+}
+
+/* ============ 商家后台 ============ */
+function kmKey(id){ return 'al_km_'+id; }
+function getPool(id){ try{ return JSON.parse(localStorage.getItem(kmKey(id))||'[]'); }catch(e){ return []; } }
+function setPool(id,arr){ localStorage.setItem(kmKey(id), JSON.stringify(arr)); }
+document.getElementById('adminOpen').addEventListener('click',function(){
+  document.getElementById('adminGate').style.display='block';
+  document.getElementById('adminBody').style.display='none';
+  document.getElementById('adminPw').value='';
+  openSheet('adminSheet');
+});
+document.getElementById('adminLogin').addEventListener('click',function(){
+  var pw=document.getElementById('adminPw').value; if(!pw){ toast('请输入密码'); return; }
+  var saved=localStorage.getItem('al_admin_pw');
+  if(!saved){ localStorage.setItem('al_admin_pw',pw); toast('已设定管理密码'); }
+  else if(saved!==pw){ toast('密码不对'); return; }
+  enterAdmin();
+});
+function fillSelects(){
+  var opts=PRODUCTS.map(function(p){return '<option value="'+p.id+'">'+p.name+'</option>';}).join('');
+  document.getElementById('admSel').innerHTML=opts;
+  document.getElementById('shipSel').innerHTML=opts;
+}
+function enterAdmin(){
+  document.getElementById('adminGate').style.display='none';
+  document.getElementById('adminBody').style.display='block';
+  fillSelects(); loadPoolToBox(); renderStock();
+}
+function loadPoolToBox(){
+  var id=document.getElementById('admSel').value;
+  document.getElementById('admPool').value=getPool(id).join('\n');
+}
+document.getElementById('admSel').addEventListener('change',loadPoolToBox);
+document.getElementById('admSave').addEventListener('click',function(){
+  var id=document.getElementById('admSel').value;
+  var arr=document.getElementById('admPool').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
+  setPool(id,arr); renderStock(); toast('已保存，库存 '+arr.length+' 张');
+});
+function renderStock(){
+  var box=document.getElementById('admStock'); box.innerHTML='';
+  PRODUCTS.forEach(function(p){
+    var n=getPool(p.id).length;
+    var d=document.createElement('div'); d.className='stockrow';
+    d.innerHTML='<div class="n"><b>'+p.name+'</b> <span>¥'+p.price+p.unit+'</span></div><div class="stk '+(n<=1?'low':'ok')+'">'+n+' 张</div>';
+    box.appendChild(d);
+  });
+}
+document.getElementById('shipBtn').addEventListener('click',function(){
+  var id=document.getElementById('shipSel').value, arr=getPool(id);
+  if(!arr.length){ document.getElementById('shipResult').innerHTML='<span style="color:var(--price)">该商品库存为空，请先在上方补货</span>'; return; }
+  var km=arr.shift(); setPool(id,arr); renderStock(); copyText(km);
+  document.getElementById('shipResult').innerHTML='<div style="background:var(--chip);padding:10px 12px;border-radius:10px;">已复制并出库：<br><b style="word-break:break-all">'+km+'</b><br><span style="font-size:11px;color:var(--muted)">粘贴发给买家 · 剩余 '+arr.length+' 张</span></div>';
+  toast('卡密已复制，去粘贴发货');
+});
+document.getElementById('admLogout').addEventListener('click',closeAll);
+
+/* ============ 启动 ============ */
+renderGrid(); renderCartDot(); renderMyOrders();
+</script>
+</body>
+</html>
