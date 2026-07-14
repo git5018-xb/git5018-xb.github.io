@@ -269,7 +269,7 @@
     <label class="fl">管理密码（首次输入即设定，仅存本机）</label>
     <input class="fi" id="adminPw" type="password" placeholder="输入你的管理密码">
     <button class="bigbtn" id="adminLogin" style="margin-top:12px">进入后台</button>
-    <div class="note-sm">密码只保存在你这台手机的浏览器里，忘了可清除数据重设。卡密库同样只存本机，不会上传任何服务器，公开商城页看不到。</div>
+    <div class="note-sm">🔒 卡密用你的密码 <b>AES-256 加密</b>后存本机，公开商城页看不到、别人翻浏览器也是乱码。密码本身<b>不保存</b>，只用来解密。<br>⚠️ <b>密码忘了 = 已加密的卡密无法找回</b>，务必记牢；且卡密请另存一份总表（本后台只当发货取货口）。</div>
   </div>
   <div id="adminBody" style="display:none">
     <label class="fl">选择商品，粘贴卡密库（一行一个：账号----密码 或任意格式）</label>
@@ -394,7 +394,7 @@ document.getElementById('cartItems').addEventListener('click',function(e){
 
 /* ============ 弹层控制 ============ */
 function openSheet(id){ document.getElementById('mask').style.display='block'; document.getElementById(id).style.display='block'; }
-function closeAll(){ document.getElementById('mask').style.display='none'; document.querySelectorAll('.sheet').forEach(function(s){s.style.display='none';}); }
+function closeAll(){ SEC_KEY=null; document.getElementById('mask').style.display='none'; document.querySelectorAll('.sheet').forEach(function(s){s.style.display='none';}); }
 document.getElementById('mask').addEventListener('click',closeAll);
 document.querySelectorAll('[data-close]').forEach(function(b){ b.addEventListener('click',closeAll); });
 document.getElementById('cartBtn').addEventListener('click',function(){ renderCart(); openSheet('cartSheet'); });
@@ -495,60 +495,108 @@ function renderMyOrders(){
   });
 }
 
-/* ============ 商家后台 ============ */
+/* ============ 商家后台（AES-256-GCM 加密存储）============ */
+var SEC_KEY=null; /* 登录后仅存内存，退出即清空 */
 function kmKey(id){ return 'al_km_'+id; }
-function getPool(id){ try{ return JSON.parse(localStorage.getItem(kmKey(id))||'[]'); }catch(e){ return []; } }
-function setPool(id,arr){ localStorage.setItem(kmKey(id), JSON.stringify(arr)); }
+function b64e(bytes){ var s=''; for(var i=0;i<bytes.length;i++) s+=String.fromCharCode(bytes[i]); return btoa(s); }
+function b64d(str){ var s=atob(str), a=new Uint8Array(s.length); for(var i=0;i<s.length;i++) a[i]=s.charCodeAt(i); return a; }
+function hasCrypto(){ return !!(window.crypto && crypto.subtle); }
+async function deriveKey(pw, salt){
+  var km=await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2', salt:salt, iterations:150000, hash:'SHA-256'}, km,
+    {name:'AES-GCM', length:256}, false, ['encrypt','decrypt']);
+}
+async function encStr(key, text){
+  var iv=crypto.getRandomValues(new Uint8Array(12));
+  var ct=await crypto.subtle.encrypt({name:'AES-GCM', iv:iv}, key, new TextEncoder().encode(text));
+  return b64e(iv)+':'+b64e(new Uint8Array(ct));
+}
+async function decStr(key, blob){
+  var p=blob.split(':'), iv=b64d(p[0]), ct=b64d(p[1]);
+  var pt=await crypto.subtle.decrypt({name:'AES-GCM', iv:iv}, key, ct);
+  return new TextDecoder().decode(pt);
+}
+async function getPool(id){
+  var blob=localStorage.getItem(kmKey(id)); if(!blob||!SEC_KEY) return [];
+  try{ return JSON.parse(await decStr(SEC_KEY, blob)); }catch(e){ return []; }
+}
+async function setPool(id, arr){
+  if(!SEC_KEY) return;
+  localStorage.setItem(kmKey(id), await encStr(SEC_KEY, JSON.stringify(arr)));
+}
 document.getElementById('adminOpen').addEventListener('click',function(){
   document.getElementById('adminGate').style.display='block';
   document.getElementById('adminBody').style.display='none';
   document.getElementById('adminPw').value='';
+  var sec=localStorage.getItem('al_sec2');
+  var pwEl=document.getElementById('adminPw');
+  pwEl.placeholder = sec ? '输入你的管理密码' : '首次：设定一个管理密码（要记牢！）';
+  if(!hasCrypto()) toast('请用 https 打开本页才能加密');
   openSheet('adminSheet');
 });
-document.getElementById('adminLogin').addEventListener('click',function(){
+document.getElementById('adminLogin').addEventListener('click',async function(){
   var pw=document.getElementById('adminPw').value; if(!pw){ toast('请输入密码'); return; }
-  var saved=localStorage.getItem('al_admin_pw');
-  if(!saved){ localStorage.setItem('al_admin_pw',pw); toast('已设定管理密码'); }
-  else if(saved!==pw){ toast('密码不对'); return; }
-  enterAdmin();
+  if(!hasCrypto()){ toast('当前环境不支持加密，请用 https 打开'); return; }
+  try{
+    var sec=localStorage.getItem('al_sec2');
+    if(!sec){
+      /* 首次：设定密码，生成盐 + 校验块 */
+      var salt=crypto.getRandomValues(new Uint8Array(16));
+      SEC_KEY=await deriveKey(pw, salt);
+      var check=await encStr(SEC_KEY, 'ALLIND_OK');
+      localStorage.setItem('al_sec2', JSON.stringify({salt:b64e(salt), check:check}));
+      localStorage.removeItem('al_admin_pw'); /* 清掉可能存在的旧明文密码 */
+      PRODUCTS.forEach(function(p){ /* 清掉旧的明文卡密，避免解密失败显示为空 */
+        var old=localStorage.getItem(kmKey(p.id)); if(old && old.indexOf(':')<0) localStorage.removeItem(kmKey(p.id));
+      });
+      toast('已设定加密密码 🔒');
+    } else {
+      var o=JSON.parse(sec);
+      SEC_KEY=await deriveKey(pw, b64d(o.salt));
+      var ok=false; try{ ok=(await decStr(SEC_KEY, o.check))==='ALLIND_OK'; }catch(e){ ok=false; }
+      if(!ok){ SEC_KEY=null; toast('密码不对'); return; }
+    }
+    await enterAdmin();
+  }catch(e){ SEC_KEY=null; toast('出错了，请重试'); }
 });
 function fillSelects(){
   var opts=PRODUCTS.map(function(p){return '<option value="'+p.id+'">'+p.name+'</option>';}).join('');
   document.getElementById('admSel').innerHTML=opts;
   document.getElementById('shipSel').innerHTML=opts;
 }
-function enterAdmin(){
+async function enterAdmin(){
   document.getElementById('adminGate').style.display='none';
   document.getElementById('adminBody').style.display='block';
-  fillSelects(); loadPoolToBox(); renderStock();
+  fillSelects(); await loadPoolToBox(); await renderStock();
 }
-function loadPoolToBox(){
+async function loadPoolToBox(){
   var id=document.getElementById('admSel').value;
-  document.getElementById('admPool').value=getPool(id).join('\n');
+  document.getElementById('admPool').value=(await getPool(id)).join('\n');
 }
 document.getElementById('admSel').addEventListener('change',loadPoolToBox);
-document.getElementById('admSave').addEventListener('click',function(){
+document.getElementById('admSave').addEventListener('click',async function(){
   var id=document.getElementById('admSel').value;
   var arr=document.getElementById('admPool').value.split('\n').map(function(s){return s.trim();}).filter(Boolean);
-  setPool(id,arr); renderStock(); toast('已保存，库存 '+arr.length+' 张');
+  await setPool(id,arr); await renderStock(); toast('已加密保存 🔒 库存 '+arr.length+' 张');
 });
-function renderStock(){
+async function renderStock(){
   var box=document.getElementById('admStock'); box.innerHTML='';
-  PRODUCTS.forEach(function(p){
-    var n=getPool(p.id).length;
+  for(var i=0;i<PRODUCTS.length;i++){
+    var p=PRODUCTS[i], n=(await getPool(p.id)).length;
     var d=document.createElement('div'); d.className='stockrow';
     d.innerHTML='<div class="n"><b>'+p.name+'</b> <span>¥'+p.price+p.unit+'</span></div><div class="stk '+(n<=1?'low':'ok')+'">'+n+' 张</div>';
     box.appendChild(d);
-  });
+  }
 }
-document.getElementById('shipBtn').addEventListener('click',function(){
-  var id=document.getElementById('shipSel').value, arr=getPool(id);
+document.getElementById('shipBtn').addEventListener('click',async function(){
+  var id=document.getElementById('shipSel').value, arr=await getPool(id);
   if(!arr.length){ document.getElementById('shipResult').innerHTML='<span style="color:var(--price)">该商品库存为空，请先在上方补货</span>'; return; }
-  var km=arr.shift(); setPool(id,arr); renderStock(); copyText(km);
+  var km=arr.shift(); await setPool(id,arr); await renderStock(); copyText(km);
   document.getElementById('shipResult').innerHTML='<div style="background:var(--chip);padding:10px 12px;border-radius:10px;">已复制并出库：<br><b style="word-break:break-all">'+km+'</b><br><span style="font-size:11px;color:var(--muted)">粘贴发给买家 · 剩余 '+arr.length+' 张</span></div>';
   toast('卡密已复制，去粘贴发货');
 });
-document.getElementById('admLogout').addEventListener('click',closeAll);
+function adminLogout(){ SEC_KEY=null; closeAll(); }
+document.getElementById('admLogout').addEventListener('click',adminLogout);
 
 /* ============ 启动 ============ */
 renderGrid(); renderCartDot(); renderMyOrders();
