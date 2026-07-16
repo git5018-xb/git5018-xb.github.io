@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#58c1f0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>单词带背小助手 🎒</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
+body{font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;background:linear-gradient(160deg,#aee3ff 0%,#d8f3dc 60%,#fff3c4 100%);background-attachment:fixed;color:#2b3a4a;user-select:none;-webkit-user-select:none}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(255,255,255,.75);backdrop-filter:blur(8px);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+header .back{border:none;background:#fff;border-radius:12px;width:38px;height:38px;font-size:20px;box-shadow:0 2px 6px rgba(0,0,0,.12);cursor:pointer;display:none}
+header h1{font-size:19px;flex:1}
+header .stars{background:#fff;border-radius:20px;padding:6px 12px;font-weight:700;font-size:15px;box-shadow:0 2px 6px rgba(0,0,0,.1);color:#e8960c}
+main{max-width:560px;margin:0 auto;padding:16px 16px 50px}
+section{display:none}
+section.on{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1}}
+h2{font-size:16px;margin:18px 4px 10px;color:#456}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#fff;border-radius:18px;padding:14px;box-shadow:0 4px 14px rgba(50,90,140,.10);cursor:pointer;position:relative;transition:transform .1s}
+.card:active{transform:scale(.96)}
+.card .em{font-size:32px}
+.card .nm{font-weight:700;font-size:16px;margin-top:6px}
+.card .ct{font-size:12px;color:#8a97a5;margin-top:3px}
+.card .del{position:absolute;top:8px;right:8px;border:none;background:#ffe3e3;color:#d33;border-radius:10px;width:26px;height:26px;font-size:14px;cursor:pointer}
+.card .del.edit{right:40px;background:#e2f0ff;color:#357}
+.card.add{display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed #9cc8e8;background:rgba(255,255,255,.55);color:#5a9bd0;min-height:96px}
+.card.wrongbook{background:linear-gradient(135deg,#fff,#ffeef0)}
+.bigbtn{display:flex;align-items:center;gap:14px;width:100%;border:none;background:#fff;border-radius:18px;padding:16px;margin-bottom:12px;font-size:17px;font-weight:700;color:#2b3a4a;box-shadow:0 4px 14px rgba(50,90,140,.10);cursor:pointer;text-align:left;transition:transform .1s}
+.bigbtn:active{transform:scale(.97)}
+.bigbtn .em{font-size:28px}
+.bigbtn small{display:block;font-weight:400;font-size:12px;color:#8a97a5;margin-top:2px}
+.pill{border:none;border-radius:26px;padding:13px 22px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.12);transition:transform .1s}
+.pill:active{transform:scale(.95)}
+.pill.main{background:linear-gradient(135deg,#ff9f43,#ff6b6b);color:#fff}
+.pill.blue{background:linear-gradient(135deg,#54a0ff,#48dbfb);color:#fff}
+.pill.plain{background:#fff;color:#456}
+.wordcard{background:#fff;border-radius:24px;padding:30px 20px;text-align:center;box-shadow:0 8px 24px rgba(50,90,140,.14);margin-top:14px}
+.wordcard .w{font-size:44px;font-weight:800;color:#1d3557;word-break:break-word}
+.wordcard .m{font-size:22px;color:#e07a2f;margin-top:12px;font-weight:700}
+.soundrow{display:flex;justify-content:center;gap:12px;margin-top:18px}
+.actrow{display:flex;gap:12px;margin-top:18px}
+.actrow .pill{flex:1}
+.progress{height:12px;background:rgba(255,255,255,.7);border-radius:6px;overflow:hidden;margin-top:14px}
+.progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#54d98c,#20bf6b);border-radius:6px;transition:width .3s}
+.ptext{text-align:center;font-size:13px;color:#678;margin-top:6px}
+.boxes{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin-top:22px}
+.box{width:42px;height:50px;border-radius:10px;background:#eef4fa;border:2px solid #cfe0ef;font-size:26px;font-weight:800;color:#1d3557;display:flex;align-items:center;justify-content:center}
+.box.done{background:#e3fcec;border-color:#7bd8a5;animation:pop .2s}
+.box.gap{background:transparent;border:none;width:16px}
+@keyframes pop{50%{transform:scale(1.25)}}
+.tiles{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-top:22px}
+.tile{width:46px;height:46px;border:none;border-radius:12px;background:linear-gradient(135deg,#54a0ff,#48dbfb);color:#fff;font-size:22px;font-weight:800;cursor:pointer;box-shadow:0 3px 8px rgba(40,120,200,.3)}
+.tile:disabled{opacity:.18}
+.tile.bad{animation:shake .3s;background:#ff6b6b}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.opt{display:block;width:100%;border:none;background:#fff;border-radius:16px;padding:15px;margin-top:12px;font-size:19px;font-weight:700;color:#2b3a4a;box-shadow:0 3px 10px rgba(50,90,140,.1);cursor:pointer;transition:transform .1s}
+.opt:active{transform:scale(.97)}
+.opt.ok{background:#20bf6b;color:#fff}
+.opt.no{background:#ff6b6b;color:#fff}
+.listen{width:110px;height:110px;border:none;border-radius:50%;background:linear-gradient(135deg,#54a0ff,#48dbfb);font-size:48px;margin:22px auto;display:block;cursor:pointer;box-shadow:0 8px 20px rgba(40,120,200,.35)}
+.listen:active{transform:scale(.92)}
+.prompt{text-align:center;font-size:17px;color:#567;margin-top:14px}
+.prompt .big{font-size:36px;font-weight:800;color:#1d3557;display:block;margin-top:8px}
+.result{text-align:center;padding-top:30px}
+.result .em{font-size:80px;animation:pop .5s}
+.result .t{font-size:26px;font-weight:800;margin-top:14px;color:#1d3557}
+.result .s{font-size:18px;color:#e8960c;font-weight:700;margin-top:10px}
+.result .w{font-size:14px;color:#c0574f;margin-top:8px}
+.result .btns{display:flex;flex-direction:column;gap:12px;margin-top:28px;align-items:center}
+.result .btns .pill{width:230px}
+.row{display:flex;align-items:center;gap:10px;background:#fff;border-radius:14px;padding:11px 14px;margin-bottom:9px;box-shadow:0 2px 8px rgba(50,90,140,.08)}
+.row .rw{font-weight:800;font-size:18px;color:#1d3557;flex:1}
+.row .rm{color:#e07a2f;font-size:15px;max-width:45%;text-align:right}
+.row .sp{border:none;background:#eaf4ff;border-radius:10px;width:36px;height:36px;font-size:17px;cursor:pointer}
+#modal{position:fixed;inset:0;background:rgba(20,40,60,.45);display:none;align-items:flex-end;justify-content:center;z-index:50}
+#modal.on{display:flex}
+#modal .panel{background:#fff;border-radius:22px 22px 0 0;padding:20px;width:100%;max-width:560px}
+#modal h3{font-size:18px;margin-bottom:12px}
+#modal input,#modal textarea{width:100%;border:2px solid #d5e3f0;border-radius:12px;padding:11px;font-size:16px;font-family:inherit;user-select:text;-webkit-user-select:text}
+#modal textarea{height:190px;margin-top:10px;resize:none}
+#modal .hint{font-size:12px;color:#8a97a5;margin-top:8px;line-height:1.6}
+#modal .mbtns{display:flex;gap:10px;margin-top:14px}
+#modal .mbtns .pill{flex:1}
+#toast{position:fixed;left:50%;bottom:80px;transform:translateX(-50%);background:rgba(30,50,70,.9);color:#fff;padding:10px 20px;border-radius:20px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;white-space:nowrap}
+#toast.on{opacity:1}
+.feedback{text-align:center;font-size:40px;height:52px;margin-top:10px}
+.homefoot{text-align:center;font-size:12px;color:#7e93a8;margin-top:30px}
+button{touch-action:manipulation;font-family:inherit}
+</style>
+</head>
+<body>
+<header>
+  <button class="back" id="btnBack" onclick="goBack()">←</button>
+  <h1 id="hTitle">🎒 单词带背小助手</h1>
+  <div class="stars">⭐ <span id="starN">0</span></div>
+</header>
+<main>
+
+<section id="scr-home">
+  <h2>📚 内置词库</h2>
+  <div class="grid" id="unitGrid"></div>
+  <h2>✏️ 我的词库</h2>
+  <div class="grid" id="customGrid"></div>
+  <h2>📕 错词本</h2>
+  <div class="grid">
+    <div class="card wrongbook" onclick="openWrong()">
+      <div class="em">📕</div><div class="nm">错词复习</div>
+      <div class="ct" id="wrongCt">0 个单词</div>
+    </div>
+  </div>
+  <div class="homefoot">答对题目、拼对单词就能收集 ⭐ 哦！<br>做错的单词会自动收进错词本 📕</div>
+</section>
+
+<section id="scr-modes">
+  <div style="text-align:center;margin:10px 0 20px">
+    <div style="font-size:40px" id="mEmoji">📚</div>
+    <div style="font-size:22px;font-weight:800;margin-top:6px" id="mName"></div>
+    <div style="font-size:13px;color:#789" id="mCount"></div>
+  </div>
+  <button class="bigbtn" onclick="startLearn()"><span class="em">📖</span><span>带背学习<small>看单词、听发音、跟着拼读记忆</small></span></button>
+  <button class="bigbtn" onclick="startSpell()"><span class="em">🔤</span><span>拼写闯关<small>听发音看中文，点字母拼出单词</small></span></button>
+  <button class="bigbtn" onclick="startQuiz('listen')"><span class="em">🎧</span><span>听音选义<small>听发音，选出正确的中文意思</small></span></button>
+  <button class="bigbtn" onclick="startQuiz('c2e')"><span class="em">✍️</span><span>看中文选单词<small>看中文，选出正确的英文单词</small></span></button>
+  <button class="bigbtn" onclick="openBrowse()"><span class="em">📋</span><span>浏览单词表<small>整表查看，逐个点读</small></span></button>
+</section>
+
+<section id="scr-browse"><div id="browseList" style="margin-top:6px"></div></section>
+
+<section id="scr-learn">
+  <div class="progress"><i id="learnBar"></i></div>
+  <div class="ptext" id="learnPt"></div>
+  <div class="wordcard">
+    <div class="w" id="learnW"></div>
+    <div class="m" id="learnM"></div>
+    <div class="soundrow">
+      <button class="pill blue" onclick="sayWord(L.cur[0])">🔊 读单词</button>
+      <button class="pill blue" onclick="spellOut(L.cur[0])">🔠 拼读</button>
+    </div>
+  </div>
+  <div class="actrow">
+    <button class="pill plain" onclick="learnAgain()">🔁 还不熟</button>
+    <button class="pill main" onclick="learnKnow()">✅ 记住了</button>
+  </div>
+</section>
+
+<section id="scr-spell">
+  <div class="progress"><i id="spellBar"></i></div>
+  <div class="ptext" id="spellPt"></div>
+  <div class="prompt">听发音，拼出这个单词：<span class="big" id="spellM"></span></div>
+  <div class="soundrow">
+    <button class="pill blue" onclick="sayWord(P.w)">🔊 再听一遍</button>
+    <button class="pill plain" onclick="spellHint()">💡 提示</button>
+  </div>
+  <div class="boxes" id="spellBoxes"></div>
+  <div class="tiles" id="spellTiles"></div>
+  <div class="feedback" id="spellFb"></div>
+</section>
+
+<section id="scr-quiz">
+  <div class="progress"><i id="quizBar"></i></div>
+  <div class="ptext" id="quizPt"></div>
+  <div id="quizPrompt"></div>
+  <div id="quizOpts"></div>
+</section>
+
+<section id="scr-result">
+  <div class="result">
+    <div class="em" id="resEm">🎉</div>
+    <div class="t" id="resT"></div>
+    <div class="s" id="resS"></div>
+    <div class="w" id="resW"></div>
+    <div class="btns">
+      <button class="pill main" onclick="lastStart()">🔁 再来一遍</button>
+      <button class="pill blue" onclick="show('scr-modes')">🎮 换个玩法</button>
+      <button class="pill plain" onclick="goHome()">🏠 回首页</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="modal">
+  <div class="panel">
+    <h3 id="modalT">➕ 新建词库</h3>
+    <input id="cName" placeholder="词库名字，比如：第三单元">
+    <textarea id="cWords" placeholder="一行一个单词，单词和中文用空格隔开：&#10;apple 苹果&#10;banana 香蕉&#10;school 学校"></textarea>
+    <div class="hint">💡 把小朋友这周要背的单词贴进来就行，格式：英文 中文</div>
+    <div class="mbtns">
+      <button class="pill plain" onclick="closeModal()">取消</button>
+      <button class="pill main" onclick="saveCustom()">保存</button>
+    </div>
+  </div>
+</div>
+<div id="toast"></div>
+
+<script>
+/* ---------- 内置词库 ---------- */
+const UNITS=[
+{emoji:'🐱',name:'动物乐园',words:[['cat','猫'],['dog','狗'],['bird','鸟'],['fish','鱼'],['duck','鸭子'],['pig','猪'],['rabbit','兔子'],['tiger','老虎'],['lion','狮子'],['elephant','大象'],['monkey','猴子'],['panda','熊猫'],['bear','熊'],['horse','马'],['sheep','绵羊']]},
+{emoji:'🌈',name:'缤纷颜色',words:[['red','红色'],['blue','蓝色'],['yellow','黄色'],['green','绿色'],['black','黑色'],['white','白色'],['pink','粉色'],['purple','紫色'],['orange','橙色'],['brown','棕色']]},
+{emoji:'🔢',name:'数字王国',words:[['one','一'],['two','二'],['three','三'],['four','四'],['five','五'],['six','六'],['seven','七'],['eight','八'],['nine','九'],['ten','十'],['eleven','十一'],['twelve','十二'],['twenty','二十'],['hundred','一百']]},
+{emoji:'🍎',name:'美味食物',words:[['apple','苹果'],['banana','香蕉'],['pear','梨'],['grape','葡萄'],['watermelon','西瓜'],['bread','面包'],['rice','米饭'],['milk','牛奶'],['egg','鸡蛋'],['cake','蛋糕'],['juice','果汁'],['water','水'],['noodles','面条'],['hamburger','汉堡包']]},
+{emoji:'👨‍👩‍👧',name:'我的家人',words:[['father','爸爸'],['mother','妈妈'],['brother','兄弟'],['sister','姐妹'],['grandpa','爷爷'],['grandma','奶奶'],['uncle','叔叔'],['aunt','阿姨'],['family','家庭'],['baby','婴儿']]},
+{emoji:'🏫',name:'校园生活',words:[['school','学校'],['teacher','老师'],['student','学生'],['book','书'],['pen','钢笔'],['pencil','铅笔'],['ruler','尺子'],['bag','书包'],['desk','课桌'],['chair','椅子'],['classroom','教室'],['blackboard','黑板'],['eraser','橡皮'],['crayon','蜡笔']]},
+{emoji:'🙋',name:'身体部位',words:[['head','头'],['face','脸'],['eye','眼睛'],['ear','耳朵'],['nose','鼻子'],['mouth','嘴巴'],['hand','手'],['arm','手臂'],['leg','腿'],['foot','脚'],['hair','头发'],['finger','手指']]},
+{emoji:'🌤️',name:'天气自然',words:[['sun','太阳'],['moon','月亮'],['star','星星'],['sky','天空'],['rain','雨'],['snow','雪'],['wind','风'],['cloud','云'],['hot','热的'],['cold','冷的'],['warm','温暖的'],['cool','凉爽的'],['tree','树'],['flower','花']]},
+{emoji:'🏃',name:'动作达人',words:[['run','跑'],['jump','跳'],['walk','走'],['swim','游泳'],['fly','飞'],['sing','唱歌'],['dance','跳舞'],['read','读'],['write','写'],['draw','画'],['play','玩'],['eat','吃'],['drink','喝'],['sleep','睡觉'],['listen','听'],['speak','说']]},
+{emoji:'✨',name:'常用形容词',words:[['big','大的'],['small','小的'],['tall','高的'],['short','矮的'],['long','长的'],['new','新的'],['old','旧的'],['happy','开心的'],['sad','难过的'],['good','好的'],['nice','友好的'],['beautiful','美丽的'],['fast','快的'],['slow','慢的']]}
+];
+
+/* ---------- 存储 ---------- */
+const S={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+let stars=S.get('wd_stars',0);
+let lv=S.get('wd_lv',{});
+let wrong=S.get('wd_wrong',[]);
+let custom=S.get('wd_custom',[]);
+function addStar(n){stars+=n;S.set('wd_stars',stars);document.getElementById('starN').textContent=stars;}
+function levelUp(w){lv[w]=Math.min((lv[w]||0)+1,5);S.set('wd_lv',lv);}
+function wrongAdd(w,m){if(!wrong.some(x=>x[0]===w)){wrong.push([w,m]);S.set('wd_wrong',wrong);}}
+function wrongRemove(w){const i=wrong.findIndex(x=>x[0]===w);if(i>=0){wrong.splice(i,1);S.set('wd_wrong',wrong);}}
+
+/* ---------- 发音 ---------- */
+let voiceEn=null;
+function pickVoice(){try{const vs=speechSynthesis.getVoices();voiceEn=vs.find(v=>/en[-_]US/i.test(v.lang))||vs.find(v=>/^en/i.test(v.lang))||null;}catch(e){}}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function tts(t,rate){try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';if(voiceEn)u.voice=voiceEn;u.rate=rate||0.8;speechSynthesis.speak(u);}catch(e){}}
+function sayWord(w){
+  const a=new Audio('https://dict.youdao.com/dictvoice?type=2&audio='+encodeURIComponent(w));
+  a.onerror=()=>{if('speechSynthesis' in window)tts(w);};
+  a.play().catch(()=>{if('speechSynthesis' in window)tts(w);});
+}
+function spellOut(w){
+  const letters=w.toLowerCase().split('').filter(c=>/[a-z]/.test(c));
+  if('speechSynthesis' in window && speechSynthesis.getVoices().length){
+    tts(letters.join(', ')+'. '+w,0.72);return;
+  }
+  let i=0;
+  (function next(){if(i>=letters.length){sayWord(w);return;}
+    const a=new Audio('https://dict.youdao.com/dictvoice?type=2&audio='+letters[i]);
+    a.onended=()=>{i++;setTimeout(next,120);};
+    a.onerror=()=>{i++;next();};
+    a.play().catch(()=>{});
+  })();
+}
+/* ---------- 音效 ---------- */
+function beep(good){try{
+  const ac=window._ac||(window._ac=new (window.AudioContext||window.webkitAudioContext)());
+  const o=ac.createOscillator(),g=ac.createGain();o.connect(g);g.connect(ac.destination);o.type='sine';
+  if(good){o.frequency.setValueAtTime(660,ac.currentTime);o.frequency.setValueAtTime(880,ac.currentTime+0.12);}
+  else{o.frequency.setValueAtTime(200,ac.currentTime);}
+  g.gain.setValueAtTime(0.12,ac.currentTime);g.gain.exponentialRampToValueAtTime(0.001,ac.currentTime+0.3);
+  o.start();o.stop(ac.currentTime+0.3);
+}catch(e){}}
+
+/* ---------- 工具 ---------- */
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+let toastTimer=null;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('on'),1800);}
+function allPool(field){
+  const set=new Set();
+  UNITS.forEach(u=>u.words.forEach(w=>set.add(w[field])));
+  custom.forEach(c=>c.words.forEach(w=>set.add(w[field])));
+  return [...set];
+}
+
+/* ---------- 页面切换 ---------- */
+let cur=null,lastStart=null;
+const TITLES={'scr-home':'🎒 单词带背小助手','scr-modes':'🎮 选择玩法','scr-browse':'📋 单词表','scr-learn':'📖 带背学习','scr-spell':'🔤 拼写闯关','scr-quiz':'答题中…','scr-result':'🏁 完成'};
+function show(id){
+  document.querySelectorAll('main section').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  document.getElementById('hTitle').textContent=TITLES[id]||'';
+  document.getElementById('btnBack').style.display=(id==='scr-home')?'none':'block';
+  window.scrollTo(0,0);
+}
+function goBack(){
+  const on=document.querySelector('main section.on').id;
+  if(on==='scr-modes')goHome();
+  else if(on==='scr-home')return;
+  else show('scr-modes');
+}
+function goHome(){renderHome();show('scr-home');}
+
+/* ---------- 首页 ---------- */
+function learnedCount(words){return words.filter(w=>(lv[w[0]]||0)>0).length;}
+function renderHome(){
+  document.getElementById('starN').textContent=stars;
+  const ug=document.getElementById('unitGrid');ug.innerHTML='';
+  UNITS.forEach((u,i)=>{
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML='<div class="em">'+u.emoji+'</div><div class="nm">'+esc(u.name)+'</div><div class="ct">'+u.words.length+' 个单词 · 已学 '+learnedCount(u.words)+'</div>';
+    d.onclick=()=>openList({name:u.emoji+' '+u.name,words:u.words});
+    ug.appendChild(d);
+  });
+  const cg=document.getElementById('customGrid');cg.innerHTML='';
+  custom.forEach((c,i)=>{
+    const d=document.createElement('div');d.className='card';
+    d.innerHTML='<div class="em">📝</div><div class="nm">'+esc(c.name)+'</div><div class="ct">'+c.words.length+' 个单词 · 已学 '+learnedCount(c.words)+'</div><button class="del">✕</button><button class="del edit">✎</button>';
+    d.onclick=()=>openList({name:'📝 '+c.name,words:c.words});
+    d.querySelector('.del').onclick=(e)=>{e.stopPropagation();if(confirm('删除词库「'+c.name+'」？')){custom.splice(i,1);S.set('wd_custom',custom);renderHome();}};
+    d.querySelector('.edit').onclick=(e)=>{e.stopPropagation();editCustom(i);};
+    cg.appendChild(d);
+  });
+  const add=document.createElement('div');add.className='card add';
+  add.innerHTML='<div style="font-size:30px">➕</div><div style="font-weight:700;margin-top:4px">新建词库</div><div style="font-size:11px;margin-top:2px">贴上要背的单词</div>';
+  add.onclick=()=>editCustom(-1);
+  cg.appendChild(add);
+  document.getElementById('wrongCt').textContent=wrong.length+' 个单词';
+}
+function openList(l){cur=l;
+  document.getElementById('mEmoji').textContent=l.name.split(' ')[0];
+  document.getElementById('mName').textContent=l.name.replace(/^\S+\s/,'');
+  document.getElementById('mCount').textContent='共 '+l.words.length+' 个单词';
+  show('scr-modes');
+}
+function openWrong(){
+  if(!wrong.length){toast('错词本是空的，太棒啦 🎉');return;}
+  openList({name:'📕 错词复习',words:wrong.slice(),isWrong:true});
+}
+
+/* ---------- 自定义词库 ---------- */
+let editIdx=-1;
+function editCustom(i){
+  editIdx=i;
+  document.getElementById('modalT').textContent=i<0?'➕ 新建词库':'✏️ 编辑词库';
+  document.getElementById('cName').value=i<0?'':custom[i].name;
+  document.getElementById('cWords').value=i<0?'':custom[i].words.map(w=>w[0]+' '+w[1]).join('\n');
+  document.getElementById('modal').classList.add('on');
+}
+function closeModal(){document.getElementById('modal').classList.remove('on');}
+function saveCustom(){
+  const name=document.getElementById('cName').value.trim()||'我的单词';
+  const lines=document.getElementById('cWords').value.split('\n');
+  const words=[];
+  lines.forEach(line=>{
+    const m=line.trim().match(/^([A-Za-z][A-Za-z'’ .\-]*)[\s,，、:：\t]+(.+)$/);
+    if(m)words.push([m[1].trim(),m[2].trim()]);
+  });
+  if(!words.length){toast('没有识别到单词，检查一下格式哦');return;}
+  const item={name,words};
+  if(editIdx<0)custom.push(item);else custom[editIdx]=item;
+  S.set('wd_custom',custom);
+  closeModal();renderHome();toast('已保存 '+words.length+' 个单词 ✅');
+}
+
+/* ---------- 浏览单词表 ---------- */
+function openBrowse(){
+  const el=document.getElementById('browseList');el.innerHTML='';
+  cur.words.forEach(w=>{
+    const d=document.createElement('div');d.className='row';
+    d.innerHTML='<button class="sp">🔊</button><div class="rw">'+esc(w[0])+'</div><div class="rm">'+esc(w[1])+'</div>';
+    d.querySelector('.sp').onclick=()=>sayWord(w[0]);
+    d.onclick=(e)=>{if(e.target.className!=='sp')sayWord(w[0]);};
+    el.appendChild(d);
+  });
+  show('scr-browse');
+}
+
+/* ---------- 完成页 ---------- */
+let sessWrong=0;
+function finish(title,earned,allRight){
+  document.getElementById('resEm').textContent=allRight?'🏆':'🎉';
+  document.getElementById('resT').textContent=title;
+  document.getElementById('resS').textContent='本轮收获 ⭐ × '+earned;
+  document.getElementById('resW').textContent=sessWrong>0?('有 '+sessWrong+' 个单词进了错词本，记得复习哦 📕'):'全部正确，无敌啦！';
+  show('scr-result');
+}
+
+/* ---------- 带背学习 ---------- */
+let L=null;
+function startLearn(){
+  lastStart=startLearn;sessWrong=0;
+  L={queue:shuffle(cur.words.slice()),total:cur.words.length,done:0,earned:0,cur:null};
+  show('scr-learn');learnNext();
+}
+function learnNext(){
+  if(!L.queue.length){finish('这一组背完啦！',L.earned,true);return;}
+  L.cur=L.queue[0];
+  document.getElementById('learnW').textContent=L.cur[0];
+  document.getElementById('learnM').textContent=L.cur[1];
+  document.getElementById('learnBar').style.width=(L.done/L.total*100)+'%';
+  document.getElementById('learnPt').textContent='已记住 '+L.done+' / '+L.total;
+  sayWord(L.cur[0]);
+}
+function learnKnow(){
+  const w=L.queue.shift();
+  if((lv[w[0]]||0)<1)levelUp(w[0]);
+  L.done++;L.earned++;addStar(1);beep(true);learnNext();
+}
+function learnAgain(){
+  const w=L.queue.shift();
+  L.queue.splice(Math.min(3,L.queue.length),0,w);
+  learnNext();
+}
+
+/* ---------- 拼写闯关 ---------- */
+let P=null;
+function startSpell(){
+  lastStart=startSpell;sessWrong=0;
+  P={list:shuffle(cur.words.slice()),i:0,earned:0,allRight:true};
+  show('scr-spell');spellNext();
+}
+function spellNext(){
+  if(P.i>=P.list.length){finish('拼写闯关成功！',P.earned,P.allRight);return;}
+  const [w,m]=P.list[P.i];
+  P.w=w;P.m=m;P.target=w.toLowerCase();P.pos=0;P.mist=0;P.hint=0;P.lock=false;
+  document.getElementById('spellM').textContent=m;
+  document.getElementById('spellBar').style.width=(P.i/P.list.length*100)+'%';
+  document.getElementById('spellPt').textContent='第 '+(P.i+1)+' / '+P.list.length+' 个';
+  document.getElementById('spellFb').textContent='';
+  const boxes=document.getElementById('spellBoxes');boxes.innerHTML='';
+  P.boxEls=[];
+  P.target.split('').forEach(ch=>{
+    const b=document.createElement('div');
+    if(/[a-z]/.test(ch)){b.className='box';}
+    else{b.className='box gap';b.textContent=ch===' '?'':ch;}
+    boxes.appendChild(b);P.boxEls.push(b);
+  });
+  const tiles=document.getElementById('spellTiles');tiles.innerHTML='';
+  const letters=shuffle(P.target.split('').filter(c=>/[a-z]/.test(c)));
+  letters.forEach(ch=>{
+    const t=document.createElement('button');t.className='tile';t.textContent=ch;
+    t.onclick=()=>spellTap(t,ch);
+    tiles.appendChild(t);
+  });
+  P.skipNonLetters=()=>{while(P.pos<P.target.length&&!/[a-z]/.test(P.target[P.pos])){P.boxEls[P.pos].classList.add('done');P.pos++;}};
+  P.skipNonLetters();
+  sayWord(w);
+}
+function spellTap(tile,ch){
+  if(P.lock||tile.disabled)return;
+  if(ch===P.target[P.pos]){
+    P.boxEls[P.pos].textContent=ch;P.boxEls[P.pos].classList.add('done');
+    tile.disabled=true;P.pos++;P.skipNonLetters();
+    if(P.pos>=P.target.length)spellDone();
+  }else{
+    P.mist++;beep(false);
+    tile.classList.add('bad');setTimeout(()=>tile.classList.remove('bad'),350);
+  }
+}
+function spellHint(){
+  if(P.lock||P.pos>=P.target.length)return;
+  P.hint++;
+  const ch=P.target[P.pos];
+  const tile=[...document.querySelectorAll('#spellTiles .tile')].find(t=>!t.disabled&&t.textContent===ch);
+  if(tile){
+    P.boxEls[P.pos].textContent=ch;P.boxEls[P.pos].classList.add('done');
+    tile.disabled=true;P.pos++;P.skipNonLetters();
+    if(P.pos>=P.target.length)spellDone();
+  }
+}
+function spellDone(){
+  P.lock=true;
+  const perfect=P.mist===0&&P.hint===0;
+  const fb=document.getElementById('spellFb');
+  if(perfect){fb.textContent='✨ 完美！⭐⭐';addStar(2);P.earned+=2;levelUp(P.w);wrongRemove(P.w);beep(true);}
+  else{fb.textContent='👍 拼出来了 ⭐';addStar(1);P.earned+=1;wrongAdd(P.w,P.m);sessWrong++;P.allRight=false;}
+  sayWord(P.w);
+  setTimeout(()=>{P.i++;spellNext();},1100);
+}
+
+/* ---------- 选择题（听音选义 / 看中文选单词） ---------- */
+let Q=null;
+function startQuiz(kind){
+  lastStart=()=>startQuiz(kind);sessWrong=0;
+  Q={kind,list:shuffle(cur.words.slice()),i:0,earned:0,lock:false,allRight:true};
+  show('scr-quiz');
+  document.getElementById('hTitle').textContent=kind==='listen'?'🎧 听音选义':'✍️ 看中文选单词';
+  quizNext();
+}
+function quizNext(){
+  if(Q.i>=Q.list.length){finish('答题完成！',Q.earned,Q.allRight);return;}
+  Q.lock=false;
+  const [w,m]=Q.list[Q.i];Q.w=w;Q.m=m;
+  document.getElementById('quizBar').style.width=(Q.i/Q.list.length*100)+'%';
+  document.getElementById('quizPt').textContent='第 '+(Q.i+1)+' / '+Q.list.length+' 题';
+  const prompt=document.getElementById('quizPrompt');
+  if(Q.kind==='listen'){
+    prompt.innerHTML='<button class="listen" onclick="sayWord(Q.w)">🔊</button><div class="prompt">听发音，选出正确的意思</div>';
+    setTimeout(()=>sayWord(w),250);
+  }else{
+    prompt.innerHTML='<div class="prompt" style="margin-top:26px">哪个单词是<span class="big">'+esc(m)+'</span></div>';
+  }
+  const field=Q.kind==='listen'?1:0;
+  const correct=Q.list[Q.i][field];
+  const pool=shuffle(allPool(field).filter(x=>x!==correct));
+  const opts=shuffle([correct,...pool.slice(0,3)]);
+  const box=document.getElementById('quizOpts');box.innerHTML='';
+  opts.forEach(o=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>quizPick(b,o,correct);
+    box.appendChild(b);
+  });
+}
+function quizPick(btn,val,correct){
+  if(Q.lock)return;Q.lock=true;
+  const right=val===correct;
+  if(right){btn.classList.add('ok');beep(true);addStar(1);Q.earned++;levelUp(Q.w);wrongRemove(Q.w);}
+  else{
+    btn.classList.add('no');beep(false);wrongAdd(Q.w,Q.m);sessWrong++;Q.allRight=false;
+    [...document.querySelectorAll('#quizOpts .opt')].find(b=>b.textContent===correct).classList.add('ok');
+  }
+  if(Q.kind==='c2e')sayWord(Q.w);
+  setTimeout(()=>{Q.i++;quizNext();},right?750:1500);
+}
+
+/* ---------- 启动 ---------- */
+renderHome();show('scr-home');
+</script>
+</body>
+</html>
