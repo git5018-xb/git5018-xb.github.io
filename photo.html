@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>美颜证件照相馆</title>
+<style>
+:root{
+  --bg:#f6f4ef; --card:#ffffff; --ink:#2b2620; --muted:#8a8378;
+  --accent:#e8636f; --accent-ink:#ffffff; --line:#e7e2d8; --soft:#faf8f4;
+  --radius:16px; --shadow:0 6px 24px rgba(80,60,30,.08);
+}
+*{box-sizing:border-box; -webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:15px}
+header{padding:18px 16px 6px;text-align:center}
+header h1{margin:0;font-size:22px;letter-spacing:1px}
+header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+main{max-width:760px;margin:0 auto;padding:12px 12px 90px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:16px;margin-top:14px}
+.big-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
+  padding:16px;border:0;border-radius:14px;font-size:17px;font-weight:600;cursor:pointer}
+.big-btn.primary{background:var(--accent);color:var(--accent-ink)}
+.big-btn.ghost{background:var(--soft);color:var(--ink);border:1px dashed var(--line)}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+#stageWrap{position:relative;background:
+  repeating-conic-gradient(#eee 0 25%,#fff 0 50%) 0 0/20px 20px;
+  border-radius:12px;overflow:hidden;border:1px solid var(--line);touch-action:none}
+#view{display:block;width:100%;height:auto}
+#stageHint{position:absolute;left:0;right:0;bottom:8px;text-align:center;
+  font-size:12px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.55);pointer-events:none}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;
+  background:var(--soft);border:1px solid var(--line);color:var(--muted)}
+.badge.ok{background:#e9f7ec;border-color:#bfe4c8;color:#2c7a3f}
+.badge.warn{background:#fdf1e7;border-color:#f2d5b8;color:#a4590f}
+.tabs{display:flex;gap:6px;margin:14px 0 10px;overflow-x:auto;padding-bottom:2px}
+.tabs button{flex:0 0 auto;padding:9px 16px;border-radius:999px;border:1px solid var(--line);
+  background:var(--card);font-size:14px;cursor:pointer;color:var(--muted)}
+.tabs button.on{background:var(--ink);color:#fff;border-color:var(--ink);font-weight:600}
+.panel{display:none}
+.panel.on{display:block}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:9px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);
+  font-size:14px;cursor:pointer;display:flex;align-items:center;gap:7px}
+.chip.on{border-color:var(--accent);font-weight:600}
+.chip .dot{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.slider-row{display:flex;align-items:center;gap:10px;margin:10px 0}
+.slider-row label{flex:0 0 4.5em;font-size:14px;color:var(--muted)}
+.slider-row input[type=range]{flex:1;accent-color:var(--accent)}
+.slider-row output{flex:0 0 2.6em;text-align:right;font-size:13px;color:var(--muted)}
+.note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:8px}
+.spec-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:8px}
+.spec{border:2px solid var(--line);border-radius:12px;padding:10px 6px;text-align:center;
+  cursor:pointer;background:var(--card)}
+.spec.on{border-color:var(--accent)}
+.spec b{display:block;font-size:14px}
+.spec span{font-size:11px;color:var(--muted)}
+#dock{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);
+  border-top:1px solid var(--line);backdrop-filter:blur(8px);padding:10px 12px;
+  display:none;gap:10px;z-index:50}
+#dock.show{display:flex}
+#dock button{flex:1;padding:13px 6px;border-radius:12px;border:0;font-size:15px;
+  font-weight:600;cursor:pointer}
+#btnSave{background:var(--accent);color:#fff}
+#btnSheet{background:#3d6fb4;color:#fff}
+#btnPng{background:var(--soft);color:var(--ink);border:1px solid var(--line)!important}
+input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-radius:8px;
+  background:var(--card);padding:2px;cursor:pointer}
+.hidden{display:none!important}
+#toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);background:rgba(40,35,28,.92);
+  color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;z-index:99;
+  opacity:0;transition:opacity .25s;pointer-events:none;max-width:86vw;text-align:center}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header>
+  <h1>📸 美颜证件照相馆</h1>
+  <p>换底色 · 一键美颜 · 一寸二寸各种规格,拍完直接用</p>
+</header>
+<main>
+
+<section class="card" id="uploadCard">
+  <button class="big-btn primary" id="btnPick">🖼️ 选择一张照片</button>
+  <div style="height:10px"></div>
+  <button class="big-btn ghost" id="btnShoot">🤳 手机现场拍一张</button>
+  <p class="note">照片只在你自己的手机/电脑里处理,<b>不会上传到任何服务器</b>。建议正面、光线充足、背景尽量简单。</p>
+  <input type="file" id="filePick" accept="image/*" class="hidden">
+  <input type="file" id="fileShoot" accept="image/*" capture="user" class="hidden">
+</section>
+
+<section class="card hidden" id="studio">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+    <span class="badge" id="aiState">AI 准备中…</span>
+    <button class="chip" id="btnRepick" style="padding:6px 12px">🔄 换一张</button>
+  </div>
+  <div id="stageWrap">
+    <canvas id="view"></canvas>
+    <div id="stageHint">拖动照片调位置 · 双指或滚轮缩放</div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <button data-p="bg" class="on">🎨 底色</button>
+    <button data-p="beauty">✨ 美颜</button>
+    <button data-p="spec">📐 规格</button>
+    <button data-p="frame">🖼️ 相框</button>
+  </div>
+
+  <div class="panel on" id="panel-bg">
+    <div class="chips" id="bgChips">
+      <button class="chip" data-bg="keep">保留原背景</button>
+      <button class="chip on" data-bg="#ffffff"><span class="dot" style="background:#fff"></span>白底</button>
+      <button class="chip" data-bg="#438edb"><span class="dot" style="background:#438edb"></span>蓝底</button>
+      <button class="chip" data-bg="#d9001b"><span class="dot" style="background:#d9001b"></span>红底</button>
+      <button class="chip" data-bg="#2a5caa"><span class="dot" style="background:#2a5caa"></span>深蓝</button>
+      <button class="chip" data-bg="grad"><span class="dot" style="background:linear-gradient(#f2f2f2,#c9c9c9)"></span>渐变灰</button>
+      <label class="chip">自定义 <input type="color" id="bgCustom" value="#ffd6e0"></label>
+    </div>
+    <div class="slider-row"><label>边缘柔和</label>
+      <input type="range" id="feather" min="0" max="10" value="3"><output>3</output></div>
+    <p class="note" id="bgNote">AI 会自动把人像抠出来;如果照片背景本来就是纯色墙,抠不好时可点下面的备用方案。</p>
+    <button class="chip" id="btnChroma">🪄 备用:按纯色背景抠图</button>
+    <div class="slider-row hidden" id="chromaRow"><label>容差</label>
+      <input type="range" id="chromaTol" min="8" max="80" value="30"><output>30</output></div>
+  </div>
+
+  <div class="panel" id="panel-beauty">
+    <div class="chips" id="filterChips">
+      <button class="chip on" data-f="none">原色</button>
+      <button class="chip" data-f="natural">自然</button>
+      <button class="chip" data-f="cool">冷白</button>
+      <button class="chip" data-f="warm">暖阳</button>
+      <button class="chip" data-f="film">胶片</button>
+      <button class="chip" data-f="bw">黑白</button>
+    </div>
+    <div style="height:6px"></div>
+    <button class="chip" id="btnOneTap" style="border-color:var(--accent);font-weight:600">💖 一键美颜</button>
+    <div class="slider-row"><label>磨皮</label><input type="range" id="smooth" min="0" max="100" value="0"><output>0</output></div>
+    <div class="slider-row"><label>美白</label><input type="range" id="whiten" min="0" max="100" value="0"><output>0</output></div>
+    <div class="slider-row"><label>亮度</label><input type="range" id="bright" min="-50" max="50" value="0"><output>0</output></div>
+    <div class="slider-row"><label>对比度</label><input type="range" id="contrast" min="-50" max="50" value="0"><output>0</output></div>
+    <div class="slider-row"><label>饱和度</label><input type="range" id="saturate" min="-100" max="60" value="0"><output>0</output></div>
+    <div class="slider-row"><label>冷暖</label><input type="range" id="temp" min="-30" max="30" value="0"><output>0</output></div>
+  </div>
+
+  <div class="panel" id="panel-spec">
+    <div class="spec-grid" id="specGrid"></div>
+    <p class="note">按 300dpi 冲印标准导出,可直接拿去打印店;「自由比例」保留照片原样。</p>
+  </div>
+
+  <div class="panel" id="panel-frame">
+    <div class="chips" id="frameChips">
+      <button class="chip on" data-fr="none">无相框</button>
+      <button class="chip" data-fr="white">简约白边</button>
+      <button class="chip" data-fr="polaroid">宝丽来</button>
+      <button class="chip" data-fr="round">圆角卡片</button>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="dock">
+  <button id="btnSave">⬇️ 保存照片</button>
+  <button id="btnSheet">🖨️ 六寸排版</button>
+  <button id="btnPng">透明底PNG</button>
+</div>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ============ 基础状态 ============ */
+const $ = (s) => document.querySelector(s);
+const view = $("#view"), vtx = view.getContext("2d");
+const WORK_MAX = 1600;
+
+const SPECS = [
+  { id:"one",   name:"一寸",     sub:"25×35mm", w:295,  h:413 },
+  { id:"bigone",name:"大一寸",   sub:"33×48mm", w:390,  h:567 },
+  { id:"s2",    name:"小二寸",   sub:"35×45mm", w:413,  h:531 },
+  { id:"two",   name:"二寸",     sub:"35×49mm", w:413,  h:579 },
+  { id:"sq",    name:"方形头像", sub:"1:1",     w:600,  h:600 },
+  { id:"story", name:"社交竖图", sub:"4:5",     w:1080, h:1350 },
+  { id:"free",  name:"自由比例", sub:"原图",    w:0,    h:0 },
+];
+const FILTERS = {
+  none:    { bright:0, contrast:0, saturate:0, temp:0 },
+  natural: { bright:5, contrast:3, saturate:8, temp:2 },
+  cool:    { bright:9, contrast:2, saturate:-8, temp:-12 },
+  warm:    { bright:5, contrast:3, saturate:6, temp:14 },
+  film:    { bright:2, contrast:12, saturate:-14, temp:6 },
+  bw:      { bright:3, contrast:10, saturate:-100, temp:0 },
+};
+
+const state = {
+  img: null,            // 原图 (Image)
+  base: null,           // 工作分辨率原图 canvas
+  mask: null,           // 人像蒙版 canvas (白=人)
+  person: null,         // 美颜+抠图后的人像层 (透明底)
+  bg: "#ffffff",        // 'keep' | 颜色 | 'grad'
+  feather: 3,
+  spec: SPECS[0],
+  frame: "none",
+  filter: "none",
+  smooth: 0, whiten: 0, bright: 0, contrast: 0, saturate: 0, temp: 0,
+  // 取景变换: 人像层在画布里的缩放和平移
+  scale: 1, ox: 0, oy: 0,
+  aiReady: false, aiFailed: false,
+};
+
+function toast(msg, ms = 2200) {
+  const t = $("#toast"); t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), ms);
+}
+
+/* ============ 选照片 ============ */
+$("#btnPick").onclick = () => $("#filePick").click();
+$("#btnShoot").onclick = () => $("#fileShoot").click();
+$("#btnRepick").onclick = () => { $("#filePick").click(); };
+for (const id of ["filePick", "fileShoot"]) {
+  $("#" + id).addEventListener("change", (e) => {
+    const f = e.target.files && e.target.files[0];
+    if (f) loadPhoto(f);
+    e.target.value = "";
+  });
+}
+
+function loadPhoto(file) {
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = () => {
+    URL.revokeObjectURL(url);
+    state.img = img;
+    const k = Math.min(1, WORK_MAX / Math.max(img.width, img.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    state.base = c;
+    state.mask = null; state.person = null;
+    $("#uploadCard").classList.add("hidden");
+    $("#studio").classList.remove("hidden");
+    $("#dock").classList.add("show");
+    fitView(); rebuildPerson(); render();
+    runSegmentation();
+  };
+  img.onerror = () => toast("这张图片打不开,换一张试试");
+  img.src = url;
+}
+
+/* ============ AI 人像抠图 (MediaPipe) ============ */
+const CDNS = [
+  "https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation",
+  "https://unpkg.com/@mediapipe/selfie_segmentation",
+];
+let segTool = null, segCdn = "";
+function loadScript(src) {
+  return new Promise((ok, bad) => {
+    const s = document.createElement("script");
+    s.src = src + "/selfie_segmentation.js";
+    s.onload = () => ok(src); s.onerror = () => bad(new Error("load fail " + src));
+    document.head.appendChild(s);
+  });
+}
+async function ensureSegTool() {
+  if (segTool) return segTool;
+  let lastErr = null;
+  for (const cdn of CDNS) {
+    try { await loadScript(cdn); segCdn = cdn; break; }
+    catch (e) { lastErr = e; }
+  }
+  if (!segCdn) throw lastErr || new Error("no cdn");
+  segTool = new SelfieSegmentation({ locateFile: (f) => `${segCdn}/${f}` });
+  segTool.setOptions({ modelSelection: 1 });
+  return segTool;
+}
+async function runSegmentation() {
+  const badge = $("#aiState");
+  badge.textContent = "AI 抠图中…"; badge.className = "badge";
+  try {
+    const tool = await ensureSegTool();
+    const result = await new Promise(async (ok, bad) => {
+      const timer = setTimeout(() => bad(new Error("timeout")), 25000);
+      tool.onResults((r) => { clearTimeout(timer); ok(r); });
+      try { await tool.send({ image: state.base }); }
+      catch (e) { clearTimeout(timer); bad(e); }
+    });
+    const m = document.createElement("canvas");
+    m.width = state.base.width; m.height = state.base.height;
+    m.getContext("2d").drawImage(result.segmentationMask, 0, 0, m.width, m.height);
+    maskLumaToAlpha(m);
+    state.mask = m; state.aiReady = true;
+    badge.textContent = "✅ AI 已抠好人像"; badge.className = "badge ok";
+    rebuildPerson(); render();
+  } catch (err) {
+    state.aiFailed = true;
+    badge.textContent = "⚠️ AI 不可用(网络原因),可用纯色抠图"; badge.className = "badge warn";
+  }
+}
+
+/* destination-in 合成看的是 alpha 通道:把蒙版亮度折算进 alpha */
+function maskLumaToAlpha(c) {
+  const ctx = c.getContext("2d");
+  const d = ctx.getImageData(0, 0, c.width, c.height);
+  const px = d.data;
+  for (let i = 0; i < px.length; i += 4) {
+    const luma = Math.max(px[i], px[i + 1], px[i + 2]);
+    px[i + 3] = Math.round(luma * px[i + 3] / 255);
+    px[i] = px[i + 1] = px[i + 2] = 255;
+  }
+  ctx.putImageData(d, 0, 0);
+}
+
+/* ============ 纯色背景抠图(备用) ============ */
+$("#btnChroma").onclick = () => {
+  $("#chromaRow").classList.remove("hidden");
+  chromaCut(); rebuildPerson(); render();
+  toast("已按纯色背景抠图,可拖容差微调");
+};
+$("#chromaTol").addEventListener("input", (e) => {
+  e.target.nextElementSibling.value = e.target.value;
+  chromaCut(); rebuildPerson(); render();
+});
+function chromaCut() {
+  const tol = +$("#chromaTol").value;
+  const src = state.base, w = src.width, h = src.height;
+  const k = Math.min(1, 800 / Math.max(w, h));
+  const sw = Math.round(w * k), sh = Math.round(h * k);
+  const sc = document.createElement("canvas"); sc.width = sw; sc.height = sh;
+  const sctx = sc.getContext("2d");
+  sctx.drawImage(src, 0, 0, sw, sh);
+  const d = sctx.getImageData(0, 0, sw, sh), px = d.data;
+  const flood = new Uint8Array(sw * sh);
+  const queue = [];
+  const seed = (x, y) => {
+    const i = (y * sw + x);
+    if (!flood[i]) { flood[i] = 1; queue.push(i); }
+  };
+  seed(0, 0); seed(sw - 1, 0); seed(0, sh - 1); seed(sw - 1, sh - 1);
+  seed(sw >> 1, 0);
+  const refs = queue.map((i) => [px[i * 4], px[i * 4 + 1], px[i * 4 + 2]]);
+  const match = (i) => {
+    const r = px[i * 4], g = px[i * 4 + 1], b = px[i * 4 + 2];
+    for (const [rr, gg, bb] of refs) {
+      if (Math.abs(r - rr) < tol && Math.abs(g - gg) < tol && Math.abs(b - bb) < tol) return true;
+    }
+    return false;
+  };
+  while (queue.length) {
+    const i = queue.pop();
+    const x = i % sw, y = (i / sw) | 0;
+    for (const [dx, dy] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+      const nx = x + dx, ny = y + dy;
+      if (nx < 0 || ny < 0 || nx >= sw || ny >= sh) continue;
+      const ni = ny * sw + nx;
+      if (!flood[ni] && match(ni)) { flood[ni] = 1; queue.push(ni); }
+    }
+  }
+  const md = sctx.createImageData(sw, sh);
+  for (let i = 0; i < sw * sh; i++) {
+    const v = flood[i] ? 0 : 255;
+    md.data[i * 4] = md.data[i * 4 + 1] = md.data[i * 4 + 2] = 255;
+    md.data[i * 4 + 3] = v;   // 蒙版走 alpha 通道
+  }
+  sctx.putImageData(md, 0, 0);
+  const m = document.createElement("canvas"); m.width = w; m.height = h;
+  const mctx = m.getContext("2d");
+  mctx.imageSmoothingEnabled = true;
+  mctx.drawImage(sc, 0, 0, w, h);
+  state.mask = m;
+}
+
+/* ============ 美颜管线 ============ */
+function applyAdjust(canvas) {
+  const f = FILTERS[state.filter] || FILTERS.none;
+  const bright = state.bright + f.bright;
+  const contrast = state.contrast + f.contrast;
+  const saturate = Math.max(-100, state.saturate + f.saturate);
+  const temp = state.temp + f.temp;
+  const whiten = state.whiten;
+  if (!bright && !contrast && !saturate && !temp && !whiten) return canvas;
+  const ctx = canvas.getContext("2d");
+  const d = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const px = d.data;
+  const cf = (259 * (contrast + 255)) / (255 * (259 - contrast));
+  const sf = 1 + saturate / 100;
+  const wl = whiten / 100 * 0.4;
+  for (let i = 0; i < px.length; i += 4) {
+    let r = px[i], g = px[i + 1], b = px[i + 2];
+    r += bright; g += bright; b += bright;
+    r = cf * (r - 128) + 128; g = cf * (g - 128) + 128; b = cf * (b - 128) + 128;
+    const lum = 0.299 * r + 0.587 * g + 0.114 * b;
+    r = lum + (r - lum) * sf; g = lum + (g - lum) * sf; b = lum + (b - lum) * sf;
+    r += temp; b -= temp;
+    if (wl) { r += (255 - r) * wl; g += (255 - g) * wl; b += (255 - b) * wl; }
+    px[i] = r < 0 ? 0 : r > 255 ? 255 : r;
+    px[i + 1] = g < 0 ? 0 : g > 255 ? 255 : g;
+    px[i + 2] = b < 0 ? 0 : b > 255 ? 255 : b;
+  }
+  ctx.putImageData(d, 0, 0);
+  return canvas;
+}
+
+function rebuildPerson() {
+  if (!state.base) return;
+  const w = state.base.width, h = state.base.height;
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const ctx = c.getContext("2d");
+  ctx.drawImage(state.base, 0, 0);
+  // 磨皮:模糊层按强度混合(有蒙版时只作用于人像)
+  if (state.smooth > 0) {
+    const blurred = document.createElement("canvas"); blurred.width = w; blurred.height = h;
+    const bctx = blurred.getContext("2d");
+    bctx.filter = `blur(${(3 + state.smooth / 18).toFixed(1)}px)`;
+    bctx.drawImage(state.base, 0, 0);
+    bctx.filter = "none";
+    if (state.mask) {
+      bctx.globalCompositeOperation = "destination-in";
+      bctx.filter = "blur(4px)";
+      bctx.drawImage(state.mask, 0, 0);
+    }
+    ctx.globalAlpha = Math.min(0.85, state.smooth / 100 * 0.85 + 0.1);
+    ctx.drawImage(blurred, 0, 0);
+    ctx.globalAlpha = 1;
+  }
+  applyAdjust(c);
+  // 抠图:仅在需要换底时应用蒙版
+  if (state.bg !== "keep" && state.mask) {
+    ctx.globalCompositeOperation = "destination-in";
+    ctx.filter = state.feather > 0 ? `blur(${state.feather}px)` : "none";
+    ctx.drawImage(state.mask, 0, 0);
+    ctx.filter = "none";
+    ctx.globalCompositeOperation = "source-over";
+  }
+  state.person = c;
+}
+
+/* ============ 取景与渲染 ============ */
+function specSize() {
+  const s = state.spec;
+  if (s.id !== "free") return { w: s.w, h: s.h };
+  const iw = state.base ? state.base.width : 600;
+  const ih = state.base ? state.base.height : 800;
+  const k = Math.min(1, 2000 / Math.max(iw, ih));
+  return { w: Math.round(iw * k), h: Math.round(ih * k) };
+}
+function fitView() {
+  const { w, h } = specSize();
+  view.width = w; view.height = h;
+  if (state.base) {
+    const cover = Math.max(w / state.base.width, h / state.base.height);
+    state.scale = cover;
+    state.ox = (w - state.base.width * cover) / 2;
+    // 证件照习惯:头部偏上留白少一点
+    state.oy = (h - state.base.height * cover) * 0.35;
+  }
+}
+function drawBackground(ctx, w, h) {
+  if (state.bg === "keep") { ctx.clearRect(0, 0, w, h); return; }
+  if (state.bg === "grad") {
+    const g = ctx.createLinearGradient(0, 0, 0, h);
+    g.addColorStop(0, "#f2f2f2"); g.addColorStop(1, "#c9c9c9");
+    ctx.fillStyle = g;
+  } else {
+    ctx.fillStyle = state.bg;
+  }
+  ctx.fillRect(0, 0, w, h);
+}
+function render() {
+  if (!state.person) return;
+  const w = view.width, h = view.height;
+  vtx.clearRect(0, 0, w, h);
+  if (state.bg === "keep") {
+    vtx.drawImage(state.base, state.ox, state.oy,
+      state.base.width * state.scale, state.base.height * state.scale);
+    // keep 模式下 person 层已含美颜(含未抠图情况),直接覆盖
+  }
+  drawBackground(vtx, w, h);
+  vtx.drawImage(state.person, state.ox, state.oy,
+    state.person.width * state.scale, state.person.height * state.scale);
+  drawFrame(vtx, w, h, false);
+}
+function drawFrame(ctx, w, h, isExport) {
+  const fr = state.frame;
+  if (fr === "none") return;
+  ctx.save();
+  if (fr === "white") {
+    const b = Math.round(Math.min(w, h) * 0.04);
+    ctx.strokeStyle = "#fff"; ctx.lineWidth = b * 2;
+    ctx.strokeRect(0, 0, w, h);
+  } else if (fr === "polaroid") {
+    const b = Math.round(Math.min(w, h) * 0.045);
+    const bottom = Math.round(Math.min(w, h) * 0.16);
+    ctx.strokeStyle = "#fff";
+    ctx.lineWidth = b * 2; ctx.strokeRect(0, 0, w, h);
+    ctx.fillStyle = "#fff"; ctx.fillRect(0, h - bottom, w, bottom);
+  } else if (fr === "round") {
+    ctx.globalCompositeOperation = "destination-in";
+    const r = Math.min(w, h) * 0.06;
+    ctx.beginPath();
+    ctx.roundRect(0, 0, w, h, r);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+/* ============ 手势:拖动 + 缩放 ============ */
+const pointers = new Map();
+let pinchBase = null;
+view.addEventListener("pointerdown", (e) => {
+  view.setPointerCapture(e.pointerId);
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 2) {
+    const [a, b] = [...pointers.values()];
+    pinchBase = { d: Math.hypot(a.x - b.x, a.y - b.y), scale: state.scale };
+  }
+});
+view.addEventListener("pointermove", (e) => {
+  if (!pointers.has(e.pointerId)) return;
+  const prev = pointers.get(e.pointerId);
+  const cur = { x: e.clientX, y: e.clientY };
+  const cssScale = view.width / view.getBoundingClientRect().width;
+  if (pointers.size === 1) {
+    state.ox += (cur.x - prev.x) * cssScale;
+    state.oy += (cur.y - prev.y) * cssScale;
+    render();
+  } else if (pointers.size === 2) {
+    pointers.set(e.pointerId, cur);
+    const [a, b] = [...pointers.values()];
+    const d = Math.hypot(a.x - b.x, a.y - b.y);
+    if (pinchBase && d > 10) zoomTo(pinchBase.scale * (d / pinchBase.d));
+    return;
+  }
+  pointers.set(e.pointerId, cur);
+});
+const endPointer = (e) => { pointers.delete(e.pointerId); if (pointers.size < 2) pinchBase = null; };
+view.addEventListener("pointerup", endPointer);
+view.addEventListener("pointercancel", endPointer);
+view.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  zoomTo(state.scale * (e.deltaY < 0 ? 1.06 : 0.94));
+}, { passive: false });
+function zoomTo(s) {
+  const { w, h } = { w: view.width, h: view.height };
+  const min = Math.max(w / state.base.width, h / state.base.height) * 0.5;
+  s = Math.max(min, Math.min(8, s));
+  const cx = w / 2, cy = h / 2;
+  state.ox = cx - (cx - state.ox) * (s / state.scale);
+  state.oy = cy - (cy - state.oy) * (s / state.scale);
+  state.scale = s;
+  render();
+}
+
+/* ============ 控件绑定 ============ */
+$("#tabs").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  document.querySelectorAll("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".panel").forEach((p) => p.classList.remove("on"));
+  $("#panel-" + b.dataset.p).classList.add("on");
+});
+$("#bgChips").addEventListener("click", (e) => {
+  const c = e.target.closest(".chip"); if (!c || !c.dataset.bg) return;
+  document.querySelectorAll("#bgChips .chip").forEach((x) => x.classList.toggle("on", x === c));
+  state.bg = c.dataset.bg;
+  if (state.bg !== "keep" && !state.mask && state.aiFailed) {
+    toast("AI 不可用:请点下方「按纯色背景抠图」");
+  }
+  rebuildPerson(); render();
+});
+$("#bgCustom").addEventListener("input", (e) => {
+  state.bg = e.target.value;
+  document.querySelectorAll("#bgChips .chip").forEach((x) => x.classList.remove("on"));
+  e.target.closest(".chip").classList.add("on");
+  rebuildPerson(); render();
+});
+$("#feather").addEventListener("input", (e) => {
+  e.target.nextElementSibling.value = e.target.value;
+  state.feather = +e.target.value;
+  rebuildPerson(); render();
+});
+$("#filterChips").addEventListener("click", (e) => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  document.querySelectorAll("#filterChips .chip").forEach((x) => x.classList.toggle("on", x === c));
+  state.filter = c.dataset.f;
+  rebuildPerson(); render();
+});
+let rebuildTimer = null;
+for (const id of ["smooth", "whiten", "bright", "contrast", "saturate", "temp"]) {
+  $("#" + id).addEventListener("input", (e) => {
+    e.target.nextElementSibling.value = e.target.value;
+    state[id] = +e.target.value;
+    clearTimeout(rebuildTimer);
+    rebuildTimer = setTimeout(() => { rebuildPerson(); render(); }, 60);
+  });
+}
+$("#btnOneTap").onclick = () => {
+  const preset = { smooth: 45, whiten: 22, bright: 6, contrast: 4, saturate: 6, temp: 2 };
+  for (const [k, v] of Object.entries(preset)) {
+    state[k] = v; $("#" + k).value = v; $("#" + k).nextElementSibling.value = v;
+  }
+  rebuildPerson(); render();
+  toast("一键美颜完成,可再手动微调");
+};
+const grid = $("#specGrid");
+for (const s of SPECS) {
+  const el = document.createElement("div");
+  el.className = "spec" + (s.id === state.spec.id ? " on" : "");
+  el.innerHTML = `<b>${s.name}</b><span>${s.sub}</span>`;
+  el.onclick = () => {
+    document.querySelectorAll(".spec").forEach((x) => x.classList.remove("on"));
+    el.classList.add("on");
+    state.spec = s; fitView(); render();
+  };
+  grid.appendChild(el);
+}
+$("#frameChips").addEventListener("click", (e) => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  document.querySelectorAll("#frameChips .chip").forEach((x) => x.classList.toggle("on", x === c));
+  state.frame = c.dataset.fr;
+  render();
+});
+
+/* ============ 导出 ============ */
+function exportCanvas(transparent) {
+  const { w, h } = specSize();
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const ctx = c.getContext("2d");
+  if (!transparent) {
+    if (state.bg === "keep") {
+      ctx.drawImage(state.base, state.ox, state.oy,
+        state.base.width * state.scale, state.base.height * state.scale);
+    }
+    drawBackground(ctx, w, h);
+  }
+  ctx.drawImage(state.person, state.ox, state.oy,
+    state.person.width * state.scale, state.person.height * state.scale);
+  drawFrame(ctx, w, h, true);
+  if (!transparent && state.bg === "keep") {
+    // 保留原背景时,底层已画原图
+  } else if (!transparent && state.frame === "round") {
+    // 圆角挖空后补白底,避免 jpg 黑角
+    const c2 = document.createElement("canvas"); c2.width = w; c2.height = h;
+    const x2 = c2.getContext("2d");
+    x2.fillStyle = "#ffffff"; x2.fillRect(0, 0, w, h);
+    x2.drawImage(c, 0, 0);
+    return c2;
+  }
+  return c;
+}
+function download(dataUrl, name) {
+  const a = document.createElement("a");
+  a.href = dataUrl; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+}
+const bgName = () => state.bg === "keep" ? "原背景"
+  : state.bg === "#ffffff" ? "白底" : state.bg === "#438edb" ? "蓝底"
+  : state.bg === "#d9001b" ? "红底" : state.bg === "#2a5caa" ? "深蓝底"
+  : state.bg === "grad" ? "渐变灰" : "自定义底";
+$("#btnSave").onclick = () => {
+  if (!state.person) return;
+  const c = exportCanvas(false);
+  download(c.toDataURL("image/jpeg", 0.95), `证件照_${state.spec.name}_${bgName()}.jpg`);
+  toast("已保存到下载/相册 ✅");
+};
+$("#btnPng").onclick = () => {
+  if (!state.person) return;
+  if (state.bg === "keep" || !state.mask) { toast("先选一个底色(需要抠图)再导透明底"); return; }
+  const c = exportCanvas(true);
+  download(c.toDataURL("image/png"), `人像透明底_${state.spec.name}.png`);
+  toast("透明底 PNG 已保存 ✅");
+};
+$("#btnSheet").onclick = () => {
+  if (!state.person) return;
+  if (state.spec.id === "free" || state.spec.id === "story") { toast("排版适用于一寸/二寸等证件规格"); return; }
+  const shot = exportCanvas(false);
+  const W = 1800, H = 1200, M = 60, G = 24; // 六寸 4R @300dpi
+  const cols = Math.max(1, Math.floor((W - M * 2 + G) / (shot.width + G)));
+  const rows = Math.max(1, Math.floor((H - M * 2 + G) / (shot.height + G)));
+  const c = document.createElement("canvas"); c.width = W; c.height = H;
+  const ctx = c.getContext("2d");
+  ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, W, H);
+  const ox = (W - cols * shot.width - (cols - 1) * G) / 2;
+  const oy = (H - rows * shot.height - (rows - 1) * G) / 2;
+  ctx.strokeStyle = "#dddddd"; ctx.lineWidth = 1;
+  for (let r = 0; r < rows; r++) for (let col = 0; col < cols; col++) {
+    const x = ox + col * (shot.width + G), y = oy + r * (shot.height + G);
+    ctx.drawImage(shot, x, y);
+    ctx.strokeRect(x - 0.5, y - 0.5, shot.width + 1, shot.height + 1);
+  }
+  download(c.toDataURL("image/jpeg", 0.95), `六寸排版_${state.spec.name}_${bgName()}_${cols * rows}张.jpg`);
+  toast(`已生成六寸排版(${cols * rows} 张),拿去打印店冲印即可`);
+};
+</script>
+</body>
+</html>
