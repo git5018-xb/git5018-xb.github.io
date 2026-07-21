@@ -181,9 +181,9 @@ const SPECS = [
   { id:"bigone",name:"大一寸",   sub:"33×48mm", w:390,  h:567 },
   { id:"s2",    name:"小二寸",   sub:"35×45mm", w:413,  h:531 },
   { id:"two",   name:"二寸",     sub:"35×49mm", w:413,  h:579 },
-  { id:"sq",    name:"方形头像", sub:"1:1",     w:600,  h:600 },
-  { id:"story", name:"社交竖图", sub:"4:5",     w:1080, h:1350 },
-  { id:"free",  name:"自由比例", sub:"原图",    w:0,    h:0 },
+  { id:"sq",    name:"方形头像", sub:"1:1",     w:1200, h:1200 },
+  { id:"story", name:"社交竖图", sub:"4:5",     w:2160, h:2700 },
+  { id:"free",  name:"高清原图", sub:"最高4K",  w:0,    h:0 },
 ];
 const FILTERS = {
   none:    { bright:0, contrast:0, saturate:0, temp:0 },
@@ -206,7 +206,7 @@ const state = {
   filter: "none",
   smooth: 0, whiten: 0, bright: 0, contrast: 0, saturate: 0, temp: 0,
   // 取景变换: 人像层在画布里的缩放和平移
-  scale: 1, ox: 0, oy: 0,
+  scale: 1, ox: 0, oy: 0, exportScale: 1,
   aiReady: false, aiFailed: false,
 };
 
@@ -402,58 +402,82 @@ function applyAdjust(canvas) {
   return canvas;
 }
 
-function rebuildPerson() {
-  if (!state.base) return;
-  const w = state.base.width, h = state.base.height;
+// 在任意分辨率的 src 上合成人像(美颜+磨皮+抠图)。
+// bs = src 相对预览分辨率的比例:高清导出时 >1,让模糊/羽化半径同步放大,
+// 保证 4K 导出的磨皮、边缘柔和度和预览看到的一致。
+function composePerson(src) {
+  const w = src.width, h = src.height;
+  const bs = w / state.base.width;
   const c = document.createElement("canvas"); c.width = w; c.height = h;
   const ctx = c.getContext("2d");
-  ctx.drawImage(state.base, 0, 0);
-  // 磨皮:模糊层按强度混合(有蒙版时只作用于人像)
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(src, 0, 0, w, h);
   if (state.smooth > 0) {
     const blurred = document.createElement("canvas"); blurred.width = w; blurred.height = h;
     const bctx = blurred.getContext("2d");
-    bctx.filter = `blur(${(3 + state.smooth / 18).toFixed(1)}px)`;
-    bctx.drawImage(state.base, 0, 0);
+    bctx.filter = `blur(${((3 + state.smooth / 18) * bs).toFixed(1)}px)`;
+    bctx.drawImage(src, 0, 0, w, h);
     bctx.filter = "none";
     if (state.mask) {
       bctx.globalCompositeOperation = "destination-in";
-      bctx.filter = "blur(4px)";
-      bctx.drawImage(state.mask, 0, 0);
+      bctx.filter = `blur(${(4 * bs).toFixed(1)}px)`;
+      bctx.drawImage(state.mask, 0, 0, w, h);
     }
     ctx.globalAlpha = Math.min(0.85, state.smooth / 100 * 0.85 + 0.1);
     ctx.drawImage(blurred, 0, 0);
     ctx.globalAlpha = 1;
   }
   applyAdjust(c);
-  // 抠图:仅在需要换底时应用蒙版
   if (state.bg !== "keep" && state.mask) {
     ctx.globalCompositeOperation = "destination-in";
-    ctx.filter = state.feather > 0 ? `blur(${state.feather}px)` : "none";
-    ctx.drawImage(state.mask, 0, 0);
+    ctx.filter = state.feather > 0 ? `blur(${(state.feather * bs).toFixed(1)}px)` : "none";
+    ctx.drawImage(state.mask, 0, 0, w, h);
     ctx.filter = "none";
     ctx.globalCompositeOperation = "source-over";
   }
-  state.person = c;
+  return c;
+}
+function rebuildPerson() {
+  if (!state.base) return;
+  state.person = composePerson(state.base);   // 预览用小图,流畅
+}
+// 导出用:从原图全分辨率重新构建(最长边上限 4096),不经过 1600 降采样
+function fullResBase() {
+  const cap = 4096;
+  const iw = state.img.width, ih = state.img.height;
+  const k = Math.min(1, cap / Math.max(iw, ih));
+  const c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(iw * k));
+  c.height = Math.max(1, Math.round(ih * k));
+  const ctx = c.getContext("2d");
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(state.img, 0, 0, c.width, c.height);
+  return c;
 }
 
 /* ============ 取景与渲染 ============ */
+// 真实导出尺寸(高清):自由比例=原图分辨率(≤4096)
 function specSize() {
   const s = state.spec;
   if (s.id !== "free") return { w: s.w, h: s.h };
-  const iw = state.base ? state.base.width : 600;
-  const ih = state.base ? state.base.height : 800;
-  const k = Math.min(1, 2000 / Math.max(iw, ih));
+  const iw = state.img ? state.img.width : 1200;
+  const ih = state.img ? state.img.height : 1600;
+  const k = Math.min(1, 4096 / Math.max(iw, ih));
   return { w: Math.round(iw * k), h: Math.round(ih * k) };
 }
 function fitView() {
   const { w, h } = specSize();
-  view.width = w; view.height = h;
+  // 预览画布压到 ≤1200 只为屏幕流畅;导出仍用真实尺寸,exportScale 记录放大倍数
+  const disp = Math.min(1, 1200 / Math.max(w, h));
+  view.width = Math.max(1, Math.round(w * disp));
+  view.height = Math.max(1, Math.round(h * disp));
+  state.exportScale = 1 / disp;
   if (state.base) {
-    const cover = Math.max(w / state.base.width, h / state.base.height);
+    const cover = Math.max(view.width / state.base.width, view.height / state.base.height);
     state.scale = cover;
-    state.ox = (w - state.base.width * cover) / 2;
+    state.ox = (view.width - state.base.width * cover) / 2;
     // 证件照习惯:头部偏上留白少一点
-    state.oy = (h - state.base.height * cover) * 0.35;
+    state.oy = (view.height - state.base.height * cover) * 0.35;
   }
 }
 function drawBackground(ctx, w, h) {
@@ -624,22 +648,22 @@ $("#frameChips").addEventListener("click", (e) => {
 /* ============ 导出 ============ */
 function exportCanvas(transparent) {
   const { w, h } = specSize();
+  const es = state.exportScale || (view.width ? w / view.width : 1);
+  const hiPerson = composePerson(fullResBase());   // 原图级清晰度
+  // 取景布局仍以预览(base)坐标定义,乘 es 放大到导出画布;源是高清,故清晰
+  const dw = state.base.width * state.scale * es;
+  const dh = state.base.height * state.scale * es;
+  const dx = state.ox * es, dy = state.oy * es;
   const c = document.createElement("canvas"); c.width = w; c.height = h;
   const ctx = c.getContext("2d");
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
   if (!transparent) {
-    if (state.bg === "keep") {
-      ctx.drawImage(state.base, state.ox, state.oy,
-        state.base.width * state.scale, state.base.height * state.scale);
-    }
-    drawBackground(ctx, w, h);
+    if (state.bg === "keep") { ctx.fillStyle = "#ffffff"; ctx.fillRect(0, 0, w, h); }
+    else drawBackground(ctx, w, h);
   }
-  ctx.drawImage(state.person, state.ox, state.oy,
-    state.person.width * state.scale, state.person.height * state.scale);
+  ctx.drawImage(hiPerson, dx, dy, dw, dh);
   drawFrame(ctx, w, h, true);
-  if (!transparent && state.bg === "keep") {
-    // 保留原背景时,底层已画原图
-  } else if (!transparent && state.frame === "round") {
-    // 圆角挖空后补白底,避免 jpg 黑角
+  if (!transparent && state.frame === "round") {
     const c2 = document.createElement("canvas"); c2.width = w; c2.height = h;
     const x2 = c2.getContext("2d");
     x2.fillStyle = "#ffffff"; x2.fillRect(0, 0, w, h);
@@ -647,6 +671,11 @@ function exportCanvas(transparent) {
     return c2;
   }
   return c;
+}
+// 高清导出耗时,先让 UI 弹出提示再计算
+function busyExport(fn) {
+  toast("正在生成高清图,请稍候…", 8000);
+  setTimeout(() => { try { fn(); } catch (e) { toast("导出失败:" + e.message); } }, 60);
 }
 function download(dataUrl, name) {
   const a = document.createElement("a");
@@ -659,20 +688,27 @@ const bgName = () => state.bg === "keep" ? "原背景"
   : state.bg === "grad" ? "渐变灰" : "自定义底";
 $("#btnSave").onclick = () => {
   if (!state.person) return;
-  const c = exportCanvas(false);
-  download(c.toDataURL("image/jpeg", 0.95), `证件照_${state.spec.name}_${bgName()}.jpg`);
-  toast("已保存到下载/相册 ✅");
+  busyExport(() => {
+    const c = exportCanvas(false);
+    download(c.toDataURL("image/jpeg", 0.96), `美化照片_${state.spec.name}_${bgName()}.jpg`);
+    toast(`已保存高清图 ${c.width}×${c.height} ✅`);
+  });
 };
 $("#btnPng").onclick = () => {
   if (!state.person) return;
   if (state.bg === "keep" || !state.mask) { toast("先选一个底色(需要抠图)再导透明底"); return; }
-  const c = exportCanvas(true);
-  download(c.toDataURL("image/png"), `人像透明底_${state.spec.name}.png`);
-  toast("透明底 PNG 已保存 ✅");
+  busyExport(() => {
+    const c = exportCanvas(true);
+    download(c.toDataURL("image/png"), `人像透明底_${state.spec.name}.png`);
+    toast(`透明底 PNG 已保存 ${c.width}×${c.height} ✅`);
+  });
 };
 $("#btnSheet").onclick = () => {
   if (!state.person) return;
   if (state.spec.id === "free" || state.spec.id === "story") { toast("排版适用于一寸/二寸等证件规格"); return; }
+  busyExport(() => doSheet());
+};
+function doSheet() {
   const shot = exportCanvas(false);
   const W = 1800, H = 1200, M = 60, G = 24; // 六寸 4R @300dpi
   const cols = Math.max(1, Math.floor((W - M * 2 + G) / (shot.width + G)));
@@ -690,7 +726,7 @@ $("#btnSheet").onclick = () => {
   }
   download(c.toDataURL("image/jpeg", 0.95), `六寸排版_${state.spec.name}_${bgName()}_${cols * rows}张.jpg`);
   toast(`已生成六寸排版(${cols * rows} 张),拿去打印店冲印即可`);
-};
+}
 </script>
 </body>
 </html>
