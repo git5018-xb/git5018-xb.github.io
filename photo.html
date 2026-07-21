@@ -73,12 +73,27 @@ input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-rad
   color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;z-index:99;
   opacity:0;transition:opacity .25s;pointer-events:none;max-width:86vw;text-align:center}
 #toast.show{opacity:1}
+.filter-grid{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px}
+.fcell{flex:0 0 auto;width:76px;text-align:center;cursor:pointer}
+.fcell canvas{width:76px;height:76px;border-radius:10px;border:2px solid var(--line);display:block}
+.fcell.on canvas{border-color:var(--accent)}
+.fcell span{font-size:12px;color:var(--muted);display:block;margin-top:3px}
+.fcell.on span{color:var(--ink);font-weight:600}
+.txt-tools{display:flex;gap:8px;margin-bottom:8px}
+.txt-tools input[type=text]{flex:1;padding:9px 12px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+.txt-tools button,.mini-btn{padding:9px 14px;border:0;border-radius:10px;background:var(--accent);color:#fff;font-weight:600;cursor:pointer}
+.sticker-pal{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.sticker-pal button{font-size:22px;width:40px;height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);cursor:pointer;line-height:1}
+.ov-controls{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.ov-controls button{flex:1;min-width:52px;padding:9px 4px;border:1px solid var(--line);border-radius:10px;background:var(--card);font-size:14px;cursor:pointer}
+.ov-controls button.del{color:#c0392b;border-color:#e8b3ab}
+.lbl-inline{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
 <header>
   <h1>📸 美颜证件照相馆</h1>
-  <p>换底色 · 一键美颜 · 一寸二寸各种规格,拍完直接用</p>
+  <p>换底色 · 滤镜 · 美颜 · 文字贴纸 · 证件照规格,一站搞定</p>
 </header>
 <main>
 
@@ -103,7 +118,9 @@ input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-rad
 
   <div class="tabs" id="tabs">
     <button data-p="bg" class="on">🎨 底色</button>
+    <button data-p="filter">🎬 滤镜</button>
     <button data-p="beauty">✨ 美颜</button>
+    <button data-p="text">🔤 文字贴纸</button>
     <button data-p="enhance">🔍 增清</button>
     <button data-p="spec">📐 规格</button>
     <button data-p="frame">🖼️ 相框</button>
@@ -127,16 +144,32 @@ input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-rad
       <input type="range" id="chromaTol" min="8" max="80" value="30"><output>30</output></div>
   </div>
 
-  <div class="panel" id="panel-beauty">
-    <div class="chips" id="filterChips">
-      <button class="chip on" data-f="none">原色</button>
-      <button class="chip" data-f="natural">自然</button>
-      <button class="chip" data-f="cool">冷白</button>
-      <button class="chip" data-f="warm">暖阳</button>
-      <button class="chip" data-f="film">胶片</button>
-      <button class="chip" data-f="bw">黑白</button>
+  <div class="panel" id="panel-filter">
+    <div class="filter-grid" id="filterGrid"></div>
+    <div class="slider-row"><label>滤镜浓度</label><input type="range" id="filterAmt" min="0" max="100" value="100"><output>100</output></div>
+    <p class="note">十几款一键滤镜,点一下即出片;浓度可调淡。滤镜和下面「美颜」的手动微调可以叠加。</p>
+  </div>
+
+  <div class="panel" id="panel-text">
+    <div class="txt-tools">
+      <input type="text" id="txtInput" placeholder="输入文字…" maxlength="40">
+      <button id="txtAdd">加文字</button>
     </div>
-    <div style="height:6px"></div>
+    <div class="lbl-inline">文字色 <input type="color" id="txtColor" value="#ffffff">
+      描边色 <input type="color" id="txtStroke" value="#000000"></div>
+    <div class="sticker-pal" id="stickerPal"></div>
+    <button class="mini-btn" id="mosaicAdd" style="background:#5a5a5a">🔲 加马赛克(打码遮挡)</button>
+    <div class="ov-controls hidden" id="ovControls">
+      <button data-act="big">➕ 放大</button>
+      <button data-act="small">➖ 缩小</button>
+      <button data-act="rotL">↺ 左转</button>
+      <button data-act="rotR">↻ 右转</button>
+      <button data-act="del" class="del">🗑 删除</button>
+    </div>
+    <p class="note">点文字/表情加到照片上,<b>在照片上拖动</b>它就能移动;选中后用上面按钮放大缩小旋转。马赛克可拖到脸/车牌上打码。</p>
+  </div>
+
+  <div class="panel" id="panel-beauty">
     <button class="chip" id="btnOneTap" style="border-color:var(--accent);font-weight:600">💖 一键美颜</button>
     <div class="slider-row"><label>磨皮</label><input type="range" id="smooth" min="0" max="100" value="0"><output>0</output></div>
     <div class="slider-row"><label>美白</label><input type="range" id="whiten" min="0" max="100" value="0"><output>0</output></div>
@@ -198,12 +231,21 @@ const SPECS = [
   { id:"free",  name:"高清原图", sub:"最高4K",  w:0,    h:0 },
 ];
 const FILTERS = {
-  none:    { bright:0, contrast:0, saturate:0, temp:0 },
-  natural: { bright:5, contrast:3, saturate:8, temp:2 },
-  cool:    { bright:9, contrast:2, saturate:-8, temp:-12 },
-  warm:    { bright:5, contrast:3, saturate:6, temp:14 },
-  film:    { bright:2, contrast:12, saturate:-14, temp:6 },
-  bw:      { bright:3, contrast:10, saturate:-100, temp:0 },
+  none:     { name:"原图",   bright:0,  contrast:0,  saturate:0,   temp:0 },
+  natural:  { name:"自然",   bright:5,  contrast:3,  saturate:8,   temp:2 },
+  fresh:    { name:"清新",   bright:8,  contrast:5,  saturate:14,  temp:-4 },
+  japan:    { name:"日系",   bright:11, contrast:-5, saturate:-6,  temp:6 },
+  warmsun:  { name:"暖阳",   bright:6,  contrast:4,  saturate:8,   temp:16 },
+  cool:     { name:"冷白",   bright:10, contrast:4,  saturate:-8,  temp:-14 },
+  sweet:    { name:"甜美",   bright:9,  contrast:2,  saturate:16,  temp:10 },
+  cream:    { name:"奶油",   bright:9,  contrast:-3, saturate:4,   temp:8 },
+  film:     { name:"胶片",   bright:2,  contrast:14, saturate:-16, temp:6 },
+  retro:    { name:"复古",   bright:-2, contrast:10, saturate:-20, temp:14 },
+  mist:     { name:"雾感",   bright:11, contrast:-8, saturate:-10, temp:0 },
+  gray:     { name:"高级灰", bright:3,  contrast:6,  saturate:-42, temp:-2 },
+  blackgold:{ name:"黑金",   bright:-4, contrast:22, saturate:-30, temp:12 },
+  vivid:    { name:"鲜艳",   bright:3,  contrast:8,  saturate:26,  temp:0 },
+  bw:       { name:"黑白",   bright:3,  contrast:10, saturate:-100,temp:0 },
 };
 
 const state = {
@@ -217,7 +259,8 @@ const state = {
   frame: "none",
   filter: "none",
   smooth: 0, whiten: 0, bright: 0, contrast: 0, saturate: 0, temp: 0,
-  sharpen: 0, upscale: 1,
+  sharpen: 0, upscale: 1, filterAmt: 100,
+  overlays: [], selOv: -1, uiTab: "bg",
   // 取景变换: 人像层在画布里的缩放和平移
   scale: 1, ox: 0, oy: 0, exportScale: 1,
   aiReady: false, aiFailed: false,
@@ -252,6 +295,9 @@ function loadPhoto(file) {
     c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
     state.base = c;
     state.mask = null; state.person = null;
+    state.overlays = []; state.selOv = -1;
+    filterThumb = null; $("#filterGrid").dataset.built = "";
+    $("#ovControls").classList.add("hidden");
     $("#uploadCard").classList.add("hidden");
     $("#studio").classList.remove("hidden");
     $("#dock").classList.add("show");
@@ -387,10 +433,11 @@ function chromaCut() {
 /* ============ 美颜管线 ============ */
 function applyAdjust(canvas) {
   const f = FILTERS[state.filter] || FILTERS.none;
-  const bright = state.bright + f.bright;
-  const contrast = state.contrast + f.contrast;
-  const saturate = Math.max(-100, state.saturate + f.saturate);
-  const temp = state.temp + f.temp;
+  const a = state.filterAmt / 100;   // 滤镜浓度
+  const bright = state.bright + f.bright * a;
+  const contrast = state.contrast + f.contrast * a;
+  const saturate = Math.max(-100, state.saturate + f.saturate * a);
+  const temp = state.temp + f.temp * a;
   const whiten = state.whiten;
   if (!bright && !contrast && !saturate && !temp && !whiten) return canvas;
   const ctx = canvas.getContext("2d");
@@ -547,6 +594,7 @@ function render() {
   drawBackground(vtx, w, h);
   vtx.drawImage(state.person, state.ox, state.oy,
     state.person.width * state.scale, state.person.height * state.scale);
+  drawOverlays(vtx, w, h, true);
   drawFrame(vtx, w, h, false);
 }
 function drawFrame(ctx, w, h, isExport) {
@@ -573,11 +621,95 @@ function drawFrame(ctx, w, h, isExport) {
   ctx.restore();
 }
 
+/* ============ 文字 / 贴纸 / 马赛克 叠加层 ============ */
+function ovBounds(ov, W, H) {
+  const x = ov.nx * W, y = ov.ny * H;
+  if (ov.type === "text") {
+    const fs = H * 0.09 * ov.scale;
+    const tmp = document.createElement("canvas").getContext("2d");
+    tmp.font = `700 ${fs}px "PingFang SC","Microsoft YaHei",sans-serif`;
+    const tw = tmp.measureText(ov.text || " ").width;
+    return { x, y, w: tw + fs * 0.4, h: fs * 1.25 };
+  }
+  if (ov.type === "sticker") { const s = H * 0.16 * ov.scale; return { x, y, w: s, h: s }; }
+  const s = H * 0.28 * ov.scale; return { x, y, w: s, h: s }; // mosaic
+}
+function drawOverlays(ctx, W, H, isPreview) {
+  state.overlays.forEach((ov, i) => {
+    const x = ov.nx * W, y = ov.ny * H;
+    if (ov.type === "mosaic") {
+      const size = H * 0.28 * ov.scale;
+      const sx = Math.max(0, x - size / 2), sy = Math.max(0, y - size / 2);
+      const sw = Math.min(W, x + size / 2) - sx, sh = Math.min(H, y + size / 2) - sy;
+      if (sw > 2 && sh > 2) {
+        const cw = 12, ch = Math.max(2, Math.round(cw * sh / sw));
+        const tmp = document.createElement("canvas"); tmp.width = cw; tmp.height = ch;
+        tmp.getContext("2d").drawImage(ctx.canvas, sx, sy, sw, sh, 0, 0, cw, ch);
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(tmp, 0, 0, cw, ch, sx, sy, sw, sh);
+        ctx.imageSmoothingEnabled = true;
+      }
+    } else {
+      ctx.save();
+      ctx.translate(x, y); ctx.rotate((ov.rot || 0) * Math.PI / 180);
+      ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      if (ov.type === "text") {
+        const fs = H * 0.09 * ov.scale;
+        ctx.font = `700 ${fs}px "PingFang SC","Microsoft YaHei",sans-serif`;
+        ctx.lineJoin = "round"; ctx.lineWidth = fs * 0.16;
+        ctx.strokeStyle = ov.stroke; ctx.strokeText(ov.text, 0, 0);
+        ctx.fillStyle = ov.color; ctx.fillText(ov.text, 0, 0);
+      } else {
+        const fs = H * 0.16 * ov.scale;
+        ctx.font = `${fs}px sans-serif`;
+        ctx.fillText(ov.emoji, 0, 0);
+      }
+      ctx.restore();
+    }
+    if (isPreview && i === state.selOv) {
+      const b = ovBounds(ov, W, H);
+      ctx.save();
+      ctx.strokeStyle = "rgba(232,99,111,.95)"; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+      ctx.strokeRect(b.x - b.w / 2, b.y - b.h / 2, b.w, b.h);
+      ctx.restore();
+    }
+  });
+}
+function overlayAt(vx, vy) {
+  for (let i = state.overlays.length - 1; i >= 0; i--) {
+    const b = ovBounds(state.overlays[i], view.width, view.height);
+    if (Math.abs(vx - b.x) <= b.w / 2 + 8 && Math.abs(vy - b.y) <= b.h / 2 + 8) return i;
+  }
+  return -1;
+}
+function selectOverlay(i) {
+  state.selOv = i;
+  $("#ovControls").classList.toggle("hidden", i < 0);
+  render();
+}
+function addOverlay(ov) {
+  ov.nx = 0.5; ov.ny = 0.42; ov.scale = ov.scale || 1; ov.rot = 0;
+  state.overlays.push(ov);
+  selectOverlay(state.overlays.length - 1);
+}
+
 /* ============ 手势:拖动 + 缩放 ============ */
 const pointers = new Map();
 let pinchBase = null;
+let ovDrag = null;
+function viewCoord(e) {
+  const r = view.getBoundingClientRect();
+  return { x: (e.clientX - r.left) * (view.width / r.width), y: (e.clientY - r.top) * (view.height / r.height) };
+}
 view.addEventListener("pointerdown", (e) => {
   view.setPointerCapture(e.pointerId);
+  if (state.uiTab === "text") {
+    const p = viewCoord(e);
+    const hit = overlayAt(p.x, p.y);
+    selectOverlay(hit);
+    ovDrag = hit >= 0 ? { id: e.pointerId, last: p } : null;
+    return;
+  }
   pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   if (pointers.size === 2) {
     const [a, b] = [...pointers.values()];
@@ -585,6 +717,14 @@ view.addEventListener("pointerdown", (e) => {
   }
 });
 view.addEventListener("pointermove", (e) => {
+  if (state.uiTab === "text") {
+    if (!ovDrag || ovDrag.id !== e.pointerId) return;
+    const p = viewCoord(e), ov = state.overlays[state.selOv]; if (!ov) return;
+    ov.nx += (p.x - ovDrag.last.x) / view.width;
+    ov.ny += (p.y - ovDrag.last.y) / view.height;
+    ovDrag.last = p; render();
+    return;
+  }
   if (!pointers.has(e.pointerId)) return;
   const prev = pointers.get(e.pointerId);
   const cur = { x: e.clientX, y: e.clientY };
@@ -602,7 +742,10 @@ view.addEventListener("pointermove", (e) => {
   }
   pointers.set(e.pointerId, cur);
 });
-const endPointer = (e) => { pointers.delete(e.pointerId); if (pointers.size < 2) pinchBase = null; };
+const endPointer = (e) => {
+  if (ovDrag && ovDrag.id === e.pointerId) ovDrag = null;
+  pointers.delete(e.pointerId); if (pointers.size < 2) pinchBase = null;
+};
 view.addEventListener("pointerup", endPointer);
 view.addEventListener("pointercancel", endPointer);
 view.addEventListener("wheel", (e) => {
@@ -626,6 +769,78 @@ $("#tabs").addEventListener("click", (e) => {
   document.querySelectorAll("#tabs button").forEach((x) => x.classList.toggle("on", x === b));
   document.querySelectorAll(".panel").forEach((p) => p.classList.remove("on"));
   $("#panel-" + b.dataset.p).classList.add("on");
+  state.uiTab = b.dataset.p;
+  $("#stageHint").textContent = b.dataset.p === "text"
+    ? "点贴纸/文字后,在照片上拖动它移动" : "拖动照片调位置 · 双指或滚轮缩放";
+  if (b.dataset.p !== "text") selectOverlay(-1);
+  if (b.dataset.p === "filter") buildFilterGrid();
+});
+
+/* ---- 滤镜大全 ---- */
+let filterThumb = null;
+function buildFilterGrid() {
+  const grid = $("#filterGrid");
+  if (grid.dataset.built === "1") return;
+  // 用缩略图渲染每个滤镜的效果预览
+  if (!filterThumb && state.base) {
+    const tw = 76, th = Math.round(76 * state.base.height / state.base.width);
+    filterThumb = document.createElement("canvas"); filterThumb.width = tw; filterThumb.height = th > 76 ? 76 : th;
+    const r = Math.min(76 / state.base.width, 76 / state.base.height);
+    filterThumb.width = Math.round(state.base.width * r); filterThumb.height = Math.round(state.base.height * r);
+    filterThumb.getContext("2d").drawImage(state.base, 0, 0, filterThumb.width, filterThumb.height);
+  }
+  grid.innerHTML = "";
+  const saved = { filter: state.filter, filterAmt: state.filterAmt, smooth: state.smooth };
+  for (const [key, f] of Object.entries(FILTERS)) {
+    const cell = document.createElement("div");
+    cell.className = "fcell" + (key === state.filter ? " on" : "");
+    const cv = document.createElement("canvas");
+    cv.width = filterThumb.width; cv.height = filterThumb.height;
+    const cx = cv.getContext("2d"); cx.drawImage(filterThumb, 0, 0);
+    state.filter = key; state.filterAmt = 100; state.smooth = 0;
+    applyAdjust(cv);
+    cell.appendChild(cv);
+    const sp = document.createElement("span"); sp.textContent = f.name; cell.appendChild(sp);
+    cell.onclick = () => {
+      state.filter = key;
+      document.querySelectorAll(".fcell").forEach((x) => x.classList.remove("on"));
+      cell.classList.add("on");
+      rebuildPerson(); render();
+    };
+    grid.appendChild(cell);
+  }
+  Object.assign(state, saved);
+  grid.dataset.built = "1";
+}
+$("#filterAmt").addEventListener("input", (e) => {
+  e.target.nextElementSibling.value = e.target.value;
+  state.filterAmt = +e.target.value; rebuildPerson(); render();
+});
+
+/* ---- 文字 / 贴纸 / 马赛克 ---- */
+$("#txtAdd").onclick = () => {
+  const t = $("#txtInput").value.trim(); if (!t) { toast("先输入文字"); return; }
+  addOverlay({ type: "text", text: t, color: $("#txtColor").value, stroke: $("#txtStroke").value, scale: 1 });
+  $("#txtInput").value = "";
+};
+const STICKERS = ["❤️","😍","😎","🌸","⭐","✨","🎀","👑","🔥","🌈","🍓","🐰","💯","📌","☀️","🎈"];
+const pal = $("#stickerPal");
+for (const emo of STICKERS) {
+  const b = document.createElement("button"); b.textContent = emo;
+  b.onclick = () => addOverlay({ type: "sticker", emoji: emo, scale: 1 });
+  pal.appendChild(b);
+}
+$("#mosaicAdd").onclick = () => addOverlay({ type: "mosaic", scale: 1 });
+$("#ovControls").addEventListener("click", (e) => {
+  const b = e.target.closest("button"); if (!b) return;
+  const ov = state.overlays[state.selOv]; if (!ov) return;
+  const act = b.dataset.act;
+  if (act === "big") ov.scale = Math.min(6, ov.scale * 1.15);
+  else if (act === "small") ov.scale = Math.max(0.2, ov.scale / 1.15);
+  else if (act === "rotL") ov.rot = (ov.rot || 0) - 15;
+  else if (act === "rotR") ov.rot = (ov.rot || 0) + 15;
+  else if (act === "del") { state.overlays.splice(state.selOv, 1); selectOverlay(-1); return; }
+  render();
 });
 $("#bgChips").addEventListener("click", (e) => {
   const c = e.target.closest(".chip"); if (!c || !c.dataset.bg) return;
@@ -645,12 +860,6 @@ $("#bgCustom").addEventListener("input", (e) => {
 $("#feather").addEventListener("input", (e) => {
   e.target.nextElementSibling.value = e.target.value;
   state.feather = +e.target.value;
-  rebuildPerson(); render();
-});
-$("#filterChips").addEventListener("click", (e) => {
-  const c = e.target.closest(".chip"); if (!c) return;
-  document.querySelectorAll("#filterChips .chip").forEach((x) => x.classList.toggle("on", x === c));
-  state.filter = c.dataset.f;
   rebuildPerson(); render();
 });
 let rebuildTimer = null;
@@ -729,6 +938,7 @@ function exportCanvas(transparent) {
     else drawBackground(ctx, w, h);
   }
   ctx.drawImage(hiPerson, dx, dy, dw, dh);
+  drawOverlays(ctx, w, h, false);
   drawFrame(ctx, w, h, true);
   if (!transparent && state.frame === "round") {
     const c2 = document.createElement("canvas"); c2.width = w; c2.height = h;
