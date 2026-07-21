@@ -104,6 +104,7 @@ input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-rad
   <div class="tabs" id="tabs">
     <button data-p="bg" class="on">🎨 底色</button>
     <button data-p="beauty">✨ 美颜</button>
+    <button data-p="enhance">🔍 增清</button>
     <button data-p="spec">📐 规格</button>
     <button data-p="frame">🖼️ 相框</button>
   </div>
@@ -143,6 +144,17 @@ input[type=color]{width:42px;height:34px;border:1px solid var(--line);border-rad
     <div class="slider-row"><label>对比度</label><input type="range" id="contrast" min="-50" max="50" value="0"><output>0</output></div>
     <div class="slider-row"><label>饱和度</label><input type="range" id="saturate" min="-100" max="60" value="0"><output>0</output></div>
     <div class="slider-row"><label>冷暖</label><input type="range" id="temp" min="-30" max="30" value="0"><output>0</output></div>
+  </div>
+
+  <div class="panel" id="panel-enhance">
+    <button class="chip" id="btnAutoClear" style="border-color:var(--accent);font-weight:600">🔍 一键增清(锐化+放大2倍)</button>
+    <div class="slider-row"><label>锐化</label><input type="range" id="sharpen" min="0" max="100" value="0"><output>0</output></div>
+    <div style="height:4px"></div>
+    <div class="chips" id="upscaleChips">
+      <button class="chip on" data-up="1">原尺寸</button>
+      <button class="chip" data-up="2">放大 2 倍</button>
+    </div>
+    <p class="note">锐化能让偏软的照片更清晰锐利;放大 2 倍适合小图/糊图(在「高清原图」规格下生效,最高到 4K)。<b>注意:软件只能强化已有细节,救不回原图完全没有的画质——想最清晰,尽量用没被压过的大原图。</b></p>
   </div>
 
   <div class="panel" id="panel-spec">
@@ -205,6 +217,7 @@ const state = {
   frame: "none",
   filter: "none",
   smooth: 0, whiten: 0, bright: 0, contrast: 0, saturate: 0, temp: 0,
+  sharpen: 0, upscale: 1,
   // 取景变换: 人像层在画布里的缩放和平移
   scale: 1, ox: 0, oy: 0, exportScale: 1,
   aiReady: false, aiFailed: false,
@@ -428,6 +441,7 @@ function composePerson(src) {
     ctx.globalAlpha = 1;
   }
   applyAdjust(c);
+  if (state.sharpen > 0) unsharpMask(c, state.sharpen / 100 * 0.9, Math.max(0.6, 1.1 * bs));
   if (state.bg !== "keep" && state.mask) {
     ctx.globalCompositeOperation = "destination-in";
     ctx.filter = state.feather > 0 ? `blur(${(state.feather * bs).toFixed(1)}px)` : "none";
@@ -441,17 +455,46 @@ function rebuildPerson() {
   if (!state.base) return;
   state.person = composePerson(state.base);   // 预览用小图,流畅
 }
+// USM 锐化:out = 原图 + amount*(原图 - 模糊),强化边缘细节让照片更"清晰"
+function unsharpMask(canvas, amount, radius) {
+  if (amount <= 0) return;
+  const w = canvas.width, h = canvas.height, ctx = canvas.getContext("2d");
+  const orig = ctx.getImageData(0, 0, w, h);
+  const b = document.createElement("canvas"); b.width = w; b.height = h;
+  const bx = b.getContext("2d");
+  bx.filter = `blur(${radius.toFixed(2)}px)`; bx.drawImage(canvas, 0, 0);
+  const blur = bx.getImageData(0, 0, w, h);
+  const o = orig.data, bl = blur.data;
+  for (let i = 0; i < o.length; i += 4) {
+    for (let k = 0; k < 3; k++) {
+      const v = o[i + k] + amount * (o[i + k] - bl[i + k]);
+      o[i + k] = v < 0 ? 0 : v > 255 ? 255 : v;
+    }
+  }
+  ctx.putImageData(orig, 0, 0);
+}
+// 放大倍数只对「高清原图」生效(证件照有固定尺寸,放大无意义)
+function upFactor() { return state.spec.id === "free" ? (state.upscale || 1) : 1; }
 // 导出用:从原图全分辨率重新构建(最长边上限 4096),不经过 1600 降采样
+// 「放大」时用分步双三次逐次放大(每步≤2x),比一次拉大更锐利
 function fullResBase() {
   const cap = 4096;
-  const iw = state.img.width, ih = state.img.height;
+  const f = upFactor();
+  const iw = state.img.width * f, ih = state.img.height * f;
   const k = Math.min(1, cap / Math.max(iw, ih));
-  const c = document.createElement("canvas");
-  c.width = Math.max(1, Math.round(iw * k));
-  c.height = Math.max(1, Math.round(ih * k));
+  const tw = Math.max(1, Math.round(iw * k)), th = Math.max(1, Math.round(ih * k));
+  let src = state.img, cw = state.img.width, ch = state.img.height;
+  while (cw * 2 <= tw && ch * 2 <= th) {
+    const step = document.createElement("canvas"); step.width = cw * 2; step.height = ch * 2;
+    const sx = step.getContext("2d");
+    sx.imageSmoothingEnabled = true; sx.imageSmoothingQuality = "high";
+    sx.drawImage(src, 0, 0, step.width, step.height);
+    src = step; cw = step.width; ch = step.height;
+  }
+  const c = document.createElement("canvas"); c.width = tw; c.height = th;
   const ctx = c.getContext("2d");
   ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
-  ctx.drawImage(state.img, 0, 0, c.width, c.height);
+  ctx.drawImage(src, 0, 0, tw, th);
   return c;
 }
 
@@ -460,8 +503,9 @@ function fullResBase() {
 function specSize() {
   const s = state.spec;
   if (s.id !== "free") return { w: s.w, h: s.h };
-  const iw = state.img ? state.img.width : 1200;
-  const ih = state.img ? state.img.height : 1600;
+  const f = upFactor();
+  const iw = (state.img ? state.img.width : 1200) * f;
+  const ih = (state.img ? state.img.height : 1600) * f;
   const k = Math.min(1, 4096 / Math.max(iw, ih));
   return { w: Math.round(iw * k), h: Math.round(ih * k) };
 }
@@ -610,7 +654,7 @@ $("#filterChips").addEventListener("click", (e) => {
   rebuildPerson(); render();
 });
 let rebuildTimer = null;
-for (const id of ["smooth", "whiten", "bright", "contrast", "saturate", "temp"]) {
+for (const id of ["smooth", "whiten", "bright", "contrast", "saturate", "temp", "sharpen"]) {
   $("#" + id).addEventListener("input", (e) => {
     e.target.nextElementSibling.value = e.target.value;
     state[id] = +e.target.value;
@@ -619,13 +663,36 @@ for (const id of ["smooth", "whiten", "bright", "contrast", "saturate", "temp"])
   });
 }
 $("#btnOneTap").onclick = () => {
-  const preset = { smooth: 45, whiten: 22, bright: 6, contrast: 4, saturate: 6, temp: 2 };
+  const preset = { smooth: 45, whiten: 22, bright: 6, contrast: 4, saturate: 6, temp: 2, sharpen: 20 };
   for (const [k, v] of Object.entries(preset)) {
     state[k] = v; $("#" + k).value = v; $("#" + k).nextElementSibling.value = v;
   }
   rebuildPerson(); render();
   toast("一键美颜完成,可再手动微调");
 };
+$("#btnAutoClear").onclick = () => {
+  state.sharpen = 55; $("#sharpen").value = 55; $("#sharpen").nextElementSibling.value = 55;
+  state.upscale = 2;
+  document.querySelectorAll("#upscaleChips .chip").forEach((x) => x.classList.toggle("on", x.dataset.up === "2"));
+  // 自动切到高清原图,放大才生效
+  const freeSpec = SPECS.find((s) => s.id === "free");
+  state.spec = freeSpec; fitView();
+  document.querySelectorAll(".spec").forEach((x) => x.classList.toggle("on", x.textContent.includes("高清原图")));
+  rebuildPerson(); render();
+  toast("已开启增清+放大2倍,导出即为高清原图");
+};
+$("#upscaleChips").addEventListener("click", (e) => {
+  const c = e.target.closest(".chip"); if (!c) return;
+  document.querySelectorAll("#upscaleChips .chip").forEach((x) => x.classList.toggle("on", x === c));
+  state.upscale = +c.dataset.up;
+  if (state.upscale > 1 && state.spec.id !== "free") {
+    toast("放大在「高清原图」规格下生效,已帮你切过去");
+    const freeSpec = SPECS.find((s) => s.id === "free");
+    state.spec = freeSpec; fitView();
+    document.querySelectorAll(".spec").forEach((x) => x.classList.toggle("on", x.textContent.includes("高清原图")));
+    render();
+  }
+});
 const grid = $("#specGrid");
 for (const s of SPECS) {
   const el = document.createElement("div");
