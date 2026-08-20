@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>体能训练计划生成器 · 周期化训练</title>
+<style>
+:root{
+  --bg:#0f1720; --card:#182430; --card2:#1e2c3a; --ink:#eaf2f8; --sub:#93a7b8; --line:#2b3d4e;
+  --brand:#22c55e; --brand2:#38bdf8; --warm:#fb923c; --danger:#f87171; --gold:#fbbf24;
+  --shadow:0 3px 14px rgba(0,0,0,.28);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+  font-size:15px;line-height:1.65;padding-bottom:60px}
+h1,h2,h3,h4{margin:0;font-weight:700}
+button{font-family:inherit;font-size:14px;cursor:pointer;border:none;border-radius:9px;padding:9px 15px;transition:.15s}
+button:active{transform:scale(.97)}
+select,input,textarea{font-family:inherit;font-size:14px;padding:9px 10px;border:1px solid var(--line);
+  border-radius:8px;background:#0e1a24;color:var(--ink);width:100%}
+select:focus,input:focus{outline:2px solid rgba(34,197,94,.3);border-color:var(--brand)}
+
+.top{background:linear-gradient(120deg,#166534,#0e7490);color:#fff;padding:16px 16px 0;position:sticky;top:0;z-index:50;
+  box-shadow:0 3px 16px rgba(0,0,0,.35)}
+.top .ttl{font-size:19px;font-weight:800;letter-spacing:.5px}
+.top .sub{font-size:12px;opacity:.85;margin:2px 0 10px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 14px;border-radius:10px 10px 0 0;background:rgba(255,255,255,.14);color:#dff3e6;
+  font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+.tab.on{background:var(--bg);color:var(--brand)}
+
+.wrap{max-width:1000px;margin:0 auto;padding:14px}
+.card{background:var(--card);border-radius:14px;padding:15px;box-shadow:var(--shadow);margin-bottom:13px;border:1px solid var(--line)}
+.card>h3{font-size:15.5px;margin-bottom:11px;display:flex;align-items:center;gap:7px}
+.card>h3 .bar{width:4px;height:15px;border-radius:3px;background:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label{font-size:12px;color:var(--sub);font-weight:600}
+.btn-main{background:linear-gradient(120deg,#22c55e,#0ea5e9);color:#05221a;font-weight:800;font-size:15.5px;
+  padding:13px;width:100%;border-radius:11px;box-shadow:0 3px 12px rgba(34,197,94,.28)}
+.btn-g{background:#1c3a2c;color:var(--brand);font-weight:600}
+.btn-b{background:#16344a;color:var(--brand2);font-weight:600}
+.btn-o{background:#3d2a17;color:var(--warm);font-weight:600}
+.btn-d{background:#3d1e1e;color:var(--danger);font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>button{flex:1;min-width:110px}
+.hint{font-size:12px;color:var(--sub);background:#132029;border-left:3px solid var(--brand);padding:8px 10px;border-radius:0 8px 8px 0;margin-top:9px}
+.warnbox{font-size:12.5px;color:#fecaca;background:#2a1414;border-left:3px solid var(--danger);padding:9px 11px;border-radius:0 8px 8px 0;margin-top:9px}
+
+.chips{display:flex;flex-wrap:wrap;gap:7px}
+.chip{padding:7px 12px;border-radius:20px;background:#20303e;color:#b9cbd9;font-size:13px;font-weight:600;
+  border:1.5px solid transparent;cursor:pointer;user-select:none}
+.chip.on{background:#14351f;color:var(--brand);border-color:var(--brand)}
+.chip.sm{padding:5px 10px;font-size:12.5px}
+
+/* 计划总览 */
+.ov{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:9px;margin-bottom:12px}
+.ovi{background:var(--card2);border-radius:11px;padding:11px;text-align:center;border:1px solid var(--line)}
+.ovi .v{font-size:20px;font-weight:800;color:var(--brand)}
+.ovi .k{font-size:11.5px;color:var(--sub)}
+.phase{display:flex;gap:6px;margin:10px 0;flex-wrap:wrap}
+.ph{flex:1;min-width:110px;border-radius:10px;padding:9px 11px;font-size:12.5px;line-height:1.5}
+.ph b{display:block;font-size:13.5px;margin-bottom:2px}
+.ph.p1{background:#123326;color:#86efac} .ph.p2{background:#12303f;color:#7dd3fc}
+.ph.p3{background:#3a2a12;color:#fcd34d} .ph.p4{background:#2c2340;color:#c4b5fd}
+
+/* 周选择 */
+.weeks{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;scrollbar-width:none}
+.weeks::-webkit-scrollbar{display:none}
+.wk{flex:0 0 auto;padding:7px 13px;border-radius:9px;background:#20303e;color:#b9cbd9;font-size:13px;font-weight:700;cursor:pointer;border:1.5px solid transparent}
+.wk.on{background:#14351f;color:var(--brand);border-color:var(--brand)}
+.wk .d{display:block;font-size:10px;font-weight:500;opacity:.8}
+
+/* 训练课卡片 */
+.ses{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:11px;overflow:hidden}
+.ses.done{border-color:var(--brand);box-shadow:0 0 0 1px rgba(34,197,94,.35) inset}
+.ses .hd{display:flex;justify-content:space-between;align-items:center;gap:9px;padding:12px 14px;background:var(--card2);cursor:pointer}
+.ses .hd .t{font-size:15px;font-weight:700}
+.ses .hd .m{font-size:11.5px;color:var(--sub)}
+.ses .bd{padding:0 14px 13px;display:none}
+.ses.open .bd{display:block}
+.blk{margin-top:11px}
+.blk .bt{font-size:13px;font-weight:700;color:var(--brand2);display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.blk .bt span.tm{font-size:11px;color:var(--sub);font-weight:500}
+table.ex{width:100%;border-collapse:collapse;font-size:13px}
+table.ex td{padding:5px 6px;border-bottom:1px solid var(--line);vertical-align:top}
+table.ex td.n{font-weight:600;width:44%}
+table.ex td.s{color:var(--gold);white-space:nowrap;width:30%;font-size:12.5px}
+table.ex td.r{color:var(--sub);font-size:12px;text-align:right}
+.exname{cursor:pointer;border-bottom:1px dashed var(--sub)}
+.chk{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--sub);white-space:nowrap}
+.tick{width:26px;height:26px;border-radius:8px;border:2px solid var(--line);display:grid;place-items:center;font-size:15px;background:#0e1a24}
+.tick.on{background:var(--brand);border-color:var(--brand);color:#04250f}
+
+/* 动作库 */
+.exc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px}
+.exc h4{font-size:14.5px;color:var(--brand);margin-bottom:3px}
+.exc .meta{font-size:11.5px;color:var(--sub);margin-bottom:6px}
+.exc p{margin:3px 0;font-size:13px}
+.exc .lbl{font-weight:700;color:#b9cbd9}
+
+/* 成绩记录 */
+.rec{display:flex;justify-content:space-between;align-items:center;padding:9px 11px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px;background:var(--card2)}
+.rec .n{font-weight:600;font-size:13.5px}
+.rec .v{font-size:15px;font-weight:800;color:var(--gold)}
+.rec .d{font-size:11px;color:var(--sub)}
+
+.prog{height:9px;border-radius:6px;background:#0e1a24;overflow:hidden;margin:7px 0}
+.prog i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#38bdf8)}
+
+.empty{text-align:center;color:var(--sub);padding:40px 16px;font-size:14px}
+.empty .big{font-size:40px;display:block;margin-bottom:8px}
+#toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);background:rgba(0,0,0,.9);
+  color:#fff;padding:10px 18px;border-radius:22px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:99}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.hidden{display:none!important}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.66);display:none;align-items:center;justify-content:center;z-index:98;padding:16px}
+#modal.on{display:flex}
+#modal .box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;max-width:460px;width:100%;max-height:82vh;overflow:auto}
+
+@media(max-width:560px){.wrap{padding:10px} table.ex td.n{width:42%}}
+@media print{
+  body{background:#fff;color:#000;padding:0}
+  .top,.noprint,#toast,.chk,#modal{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .card,.ses,.exc{background:#fff!important;border:1px solid #999;box-shadow:none;color:#000;break-inside:avoid}
+  .ses .hd{background:#f0f0f0!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;color:#000}
+  .ses .bd{display:block!important}
+  .ovi{background:#f6f6f6!important;-webkit-print-color-adjust:exact}
+  .ovi .v,.blk .bt,.exc h4{color:#000!important}
+  table.ex td.s{color:#333!important}
+  .weeks{display:none}
+  @page{size:A4 portrait;margin:12mm 10mm}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="ttl">💪 体能训练计划生成器</div>
+  <div class="sub">周期化训练 · 中考体育 / 体质健康 / 专项体能 / 减脂增肌 —— 自动排到每一次课</div>
+  <div class="tabs">
+    <div class="tab on" data-tab="make">⚡ 生成计划</div>
+    <div class="tab" data-tab="plan">📅 我的计划</div>
+    <div class="tab" data-tab="ex">🏋️ 动作库</div>
+    <div class="tab" data-tab="test">📊 成绩记录</div>
+    <div class="tab" data-tab="know">📖 训练知识</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section id="pg-make">
+  <div class="card">
+    <h3><span class="bar"></span>一、练给谁？</h3>
+    <div class="grid">
+      <div class="fld"><label>训练对象</label><select id="c-who">
+        <option value="pupil">小学生（水平一—三）</option>
+        <option value="junior" selected>初中生（水平四）</option>
+        <option value="senior">高中生（水平五）</option>
+        <option value="adult">成人 / 教师本人</option>
+      </select></div>
+      <div class="fld"><label>性别</label><select id="c-sex"><option>男</option><option>女</option><option>男女混合（班级）</option></select></div>
+      <div class="fld"><label>当前基础</label><select id="c-lv">
+        <option value="1">零基础 / 较弱（跑800米很吃力）</option>
+        <option value="2" selected>一般（能完成体育课基本要求）</option>
+        <option value="3">较好（有训练经历 / 校队水平）</option>
+      </select></div>
+      <div class="fld"><label>使用场景</label><select id="c-scene">
+        <option>个人自主训练</option><option>班级课外训练</option><option>校队/兴趣小组</option><option>体育中考冲刺班</option>
+      </select></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3><span class="bar"></span>二、练什么？</h3>
+    <div class="fld" style="margin-bottom:10px"><label>训练目标（单选）</label><div class="chips" id="c-goal"></div></div>
+    <div class="fld"><label>重点补强（可多选，影响每次课的加练内容）</label><div class="chips" id="c-weak"></div></div>
+  </div>
+
+  <div class="card">
+    <h3><span class="bar"></span>三、怎么安排？</h3>
+    <div class="grid">
+      <div class="fld"><label>训练周期</label><select id="c-weeks">
+        <option value="4">4 周（短期冲刺）</option><option value="6">6 周</option>
+        <option value="8" selected>8 周（推荐）</option><option value="12">12 周（完整周期）</option>
+        <option value="16">16 周（学期计划）</option></select></div>
+      <div class="fld"><label>每周训练次数</label><select id="c-freq">
+        <option value="2">2 次</option><option value="3" selected>3 次</option><option value="4">4 次</option>
+        <option value="5">5 次</option><option value="6">6 次</option></select></div>
+      <div class="fld"><label>单次时长</label><select id="c-dur">
+        <option value="30">30 分钟</option><option value="45">45 分钟</option>
+        <option value="60" selected>60 分钟</option><option value="90">90 分钟</option></select></div>
+      <div class="fld"><label>场地器材</label><select id="c-eq">
+        <option value="none">徒手 / 无器材（教室、家里）</option>
+        <option value="track" selected>操场跑道 + 简单器材</option>
+        <option value="ball">球场 + 球类器材</option>
+        <option value="gym">健身房 / 力量器械</option></select></div>
+      <div class="fld"><label>开始日期</label><input id="c-start" type="date"></div>
+      <div class="fld"><label>计划名称</label><input id="c-name" placeholder="如：初三体育中考8周冲刺"></div>
+    </div>
+    <div class="hint">💡 计划会自动分成 <b>适应期 → 提高期 → 强化期 → 调整测试期</b> 四个阶段，负荷波浪式上升，最后一周减量让身体"超量恢复"，正好赶上测试。</div>
+  </div>
+
+  <div class="card">
+    <button class="btn-main" id="btn-make">⚡ 生成训练计划</button>
+    <div class="warnbox">⚠️ 使用前必读：训练前须排查心脏病、哮喘等病史；出现胸闷、头晕、关节疼痛立即停止。本计划为一般性锻炼建议，不能替代医生或专业教练的个体化诊断。带学生训练时务必先做安全排查与充分热身。</div>
+  </div>
+</section>
+
+<section id="pg-plan" class="hidden">
+  <div id="planout"><div class="empty"><span class="big">📅</span>还没有计划<br>到「生成计划」里做一份</div></div>
+</section>
+
+<section id="pg-ex" class="hidden">
+  <div class="card noprint">
+    <h3><span class="bar"></span>动作库</h3>
+    <div class="chips" id="ex-tabs"></div>
+    <div class="fld" style="margin-top:9px"><input id="ex-search" placeholder="🔍 搜索动作名称，如 深蹲 / 折返跑"></div>
+  </div>
+  <div id="exout"></div>
+</section>
+
+<section id="pg-test" class="hidden">
+  <div class="card">
+    <h3><span class="bar"></span>体能测试成绩记录</h3>
+    <div class="grid">
+      <div class="fld"><label>测试项目</label><select id="t-item"></select></div>
+      <div class="fld"><label>成绩</label><input id="t-val" placeholder="如 8.5 或 3'45"></div>
+      <div class="fld"><label>日期</label><input id="t-date" type="date"></div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn-g" id="t-add">＋ 记录一次成绩</button>
+      <button class="btn-b" id="t-print">🖨 打印成绩单</button>
+    </div>
+    <div class="hint">记录后会自动画出进步曲线。中考体育 / 体质健康测试的<b>评分标准各省市不同、每年也可能调整，务必以本地当年的官方方案为准</b>，这里只记录你的原始成绩与进步幅度。</div>
+  </div>
+  <div id="testout"></div>
+</section>
+
+<section id="pg-know" class="hidden">
+  <div class="card noprint">
+    <h3><span class="bar"></span>训练知识</h3>
+    <div class="chips" id="k-tabs"></div>
+  </div>
+  <div id="knowout"></div>
+</section>
+
+</div>
+<div id="toast"></div>
+<div id="modal"><div class="box" id="modalbox"></div></div>
+<script>
+/* =============== 训练目标 =============== */
+const GOALS=[
+ {k:'zk',n:'🎯 中考体育提分',d:'围绕耐力、速度、力量、专项技能四条线，最后两周减量模考'},
+ {k:'tz',n:'📏 体质健康测试达标',d:'覆盖《国家学生体质健康标准》各测试项目'},
+ {k:'bb',n:'🏀 篮球专项体能',d:'弹跳、变向、无氧耐力与核心稳定'},
+ {k:'zq',n:'⚽ 足球专项体能',d:'反复冲刺能力、下肢力量与有氧基础'},
+ {k:'tj',n:'🏃 田径专项体能',d:'跑跳投的专门性力量与速度耐力'},
+ {k:'yy',n:'🏊 游泳专项体能',d:'陆上核心、肩背力量与心肺耐力'},
+ {k:'js',n:'🔥 减脂塑形',d:'力量循环＋有氧＋HIIT，控体重不掉肌肉'},
+ {k:'zj',n:'💪 增肌与力量',d:'分部位力量训练，渐进超负荷'},
+ {k:'jc',n:'🌱 基础体能入门',d:'零基础起步，先建立动作模式与运动习惯'}
+];
+const WEAKS=[{k:'sp',n:'速度'},{k:'pw',n:'弹跳爆发'},{k:'su',n:'上肢力量'},{k:'sl',n:'下肢力量'},
+ {k:'co',n:'核心'},{k:'en',n:'耐力'},{k:'ag',n:'灵敏协调'},{k:'fl',n:'柔韧'}];
+const CATN={w:'热身',sp:'速度',pw:'弹跳爆发',su:'上肢力量',sl:'下肢力量',co:'核心',
+ en:'心肺耐力',ag:'灵敏协调',fl:'柔韧',cd:'放松',sk:'专项技能'};
+
+/* =============== 动作库 ===============
+   eq: none 徒手 / track 操场 / ball 球类 / gym 器械   lv: 1入门 2一般 3进阶
+   b: 基础量 {s:组,r:次/时间,rest:间歇}                                        */
+const EX=[
+/* --- 热身 --- */
+{n:'慢跑热身',c:'w',eq:['none','track','ball','gym'],lv:1,b:{s:1,r:'5—8分钟',rest:'—'},
+ d:'匀速慢跑，心率提到 110—130 次/分，微微出汗即可。',p:'速度能正常说话；冬天延长到 8—10 分钟。',e:'跑太快当成训练，导致正课没劲。',sub:'原地慢跑 / 开合跳 3 分钟'},
+{n:'动态拉伸组合',c:'w',eq:['none','track','ball','gym'],lv:1,b:{s:1,r:'每项 20 米或 20 秒',rest:'—'},
+ d:'高抬腿走 → 后踢腿走 → 弓步转体走 → 侧滑步 → 交叉步 → 开合跳 → 小步跑 → 后蹬跑。',
+ p:'动作幅度由小到大；训练前用动态拉伸，不做长时间静态拉伸（会降低爆发力）。',e:'训练前压腿压很久，反而无力。',sub:'原地关节绕环＋高抬腿'},
+{n:'跑的专门性练习',c:'w',eq:['track'],lv:2,b:{s:2,r:'每项 20—30 米',rest:'走回'},
+ d:'小步跑、高抬腿跑、后蹬跑、车轮跑，各 20—30 米。',p:'前脚掌着地，摆臂积极，动作放松不僵硬。',e:'只求快不求形，动作变形没有训练意义。',sub:'原地高抬腿 30 秒×3'},
+{n:'激活练习（臀桥＋鸟狗）',c:'w',eq:['none','track','ball','gym'],lv:1,b:{s:2,r:'各 12 次',rest:'30秒'},
+ d:'仰卧臀桥顶髋 12 次；四点支撑对侧手脚伸展（鸟狗）各 12 次。',p:'臀桥顶到肩髋膝一条线，臀部主动收紧；鸟狗时腰背不塌。',e:'臀桥用腰发力顶起，腰酸。',sub:'原地深蹲 15 次'},
+
+/* --- 速度 --- */
+{n:'30米加速跑',c:'sp',eq:['track','ball'],lv:2,b:{s:4,r:'30米',rest:'走回＋60秒'},
+ d:'站立式起跑，全力加速 30 米，跑过终点线后再减速。',p:'前 10 米上体前倾、逐步抬起；摆臂积极不左右晃。',e:'快到终点就减速，练不到最高速度。',sub:'原地快频高抬腿 15 秒×5'},
+{n:'50米全力跑',c:'sp',eq:['track'],lv:2,b:{s:3,r:'50米',rest:'2—3分钟'},
+ d:'蹲踞式或站立式起跑，全力跑完 50 米。',p:'速度训练必须在体力充沛时做（热身后第一项），间歇要充分。',e:'放在课的最后练速度，越练越慢还容易拉伤。',sub:'30米加速跑'},
+{n:'起跑反应练习',c:'sp',eq:['track','ball','none'],lv:1,b:{s:6,r:'10—15米',rest:'45秒'},
+ d:'用站、坐、俯卧、背向等不同姿势，听哨音/拍手立即起跑 10—15 米。',p:'注意力集中，听到信号第一时间蹬地。',e:'抢跑；起跑时先直立再跑，浪费时间。',sub:'听信号原地快速启动'},
+{n:'下坡跑 / 牵引跑',c:'sp',eq:['track'],lv:3,b:{s:4,r:'30米',rest:'2分钟'},
+ d:'在缓下坡（坡度 2—3 度）全力跑，或由同伴用弹力带轻牵引跑，提高步频。',p:'坡度不能大，否则落地冲击过大；控制总量。',e:'找陡坡跑，膝踝压力过大。',sub:'快频小步跑 20 米×5'},
+
+/* --- 爆发/弹跳 --- */
+{n:'原地纵跳摸高',c:'pw',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'8次',rest:'60秒'},
+ d:'下蹲摆臂后全力向上跳，尽量摸到高点，落地缓冲后再跳下一次。',p:'每次都要全力；落地屈膝缓冲，脚掌先着地。',e:'连续快速跳不停歇，变成耐力练习，失去爆发意义。',sub:'原地摆臂纵跳'},
+{n:'立定跳远（连续）',c:'pw',eq:['none','track'],lv:2,b:{s:4,r:'5次',rest:'90秒'},
+ d:'连续做 5 次立定跳远，每次落地稳住后再跳。',p:'摆臂与蹬地同步，向前上方约 45 度跳出，落地脚跟先着地并前压。',e:'落地后坐用手撑地，成绩吃亏还容易伤手腕。',sub:'原地蛙跳 8 次'},
+{n:'跳箱/台阶跳上',c:'pw',eq:['track','gym'],lv:2,b:{s:4,r:'6次',rest:'90秒'},
+ d:'双脚起跳跳上 30—50 厘米高的台阶或跳箱，站稳后走下来。',p:'跳上去，不要"跳下来"（下落冲击大）；高度以能轻松站稳为准。',e:'从高处往下跳，膝关节负担大。',sub:'原地纵跳'},
+{n:'单脚跳（左右交替）',c:'pw',eq:['none','track'],lv:2,b:{s:3,r:'每侧 15—20 米',rest:'60秒'},
+ d:'单脚连续向前跳，落地即蹬，左右腿各一趟。',p:'落地时间短、有弹性，像"踩到烫的地面"。',e:'跳得很高很慢，弹性刺激不足。',sub:'原地单脚小跳 20 次'},
+{n:'跳绳（快速单摇）',c:'pw',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'45秒',rest:'45秒'},
+ d:'连续快速单摇跳绳，尽量不断绳。',p:'手腕摇绳，前脚掌起落，跳过绳即可不必跳高。',e:'大臂甩绳、跳太高，30 秒就累瘫。',sub:'原地小跳 45 秒'},
+{n:'实心球胸前推掷',c:'pw',eq:['ball','gym','track'],lv:2,b:{s:4,r:'8次',rest:'60秒'},
+ d:'双手持球于胸前，蹬地送髋、伸臂推出。',p:'力量由腿到腰再到手臂，出手角度约 40 度。',e:'只用手臂推，成绩上不去。',sub:'俯卧撑击掌 6 次'},
+
+/* --- 上肢力量 --- */
+{n:'俯卧撑（可跪撑）',c:'su',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'8—15次',rest:'60秒'},
+ d:'两手略宽于肩，身体成直线，屈臂到胸口接近地面再撑起。',p:'收紧腹部与臀部，肘部约 45 度夹角，不要外张成 90 度。',e:'塌腰翘臀、只做半程；做不了就改跪姿或斜撑（手扶台阶）。',sub:'斜身俯卧撑（手扶台阶/墙）'},
+{n:'引体向上',c:'su',eq:['track','gym'],lv:3,b:{s:4,r:'3—8次',rest:'2分钟'},
+ d:'正握单杠略宽于肩，从悬垂拉到下巴过杆，控制下放。',p:'先沉肩、再拉；下放要慢（2—3 秒），不要放松砸下来。',e:'摆动身体借力（除非练"卷腹式"）；下放太快容易拉伤。',sub:'斜身引体 / 弹力带辅助引体 / 屈臂悬垂'},
+{n:'斜身引体（低杠）',c:'su',eq:['track','gym'],lv:1,b:{s:4,r:'8—12次',rest:'75秒'},
+ d:'身体倾斜握低单杠或稳固横杆，脚跟着地，把胸拉向杠。',p:'身体越水平越难；肩胛先后缩再屈臂拉。',e:'塌腰、只靠手臂拉，背部没参与。',sub:'弹力带划船'},
+{n:'屈臂悬垂',c:'su',eq:['track','gym'],lv:2,b:{s:4,r:'10—25秒',rest:'75秒'},
+ d:'跳上单杠保持下巴过杠的屈臂姿势，尽量坚持。',p:'引体向上做不了时的过渡练习，先练住"顶端"位置。',e:'憋气；应保持自然呼吸。',sub:'直臂悬垂 20 秒'},
+{n:'推小车（两人一组）',c:'su',eq:['none','track','ball'],lv:2,b:{s:3,r:'15米',rest:'60秒'},
+ d:'一人双手撑地，同伴抬起其双腿，用手向前"走"。',p:'撑地者收紧核心，腰不塌；同伴抬腿高度不要过高。',e:'速度过快导致手腕受伤。',sub:'俯卧撑 10 次'},
+{n:'哑铃/杠铃卧推',c:'su',eq:['gym'],lv:3,b:{s:4,r:'8—12次',rest:'90秒'},
+ d:'仰卧推举，控制下放至胸部上方再推起。',p:'肩胛收紧下沉，脚踩实地面；青少年须有保护者。',e:'重量过大导致动作变形、弹胸。',sub:'俯卧撑'},
+
+/* --- 下肢力量 --- */
+{n:'自重深蹲',c:'sl',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'15—20次',rest:'60秒'},
+ d:'两脚与肩同宽，屈髋屈膝下蹲到大腿接近水平，再蹬地站起。',p:'膝盖方向与脚尖一致，重心在全脚掌；下蹲时先屈髋（像坐椅子）。',e:'膝内扣、脚跟离地、含胸塌腰。',sub:'扶墙半蹲'},
+{n:'弓步蹲（分腿蹲）',c:'sl',eq:['none','track','ball','gym'],lv:2,b:{s:3,r:'每侧 12次',rest:'60秒'},
+ d:'一脚前跨，下蹲至后膝接近地面，前腿蹬起还原。',p:'上体正直，前膝不超过脚尖太多；后腿膝盖轻触地不砸地。',e:'重心左右晃、前脚掌内扣。',sub:'原地半蹲'},
+{n:'靠墙静蹲',c:'sl',eq:['none','track','ball','gym'],lv:1,b:{s:3,r:'30—60秒',rest:'60秒'},
+ d:'背靠墙，屈膝约 90—120 度保持不动。',p:'膝盖不超过脚尖，呼吸自然；膝关节康复期常用。',e:'角度太小（蹲太低）造成髌骨压力过大。',sub:'半蹲 40 秒'},
+{n:'提踵（小腿）',c:'sl',eq:['none','track','ball','gym'],lv:1,b:{s:3,r:'20次',rest:'45秒'},
+ d:'站在台阶边缘，脚跟下沉再最大幅度踮起。',p:'顶端停 1 秒，下放慢；跑跳项目必练。',e:'速度太快靠惯性弹动。',sub:'平地提踵 25 次'},
+{n:'保加利亚分腿蹲',c:'sl',eq:['track','gym'],lv:3,b:{s:3,r:'每侧 10次',rest:'75秒'},
+ d:'后脚搭在台阶/凳子上，前腿单腿下蹲再起。',p:'单腿力量与平衡的高效练习；下蹲时躯干稍前倾。',e:'重心过于靠后，膝盖压力大。',sub:'弓步蹲'},
+{n:'杠铃深蹲',c:'sl',eq:['gym'],lv:3,b:{s:4,r:'6—10次',rest:'2分钟'},
+ d:'杠铃置于斜方肌上部，下蹲至大腿水平再蹬起。',p:'青少年应先掌握徒手动作模式再加重量，须有保护与教练指导。',e:'弯腰起、膝内扣；重量优先于动作是最大错误。',sub:'自重深蹲＋负重背包深蹲'},
+
+/* --- 核心 --- */
+{n:'平板支撑',c:'co',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'20—45秒',rest:'45秒'},
+ d:'肘与前脚掌支撑，身体成一条直线保持。',p:'臀部不塌不撅，收紧腹部与臀部，正常呼吸。',e:'塌腰（腰痛）或撅臀（省力但没效果）。',sub:'跪姿平板支撑'},
+{n:'仰卧起坐 / 卷腹',c:'co',eq:['none','track','ball','gym'],lv:1,b:{s:4,r:'15—25次',rest:'45秒'},
+ d:'仰卧屈膝，腹部发力把上体卷起再控制回落。',p:'手放耳侧或胸前，<b>不要抱头往前拉脖子</b>；呼气时起。',e:'用手拉头颈、靠惯性甩起来。',sub:'卷腹（幅度更小）'},
+{n:'两头起 / 背起',c:'co',eq:['none','track','ball','gym'],lv:2,b:{s:3,r:'12次',rest:'45秒'},
+ d:'俯卧，同时抬起上体与双腿保持 1—2 秒再放下。',p:'幅度适中，不要过度反弓；腰不适者只做背起。',e:'猛甩上抬，腰部代偿。',sub:'鸟狗式 12 次'},
+{n:'俄罗斯转体',c:'co',eq:['none','ball','gym'],lv:2,b:{s:3,r:'20次（左右各10）',rest:'45秒'},
+ d:'坐姿屈膝，上体后倾，双手持球左右转体触地。',p:'转的是躯干不是手臂；腰背保持挺直。',e:'含胸弓背转，腰椎受力。',sub:'坐姿交替触地'},
+{n:'死虫式',c:'co',eq:['none','track','ball','gym'],lv:1,b:{s:3,r:'每侧 10次',rest:'45秒'},
+ d:'仰卧，四肢朝上，对侧手脚同时伸出再收回。',p:'腰部始终贴地，动作慢而稳，最适合腰部薄弱者。',e:'伸展时腰离地拱起。',sub:'鸟狗式'},
+{n:'侧平板',c:'co',eq:['none','track','ball','gym'],lv:2,b:{s:3,r:'每侧 20—30秒',rest:'45秒'},
+ d:'侧卧用一侧肘与脚支撑，身体成一条直线。',p:'髋部主动上顶不下沉；练腹斜肌与髋稳定。',e:'身体前后倒、髋部下坠。',sub:'跪姿侧平板'},
+
+/* --- 心肺耐力 --- */
+{n:'匀速有氧跑',c:'en',eq:['track','none'],lv:1,b:{s:1,r:'10—25分钟',rest:'—'},
+ d:'以能说话但不能唱歌的速度持续跑，心率约 130—150 次/分。',p:'耐力的基础，占总耐力训练量的大部分；先延长时间再提速度。',e:'每次都跑到快吐，反而恢复不了、进步慢。',sub:'快走／原地跑 15 分钟'},
+{n:'1000米/800米专项跑',c:'en',eq:['track'],lv:2,b:{s:2,r:'1趟',rest:'6—8分钟'},
+ d:'按目标配速跑完全程，注意分段配速（前 400 稳、中段顶、后 200 冲）。',p:'考前把配速练成"身体记忆"；每 200 米报时，建立节奏。',e:'起跑冲太快，后半程崩掉。',sub:'800米×2'},
+{n:'间歇跑 400米',c:'en',eq:['track'],lv:2,b:{s:5,r:'400米',rest:'2—3分钟'},
+ d:'以略快于目标配速跑 400 米，间歇慢走/慢跑恢复。',p:'提高最大摄氧量最有效的方式之一；每趟速度尽量一致。',e:'第一趟拼命跑，后面越跑越慢。',sub:'300米×5'},
+{n:'间歇跑 200米',c:'en',eq:['track'],lv:2,b:{s:8,r:'200米',rest:'90秒'},
+ d:'较快速度跑 200 米，短间歇恢复，发展速度耐力。',p:'适合考前 3—4 周提高冲刺段能力。',e:'间歇太长变成速度训练，太短变成有氧跑。',sub:'150米×8'},
+{n:'折返跑（YOYO/往返跑）',c:'en',eq:['track','ball','none'],lv:2,b:{s:4,r:'50米×8 或 20米×10',rest:'2分钟'},
+ d:'两标志线间反复折返跑，触线转身。',p:'转身时降重心、脚掌先落；这是球类项目最专项的耐力形式。',e:'转身直腿硬转，容易崴脚。',sub:'20米折返×6'},
+{n:'HIIT 循环（4站）',c:'en',eq:['none','track','ball','gym'],lv:2,b:{s:3,r:'每站 30秒 / 间歇 20秒',rest:'轮间2分钟'},
+ d:'开合跳 → 深蹲跳 → 高抬腿 → 登山跑，每站 30 秒。',p:'适合减脂与时间紧的情况；动作变形就降速。',e:'不热身直接开跳；有膝踝伤者不宜跳跃类。',sub:'快走 5 分钟＋深蹲 15 次'},
+{n:'跳绳耐力（分钟计）',c:'en',eq:['none','track','ball','gym'],lv:1,b:{s:5,r:'1分钟',rest:'1分钟'},
+ d:'1 分钟连续跳绳，记录个数。',p:'中考/体测跳绳项目的直接练习；比"跳得高"更重要的是"不断绳"。',e:'硬水泥地长时间跳，容易胫骨疼。',sub:'跳绳 40 秒×5'},
+
+/* --- 灵敏协调 --- */
+{n:'折返跑 5—10—5',c:'ag',eq:['track','ball','none'],lv:2,b:{s:4,r:'1趟',rest:'90秒'},
+ d:'从中点向一侧跑 5 米触线，反向跑 10 米触线，再回跑 5 米。',p:'变向时降重心、外侧脚蹬地；手触线不弯腰过深。',e:'转身直腿、重心高，慢且易伤。',sub:'10米折返×4'},
+{n:'标志盘/软梯步伐',c:'ag',eq:['track','ball','none'],lv:1,b:{s:3,r:'15—20秒',rest:'45秒'},
+ d:'在软梯或地面标志间做小碎步、进进出出、侧向步等步伐。',p:'脚掌快速接触地面，节奏优先于速度。',e:'低头看脚，节奏乱。',sub:'原地快频碎步 15 秒'},
+{n:'听信号变向跑',c:'ag',eq:['track','ball','none'],lv:1,b:{s:6,r:'15秒',rest:'45秒'},
+ d:'慢跑中听哨音或看手势，立即向指定方向加速。',p:'练反应与启动；信号要突然、不规律。',e:'预判信号提前动。',sub:'镜面追随游戏'},
+{n:'Z字绕桩跑',c:'ag',eq:['track','ball'],lv:2,b:{s:4,r:'20—30米',rest:'75秒'},
+ d:'标志桶呈 Z 字排列，绕桩快速跑过。',p:'过桩时身体内倾、小步调整；出桩后加速。',e:'跑成大圆弧，没有变向价值。',sub:'折返跑'},
+
+/* --- 柔韧 --- */
+{n:'坐位体前屈（静态）',c:'fl',eq:['none','track','ball','gym'],lv:1,b:{s:3,r:'保持 20—30秒',rest:'20秒'},
+ d:'坐姿直腿，缓慢前屈，双手向前推，感到牵拉后保持。',p:'呼气时加深，<b>不做弹振</b>；每天练比一次练很久更有效。',e:'弹振式猛压，容易拉伤且效果差。',sub:'站立体前屈'},
+{n:'弓步压髋',c:'fl',eq:['none','track','ball','gym'],lv:1,b:{s:2,r:'每侧 30秒',rest:'—'},
+ d:'弓步姿势重心下压，拉伸后腿髋前部。',p:'久坐人群与跑步者的关键部位；配合臀部收紧效果更好。',e:'塌腰代偿，拉的是腰不是髋。',sub:'跪姿弓步'},
+{n:'腘绳肌拉伸',c:'fl',eq:['none','track','ball','gym'],lv:1,b:{s:2,r:'每侧 30秒',rest:'—'},
+ d:'一腿前伸脚跟着地，臀部后坐，上体前倾感受大腿后侧牵拉。',p:'膝盖微屈不锁死；拉伸时深呼吸放松。',e:'弓背去够脚尖，拉的是腰。',sub:'仰卧直腿拉伸'},
+{n:'肩背拉伸组合',c:'fl',eq:['none','track','ball','gym'],lv:1,b:{s:2,r:'每项 20—30秒',rest:'—'},
+ d:'体后拉手、过头屈肘拉、胸前横臂拉。',p:'游泳、排球、投掷项目必做；动作缓慢不弹震。',e:'用力猛拉造成肩关节不适。',sub:'手臂绕环'},
+
+/* --- 放松 --- */
+{n:'慢走＋深呼吸',c:'cd',eq:['none','track','ball','gym'],lv:1,b:{s:1,r:'3—5分钟',rest:'—'},
+ d:'训练后慢走，配合吸 4 拍呼 6 拍的深呼吸，让心率平稳回落。',p:'大强度训练后<b>严禁立即坐下或躺下</b>（可能引起重力性休克）。',e:'跑完立刻坐地上、喝大量冰水。',sub:'原地踏步 3 分钟'},
+{n:'全身静态拉伸',c:'cd',eq:['none','track','ball','gym'],lv:1,b:{s:1,r:'每部位 20—30秒',rest:'—'},
+ d:'颈肩 → 体侧 → 腰背 → 股四头肌 → 腘绳肌 → 小腿 → 髋部，依次静态拉伸。',p:'训练后拉伸有助恢复与柔韧改善；配合深呼吸。',e:'训练完直接走人，第二天酸痛加重。',sub:'重点部位拉伸 3 个'},
+{n:'泡沫轴放松',c:'cd',eq:['gym','none'],lv:2,b:{s:1,r:'每部位 30—60秒',rest:'—'},
+ d:'用泡沫轴滚压大腿前侧、外侧、小腿、臀部。',p:'遇到酸痛点停留 20—30 秒缓慢呼吸；避开膝关节与骨突。',e:'在关节和骨头上滚压。',sub:'同伴按摩抖动放松'},
+
+/* --- 专项技能 --- */
+{n:'篮球运球组合',c:'sk',eq:['ball'],lv:2,b:{s:4,r:'30—45秒',rest:'45秒'},
+ d:'原地高低运球、体前变向、胯下、背后运球组合。',p:'抬头运球，两手都练；球感靠每天的量堆出来。',e:'只练惯用手。',sub:'原地运球 45 秒'},
+{n:'篮球运球上篮',c:'sk',eq:['ball'],lv:2,b:{s:4,r:'8次',rest:'60秒'},
+ d:'从三分线运球两步接三步上篮，左右手交替。',p:'节奏"一大二小三高跳"；弱侧手也要练。',e:'走步、上篮太用力砸板。',sub:'原地投篮 15 次'},
+{n:'足球绕杆运球',c:'sk',eq:['ball'],lv:2,b:{s:4,r:'1趟',rest:'60秒'},
+ d:'标志桶间距 1.5—2 米，S 形绕杆运球往返。',p:'小碰球、多触球，球不离脚 1 米内。',e:'一脚踢远变成追球跑。',sub:'直线运球 20 米×4'},
+{n:'排球垫球（对墙/连续）',c:'sk',eq:['ball'],lv:2,b:{s:4,r:'30—60秒',rest:'45秒'},
+ d:'原地连续自垫或对墙垫球，记录连续次数。',p:'两臂夹紧成平面，击球点在腹前；靠蹬地送球不甩臂。',e:'用手腕或手掌垫球，疼且不准。',sub:'抛垫练习'},
+{n:'游泳陆上模仿（肩背）',c:'sk',eq:['none','gym'],lv:2,b:{s:3,r:'20次',rest:'45秒'},
+ d:'俯身模仿划手动作，配合弹力带增加阻力。',p:'肩胛主动参与，动作路线完整；陆上练可以弥补下水时间不足。',e:'只摆手臂，肩背没发力。',sub:'弹力带划船 15 次'},
+{n:'跨栏/跳跃步伐练习',c:'sk',eq:['track'],lv:3,b:{s:4,r:'20—30米',rest:'75秒'},
+ d:'小栏架间做单脚跳、跨步跳、三步过栏练习。',p:'节奏固定，落地即蹬；栏架高度由低开始。',e:'为了过栏动作变形。',sub:'跨步跳 20 米'}
+];
+
+/* =============== 每次课的类型模板 =============== */
+/* main 主要素质，aux 辅助素质，tag 课的名称 */
+const ARCH={
+ zk:[{n:'耐力课（1000/800米专项）',main:['en'],aux:['co','fl'],note:'考前把配速跑成身体记忆'},
+     {n:'速度与弹跳课（50米·立定跳远）',main:['sp','pw'],aux:['sl','fl'],note:'必须在体力充沛时练，间歇要给足'},
+     {n:'力量课（引体/仰卧起坐/实心球）',main:['su','co'],aux:['pw','fl'],note:'先练动作质量，再堆数量'},
+     {n:'专项技能＋灵敏课',main:['sk','ag'],aux:['co','fl'],note:'球类选考项目的技术要反复打磨'},
+     {n:'综合模拟课',main:['en','sp'],aux:['co','fl'],note:'按考试顺序模拟，练比赛节奏'},
+     {n:'恢复与柔韧课',main:['fl','co'],aux:['cd'],note:'低强度，帮助身体吸收前几天的训练'}],
+ tz:[{n:'耐力课（1000/800米·50米×8）',main:['en'],aux:['co','fl'],note:'体质健康测试的耐力项'},
+     {n:'速度与跳跃课',main:['sp','pw'],aux:['sl'],note:'50米与立定跳远'},
+     {n:'力量课（引体/仰卧起坐）',main:['su','co'],aux:['fl'],note:'男生引体、女生仰卧起坐'},
+     {n:'柔韧与协调课',main:['fl','ag'],aux:['co'],note:'坐位体前屈天天练效果最好'},
+     {n:'综合体能课',main:['en','pw'],aux:['co','fl'],note:'全项目轮转'}],
+ bb:[{n:'弹跳力量课',main:['pw','sl'],aux:['co'],note:'篮球的核心是起跳与落地能力'},
+     {n:'变向灵敏课',main:['ag','sp'],aux:['co'],note:'防守滑步与急停变向'},
+     {n:'无氧耐力课（折返）',main:['en','ag'],aux:['fl'],note:'模拟比赛的反复冲刺'},
+     {n:'专项技能＋核心课',main:['sk','co'],aux:['fl'],note:'技术在疲劳状态下也要稳定'},
+     {n:'上肢与核心稳定课',main:['su','co'],aux:['fl'],note:'对抗中的身体稳定性'}],
+ zq:[{n:'反复冲刺能力课',main:['sp','en'],aux:['co'],note:'足球最重要的体能特征'},
+     {n:'下肢力量课',main:['sl','pw'],aux:['co'],note:'射门与对抗的基础'},
+     {n:'有氧基础课',main:['en'],aux:['fl'],note:'把有氧底子打厚'},
+     {n:'灵敏与专项技能课',main:['ag','sk'],aux:['co','fl'],note:'带球变向与摆脱'},
+     {n:'核心与恢复课',main:['co','fl'],aux:['cd'],note:'预防腹股沟与腘绳肌损伤'}],
+ tj:[{n:'速度课',main:['sp'],aux:['co','fl'],note:'跑的专门性练习＋短距离全速'},
+     {n:'专项力量课',main:['sl','pw'],aux:['co'],note:'跑跳投的力量基础'},
+     {n:'速度耐力课',main:['en','sp'],aux:['fl'],note:'200/400米间歇'},
+     {n:'技术与协调课',main:['sk','ag'],aux:['fl'],note:'技术动作打磨'},
+     {n:'恢复课',main:['fl','cd'],aux:['co'],note:'大负荷之后必须安排'}],
+ yy:[{n:'陆上核心与肩背课',main:['co','su'],aux:['fl'],note:'游泳成绩很大程度取决于核心与肩背'},
+     {n:'心肺耐力课',main:['en'],aux:['fl'],note:'陆上有氧补充水中训练量'},
+     {n:'力量与爆发课',main:['sl','pw'],aux:['co'],note:'出发与转身的蹬壁力量'},
+     {n:'柔韧与技术模仿课',main:['fl','sk'],aux:['co'],note:'肩踝柔韧直接影响划水与打腿效率'}],
+ js:[{n:'力量循环课',main:['sl','su'],aux:['co'],note:'保住肌肉才能持续掉脂'},
+     {n:'HIIT 燃脂课',main:['en','pw'],aux:['co'],note:'短时高效，注意关节压力'},
+     {n:'中低强度有氧课',main:['en'],aux:['fl'],note:'时间长、强度中低，最稳的消耗方式'},
+     {n:'核心与柔韧课',main:['co','fl'],aux:['cd'],note:'塑形与体态改善'}],
+ zj:[{n:'下肢力量课',main:['sl'],aux:['co','fl'],note:'腿是全身力量的发动机'},
+     {n:'上肢推力课',main:['su'],aux:['co'],note:'胸肩三头'},
+     {n:'上肢拉力课',main:['su'],aux:['co','fl'],note:'背部与二头'},
+     {n:'核心与爆发课',main:['co','pw'],aux:['fl'],note:'力量要能转化为运动表现'}],
+ jc:[{n:'全身循环课',main:['sl','su','co'],aux:['fl'],note:'先建立正确的动作模式'},
+     {n:'有氧适应课',main:['en'],aux:['fl'],note:'从走跑交替开始'},
+     {n:'灵敏游戏课',main:['ag','pw'],aux:['co'],note:'用游戏保持兴趣'},
+     {n:'柔韧与放松课',main:['fl','cd'],aux:['co'],note:'降低受伤风险'}]
+};
+
+/* =============== 测试项目 =============== */
+const TESTS=[
+ {k:'run50',n:'50米跑',u:'秒',dir:-1},
+ {k:'run100',n:'100米跑',u:'秒',dir:-1},
+ {k:'run1000',n:'1000米（男）',u:'成绩(如 3\'45)',dir:-1,time:1},
+ {k:'run800',n:'800米（女）',u:'成绩(如 3\'30)',dir:-1,time:1},
+ {k:'jump',n:'立定跳远',u:'厘米',dir:1},
+ {k:'sit',n:'坐位体前屈',u:'厘米',dir:1},
+ {k:'pull',n:'引体向上',u:'个',dir:1},
+ {k:'situp',n:'1分钟仰卧起坐',u:'个',dir:1},
+ {k:'rope',n:'1分钟跳绳',u:'个',dir:1},
+ {k:'ball',n:'实心球',u:'米',dir:1},
+ {k:'shuttle',n:'50米×8往返跑',u:'成绩(如 1\'40)',dir:-1,time:1},
+ {k:'vjump',n:'纵跳摸高',u:'厘米',dir:1},
+ {k:'weight',n:'体重',u:'公斤',dir:0}
+];
+
+/* =============== 训练知识 =============== */
+const KNOW=[
+ {k:'cycle',t:'🔄 为什么要"周期化"',c:[
+  ['超量恢复原理','训练本身不会让你变强——训练造成疲劳，<b>恢复</b>才让你变强。合理的节奏是：给一个略超过现有能力的刺激 → 充分恢复 → 身体补偿到比原来更高的水平。所以计划里一定有轻松周和减量周，那不是偷懒，是让身体把训练"吸收"掉。'],
+  ['四个阶段','<b>适应期</b>（前 25%）：量小强度低，把动作练对、把身体唤醒。<b>提高期</b>（约 40%）：稳步加量，是进步的主战场。<b>强化期</b>（约 25%）：强度接近甚至超过测试要求，模拟考试。<b>调整测试期</b>（最后 1—2 周）：训练量降到 50—60%，强度保留，让身体在测试当天处于最佳状态。'],
+  ['波浪式加量','不要每周都比上周狠。常用做法是"加三周、减一周"：第 1—3 周逐渐加量，第 4 周减到 60% 恢复，然后从更高起点再来一轮。'],
+  ['最忌讳的两件事','① 天天大强度不给恢复（越练越差、容易受伤）；② 考前一周还在拼命加量（考试当天腿是沉的）。']]},
+ {k:'inten',t:'📈 强度怎么把握',c:[
+  ['用心率','最大心率约等于 220 减年龄。有氧基础：60—70%（说话不费力）；有氧提高：70—80%（能说短句）；无氧/间歇：85% 以上（说不出话）。初中生安静心率一般 70—80 次/分。'],
+  ['用自我感觉（RPE 1—10 分）','6 分＝有点累但能坚持很久；7—8 分＝很累、呼吸重，是大多数训练课该有的感觉；9—10 分＝几乎力竭，每周不超过 1—2 次。'],
+  ['用晨脉监控恢复','连续几天早晨起床后的心率比平时高 8—10 次/分，说明没恢复过来，当天要减量或休息。'],
+  ['疲劳的信号','睡不好、食欲差、成绩连续下降、莫名烦躁、小伤不断——出现这些就是练太多了，减量 3—5 天。']]},
+ {k:'zk',t:'🎯 中考体育各项提分要点',c:[
+  ['耐力跑（男1000/女800）','进步最快的项目，也是最能靠训练拉分的项目。方法：每周 1 次长距离匀速跑（打底）＋1 次间歇跑（400米×5 或 200米×8）＋1 次专项配速跑。<b>关键是配速</b>：把目标成绩除以圈数，练出稳定的分段节奏，别起跑就冲。'],
+  ['50米','速度提升慢，但技术可以马上改善：起跑反应、前 10 米前倾加速、摆臂不左右晃、<b>跑过终点线再减速</b>（很多人在终点前减速，白丢 0.2 秒）。'],
+  ['立定跳远','技术分占比很大：摆臂与蹬地同步、起跳约 45 度、<b>落地时脚跟先着地并顺势前压、绝不后坐</b>。落地后坐一次可能就丢十几厘米。'],
+  ['坐位体前屈','最容易短期提分的项目，每天早晚各拉 3 组×30 秒即可，<b>缓慢下压不弹振</b>，呼气时加深。测试前充分热身再测。'],
+  ['引体向上 / 仰卧起坐','引体做不了先练"斜身引体＋屈臂悬垂＋弹力带辅助"，别一直做空杆挂着。仰卧起坐<b>不要抱头拉脖子</b>，靠腹部卷起，节奏均匀比猛冲更省力。'],
+  ['实心球','力量从腿传到腰再到手臂，出手角度约 40 度，<b>练"满弓—展腹—鞭打"的顺序</b>，很多人只用手臂扔。'],
+  ['跳绳','连续不断绳比跳得快更重要。手腕摇绳、前脚掌小跳，断绳后立即接上，练到 1 分钟不断为止。'],
+  ['重要提醒','各省市的中考体育项目、分值与评分标准<b>不一样、每年也可能调整</b>，训练目标一定要按<b>本地当年的官方方案</b>来定。']]},
+ {k:'young',t:'🧒 青少年训练特别提醒',c:[
+  ['能不能练力量','可以，而且有益。但要以<b>自重和动作质量</b>为主，避免过早使用大重量最大力量训练（骨骺未闭合，动作变形风险更高）。练对动作模式比举得重重要得多。'],
+  ['敏感期','速度与灵敏协调在 10—13 岁进步最快，耐力在青春期后提升明显，最大力量在青春期后期才适合系统发展。小学阶段多做跑跳、灵敏、球类游戏，比早早举铁更有价值。'],
+  ['最容易出的伤','胫骨疲劳性骨膜炎（硬地面大量跳跃/跑）、膝前疼痛（跳跃量骤增）、腰痛（核心不足＋动作代偿）。<b>共同原因都是"量突然加太多"</b>——每周训练量增加不要超过 10%。'],
+  ['带班训练时','必须先排查病史（心脏病、哮喘、近期发热或受伤、女生特殊时期），分层安排，允许不同学生做不同的量；随时观察面色与呼吸。']]},
+ {k:'reco',t:'😴 恢复：营养·睡眠·放松',c:[
+  ['睡眠','青少年每天 8—9 小时。生长激素主要在深睡时段分泌，<b>熬夜是训练效果最大的杀手</b>，比少练一次严重得多。'],
+  ['吃什么','训练后 30—60 分钟内补充碳水＋蛋白（如牛奶＋面包、鸡蛋＋米饭）恢复最好。日常保证主食、蛋白质（蛋奶肉豆）、蔬果；不要为了减重不吃主食去训练，容易低血糖。'],
+  ['补水','训练前 30 分钟喝 200—300 毫升，训练中每 15—20 分钟少量多次；<b>不要一次猛灌冰水</b>。出汗多可以喝淡盐水或运动饮料。'],
+  ['放松','训练后慢走 3—5 分钟让心率降下来，再做静态拉伸；大强度后可用泡沫轴或同伴按摩。<b>跑完立即坐下或躺下是危险的</b>。'],
+  ['酸痛怎么办','训练后 24—48 小时的肌肉酸痛是正常的（延迟性肌肉酸痛），可以做低强度活动促进恢复；但<b>关节痛、刺痛、肿胀不是正常酸痛</b>，要停练并检查。']]},
+ {k:'safe',t:'⚠️ 安全底线',c:[
+  ['开始前','有心脏病、哮喘、高血压、近期手术或骨折的，先咨询医生。带学生训练必须逐一排查并登记。'],
+  ['立即停止的信号','胸闷胸痛、心慌、头晕眼前发黑、恶心、关节剧痛、肢体麻木——立刻停止，坐下休息并报告。'],
+  ['热与冷','高温高湿天把强度降下来、增加补水与遮阴休息；冬天延长热身时间到 10 分钟以上。雾霾天改室内。'],
+  ['受伤的第一处理','急性扭伤挫伤 48 小时内：休息、冰敷（15—20 分钟/次）、加压包扎、抬高患肢；<b>不要热敷、不要用力揉搓</b>。疑似骨折不要随意搬动，立即送医。'],
+  ['本工具的边界','这是一个通用训练计划生成工具，不能替代医生诊断或专业教练的个体化指导。有伤病史或特殊情况请以专业意见为准。']]}
+];
+/* ================= 工具 ================= */
+const $=(s)=>document.querySelector(s), $$=(s)=>Array.from(document.querySelectorAll(s));
+const esc=(s)=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2100);}
+const LS={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},
+          set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function dstr(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function mdstr(d){return (d.getMonth()+1)+'月'+d.getDate()+'日';}
+const WKN=['周日','周一','周二','周三','周四','周五','周六'];
+
+/* ================= 初始化 ================= */
+let PLAN=null, curWeek=0, curExCat='all';
+function init(){
+  $('#c-goal').innerHTML=GOALS.map((g,i)=>`<div class="chip${i===0?' on':''}" data-g="${g.k}" title="${esc(g.d)}">${g.n}</div>`).join('');
+  $('#c-goal').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
+    $('#c-goal').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');};
+  $('#c-weak').innerHTML=WEAKS.map(w=>`<div class="chip sm" data-w="${w.k}">${w.n}</div>`).join('');
+  $('#c-weak').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;c.classList.toggle('on');};
+  $('#c-start').value=dstr(new Date());
+  $('#t-date').value=dstr(new Date());
+  $('#t-item').innerHTML=TESTS.map(t=>`<option value="${t.k}">${t.n}（${t.u}）</option>`).join('');
+  $('#ex-tabs').innerHTML=`<div class="chip sm on" data-c="all">全部</div>`+
+    Object.keys(CATN).map(k=>`<div class="chip sm" data-c="${k}">${CATN[k]}</div>`).join('');
+  $('#ex-tabs').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
+    $('#ex-tabs').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');
+    curExCat=c.dataset.c;renderEx();};
+  $('#ex-search').oninput=renderEx;
+  $('#k-tabs').innerHTML=KNOW.map((k,i)=>`<div class="chip sm${i===0?' on':''}" data-k="${k.k}">${k.t}</div>`).join('');
+  $('#k-tabs').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
+    $('#k-tabs').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');renderKnow(c.dataset.k);};
+
+  $$('.tab').forEach(t=>t.onclick=()=>{
+    $$('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    ['make','plan','ex','test','know'].forEach(p=>$('#pg-'+p).classList.toggle('hidden',p!==t.dataset.tab));
+    if(t.dataset.tab==='plan')renderPlan();
+    if(t.dataset.tab==='ex')renderEx();
+    if(t.dataset.tab==='test')renderTest();
+    if(t.dataset.tab==='know')renderKnow(KNOW[0].k);
+    window.scrollTo(0,0);
+  });
+  $('#btn-make').onclick=makePlan;
+  $('#t-add').onclick=addRec;
+  $('#t-print').onclick=()=>window.print();
+  $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('on')};
+
+  PLAN=LS.get('tn_plan',null);
+  if(PLAN)toast('已载入上次保存的训练计划');
+}
+
+/* ================= 生成计划 ================= */
+function cfgFromUI(){
+  return {who:$('#c-who').value,sex:$('#c-sex').value,lv:+$('#c-lv').value,scene:$('#c-scene').value,
+   goal:$('#c-goal').querySelector('.chip.on').dataset.g,
+   weaks:Array.from($('#c-weak').querySelectorAll('.chip.on')).map(c=>c.dataset.w),
+   weeks:+$('#c-weeks').value,freq:+$('#c-freq').value,dur:+$('#c-dur').value,eq:$('#c-eq').value,
+   start:$('#c-start').value||dstr(new Date()),name:$('#c-name').value.trim()};
+}
+function phaseOf(weeks){
+  const n1=Math.max(1,Math.round(weeks*0.25));
+  const n4=weeks>=8?2:1;
+  const rest=Math.max(1,weeks-n1-n4);
+  const n2=Math.max(1,Math.round(rest*0.6)), n3=Math.max(0,rest-n2);
+  const arr=[];
+  for(let i=0;i<n1;i++)arr.push(0);
+  for(let i=0;i<n2;i++)arr.push(1);
+  for(let i=0;i<n3;i++)arr.push(2);
+  while(arr.length<weeks-n4)arr.push(2);
+  for(let i=0;i<n4;i++)arr.push(3);
+  return arr.slice(0,weeks);
+}
+const PH=[
+ {n:'适应期',c:'p1',f:0.8,rpe:'RPE 5—6（有点累，能轻松说话）',d:'把动作练对、把身体唤醒，量小强度低。宁可觉得"没练够"，也不要一上来就练崩。'},
+ {n:'提高期',c:'p2',f:1.0,rpe:'RPE 6—7（明显累，能说短句）',d:'稳步加量，进步的主战场。每周量增加不超过 10%。'},
+ {n:'强化期',c:'p3',f:1.15,rpe:'RPE 7—8（很累，说不出整句）',d:'强度接近甚至超过测试要求，加入模拟测试，练比赛节奏。'},
+ {n:'调整测试期',c:'p4',f:0.6,rpe:'RPE 5—6（保持手感，不追求疲劳）',d:'训练量降到 50—60%，强度保留一点，让身体超量恢复，正好赶上测试当天状态最好。'}
+];
+const DAYS={2:[0,3],3:[0,2,4],4:[0,1,3,4],5:[0,1,2,4,5],6:[0,1,2,3,4,5]};
+
+function poolOf(cat,cfg){
+  let p=EX.filter(e=>e.c===cat&&e.eq.indexOf(cfg.eq)>=0);
+  if(cfg.who==='pupil')p=p.filter(e=>e.lv<3&&!/杠铃|哑铃/.test(e.n));
+  let q=p.filter(e=>e.lv<=cfg.lv);
+  if(!q.length)q=p.filter(e=>e.lv<=cfg.lv+1);
+  if(!q.length)q=p;
+  if(!q.length)q=EX.filter(e=>e.c===cat&&e.eq.indexOf('none')>=0);
+  return q;
+}
+function pick(cat,cfg,seed){const p=poolOf(cat,cfg);return p.length?p[seed%p.length]:null;}
+function scaleSets(base,f){return base<=1?1:Math.max(2,Math.round(base*f));}  // 匀速跑等单组动作不加组
+
+function makePlan(){
+  const cfg=cfgFromUI();
+  const old=LS.get('tn_plan',null);
+  if(old&&Object.keys(old.done||{}).length){
+    if(!confirm('已有一份计划，里面还有打卡记录。重新生成会覆盖它，确定吗？'))return;
+  }
+  const phases=phaseOf(cfg.weeks);
+  const arch=ARCH[cfg.goal]||ARCH.jc;
+  const gname=(GOALS.find(g=>g.k===cfg.goal)||{}).n;
+  const nMain=cfg.dur<=30?2:cfg.dur<=45?3:cfg.dur<=60?4:5;
+  const nAux=cfg.dur<=30?1:cfg.dur<=60?2:3;
+  const st=new Date(cfg.start+'T00:00:00');
+  const monday=new Date(st); monday.setDate(st.getDate()-((st.getDay()+6)%7));
+
+  const weeks=[];let g=0;
+  for(let w=0;w<cfg.weeks;w++){
+    const ph=PH[phases[w]];
+    // 波浪：同一阶段内第3周略降，制造小恢复
+    const wave=[1,1.06,1.12,0.9][w%4];
+    const f=ph.f*wave;
+    const ss=[];
+    for(let d=0;d<cfg.freq;d++){
+      const A=arch[g%arch.length];g++;
+      const date=new Date(monday);date.setDate(monday.getDate()+w*7+(DAYS[cfg.freq]||DAYS[3])[d]);
+      // 主体动作
+      const mains=[];
+      const nM=Math.min(nMain,A.main.length*2);   // 单一素质的课不堆太多主体动作
+      for(let i=0;i<nM;i++){
+        const cat=A.main[i%A.main.length];
+        const e=pick(cat,cfg,w*3+d+Math.floor(i/A.main.length));
+        if(e&&!mains.find(x=>x.e.n===e.n))mains.push({e,cat});
+      }
+      // 辅助＝课型辅助素质 ＋ 用户勾选的薄弱项
+      const auxCats=A.aux.concat(cfg.weaks.filter(x=>A.main.indexOf(x)<0));
+      const auxs=[];
+      for(let i=0;i<nAux+ (cfg.weaks.length?1:0);i++){
+        const cat=auxCats[i%auxCats.length];
+        const e=pick(cat,cfg,w+d*2+i);
+        if(e&&!auxs.find(x=>x.e.n===e.n)&&!mains.find(x=>x.e.n===e.n))auxs.push({e,cat});
+      }
+      const warm=[pick('w',cfg,0),pick('w',cfg,1)].filter(Boolean).map(e=>({e:e,cat:''}));
+      if((A.main.indexOf('sp')>=0||A.main.indexOf('pw')>=0)&&cfg.eq==='track'){
+        const sp=EX.find(x=>x.n==='跑的专门性练习');if(sp)warm.push({e:sp,cat:''});
+      }
+      const cool=[EX.find(x=>x.n==='慢走＋深呼吸'),EX.find(x=>x.n==='全身静态拉伸')]
+        .filter(Boolean).map(e=>({e:e,cat:''}));
+      const tW=Math.max(6,Math.round(cfg.dur*0.16)), tC=Math.max(5,Math.round(cfg.dur*0.14));
+      const tM=Math.round((cfg.dur-tW-tC)*0.65), tA=cfg.dur-tW-tC-tM;
+      ss.push({w:w,d:d,name:A.n,note:A.note,date:dstr(date),wd:WKN[date.getDay()],md:mdstr(date),
+        warm,mains,auxs,cool,tW,tM,tA,tC,f:f});
+    }
+    weeks.push({i:w,ph:phases[w],load:Math.round(f*100),ss});
+  }
+  PLAN={id:Date.now(),cfg,gname,weeks,phases,done:{},
+    title:cfg.name||((cfg.who==='adult'?'':({pupil:'小学',junior:'初中',senior:'高中'})[cfg.who])+gname.replace(/^\S+\s?/,'')+' '+cfg.weeks+'周计划')};
+  LS.set('tn_plan',PLAN);
+  curWeek=0;
+  $$('.tab')[1].click();
+  toast('计划已生成！共 '+cfg.weeks*cfg.freq+' 次课，可逐次打卡');
+}
+
+/* ================= 渲染计划 ================= */
+function renderPlan(all){
+  const box=$('#planout');
+  if(!PLAN){box.innerHTML='<div class="empty"><span class="big">📅</span>还没有计划<br>到「生成计划」里做一份</div>';return}
+  const C=PLAN.cfg, tot=C.weeks*C.freq, done=Object.keys(PLAN.done||{}).length;
+  const phCount=[0,0,0,0];PLAN.phases.forEach(p=>phCount[p]++);
+  let h=`<div class="card">
+   <h3><span class="bar"></span>${esc(PLAN.title)}</h3>
+   <div class="ov">
+     <div class="ovi"><div class="v">${C.weeks}</div><div class="k">周期（周）</div></div>
+     <div class="ovi"><div class="v">${tot}</div><div class="k">总课次</div></div>
+     <div class="ovi"><div class="v">${C.freq}</div><div class="k">每周次数</div></div>
+     <div class="ovi"><div class="v">${C.dur}′</div><div class="k">单次时长</div></div>
+     <div class="ovi"><div class="v">${Math.round(tot*C.dur/60)}</div><div class="k">总时长(小时)</div></div>
+     <div class="ovi"><div class="v">${done}</div><div class="k">已完成</div></div>
+   </div>
+   <div class="prog"><i style="width:${tot?Math.round(done/tot*100):0}%"></i></div>
+   <div style="font-size:12px;color:var(--sub)">完成进度 ${tot?Math.round(done/tot*100):0}%　·　目标：${esc(PLAN.gname)}　·　对象：${esc(({pupil:'小学生',junior:'初中生',senior:'高中生',adult:'成人'})[C.who])} ${esc(C.sex)}　·　场地：${esc(({none:'徒手无器材',track:'操场跑道',ball:'球场器材',gym:'健身房'})[C.eq])}</div>
+   <div class="phase">${PH.map((p,i)=>phCount[i]?`<div class="ph ${p.c}"><b>${p.n} ${phCount[i]}周</b>${p.d}</div>`:'').join('')}</div>
+   ${loadChart()}
+   <div class="row noprint" style="margin-top:11px">
+     <button class="btn-b" onclick="renderPlan(true);setTimeout(()=>window.print(),300)">🖨 打印全部</button>
+     <button class="btn-o" onclick="exportPlanWord()">📄 导出 Word</button>
+     <button class="btn-g" onclick="renderPlan(${all?'false':'true'})">${all?'📄 只看本周':'📖 展开全部周'}</button>
+   </div>
+   <div class="warnbox">训练前排查病史与充分热身；出现胸闷、头晕、关节痛立即停止。计划为通用建议，个体差异请按实际调整。</div>
+  </div>`;
+
+  if(!all){
+    h+=`<div class="weeks noprint">${PLAN.weeks.map(w=>{
+      const dn=w.ss.filter(s=>PLAN.done[s.w+'-'+s.d]).length;
+      return `<div class="wk${w.i===curWeek?' on':''}" onclick="curWeek=${w.i};renderPlan()">第${w.i+1}周<span class="d">${PH[w.ph].n.slice(0,2)} ${dn}/${w.ss.length}</span></div>`;
+    }).join('')}</div>`;
+    h+=weekHTML(PLAN.weeks[curWeek]);
+  }else{
+    h+=PLAN.weeks.map(w=>weekHTML(w,true)).join('');
+  }
+  box.innerHTML=h;
+}
+function weekHTML(W,showTitle){
+  const p=PH[W.ph];
+  let h=`<div class="card" style="padding:12px 14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <div><b style="font-size:15.5px">第 ${W.i+1} 周</b>
+        <span class="chip sm ${p.c}" style="margin-left:6px;cursor:default">${p.n}</span></div>
+      <div style="font-size:12px;color:var(--sub)">负荷指数 ${W.load}%　·　${p.rpe}</div>
+    </div>
+    <div style="font-size:12.5px;color:var(--sub);margin-top:5px">${p.d}</div></div>`;
+  const firstOpen=W.ss.findIndex(s=>!(PLAN.done||{})[s.w+'-'+s.d]);
+  h+=W.ss.map((s,i)=>sesHTML(s,i===(firstOpen<0?0:firstOpen))).join('');
+  return h;
+}
+function sesHTML(s,open){
+  const key=s.w+'-'+s.d, done=!!(PLAN.done||{})[key];
+  const f=s.f;
+  const blk=(title,tm,arr,scale)=>{
+    if(!arr||!arr.length)return '';
+    return `<div class="blk"><div class="bt">${title}<span class="tm">约 ${tm} 分钟</span></div>
+      <table class="ex">${arr.map(x=>{
+        const e=x.e, cat=x.cat?CATN[x.cat]:'';
+        const sets=scale?scaleSets(e.b.s,f):e.b.s;
+        return `<tr><td class="n"><span class="exname" onclick="showEx('${esc(e.n)}')">${esc(e.n)}</span>
+          ${cat?`<span style="font-size:10.5px;color:var(--sub)"> ${esc(cat)}</span>`:''}</td>
+          <td class="s">${sets>1?sets+'组 × ':''}${esc(e.b.r)}</td>
+          <td class="r">间歇 ${esc(e.b.rest)}</td></tr>`;}).join('')}</table></div>`;
+  };
+  return `<div class="ses${done?' done':''}${open?' open':''}" id="ses-${key}">
+    <div class="hd" onclick="this.parentNode.classList.toggle('open')">
+      <div><div class="t">${esc(s.name)}</div>
+        <div class="m">${s.md} ${s.wd}　·　第${s.w+1}周第${s.d+1}次　·　${s.tW+s.tM+s.tA+s.tC} 分钟</div></div>
+      <div class="chk" onclick="event.stopPropagation();toggleDone('${key}')">
+        <div class="tick${done?' on':''}">${done?'✓':''}</div></div>
+    </div>
+    <div class="bd">
+      <div style="font-size:12.5px;color:var(--sub);border-left:3px solid var(--brand2);padding-left:8px;margin-top:10px">💡 ${esc(s.note)}</div>
+      ${blk('🔥 热身',s.tW,s.warm,false)}
+      ${blk('🎯 主体训练',s.tM,s.mains,true)}
+      ${blk('➕ 辅助与补强',s.tA,s.auxs,true)}
+      ${blk('🧘 放松',s.tC,s.cool,false)}
+      <div style="font-size:11.5px;color:var(--sub);margin-top:10px;border-top:1px solid var(--line);padding-top:8px">
+        本次课强度参考：${PH[PLAN.phases[s.w]].rpe}　｜　时间/距离类动作：适应期取区间下限，提高期取中值，强化期取上限，调整期减到六成。点动作名可看要领与常见错误。</div>
+    </div></div>`;
+}
+function toggleDone(k){
+  PLAN.done=PLAN.done||{};
+  if(PLAN.done[k])delete PLAN.done[k];else PLAN.done[k]=Date.now();
+  LS.set('tn_plan',PLAN);
+  const el=document.getElementById('ses-'+k);
+  const open=el&&el.classList.contains('open');
+  renderPlan();
+  const el2=document.getElementById('ses-'+k);
+  if(el2&&open)el2.classList.add('open');
+  toast(PLAN.done[k]?'打卡成功 💪':'已取消打卡');
+}
+function loadChart(){
+  const W=340,H=86,PB=16;
+  const n=PLAN.weeks.length, bw=Math.max(6,(W-16)/n-4);
+  const mx=Math.max.apply(null,PLAN.weeks.map(w=>w.load));
+  const col=['#22c55e','#38bdf8','#fbbf24','#c4b5fd'];
+  let bars='';
+  PLAN.weeks.forEach((w,i)=>{
+    const hh=(H-PB-8)*w.load/mx, x=8+i*((W-16)/n), y=H-PB-hh;
+    bars+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${hh.toFixed(1)}" rx="2.5" fill="${col[w.ph]}" opacity=".88"/>`;
+    if(n<=12||i%2===0)bars+=`<text x="${(x+bw/2).toFixed(1)}" y="${H-4}" font-size="8.5" fill="#93a7b8" text-anchor="middle">${i+1}</text>`;
+  });
+  return `<div style="margin-top:4px"><div style="font-size:12px;color:var(--sub);margin-bottom:3px">周负荷走势（波浪式上升，最后减量）</div>
+   <svg width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;background:#0e1a24;border-radius:9px;border:1px solid var(--line)">${bars}</svg></div>`;
+}
+function showEx(name){
+  const e=EX.find(x=>x.n===name);if(!e)return;
+  $('#modalbox').innerHTML=`<h3 style="color:var(--brand);font-size:17px">${esc(e.n)}</h3>
+   <div style="font-size:11.5px;color:var(--sub);margin:4px 0 9px">${CATN[e.c]}　·　难度 ${'★'.repeat(e.lv)}${'☆'.repeat(3-e.lv)}　·　建议 ${e.b.s}组 × ${esc(e.b.r)}，间歇 ${esc(e.b.rest)}</div>
+   <p style="font-size:13.5px"><b style="color:#b9cbd9">做法：</b>${e.d}</p>
+   <p style="font-size:13.5px"><b style="color:#b9cbd9">要点：</b>${e.p}</p>
+   <p style="font-size:13.5px"><b style="color:var(--danger)">常见错误：</b>${e.e}</p>
+   <p style="font-size:13.5px"><b style="color:#b9cbd9">做不了就换：</b>${e.sub}</p>
+   <button class="btn-g" style="width:100%;margin-top:11px" onclick="document.getElementById('modal').classList.remove('on')">知道了</button>`;
+  $('#modal').classList.add('on');
+}
+
+/* ================= 导出 Word ================= */
+function exportPlanWord(){
+  if(!PLAN){toast('还没有计划');return}
+  const C=PLAN.cfg;
+  let b=`<h2 style="text-align:center">${esc(PLAN.title)}</h2>
+  <p style="text-align:center;font-size:9pt">目标：${esc(PLAN.gname)}　｜　${C.weeks}周 × 每周${C.freq}次 × ${C.dur}分钟　｜　场地：${esc(({none:'徒手',track:'操场',ball:'球场',gym:'健身房'})[C.eq])}</p>
+  <p style="font-size:9pt"><b>阶段安排：</b>${PH.map((p,i)=>{const n=PLAN.phases.filter(x=>x===i).length;return n?p.n+' '+n+'周':''}).filter(Boolean).join('　→　')}</p>`;
+  PLAN.weeks.forEach(W=>{
+    b+=`<h3>第 ${W.i+1} 周（${PH[W.ph].n}，负荷 ${W.load}%，${PH[W.ph].rpe}）</h3>`;
+    W.ss.forEach(s=>{
+      b+=`<p><b>${s.md} ${s.wd}　${esc(s.name)}（${s.tW+s.tM+s.tA+s.tC}分钟）</b>　提示：${esc(s.note)}</p>
+      <table border="1" style="border-collapse:collapse;width:100%;font-size:9pt">
+      <tr><th style="width:14%">环节</th><th style="width:34%">内容</th><th style="width:30%">组数/次数</th><th>间歇</th></tr>`;
+      const rowsOf=(t,arr,sc)=>arr.map((x,i)=>{const e=x.e;const st=sc?scaleSets(e.b.s,s.f):e.b.s;
+        return `<tr>${i===0?`<td rowspan="${arr.length}">${t}</td>`:''}<td>${esc(e.n)}</td><td>${st>1?st+'组 × ':''}${esc(e.b.r)}</td><td>${esc(e.b.rest)}</td></tr>`;}).join('');
+      b+=rowsOf('热身',s.warm,false)+rowsOf('主体',s.mains,true)+rowsOf('辅助',s.auxs,true)+rowsOf('放松',s.cool,false);
+      b+=`</table><p style="font-size:8.5pt">　</p>`;
+    });
+  });
+  b+=`<p style="font-size:9pt"><b>安全提醒：</b>训练前排查心脏病、哮喘等病史并充分热身；出现胸闷、头晕、关节疼痛立即停止；急性扭伤 48 小时内冷敷加压抬高，不要热敷揉搓。本计划为通用锻炼建议，不能替代医生或专业教练的个体化指导。</p>`;
+  const css=`body{font-family:"宋体",SimSun;font-size:10.5pt;line-height:1.6}
+   h2{font-family:"黑体",SimHei;font-size:16pt} h3{font-family:"黑体",SimHei;font-size:12pt;margin:12px 0 4px}
+   table{border-collapse:collapse;width:100%} td,th{border:1px solid #333;padding:3px 5px;font-size:9pt}
+   th{background:#eee} @page{size:A4 portrait;margin:2cm 1.6cm}`;
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>${esc(PLAN.title)}</title><style>${css}</style></head><body>${b}</body></html>`;
+  const blob=new Blob(['﻿'+html],{type:'application/msword;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=PLAN.title.replace(/[\\/:*?"<>|]/g,'')+'.doc';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+  toast('已导出 Word');
+}
+
+/* ================= 动作库 ================= */
+function renderEx(){
+  const q=($('#ex-search').value||'').trim();
+  let list=EX.filter(e=>(curExCat==='all'||e.c===curExCat)&&(!q||e.n.indexOf(q)>=0||e.d.indexOf(q)>=0));
+  if(!list.length){$('#exout').innerHTML='<div class="empty"><span class="big">🔍</span>没找到相关动作</div>';return}
+  const eqn={none:'徒手',track:'操场',ball:'球类',gym:'器械'};
+  $('#exout').innerHTML=list.map(e=>`<div class="exc">
+    <h4>${esc(e.n)}</h4>
+    <div class="meta">${CATN[e.c]}　·　难度 ${'★'.repeat(e.lv)}${'☆'.repeat(3-e.lv)}　·　场地：${e.eq.map(x=>eqn[x]).join('/')}　·　建议 ${e.b.s}组 × ${esc(e.b.r)}（间歇 ${esc(e.b.rest)}）</div>
+    <p><span class="lbl">做法：</span>${e.d}</p>
+    <p><span class="lbl">要点：</span>${e.p}</p>
+    <p><span class="lbl" style="color:var(--danger)">常见错误：</span>${e.e}</p>
+    <p><span class="lbl">替代动作：</span>${e.sub}</p></div>`).join('');
+}
+
+/* ================= 成绩记录 ================= */
+function parseVal(v,t){
+  v=String(v).trim();
+  if(t&&t.time){const m=v.match(/^(\d+)[':′分]\s*(\d+(?:\.\d+)?)/);if(m)return +m[1]*60+ +m[2];}
+  const f=parseFloat(v);return isNaN(f)?null:f;
+}
+function addRec(){
+  const k=$('#t-item').value, v=$('#t-val').value.trim(), d=$('#t-date').value||dstr(new Date());
+  const T=TESTS.find(x=>x.k===k);
+  if(!v){toast('请填写成绩');return}
+  if(parseVal(v,T)===null){toast('成绩填写格式不对，可填 8.5 或 3\'45');return}
+  const recs=LS.get('tn_recs',[]);
+  recs.push({k,v,d,ts:Date.now()});
+  LS.set('tn_recs',recs);
+  $('#t-val').value='';
+  renderTest();toast('已记录 ✓');
+}
+function renderTest(){
+  const recs=LS.get('tn_recs',[]);
+  if(!recs.length){$('#testout').innerHTML='<div class="empty"><span class="big">📊</span>还没有成绩记录<br>上面选项目、填成绩就能存下来</div>';return}
+  const byK={};recs.forEach(r=>{(byK[r.k]=byK[r.k]||[]).push(r)});
+  let h='';
+  Object.keys(byK).forEach(k=>{
+    const T=TESTS.find(x=>x.k===k)||{n:k,u:'',dir:1};
+    const arr=byK[k].slice().sort((a,b)=>a.d<b.d?-1:1);
+    const nums=arr.map(r=>parseVal(r.v,T));
+    const first=nums[0], last=nums[nums.length-1];
+    const best=T.dir>0?Math.max.apply(null,nums):T.dir<0?Math.min.apply(null,nums):last;
+    const un=T.time?'':T.u.replace(/\(.*\)/,'');
+    let delta='';
+    if(arr.length>1&&T.dir!==0){
+      const imp=T.dir>0?last-first:first-last;
+      const pctv=first?Math.abs(imp/first*100).toFixed(1):'0';
+      const du=T.time?'秒':un;
+      delta=imp>0?`<span style="color:var(--brand)">↑ 进步 ${Math.abs(imp).toFixed(2).replace(/\.00$/,'')}${du}（${pctv}%）</span>`
+           :imp<0?`<span style="color:var(--danger)">↓ 退步 ${Math.abs(imp).toFixed(2).replace(/\.00$/,'')}${du}</span>`
+           :'<span style="color:var(--sub)">持平</span>';
+    }
+    h+=`<div class="card"><h3><span class="bar"></span>${esc(T.n)}
+      <span style="font-weight:500;font-size:12px;color:var(--sub)">共 ${arr.length} 次记录</span></h3>
+      <div class="rec"><div><div class="n">最新成绩</div><div class="d">${esc(arr[arr.length-1].d)}</div></div>
+        <div class="v">${esc(arr[arr.length-1].v)} <span style="font-size:11px;color:var(--sub)">${esc(un)}</span></div></div>
+      <div class="rec"><div><div class="n">最好成绩</div><div class="d">${delta||'继续记录可以看到进步幅度'}</div></div>
+        <div class="v">${T.time?fmtTime(best):best} <span style="font-size:11px;color:var(--sub)">${esc(un)}</span></div></div>
+      ${arr.length>1?recChart(arr,nums,T):''}
+      <div class="row noprint" style="margin-top:8px"><button class="btn-d" onclick="delRec('${k}')">删除该项全部记录</button></div>
+      </div>`;
+  });
+  $('#testout').innerHTML=h;
+}
+function fmtTime(s){const m=Math.floor(s/60),ss=(s-m*60);return m?m+"'"+String(ss.toFixed(0)).padStart(2,'0'):s.toFixed(1);}
+function recChart(arr,nums,T){
+  const W=330,H=110,P=26;
+  const mn=Math.min.apply(null,nums), mx=Math.max.apply(null,nums), rg=(mx-mn)||1;
+  const x=i=>P+(W-P-10)*(arr.length===1?0.5:i/(arr.length-1));
+  const y=v=>12+(H-34)*(1-(v-mn)/rg);
+  const pts=nums.map((v,i)=>x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+  const good=T.dir<0?'越低越好':T.dir>0?'越高越好':'';
+  return `<div style="margin-top:8px"><div style="font-size:11.5px;color:var(--sub);margin-bottom:3px">进步曲线（${good}）</div>
+   <svg width="100%" viewBox="0 0 ${W} ${H}" style="max-width:${W}px;background:#0e1a24;border-radius:9px;border:1px solid var(--line)">
+   <polyline points="${pts}" fill="none" stroke="#38bdf8" stroke-width="2"/>
+   ${nums.map((v,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="#22c55e"/>`).join('')}
+   ${arr.map((r,i)=>i%Math.ceil(arr.length/5)===0?`<text x="${x(i).toFixed(1)}" y="${H-4}" font-size="8" fill="#93a7b8" text-anchor="middle">${r.d.slice(5)}</text>`:'').join('')}
+   <text x="3" y="16" font-size="8.5" fill="#93a7b8">${T.time?fmtTime(mx):mx}</text>
+   <text x="3" y="${H-20}" font-size="8.5" fill="#93a7b8">${T.time?fmtTime(mn):mn}</text></svg></div>`;
+}
+function delRec(k){
+  if(!confirm('删除这个项目的全部成绩记录？'))return;
+  LS.set('tn_recs',LS.get('tn_recs',[]).filter(r=>r.k!==k));renderTest();toast('已删除');
+}
+
+/* ================= 训练知识 ================= */
+function renderKnow(k){
+  const K=KNOW.find(x=>x.k===k)||KNOW[0];
+  $('#knowout').innerHTML=`<div class="card"><h3><span class="bar"></span>${K.t}</h3>
+   ${K.c.map(c=>`<div style="margin-bottom:12px"><div style="font-weight:700;color:var(--brand2);font-size:14px;margin-bottom:3px">${c[0]}</div>
+     <div style="font-size:13.5px;color:#cfe0ec">${c[1]}</div></div>`).join('')}</div>`;
+}
+
+init();
+</script>
+</body>
+</html>
