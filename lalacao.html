@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
+<title>啦啦操社团教学助手 · 花球</title>
+<style>
+:root{
+  --bg:#fbf7fb; --card:#fff; --ink:#2a1830; --sub:#7a6688; --line:#ecdff0;
+  --brand:#c026d3; --brand2:#f472b6; --gold:#f59e0b; --ok:#16a34a; --danger:#e11d48;
+  --shadow:0 2px 12px rgba(120,40,140,.09);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",system-ui,sans-serif;
+  font-size:15px;line-height:1.65;padding-bottom:60px}
+h1,h2,h3,h4{margin:0;font-weight:700}
+button{font-family:inherit;font-size:14px;cursor:pointer;border:none;border-radius:9px;padding:9px 15px;transition:.15s}
+button:active{transform:scale(.97)}
+select,input,textarea{font-family:inherit;font-size:14px;padding:8px 10px;border:1px solid var(--line);
+  border-radius:8px;background:#fff;color:var(--ink);width:100%}
+textarea{resize:vertical;min-height:52px;line-height:1.55}
+select:focus,input:focus,textarea:focus{outline:2px solid rgba(192,38,211,.22);border-color:var(--brand)}
+
+.top{background:linear-gradient(120deg,#a21caf,#ec4899);color:#fff;padding:16px 16px 0;position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 14px rgba(140,30,140,.22)}
+.top .ttl{font-size:19px;font-weight:800;letter-spacing:.5px}
+.top .sub{font-size:12px;opacity:.9;margin:2px 0 10px}
+.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;padding:8px 13px;border-radius:10px 10px 0 0;background:rgba(255,255,255,.18);color:#fdf2fb;
+  font-size:13.5px;font-weight:600;white-space:nowrap;cursor:pointer}
+.tab.on{background:var(--bg);color:var(--brand)}
+
+.wrap{max-width:1000px;margin:0 auto;padding:14px}
+.card{background:var(--card);border-radius:14px;padding:15px;box-shadow:var(--shadow);margin-bottom:13px}
+.card>h3{font-size:15.5px;margin-bottom:11px;display:flex;align-items:center;gap:7px;color:#5b2168}
+.card>h3 .bar{width:4px;height:15px;border-radius:3px;background:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.fld{display:flex;flex-direction:column;gap:4px}
+.fld label{font-size:12px;color:var(--sub);font-weight:600}
+.btn-main{background:linear-gradient(120deg,#c026d3,#f472b6);color:#fff;font-weight:700;font-size:15.5px;
+  padding:13px;width:100%;border-radius:11px;box-shadow:0 3px 12px rgba(192,38,211,.28)}
+.btn-g{background:#fbeafc;color:var(--brand);font-weight:600}
+.btn-o{background:#fff5e6;color:var(--gold);font-weight:600}
+.btn-k{background:#eafaf1;color:var(--ok);font-weight:600}
+.btn-d{background:#ffeaef;color:var(--danger);font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row>button{flex:1;min-width:110px}
+.hint{font-size:12px;color:var(--sub);background:#fdf7fe;border-left:3px solid var(--brand);padding:8px 10px;border-radius:0 8px 8px 0;margin-top:9px}
+.warnbox{font-size:12.5px;color:#7c2d12;background:#fff7ed;border-left:3px solid var(--gold);padding:9px 11px;border-radius:0 8px 8px 0;margin-top:9px}
+
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:6px 11px;border-radius:18px;background:#f5eef7;color:#6b5375;font-size:12.5px;font-weight:600;
+  border:1.5px solid transparent;cursor:pointer;user-select:none}
+.chip.on{background:#fbeafc;color:var(--brand);border-color:var(--brand)}
+.chip.sm{padding:4px 9px;font-size:12px}
+
+/* 八拍卡片 */
+.b8{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.b8 .h{display:flex;align-items:center;gap:8px;padding:9px 12px;background:#faf2fc;cursor:pointer}
+.b8 .no{background:var(--brand);color:#fff;font-weight:800;font-size:13px;border-radius:8px;padding:2px 9px;white-space:nowrap}
+.b8 .sc{font-size:12px;color:var(--sub);font-weight:600}
+.b8 .pv{flex:1;font-size:12.5px;color:#4b3553;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b8 .bd{padding:0 12px 12px;display:none}
+.b8.open .bd{display:block}
+.b8.filled .no{background:var(--ok)}
+.fl{margin-top:9px}
+.fl>label{font-size:11.5px;color:var(--sub);font-weight:700;display:block;margin-bottom:3px}
+
+/* 手位图 */
+.hgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.hcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:9px;text-align:center;cursor:pointer}
+.hcard:hover{border-color:var(--brand)}
+.hcard .nm{font-size:13.5px;font-weight:700;color:#5b2168;margin-top:3px}
+.hcard .en{font-size:10.5px;color:var(--sub)}
+svg.fig{display:block;margin:0 auto}
+
+/* 队形图 */
+.fmt{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:10px}
+.fmt h4{font-size:14.5px;color:#5b2168;margin-bottom:4px}
+.fmt .dg{font-family:"Courier New",Consolas,monospace;font-size:12px;line-height:1.4;white-space:pre;
+  background:#faf5fb;border-radius:7px;padding:8px 10px;display:inline-block;color:#5b3a63;margin:5px 0}
+.fmt p{margin:3px 0;font-size:13px}
+
+/* 表格 */
+table.pa{width:100%;border-collapse:collapse;font-size:13px}
+table.pa th,table.pa td{border:1px solid #d9b9e0;padding:6px 7px;vertical-align:top;line-height:1.6;word-break:break-word}
+table.pa th{background:#faf0fc;font-weight:700;text-align:center;color:#5b2168}
+.cen{text-align:center}
+[contenteditable]:focus{background:#fffbe8;box-shadow:inset 0 0 0 2px #fbbf24;border-radius:3px;outline:none}
+.pa-title{text-align:center;font-size:20px;font-weight:800;letter-spacing:1px;margin-bottom:3px}
+.pa-sub{text-align:center;font-size:12.5px;color:var(--sub);margin-bottom:12px}
+#paper,#schedout{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:16px;margin-bottom:13px}
+
+.kcard{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:10px}
+.kcard h4{font-size:14.5px;color:var(--brand);margin-bottom:5px}
+.kcard p{margin:4px 0;font-size:13.5px}
+.kcard .lbl{font-weight:700;color:#6b5375}
+
+.empty{text-align:center;color:var(--sub);padding:38px 16px;font-size:14px}
+.empty .big{font-size:40px;display:block;margin-bottom:8px}
+#toast{position:fixed;left:50%;bottom:70px;transform:translateX(-50%) translateY(20px);background:rgba(42,24,48,.94);
+  color:#fff;padding:10px 18px;border-radius:22px;font-size:13.5px;opacity:0;pointer-events:none;transition:.25s;z-index:99}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+.hidden{display:none!important}
+#modal{position:fixed;inset:0;background:rgba(40,10,45,.6);display:none;align-items:center;justify-content:center;z-index:98;padding:16px}
+#modal.on{display:flex}
+#modal .box{background:#fff;border-radius:14px;padding:16px;max-width:420px;width:100%;max-height:84vh;overflow:auto}
+
+@media(max-width:560px){.wrap{padding:10px} table.pa{font-size:11.5px} table.pa th,table.pa td{padding:4px 4px}}
+@media print{
+  body{background:#fff;padding:0;font-size:12px}
+  .top,.noprint,#toast,#modal{display:none!important}
+  .wrap{max-width:none;padding:0;margin:0}
+  #paper,#schedout,.card{box-shadow:none;border-radius:0;padding:0;margin:0 0 8px}
+  table.pa th,table.pa td{border:1px solid #333;padding:3px 5px}
+  table.pa th{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  tr,td,th,.fmt,.hcard{page-break-inside:avoid}
+  @page{size:A4 portrait;margin:12mm 10mm}
+}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="ttl">📣 啦啦操社团教学助手</div>
+  <div class="sub">花球啦啦操 · 套路分解教学 · 学期社团计划 · 课时教案 · 手位图示</div>
+  <div class="tabs">
+    <div class="tab on" data-tab="rt">🎽 套路编辑</div>
+    <div class="tab" data-tab="sc">📆 学期计划</div>
+    <div class="tab" data-tab="lp">📋 课时教案</div>
+    <div class="tab" data-tab="hd">✋ 手位图示</div>
+    <div class="tab" data-tab="fm">🔷 队形编排</div>
+    <div class="tab" data-tab="kn">📖 训练展演</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ 套路编辑 ============ -->
+<section id="pg-rt">
+  <div class="card noprint">
+    <h3><span class="bar"></span>套路基本信息</h3>
+    <div class="grid">
+      <div class="fld"><label>套路名称</label><input id="m-name" placeholder="校园啦啦操示范套路（第三套）花球中学组"></div>
+      <div class="fld"><label>社团/班级</label><input id="m-club" placeholder="如 XX中学啦啦操社团"></div>
+      <div class="fld"><label>指导教师</label><input id="m-teacher" placeholder="你的名字"></div>
+      <div class="fld"><label>成套时长</label><input id="m-time" placeholder="约 2分10秒"></div>
+      <div class="fld"><label>音乐节拍</label><input id="m-bpm" placeholder="如 128 BPM"></div>
+      <div class="fld"><label>参训人数</label><input id="m-num" placeholder="如 24"></div>
+    </div>
+    <div class="warnbox">⚠️ <b>重要说明：</b>下面每个八拍的<b>具体动作内容需要你对照官方教学视频/教材填写</b>——第三套花球中学组的官方编排我不能凭记忆复现，编错了会误导教学。填写有「动作词典」辅助，点手位名就能插入，一个八拍十几秒就能填完。<b>手位图示、分解教法、学期进度、课时教案、队形、口令、纠错要点</b>这些都是现成的，不用你写。</div>
+    <div class="row" style="margin-top:10px">
+      <button class="btn-g" id="b-addsec">＋ 增加一个八拍</button>
+      <button class="btn-o" id="b-tpl">↺ 恢复默认结构模板</button>
+      <button class="btn-k" id="b-expand">展开/收起全部</button>
+    </div>
+  </div>
+  <div id="rtlist"></div>
+  <div class="card noprint">
+    <div class="row">
+      <button class="btn-g" id="b-rtprint">🖨 打印套路总表</button>
+      <button class="btn-o" id="b-rtword">📄 导出 Word</button>
+      <button class="btn-d" id="b-clear">🗑 清空全部内容</button>
+    </div>
+    <div class="hint">内容自动保存在本机浏览器。换设备/清缓存会丢，填完记得<b>导出一份 Word 存着</b>。</div>
+  </div>
+</section>
+
+<!-- ============ 学期计划 ============ -->
+<section id="pg-sc" class="hidden">
+  <div class="card noprint">
+    <h3><span class="bar"></span>社团学期教学计划</h3>
+    <div class="grid">
+      <div class="fld"><label>学期周数</label><select id="s-weeks">
+        <option>12</option><option>14</option><option selected>16</option><option>18</option><option>20</option></select></div>
+      <div class="fld"><label>每周训练次数</label><select id="s-freq">
+        <option value="1">1 次</option><option value="2" selected>2 次</option><option value="3">3 次</option></select></div>
+      <div class="fld"><label>每次时长</label><select id="s-dur">
+        <option value="45">45 分钟</option><option value="60" selected>60 分钟</option>
+        <option value="90">90 分钟</option><option value="120">120 分钟</option></select></div>
+      <div class="fld"><label>展演/比赛时间</label><select id="s-show">
+        <option value="end">学期末（最后一周）</option><option value="early">提前2周（如校运会）</option></select></div>
+    </div>
+    <div class="row" style="margin-top:11px">
+      <button class="btn-main" id="b-sched" style="flex:2">📆 生成学期计划</button>
+      <button class="btn-g" id="b-scprint">🖨 打印</button>
+      <button class="btn-o" id="b-scword">📄 Word</button>
+    </div>
+    <div class="hint">计划按 <b>基本功期 → 套路新授期 → 队形串联期 → 打磨展演期</b> 四段自动排，套路八拍会均匀分配到每次课，并自动插入复习课与模拟展演。</div>
+  </div>
+  <div id="schedout"><div class="empty"><span class="big">📆</span>点上面按钮生成学期计划</div></div>
+</section>
+
+<!-- ============ 课时教案 ============ -->
+<section id="pg-lp" class="hidden">
+  <div class="card noprint">
+    <h3><span class="bar"></span>单次社团课教案</h3>
+    <div class="grid">
+      <div class="fld"><label>第几次课</label><select id="l-no"></select></div>
+      <div class="fld"><label>授课日期</label><input id="l-date" type="date"></div>
+      <div class="fld"><label>场地</label><select id="l-venue">
+        <option>体育馆/舞蹈房</option><option>室内篮球场</option><option>操场（平整区域）</option><option>教室（清空课桌）</option></select></div>
+    </div>
+    <div class="row" style="margin-top:11px">
+      <button class="btn-main" id="b-lp" style="flex:2">📋 生成本次课教案</button>
+      <button class="btn-g" id="b-lpprint">🖨 打印</button>
+      <button class="btn-o" id="b-lpword">📄 Word</button>
+    </div>
+    <div class="hint">需要先在「学期计划」里生成一次计划，这里才知道第几次课该教哪几个八拍。生成后表格文字可直接点击修改。</div>
+  </div>
+  <div id="paper"><div class="empty"><span class="big">📋</span>还没有教案</div></div>
+</section>
+
+<!-- ============ 手位图示 ============ -->
+<section id="pg-hd" class="hidden">
+  <div class="card noprint">
+    <h3><span class="bar"></span>花球啦啦操常用基本手位</h3>
+    <div class="hint" style="margin-top:0">图为<b>正面观</b>（学生面对你时看到的样子）。教学时用<b>镜面示范</b>：你做的左右与学生相反。点任意手位看详细要领与常见错误。</div>
+    <div class="row noprint" style="margin-top:10px"><button class="btn-g" id="b-hdprint">🖨 打印手位挂图</button></div>
+  </div>
+  <div class="card"><div class="hgrid" id="hdgrid"></div></div>
+  <div class="card">
+    <h3><span class="bar"></span>基本步伐与跳跃</h3>
+    <div id="stepout"></div>
+  </div>
+</section>
+
+<!-- ============ 队形编排 ============ -->
+<section id="pg-fm" class="hidden">
+  <div class="card noprint"><h3><span class="bar"></span>常用队形与变换</h3>
+    <div class="hint" style="margin-top:0">○＝队员　◎＝领做/排头　▲＝教师位置。队形变换一般用 1—2 个八拍完成，要求"人到位、拍到点、动作不停"。</div></div>
+  <div id="fmout"></div>
+</section>
+
+<!-- ============ 训练展演 ============ -->
+<section id="pg-kn" class="hidden">
+  <div class="card noprint"><h3><span class="bar"></span>训练与展演</h3>
+    <div class="chips" id="k-tabs"></div></div>
+  <div id="knowout"></div>
+</section>
+
+</div>
+<div id="toast"></div>
+<div id="modal"><div class="box" id="modalbox"></div></div>
+<script>
+/* ============ 常用基本手位 ============
+   arms: {l:[上臂角, 前臂角?], r:[...]}  角度以正面观、数学坐标（0°=右, 90°=上）
+   只有一个角度＝直臂；两个角度＝屈臂（上臂角 + 前臂角）                      */
+const HANDS=[
+ {n:'高V',en:'High V',a:{l:[135],r:[45]},
+  d:'两臂经体侧向斜上方伸直，与身体构成"V"字，两手略高于头，掌心（花球面）朝前。',
+  p:'肘关节完全伸直锁定；两臂对称，角度约斜上 45°；肩下沉不耸肩；花球面朝正前方。',
+  e:'手臂弯曲无力；两边高低不一；耸肩缩脖；角度过高变成"上举"。'},
+ {n:'低V',en:'Low V',a:{l:[225],r:[315]},
+  d:'两臂经体侧向斜下方伸直成倒"V"，两手位于髋关节外下方，花球面朝前。',
+  p:'直臂锁肘，手不贴大腿也不甩太开；上体保持正直不前倾。',
+  e:'手臂贴住大腿；角度太小变成"下压"；含胸低头。'},
+ {n:'上举（托掌位）',en:'High Touchdown',a:{l:[95],r:[85]},
+  d:'两臂经前或经侧向上伸直，与肩同宽，两臂夹住耳朵，花球在头顶正上方。',
+  p:'手臂夹耳、指向正上方；肋骨收住不塌腰；这是啦啦操最常用的"高点"手位。',
+  e:'两臂过宽变成高V；手臂后倒导致塌腰；肩膀往上耸。'},
+ {n:'下压',en:'Low Touchdown',a:{l:[282],r:[258]},
+  d:'两臂在体前向下伸直并拢，花球置于身体正前下方。',
+  p:'直臂、两手靠拢；上体正直，靠肩关节下压而不是弯腰。',
+  e:'弯腰去够；两手分太开；手臂弯曲。'},
+ {n:'平举（T位）',en:'T Motion',a:{l:[180],r:[0]},
+  d:'两臂向体侧平举伸直，与肩同高成"T"字，花球面朝前或朝下（按套路要求）。',
+  p:'两臂与肩同高，不高不低；肘腕成一直线；肩胛骨主动下沉。',
+  e:'手臂低于肩；手腕下垂；两臂前后不在一条线上。'},
+ {n:'断T（屈臂平举）',en:'Broken T',a:{l:[180,0],r:[0,180]},
+  d:'在平举基础上屈肘，前臂内收至胸前，上臂仍与肩同高，前臂与地面平行。',
+  p:'肘关节保持在肩的高度不下掉；前臂平行地面，拳/球面朝下；两侧对称。',
+  e:'肘部掉下来；前臂上翘或下垂；两侧高度不一致。'},
+ {n:'K式',en:'K Motion',a:{l:[225],r:[45]},
+  d:'一臂斜上举、同侧另一臂斜下举，两臂与身体构成"K"字（图示为右上左下）。',
+  p:'上下两臂都要伸直；躯干保持正直不侧倒；上臂与下臂在同一斜线感觉上。',
+  e:'身体跟着倾斜；下方手臂松软；两臂不在一个平面。'},
+ {n:'倒K',en:'Inverted K',a:{l:[135],r:[315]},
+  d:'与K式左右相反（图示为左上右下）。',
+  p:'同K式；套路中常与K式对称出现，注意左右两侧都要练熟。',
+  e:'习惯做一侧，反向做不出来；躯干歪斜。'},
+ {n:'L式',en:'L Motion',a:{l:[180],r:[80]},
+  d:'一臂上举、另一臂侧平举，构成"L"字（图示为右上举、左平举）。',
+  p:'上举手臂夹耳指天，平举手臂与肩同高；两臂成 90°；肩保持水平。',
+  e:'上举手臂后倒；平举手臂下掉；肩膀一高一低。'},
+ {n:'倒L',en:'Inverted L',a:{l:[100],r:[0]},
+  d:'与L式左右相反（图示为左上举、右平举）。',
+  p:'同L式；注意左右对称练习。',e:'同L式。'},
+ {n:'马刀位',en:'Dagger',a:{l:[262,86],r:[278,94]},
+  d:'两臂屈肘置于体侧，上臂贴近躯干，前臂向上，拳/球位于肩前，掌心相对。',
+  p:'上臂夹紧体侧不外张；前臂垂直向上；肩下沉；常作为动作之间的过渡与蓄力位。',
+  e:'肘部外张离开体侧；前臂倾斜；耸肩。'},
+ {n:'加油位',en:'Clasp',a:{l:[270,25],r:[270,155]},
+  d:'两臂屈肘于体前，两手在胸腹前相合（击掌/合球），是啦啦操常用的加油与衔接动作。',
+  p:'肘部略向外、位置固定；两手在身体中线相合；配合发声或节奏更有感染力。',
+  e:'肘部乱晃；两手位置忽高忽低；上体前倾。'},
+ {n:'冲拳（单臂上冲）',en:'Punch',a:{l:[260,20],r:[90]},
+  d:'一臂快速向上伸直上冲，另一臂屈肘置于腰侧，是强调重音节拍的爆发性动作。',
+  p:'上冲要快、要有"停"；躯干收紧不后仰；落在音乐重拍上力度才出得来。',
+  e:'上冲手臂弯曲；身体后仰；没有停顿显得软。'},
+ {n:'体前交叉（X位）',en:'Cross',a:{l:[315],r:[225]},
+  d:'两臂在体前下方交叉伸直，花球相叠，常用于起始造型与段落收束。',
+  p:'两臂伸直交叉于腹前；肩放松下沉；交叉点固定不乱动。',
+  e:'手臂弯曲；交叉点过高挡住身体；含胸驼背。'},
+ {n:'半V（单臂斜上）',en:'Half V',a:{l:[265],r:[45]},
+  d:'一臂斜上举成半个V，另一臂下压于体侧。',
+  p:'上举一侧直臂到位；下压一侧不松懈；两侧都要有力度。',
+  e:'只做上面忘了下面；躯干侧倒。'}
+];
+
+/* ============ 基本步伐与跳跃 ============ */
+const STEPS=[
+ {n:'踏步',d:'两脚原地交替踏动，膝关节保持弹性，是最基础的节奏步伐。',p:'脚下有节奏，重心平稳，配合手位不乱。',e:'踏得太重、拖沓，节奏对不上音乐。'},
+ {n:'并步',d:'一脚向侧迈出，另一脚并拢，可连续向一侧移动。',p:'并脚时两脚靠拢干脆，重心随之移动，上体保持正直。',e:'并脚不到位；移动时上下起伏太大。'},
+ {n:'V字步',d:'两脚依次向斜前方迈出成"V"，再依次收回原位，共4拍。',p:'四拍节奏清楚：出—出—收—收；脚下路线呈V形。',e:'步幅忽大忽小；四拍节奏混乱。'},
+ {n:'开合步（开合跳）',d:'两脚同时向外分开落地，再同时并拢，可原地跳动完成。',p:'落地前脚掌先着地、屈膝缓冲；开合幅度统一。',e:'落地砸地有声；开合幅度全队不一致。'},
+ {n:'弓步',d:'一脚向前（或侧）迈出屈膝成弓步，后腿伸直。',p:'前膝不超过脚尖太多，后腿蹬直；上体正直，常配合大幅手位造型。',e:'重心下不去；后腿弯曲；上体前倾。'},
+ {n:'交叉步',d:'一脚经另一脚前（或后）交叉迈出，常用于横向移动与队形变换。',p:'脚下路线清楚，重心平稳，移动中上肢动作不停。',e:'交叉时绊脚；移动中手位松掉。'},
+ {n:'吸腿跳',d:'单脚起跳，另一腿屈膝上提（大腿接近水平），空中定型后落地。',p:'起跳有力、空中姿态到位、落地屈膝缓冲无声；上体挺拔。',e:'提腿高度不够；落地砸地；空中含胸。'},
+ {n:'大跳（分腿跳）',d:'助跑或原地起跳，空中两腿前后分开，属于难度动作。',p:'需要良好的柔韧与力量基础，<b>分层要求，不勉强</b>；落地必须充分缓冲。',e:'柔韧不足硬做导致拉伤；落地不缓冲。'},
+ {n:'转体',d:'以前脚掌为轴完成 90°/180°/360° 转体。',p:'转体前收紧核心、目标点定位（"甩头找点"）保持平衡；转完立即定位。',e:'转晕站不稳；转完手位散架；全队转的方向不统一。'}
+];
+
+/* ============ 队形库 ============ */
+const FORMS=[
+ {n:'方块队形（基本队形）',dg:'○ ○ ○ ○ ○ ○\n○ ○ ◎ ○ ○ ○\n○ ○ ○ ○ ○ ○\n○ ○ ○ ○ ○ ○\n\n        ▲',
+  u:'最常用的起始与主体队形。前后左右间隔均匀（一般前后 1.5 米、左右 1.5 米），便于统一观察与整齐展示。',
+  t:'排列时用标志盘定点；确定"参照人"，每人记住自己前后左右是谁。'},
+ {n:'V字（雁形）队形',dg:'○           ○\n  ○       ○\n    ○   ○\n      ◎\n\n        ▲',
+  u:'突出中心领做者，适合成套开头造型或高潮段落，视觉冲击强。',
+  t:'从方块变V字通常用1个八拍：两侧队员斜向后撤，中间队员上前。'},
+ {n:'三角形队形',dg:'      ◎\n    ○   ○\n  ○   ○   ○\n○   ○   ○   ○\n\n        ▲',
+  u:'层次感强，适合作为结束造型或托举/难度展示的衬托队形。',
+  t:'注意后排要能被看见，前后错开半个身位。'},
+ {n:'圆形/半圆队形',dg:'    ○ ○ ○\n  ○       ○\n ○    ◎    ○\n  ○       ○\n    ○ ○ ○',
+  u:'适合围绕中心的展示段落，或课堂上集中讲解、观摩示范时使用。',
+  t:'圆形变换要控制半径统一；讲解时用半圆保证人人看得见示范。'},
+ {n:'错落散点队形',dg:'○     ○     ○\n   ○     ○\n○     ○     ○\n   ○     ○\n\n        ▲',
+  u:'现代啦啦操常用，画面饱满不呆板；也是平时练手位、练基本功的标准间距队形。',
+  t:'前后排错开站，保证每个人都能被看到，也方便教师观察每个人。'},
+ {n:'两大块／分组对称',dg:'○ ○ ○      ○ ○ ○\n○ ○ ○      ○ ○ ○\n\n         ▲',
+  u:'用于左右对称编排、镜面动作或两组交替（一组做上位、一组做下位）的段落。',
+  t:'两块之间留出通道，便于中间穿插变换；两组动作要绝对同步。'},
+ {n:'一字横排（谢幕）',dg:'○ ○ ○ ○ ○ ◎ ○ ○ ○ ○ ○\n\n            ▲',
+  u:'结束造型与谢幕常用；也用于课的集合、点名、总结。',
+  t:'手拉手或搭肩统一鞠躬，谢幕也是展演评分的一部分。'}
+];
+
+/* ============ 默认成套结构模板（八拍数可改） ============ */
+const TPL=[
+ {sec:'预备/起始造型',n:1,tip:'音乐起前的造型，要求全体静止、姿态挺拔、表情到位'},
+ {sec:'A段 基本动作组合',n:6,tip:'以手位＋基本步伐为主，建立套路基调，是教学的第一个重点段'},
+ {sec:'B段 队形变换',n:4,tip:'边走位边做动作，"人到位、拍到点"，教学时先慢速走位排练'},
+ {sec:'C段 跳跃与技巧',n:4,tip:'跳跃/转体等难度动作，分层要求，注意落地缓冲与安全'},
+ {sec:'D段 高潮与配合',n:4,tip:'力度最强、幅度最大的段落，强调整齐与感染力'},
+ {sec:'结束造型',n:1,tip:'定格造型＋谢幕，保持3—5秒不动，眼神看向观众'}
+];
+
+/* ============ 训练与展演知识 ============ */
+const KNOW=[
+ {k:'teach',t:'📚 套路分解教学法',c:[
+  ['最小单位是"一个八拍"','啦啦操教学的通用做法：<b>一个八拍为一个教学单位</b>，每次课新授 2—3 个八拍。贪多的结果是学生记不住，下次课等于重教。'],
+  ['六步教学顺序','① 完整示范（正常速度看一遍，建立整体印象）→ ② 慢速分解（逐拍讲手位、方向、重心）→ ③ 徒手数拍练习 → ④ 持球数拍练习 → ⑤ 配乐（先慢速或半速）→ ⑥ 加队形。<b>顺序不能跳</b>，跳了后面一定返工。'],
+  ['镜面示范','教师面对学生示范时，你的左手对应学生的右手，所以要做<b>镜面示范</b>（你做左，学生跟着做右）。讲方向时说"向你们的右边"，别说"向右"。'],
+  ['动作口诀','给每个八拍编一句短口诀（如"高V—高V—低V—转身停"），学生记口诀比记动作快得多；把口诀写在黑板或群里。'],
+  ['分段累加与倒序练习','常规是"1 → 1+2 → 1+2+3"累加。但这样最后几个八拍永远练得最少，所以要穿插<b>倒序练习</b>：单独先练最后一段，再从前面接上。'],
+  ['录短视频','用手机录下每次课新学的段落（教师示范版＋学生练习版）发到社团群，学生课后能复习，进度会明显变快。']]},
+ {k:'quality',t:'✨ 怎么把动作练"干净"',c:[
+  ['三个关键词：准、紧、停','<b>准</b>＝手位角度到位；<b>紧</b>＝全身收紧（腹、臀、肩背发力，手臂锁肘）；<b>停</b>＝每个动作到位后有明确的定位停顿。业余队和好队的差距基本就在这三点。'],
+  ['整齐度怎么练','① 固定排头领做，全队跟排头的节奏；② 数拍练习（不放音乐，靠口令统一）；③ 分小组互看，让学生自己找不齐的地方；④ 录像回放，学生看到自己就会主动改。'],
+  ['力度从哪里来','不是靠甩手臂，而是靠<b>躯干发力＋突然的制动</b>。练法：做动作时想象"打到墙上突然停住"；配合短促呼气发力。'],
+  ['表现力是可以练的','眼神（看观众不看地面）、笑容（练到成为习惯）、下巴微抬、精神饱满。可以专门用 5 分钟做"表情课"，对镜子练。这是比赛评分里实实在在的分数。'],
+  ['花球的使用','花球方向要统一（球面朝前还是朝下要明确）；手腕稳，不该响的时候不让它响；破损的花球及时更换，影响画面。']]},
+ {k:'club',t:'🎽 社团怎么带',c:[
+  ['组建与选人','中学社团一般 16—32 人（便于组成队形）。选人看节奏感、协调性、态度，<b>态度比基础更重要</b>——啦啦操靠长期整齐训练，出勤不稳的人再有天赋也带不动全队。'],
+  ['常规制度','固定训练时间；考勤登记；请假需提前说明；服装统一（训练服＋运动鞋，不戴首饰、长发扎起）；器材（花球/音响）指定专人负责。这些第一次课就要立规矩。'],
+  ['骨干培养','设队长、领做（1—2人）、器材员、考勤员。领做站排头位置，负责节奏；教师不在时能带热身与复习，社团才能持续运转。'],
+  ['一学期的节奏','前 3—4 周基本功＋起始段落（很多社团死在这里——基本功没打就急着学成套，后面动作永远松散）；中间 6—8 周新授＋队形；最后 3—4 周成套打磨＋模拟展演。'],
+  ['留住人','阶段性给成果：第 4 周拍一次合影/短视频，第 8 周校内小展示，学期末正式展演。看得见进步，队伍才稳定。']]},
+ {k:'show',t:'🏆 展演与比赛准备',c:[
+  ['评分大致看什么','啦啦操比赛通常从<b>完成质量（动作准确、整齐一致）、难度、编排（队形与音乐配合）、艺术表现（表现力、感染力）</b>几个维度评。具体分值与规则以<b>当次比赛的规程和最新版评分规则为准</b>，报名后一定要拿到规程逐条对照。'],
+  ['赛前三周怎么排','第 3 周：完整成套＋细节打磨；第 2 周：模拟展演（有观众、穿演出服、走全流程）；最后 1 周：<b>降量不降质</b>——减少完整成套遍数，保留强度与细节，让身体在比赛当天最有劲。'],
+  ['全流程要排练','入场 → 起始造型 → 成套 → 结束造型 → 谢幕 → 退场。入场退场也在评分视野里，很多队只练成套结果一上场就乱。'],
+  ['后勤清单','音乐（U盘＋手机＋云端三份备份，格式确认能播）、演出服与备用件、花球（含备用）、发胶皮筋、水、急救包与冰袋、点名表、家长知情同意（校外展演）。'],
+  ['临场应急','音乐中断怎么办——提前排练一次"无音乐靠数拍完成"；有人忘动作——规定"忘了就跟旁边的人做，绝不停下来"；有人受伤——立即换替补，替补必须平时就跟练。']]},
+ {k:'safe',t:'⚠️ 安全与损伤预防',c:[
+  ['最常见的伤','踝关节扭伤（跳跃落地）、膝前痛（跳跃量大、地面硬）、腰痛（下腰/后弯动作＋核心不足）、手腕伤（支撑类动作）。<b>共同原因是训练量突然加大和场地太硬</b>。'],
+  ['热身要够','啦啦操热身至少 10 分钟：慢跑/配乐有氧 → 动态拉伸（肩、腕、腰、髋、踝）→ 基本功激活。天冷时加长。<b>不要用长时间静态拉伸做课前热身</b>。'],
+  ['场地','优先体育馆/舞蹈房等有弹性的地面；水泥地要大幅减少跳跃次数。地面必须干燥防滑，清空障碍。'],
+  ['难度动作的底线','中学社团的托举、金字塔、抛接等技巧类动作<b>必须有专业指导、有保护者、有足够垫子</b>，没有条件就不要做——花球组的编排完全可以不含高危技巧。'],
+  ['个体差异','柔韧类动作（大跳、下腰）分层要求，绝不逼学生硬做；女生特殊时期、近期受伤、感冒发热者调整或休息；训练中随时观察脸色与状态。'],
+  ['受伤处理','急性扭伤 48 小时内：休息、冰敷、加压、抬高，<b>不要热敷不要揉</b>；疼痛肿胀明显或不能负重的，停练并就医。']]},
+ {k:'word',t:'📣 常用口令与教学用语',c:[
+  ['起动口令','"5、6、7、8——"（这是啦啦操通用的起拍口令，第8拍出声后紧接动作）；"预备——开始！"；"从头，慢速，5、6、7、8"。'],
+  ['数拍与提示','"1、2、3、4，5、6、7、8"（每拍报数）；"1停、2停"（强调定位）；"这个八拍最后一拍是造型，停住！"；"跟着排头的节奏"。'],
+  ['纠正用语','"手臂再直一点，锁住肘"；"肩往下压，脖子拉长"；"到位以后停一下，让人看见你的手位"；"眼睛看前方，不要看地"；"抬头，笑起来！"'],
+  ['队形调动','"回到自己的点位"；"慢速走位，不做动作，跟我数"；"两个八拍完成变换，第2个八拍的第8拍必须到位"。'],
+  ['激励与收尾','"这一遍比上一遍整齐多了，再来一遍！"；"最后一遍，当成正式比赛"；"今天学了第X到第X个八拍，回去看群里的视频复习"；"收器材，下课！"']]}
+];
+/* ================= 工具 ================= */
+const $=(s)=>document.querySelector(s), $$=(s)=>Array.from(document.querySelectorAll(s));
+const esc=(s)=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2100);}
+const LS={get(k,d){try{const v=JSON.parse(localStorage.getItem(k));return v==null?d:v}catch(e){return d}},
+          set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+
+/* ================= 手位火柴人 SVG ================= */
+function armPts(sx,sy,ang){
+  const L1=19,L2=18,LS=36;
+  const rad=a=>a*Math.PI/180;
+  if(ang.length===1){const a=rad(ang[0]);
+    const ex=sx+LS*Math.cos(a), ey=sy-LS*Math.sin(a);
+    return {p:[[sx,sy],[ex,ey]],h:[ex,ey]};}
+  const a1=rad(ang[0]),a2=rad(ang[1]);
+  const ex=sx+L1*Math.cos(a1), ey=sy-L1*Math.sin(a1);
+  const hx=ex+L2*Math.cos(a2), hy=ey-L2*Math.sin(a2);
+  return {p:[[sx,sy],[ex,ey],[hx,hy]],h:[hx,hy]};
+}
+function pom(x,y){
+  let s=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="5.4" fill="#f472b6" opacity=".85"/>`;
+  for(let i=0;i<6;i++){const a=i*60*Math.PI/180;
+    s+=`<line x1="${(x+3.4*Math.cos(a)).toFixed(1)}" y1="${(y-3.4*Math.sin(a)).toFixed(1)}" x2="${(x+7.6*Math.cos(a)).toFixed(1)}" y2="${(y-7.6*Math.sin(a)).toFixed(1)}" stroke="#ec4899" stroke-width="1.5" stroke-linecap="round"/>`;}
+  return s;
+}
+function fig(h,w){
+  const W=110,H=150,SL=[41,50],SR=[69,50];
+  const L=armPts(SL[0],SL[1],h.a.l), R=armPts(SR[0],SR[1],h.a.r);
+  const line=o=>`<polyline points="${o.p.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}" fill="none" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return `<svg class="fig" width="${w||110}" viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
+   <circle cx="55" cy="28" r="9.5" fill="none" stroke="#2a1830" stroke-width="3"/>
+   <line x1="55" y1="37.5" x2="55" y2="50" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round"/>
+   <line x1="41" y1="50" x2="69" y2="50" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round"/>
+   <line x1="55" y1="50" x2="55" y2="90" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round"/>
+   <line x1="55" y1="90" x2="45" y2="128" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round"/>
+   <line x1="55" y1="90" x2="65" y2="128" stroke="#2a1830" stroke-width="3.4" stroke-linecap="round"/>
+   <line x1="45" y1="128" x2="39" y2="130" stroke="#2a1830" stroke-width="3.2" stroke-linecap="round"/>
+   <line x1="65" y1="128" x2="71" y2="130" stroke="#2a1830" stroke-width="3.2" stroke-linecap="round"/>
+   ${line(L)}${line(R)}${pom(L.h[0],L.h[1])}${pom(R.h[0],R.h[1])}</svg>`;
+}
+
+/* ================= 数据状态 ================= */
+let RT=[], META={}, SCHED=null;
+function defRoutine(){
+  const a=[];TPL.forEach(t=>{for(let i=0;i<t.n;i++)a.push({sec:t.sec,txt:'',hands:[],step:'',form:'',tip:t.tip});});
+  return a;
+}
+function saveRT(){LS.set('lc_routine',RT);}
+function saveMeta(){META={name:$('#m-name').value,club:$('#m-club').value,teacher:$('#m-teacher').value,
+  time:$('#m-time').value,bpm:$('#m-bpm').value,num:$('#m-num').value};LS.set('lc_meta',META);}
+
+/* ================= 初始化 ================= */
+function init(){
+  RT=LS.get('lc_routine',null)||defRoutine();
+  META=LS.get('lc_meta',{});
+  $('#m-name').value=META.name||'校园啦啦操示范套路（第三套）花球中学组';
+  $('#m-club').value=META.club||'';$('#m-teacher').value=META.teacher||'';
+  $('#m-time').value=META.time||'约 2 分 10 秒';$('#m-bpm').value=META.bpm||'';$('#m-num').value=META.num||'24';
+  ['m-name','m-club','m-teacher','m-time','m-bpm','m-num'].forEach(id=>$('#'+id).onchange=saveMeta);
+  $('#l-date').value=today();
+  SCHED=LS.get('lc_sched',null);
+
+  $$('.tab').forEach(t=>t.onclick=()=>{
+    $$('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+    ['rt','sc','lp','hd','fm','kn'].forEach(p=>$('#pg-'+p).classList.toggle('hidden',p!==t.dataset.tab));
+    if(t.dataset.tab==='hd'){renderHands();renderSteps();}
+    if(t.dataset.tab==='fm')renderForms();
+    if(t.dataset.tab==='kn')renderKnow(KNOW[0].k);
+    if(t.dataset.tab==='lp')fillSessionSel();
+    window.scrollTo(0,0);
+  });
+  $('#k-tabs').innerHTML=KNOW.map((k,i)=>`<div class="chip sm${i===0?' on':''}" data-k="${k.k}">${k.t}</div>`).join('');
+  $('#k-tabs').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
+    $('#k-tabs').querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');renderKnow(c.dataset.k);};
+
+  $('#b-addsec').onclick=()=>{RT.push({sec:RT.length?RT[RT.length-1].sec:'新增段落',txt:'',hands:[],step:'',form:'',tip:''});saveRT();renderRT();toast('已增加一个八拍');};
+  $('#b-tpl').onclick=()=>{if(!confirm('恢复默认结构模板会清空已填的动作内容，确定吗？'))return;RT=defRoutine();saveRT();renderRT();toast('已恢复默认模板');};
+  $('#b-expand').onclick=()=>{const any=$$('#rtlist .b8.open').length>0;$$('#rtlist .b8').forEach(x=>x.classList.toggle('open',!any));};
+  $('#b-clear').onclick=()=>{if(!confirm('清空全部八拍的动作内容？此操作不可恢复'))return;RT.forEach(r=>{r.txt='';r.hands=[];r.step='';r.form='';});saveRT();renderRT();toast('已清空');};
+  $('#b-rtprint').onclick=()=>{renderRTable();setTimeout(()=>window.print(),200);};
+  $('#b-rtword').onclick=()=>exportWord(rtTableHTML(),(META.name||'啦啦操套路')+'-套路总表');
+  $('#b-sched').onclick=genSched;
+  $('#b-scprint').onclick=()=>window.print();
+  $('#b-scword').onclick=()=>exportWord($('#schedout').innerHTML,'啦啦操社团学期教学计划');
+  $('#b-lp').onclick=genLesson;
+  $('#b-lpprint').onclick=()=>window.print();
+  $('#b-lpword').onclick=()=>exportWord($('#paper').innerHTML,'啦啦操社团课教案');
+  $('#b-hdprint').onclick=()=>window.print();
+  $('#modal').onclick=e=>{if(e.target.id==='modal')$('#modal').classList.remove('on')};
+  renderRT();
+}
+
+/* ================= 套路编辑 ================= */
+function renderRT(){
+  const box=$('#rtlist');
+  box.innerHTML=RT.map((r,i)=>{
+    const filled=!!(r.txt&&r.txt.trim());
+    return `<div class="b8${filled?' filled':''}" data-i="${i}">
+      <div class="h" data-act="tog"><span class="no">第${i+1}个八拍</span>
+        <span class="sc">${esc(r.sec)}</span>
+        <span class="pv">${filled?esc(r.txt.slice(0,40)):'（待填写动作内容）'}</span></div>
+      <div class="bd">
+        <div class="fl"><label>段落名称</label><input data-f="sec" value="${esc(r.sec)}"></div>
+        <div class="fl"><label>动作内容（按 1—8 拍写，对照官方教学视频填）</label>
+          <textarea data-f="txt" placeholder="例：1-2拍 双手高V向上顶两次；3-4拍 转体90°接低V；5-6拍 并步接断T；7-8拍 上举定位造型">${esc(r.txt)}</textarea></div>
+        <div class="fl"><label>本八拍用到的手位（单击＝标记，双击＝插入到上面的动作内容）</label>
+          <div class="chips">${HANDS.map(h=>`<div class="chip sm${(r.hands||[]).indexOf(h.n)>=0?' on':''}" data-h="${esc(h.n)}">${esc(h.n)}</div>`).join('')}</div></div>
+        <div class="grid" style="margin-top:9px">
+          <div class="fld"><label>主要步伐</label><select data-f="step">
+            <option value="">— 选择 —</option>${STEPS.map(s=>`<option${r.step===s.n?' selected':''}>${esc(s.n)}</option>`).join('')}</select></div>
+          <div class="fld"><label>队形</label><select data-f="form">
+            <option value="">— 选择 —</option>${FORMS.map(f=>`<option${r.form===f.n?' selected':''}>${esc(f.n)}</option>`).join('')}</select></div>
+        </div>
+        <div class="fl"><label>教学提示 / 易错点</label><input data-f="tip" value="${esc(r.tip||'')}"></div>
+        <div class="row" style="margin-top:9px">
+          <button class="btn-g" data-act="up">↑ 上移</button>
+          <button class="btn-g" data-act="dn">↓ 下移</button>
+          <button class="btn-d" data-act="del">删除此八拍</button>
+        </div>
+      </div></div>`;}).join('')
+    +`<div class="card noprint" style="text-align:center;color:var(--sub);font-size:12.5px">
+      共 ${RT.length} 个八拍　·　已填 ${RT.filter(r=>r.txt&&r.txt.trim()).length} 个　·　约 ${(RT.length*8*60/128).toFixed(0)} 秒（按128BPM估算）</div>`;
+
+  box.onclick=e=>{
+    const card=e.target.closest('.b8');if(!card)return;const i=+card.dataset.i;
+    const chip=e.target.closest('.chip');
+    if(chip){const n=chip.dataset.h;RT[i].hands=RT[i].hands||[];
+      const k=RT[i].hands.indexOf(n);
+      if(k>=0)RT[i].hands.splice(k,1);else RT[i].hands.push(n);
+      chip.classList.toggle('on');saveRT();return;}
+    const act=(e.target.closest('[data-act]')||{}).dataset;
+    if(!act)return;
+    if(act.act==='tog'&&!e.target.closest('input,textarea,select'))card.classList.toggle('open');
+    if(act.act==='up'&&i>0){[RT[i-1],RT[i]]=[RT[i],RT[i-1]];saveRT();renderRT();}
+    if(act.act==='dn'&&i<RT.length-1){[RT[i+1],RT[i]]=[RT[i],RT[i+1]];saveRT();renderRT();}
+    if(act.act==='del'){if(confirm('删除第'+(i+1)+'个八拍？'))
+      {RT.splice(i,1);saveRT();renderRT();toast('已删除');}}
+  };
+  box.ondblclick=e=>{
+    const chip=e.target.closest('.chip');if(!chip)return;
+    const card=e.target.closest('.b8');const i=+card.dataset.i;
+    const ta=card.querySelector('[data-f="txt"]');
+    ta.value=(ta.value?ta.value.replace(/\s*$/,'')+' ':'')+chip.dataset.h;
+    RT[i].txt=ta.value;saveRT();
+    card.querySelector('.pv').textContent=ta.value.slice(0,40);card.classList.add('filled');
+  };
+  box.oninput=e=>{
+    const card=e.target.closest('.b8');if(!card)return;const i=+card.dataset.i;
+    const f=e.target.dataset.f;if(!f)return;
+    RT[i][f]=e.target.value;saveRT();
+    if(f==='txt'){card.querySelector('.pv').textContent=e.target.value.trim()?e.target.value.slice(0,40):'（待填写动作内容）';
+      card.classList.toggle('filled',!!e.target.value.trim());}
+    if(f==='sec')card.querySelector('.sc').textContent=e.target.value;
+  };
+  box.onchange=box.oninput;
+}
+function rtTableHTML(){
+  return `<div class="pa-title">${esc(META.name||'啦啦操成套')}　套路总表</div>
+  <div class="pa-sub">${esc(META.club||'')}　指导教师：${esc(META.teacher||'')}　时长：${esc(META.time||'')}　${esc(META.bpm||'')}　人数：${esc(META.num||'')}</div>
+  <table class="pa"><colgroup><col style="width:58px"><col style="width:15%"><col><col style="width:17%"><col style="width:13%"></colgroup>
+  <tr><th>八拍</th><th>段落</th><th>动作内容（1—8拍）</th><th>手位／步伐</th><th>队形与提示</th></tr>
+  ${RT.map((r,i)=>`<tr><td class="cen">第${i+1}个</td><td class="cen">${esc(r.sec)}</td>
+    <td>${esc(r.txt||'（待填）')}</td>
+    <td>${esc((r.hands||[]).join('、'))}${r.step?'<br>步伐：'+esc(r.step):''}</td>
+    <td>${esc(r.form||'')}${r.tip?'<br>'+esc(r.tip):''}</td></tr>`).join('')}
+  </table>`;
+}
+function renderRTable(){
+  let p=document.getElementById('rtprintbox');
+  if(!p){p=document.createElement('div');p.id='rtprintbox';p.style.cssText='background:#fff;border-radius:12px;padding:16px;margin-bottom:13px';$('#pg-rt').appendChild(p);}
+  p.innerHTML=rtTableHTML();
+}
+
+/* ================= 学期计划 ================= */
+function genSched(){
+  const weeks=+$('#s-weeks').value, freq=+$('#s-freq').value, dur=+$('#s-dur').value, show=$('#s-show').value;
+  const total=weeks*freq;
+  const nBase=Math.max(2,Math.round(total*0.18));            // 基本功期
+  const nFinal=Math.max(3,Math.round(total*0.22));           // 打磨展演期
+  const nForm=Math.max(2,Math.round(total*0.16));            // 队形串联期
+  const nTeach=Math.max(1,total-nBase-nFinal-nForm);         // 新授期
+  const beats=RT.length;
+  const per=Math.max(1,Math.ceil(beats/nTeach));
+  const list=[];let bi=0;
+  const basics=[
+   {t:'建队与基本手位（一）',c:['社团常规与安全教育、分组定位','花球握法与基本手位：高V、低V、上举、下压','手位组合4×8拍','啦啦操是什么：观看优秀成套视频']},
+   {t:'基本手位（二）与节奏',c:['复习已学手位','新学：平举T、断T、K式、倒K','数拍与音乐节拍训练（5、6、7、8起）','手位组合8×8拍配乐']},
+   {t:'基本步伐与手脚配合',c:['复习全部手位','基本步伐：踏步、并步、V字步、开合步','步伐＋手位配合组合','分组展示，选出领做']},
+   {t:'基本功综合与起始造型',c:['手位＋步伐综合组合','跳跃基础：开合跳、吸腿跳','学习成套的预备/起始造型','建立队形站位（点位定位）']}
+  ];
+  for(let i=0;i<nBase;i++){
+    const b=basics[Math.min(i,basics.length-1)];
+    list.push({phase:'基本功期',title:b.t,items:b.c.slice(),beats:[],
+      goal:'掌握基本手位与步伐，做到直臂锁肘、肩下沉、有定位停顿；建立社团常规与队形站位。'});
+  }
+  for(let i=0;i<nTeach;i++){
+    const bs=[];for(let k=0;k<per&&bi<beats;k++,bi++)bs.push(bi);
+    const names=bs.map(x=>'第'+(x+1)+'个八拍');
+    list.push({phase:'套路新授期',
+      title:bs.length?('新授 '+names.join('、')):'复习与巩固',
+      items:['复习上次课内容并纠正共性错误（配乐1—2遍）',
+             bs.length?('新授：'+names.join('、')+'——完整示范→慢速分解→数拍练习→持球→配乐'):'已学段落的质量打磨',
+             '与前面段落串联（先数拍后配乐）','啦啦操专项体能：核心＋肩背＋跳跃'],
+      beats:bs,
+      goal:'学会本次课新授的'+(bs.length||0)+'个八拍，能与前面段落连贯完成；动作准确、力度到位。'});
+  }
+  for(let i=0;i<nForm;i++){
+    list.push({phase:'队形串联期',title:i===0?'队形定位与走位排练':(i===1?'边走边做与变换衔接':'成套完整串联'),
+      items:['复习全套动作（分段快速过）',
+             i===0?'确定每人点位与走位路线，慢速走位排练':'规定拍数完成队形变换，做到"人到位、拍到点"',
+             '带队形完整跑成套 2—3 遍','录像回放，找出不整齐的地方'],
+      beats:[],goal:'完成队形变换的定位与衔接，能带队形完整完成成套。'});
+  }
+  const finals=[
+   {t:'成套打磨（一）：准与齐',c:['完整成套2遍（掐表）','抓2—3处共性问题集中纠正','分小组互看互评','薄弱段落反复练']},
+   {t:'成套打磨（二）：力度与表现力',c:['完整成套2遍','力度专项：到位—定位—制动','表情与眼神训练（对镜练）','服装、花球、发型统一要求确认']},
+   {t:'模拟展演',c:['完全按正式流程：入场—造型—成套—谢幕—退场','请其他班级/老师观摩','录像回看并复盘','应急预案演练：无音乐靠数拍完成一遍']},
+   {t:'赛前调整（降量不降质）',c:['热身充分，完整成套1—2遍','只做细节修正，不加新内容','后勤清单核对（音乐备份、服装、急救包）','动员与心理准备']},
+   {t:(show==='early'?'正式展演（校运会/活动）':'学期末正式展演'),c:['提前到场熟悉场地与音响','充分热身与走场','正式展示','合影留念、总结表彰、学期复盘']}
+  ];
+  for(let i=0;i<nFinal;i++){
+    const f=finals[Math.min(i,finals.length-1)];
+    const isLast=(i===nFinal-1);
+    list.push({phase:'打磨展演期',title:isLast?finals[finals.length-1].t:f.t,
+      items:(isLast?finals[finals.length-1].c:f.c).slice(),beats:[],
+      goal:isLast?'完整、自信、整齐地完成正式展演，展现团队风貌。':'提高成套完成质量与表现力，适应展演压力。'});
+  }
+  // 编号与周次
+  list.forEach((s,i)=>{s.no=i+1;s.week=Math.floor(i/freq)+1;s.day=(i%freq)+1;});
+  SCHED={weeks,freq,dur,show,total,per,beats,list,ts:Date.now()};
+  LS.set('lc_sched',SCHED);
+  renderSched();
+  fillSessionSel();
+  toast('学期计划已生成：共 '+total+' 次课');
+}
+function renderSched(){
+  if(!SCHED){$('#schedout').innerHTML='<div class="empty"><span class="big">📆</span>点上面按钮生成学期计划</div>';return}
+  const S=SCHED;
+  const un=RT.filter(r=>!r.txt||!r.txt.trim()).length;
+  let h=`<div class="pa-title">啦啦操社团学期教学计划</div>
+  <div class="pa-sub">${esc(META.name||'')}　｜　${esc(META.club||'')}　｜　指导教师：${esc(META.teacher||'')}</div>
+  <table class="pa"><colgroup><col style="width:15%"><col></colgroup>
+  <tr><th>训练安排</th><td>共 ${S.weeks} 周 × 每周 ${S.freq} 次 × 每次 ${S.dur} 分钟 ＝ 全学期 ${S.total} 次课</td></tr>
+  <tr><th>成套规模</th><td>共 ${S.beats} 个八拍，新授期平均每次课学 ${S.per} 个八拍${un?`（其中 ${un} 个八拍的动作内容尚未填写，填完后本表内容会更具体）`:''}</td></tr>
+  <tr><th>学期目标</th><td contenteditable="true">
+    <b>技能目标：</b>全体成员能完整、准确、整齐地完成《${esc(META.name||'指定成套')}》，动作规格到位（直臂锁肘、肩下沉、有定位停顿），并能带队形完成成套展示。<br>
+    <b>体能目标：</b>发展核心力量、肩背力量、下肢弹跳与柔韧，能连续完成 2—3 遍成套而动作不明显变形。<br>
+    <b>素养目标：</b>培养团队意识、集体荣誉感与自信的表现力；养成守时、守纪、互助的社团作风。</td></tr>
+  <tr><th>阶段划分</th><td>基本功期 → 套路新授期 → 队形串联期 → 打磨展演期（见下表）</td></tr>
+  <tr><th>考核评价</th><td contenteditable="true">出勤与态度 30%　＋　基本功与动作规格 30%　＋　成套完成质量 30%　＋　展演表现与团队贡献 10%</td></tr>
+  </table>
+  <table class="pa" style="margin-top:12px">
+  <colgroup><col style="width:46px"><col style="width:46px"><col style="width:15%"><col style="width:22%"><col></colgroup>
+  <tr><th>次数</th><th>周次</th><th>阶段</th><th>课的主题</th><th>主要内容</th></tr>`;
+  let lastPh='';
+  S.list.forEach(s=>{
+    const show=s.phase!==lastPh;lastPh=s.phase;
+    h+=`<tr><td class="cen">第${s.no}次</td><td class="cen">第${s.week}周</td>
+      <td class="cen" style="font-size:12px;color:#5b2168">${show?esc(s.phase):'〃'}</td>
+      <td contenteditable="true">${esc(s.title)}</td>
+      <td contenteditable="true"><ul style="margin:2px 0;padding-left:16px">${s.items.map(x=>'<li>'+esc(x)+'</li>').join('')}</ul></td></tr>`;
+  });
+  h+=`</table>
+  <table class="pa" style="margin-top:12px"><colgroup><col style="width:15%"><col></colgroup>
+  <tr><th>训练要求</th><td contenteditable="true"><ul style="margin:2px 0;padding-left:16px">
+   <li>每次课热身不少于 10 分钟（配乐有氧＋动态拉伸＋基本功激活），课末必须放松拉伸。</li>
+   <li>每次课新授后<b>必须与前面已学段落串联复习</b>，否则学生只记得最新的一段。</li>
+   <li>教师做<b>镜面示范</b>，讲方向说"向你们的右边"；每个八拍配一句动作口诀。</li>
+   <li>每次课录一段示范视频发社团群，供学生课后复习。</li>
+   <li>安全：优先有弹性的地面；跳跃落地屈膝缓冲；技巧类动作必须有保护，没条件不做。</li></ul></td></tr>
+  <tr><th>计划调整</th><td contenteditable="true">（实际执行中如遇考试、假期、天气等情况，可顺延；进度落后时优先保证成套完整性，其次才是难度。）</td></tr>
+  </table>`;
+  $('#schedout').innerHTML=h;
+}
+function fillSessionSel(){
+  const sel=$('#l-no');
+  if(!SCHED){sel.innerHTML='<option value="">请先生成学期计划</option>';return}
+  sel.innerHTML=SCHED.list.map(s=>`<option value="${s.no}">第${s.no}次课（第${s.week}周）— ${esc(s.title)}</option>`).join('');
+}
+
+/* ================= 课时教案 ================= */
+function genLesson(){
+  if(!SCHED){toast('请先到「学期计划」生成一次计划');return}
+  const no=+$('#l-no').value||1;
+  const S=SCHED.list.find(x=>x.no===no)||SCHED.list[0];
+  const dur=SCHED.dur, venue=$('#l-venue').value, date=$('#l-date').value||today();
+  const tB=Math.max(4,Math.round(dur*0.08)), tP=Math.max(8,Math.round(dur*0.18)), tE=Math.max(5,Math.round(dur*0.10));
+  let main=dur-tB-tP-tE;
+  const tTi=Math.max(5,Math.round(main*0.16));
+  main-=tTi;
+  const learned=S.beats.length?S.beats[0]:RT.length;
+  const newBeats=S.beats.map(i=>({i:i+1,r:RT[i]||{}}));
+  const tRev=Math.round(main*(S.beats.length?0.3:0.45)), tNew=Math.round(main*(S.beats.length?0.45:0.3)), tLink=main-tRev-tNew;
+
+  const bd=newBeats.length?newBeats.map(b=>
+    `<b>第${b.i}个八拍</b>（${esc(b.r.sec||'')}）：${b.r.txt?esc(b.r.txt):'<i style="color:#b45309">动作内容待填——请对照官方教学视频在「套路编辑」里补上</i>'}${
+      (b.r.hands&&b.r.hands.length)?'<br>主要手位：'+esc(b.r.hands.join('、')):''}${
+      b.r.step?'　步伐：'+esc(b.r.step):''}${b.r.tip?'<br>提示：'+esc(b.r.tip):''}`).join('<br><br>')
+    :'本次课不新授八拍，以复习巩固与质量打磨为主。';
+
+  const title=`啦啦操社团第${no}次课教案`;
+  const h=`<div class="pa-title" contenteditable="true">啦啦操社团活动课教案</div>
+  <div class="pa-sub">${esc(META.name||'')}　·　第 ${no} 次课（第 ${S.week} 周）　·　${esc(S.phase)}</div>
+  <table class="pa"><colgroup><col style="width:13%"><col style="width:20%"><col style="width:12%"><col style="width:17%"><col style="width:13%"><col></colgroup>
+  <tr><th>指导教师</th><td contenteditable="true">${esc(META.teacher||'　　')}</td><th>社团/班级</th><td contenteditable="true">${esc(META.club||'　　')}</td><th>人　数</th><td contenteditable="true">${esc(META.num||'')} 人</td></tr>
+  <tr><th>授课日期</th><td contenteditable="true">${esc(date)}</td><th>课的时长</th><td contenteditable="true">${dur} 分钟</td><th>场　地</th><td contenteditable="true">${esc(venue)}</td></tr>
+  <tr><th>本课主题</th><td colspan="5" contenteditable="true"><b>${esc(S.title)}</b></td></tr>
+  <tr><th>学习目标</th><td colspan="5" contenteditable="true"><ul style="margin:2px 0;padding-left:17px">
+    <li><b>运动能力：</b>${esc(S.goal)}</li>
+    <li><b>健康行为：</b>掌握啦啦操的热身与放松方法，练习中会保护自己（落地缓冲、量力而行）；全程积极投入，练习密度不低于 50%。</li>
+    <li><b>体育品德：</b>守时守纪、听从口令；在集体练习中互相提醒、互相配合，形成"整齐一致靠每一个人"的团队意识。</li></ul></td></tr>
+  <tr><th>重　点</th><td colspan="5" contenteditable="true">${newBeats.length?'新授八拍的动作规格与节奏（手位到位、有定位停顿）':'成套的整齐度与力度、表现力'}</td></tr>
+  <tr><th>难　点</th><td colspan="5" contenteditable="true">${newBeats.length?'新旧段落的衔接与全队节奏统一':'长时间保持动作质量与队形准确'}</td></tr>
+  <tr><th>器　材</th><td colspan="5" contenteditable="true">音响设备（音乐＋备份）、花球每人1对、标志盘（定位队形）、镜子（有条件）、计时器、饮用水</td></tr>
+  </table>
+
+  <table class="pa" style="margin-top:10px">
+  <colgroup><col style="width:38px"><col style="width:40px"><col style="width:24%"><col style="width:25%"><col style="width:17%"><col></colgroup>
+  <tr><th>部分</th><th>时间</th><th>内容</th><th>教师活动</th><th>学生活动</th><th>组织与要求</th></tr>
+  <tr><td class="part-cell" style="text-align:center;font-weight:700;background:#faf2fc">开始</td><td class="cen" contenteditable="true">${tB}′</td>
+    <td contenteditable="true">集合整队、考勤点名<br>宣布本次课任务<br>检查服装（运动鞋、头发扎起、不戴首饰）<br>安全提示</td>
+    <td contenteditable="true">哨音集合，要求快静齐；点名并登记出勤；简明宣布本课任务与目标；强调本次课的安全要点</td>
+    <td contenteditable="true">迅速集合站好点位；报数；明确本课要学的内容</td>
+    <td contenteditable="true">按成套队形站位，前后左右间隔1.5米；<br>出勤登记入册，请假需提前说明</td></tr>
+  <tr><td class="part-cell" style="text-align:center;font-weight:700;background:#faf2fc">准备</td><td class="cen" contenteditable="true">${tP}′</td>
+    <td contenteditable="true">配乐有氧热身（用成套音乐做，熟悉节拍）<br>动态拉伸：肩、腕、颈、腰、髋、膝、踝<br>基本功激活：手位组合4×8拍、基本步伐、原地小跳</td>
+    <td contenteditable="true">镜面领做热身；口令与音乐结合；重点提示肩腕与踝的充分活动；观察学生状态（脸色、精神）</td>
+    <td contenteditable="true">跟随领做，动作到位、幅度充分；复习手位时自查直臂与肩位</td>
+    <td contenteditable="true">错落散点队形，间隔2臂；<br>热身不少于${tP}分钟，天冷时延长；<br>不做长时间静态拉伸</td></tr>
+  <tr><td class="part-cell" style="text-align:center;font-weight:700;background:#faf2fc" rowspan="4">基本</td><td class="cen" contenteditable="true">${tRev}′</td>
+    <td contenteditable="true"><b>一、复习已学</b><br>数拍复习前面已学的 ${learned} 个八拍<br>配乐完整跑 1—2 遍<br>集中纠正上次课的共性错误</td>
+    <td contenteditable="true">带领数拍复习（5、6、7、8起）；观察并挑出 2—3 个共性问题集中纠正；表扬进步明显的学生</td>
+    <td contenteditable="true">认真复习，主动改正自己的问题；跟排头节奏</td>
+    <td contenteditable="true">成套队形；<br>复习先数拍后配乐；<br>要求动作到位、有停顿</td></tr>
+  <tr><td class="cen" contenteditable="true">${tNew}′</td>
+    <td contenteditable="true"><b>二、${newBeats.length?'新授':'重点打磨'}</b><br>${bd}</td>
+    <td contenteditable="true">按六步教学：完整示范（正常速度1遍）→ 慢速分解逐拍讲解 → 徒手数拍带练 → 持球练习 → 慢速配乐 → 正常速度。<b>镜面示范</b>，讲方向说"向你们的右边"；给本段编一句动作口诀帮助记忆</td>
+    <td contenteditable="true">先看后做；跟数拍练习；记住动作口诀；不会的及时举手问；同伴之间互相提醒</td>
+    <td contenteditable="true">先散开成错落队形学动作，熟练后回到成套队形；<br>先求准确再求速度；<br>每个八拍练到 8—10 遍</td></tr>
+  <tr><td class="cen" contenteditable="true">${tLink}′</td>
+    <td contenteditable="true"><b>三、串联与展示</b><br>新学段落与前面串联（先数拍后配乐）<br>分两组互看互评<br>录一段视频发社团群供课后复习</td>
+    <td contenteditable="true">先慢速串联再上原速；提醒段落衔接处的重心与方向；组织互看，引导学生说出具体问题；录像</td>
+    <td contenteditable="true">完成串联；认真观看同伴并提出具体建议；被评价时虚心接受</td>
+    <td contenteditable="true">分两组轮流；<br>衔接顺畅、队伍整齐；<br>评价要具体友善</td></tr>
+  <tr><td class="cen" contenteditable="true">${tTi}′</td>
+    <td contenteditable="true"><b>四、专项体能（课课练）</b><br>核心：平板支撑 3组×30秒 ／ 仰卧起坐 3组×15次<br>肩背：俯卧撑（可跪撑）3组×10次 ／ 俯卧两头起 2组×12次<br>弹跳：开合跳 3组×30秒 ／ 吸腿跳 3组×8次<br>柔韧：肩、腰、腿静态拉伸各 30 秒</td>
+    <td contenteditable="true">讲清每项动作规范；用音乐控制节奏与间歇；分层要求（能力弱的减量不减项）；观察面色与呼吸</td>
+    <td contenteditable="true">按要求完成，动作规范优先于数量；互相计数鼓励；不适立即报告</td>
+    <td contenteditable="true">分组分站循环；<br>组间间歇20—30秒；<br>啦啦操最缺的就是核心与肩背力量，每次课必练</td></tr>
+  <tr><td class="part-cell" style="text-align:center;font-weight:700;background:#faf2fc">结束</td><td class="cen" contenteditable="true">${tE}′</td>
+    <td contenteditable="true">配乐放松拉伸（颈肩→腰背→腿部，每处20—30秒，配合深呼吸）<br>课堂小结：回顾本次课重点，表扬进步<br>布置课后任务：看群里视频复习本次八拍<br>收还器材，检查场地</td>
+    <td contenteditable="true">领做放松，语调舒缓；小结以鼓励为主、点评具体；明确下次课内容与要求；指定器材员收还花球与音响</td>
+    <td contenteditable="true">跟做放松，充分伸展；参与小结、自我评价；协助收还器材</td>
+    <td contenteditable="true">围成圆形或一字横排；<br>拉伸不弹振；<br>器材清点归位，场地恢复整洁</td></tr>
+  </table>
+
+  <table class="pa" style="margin-top:10px"><colgroup><col style="width:15%"><col></colgroup>
+  <tr><th>预计负荷</th><td>平均心率约 <b>125—140</b> 次/分　｜　练习密度约 <b>55%</b>　｜　运动强度：中等偏上（成套完整练习时可达 160 次/分以上）</td></tr>
+  <tr><th>安全提示</th><td contenteditable="true">场地干燥防滑、清空障碍；跳跃落地必须屈膝缓冲，水泥地减少跳跃次数；柔韧与技巧类动作分层要求、绝不逼学生硬做；技巧/托举类必须有保护与垫子，无条件则不安排；及时补水；急性扭伤 48 小时内冷敷加压抬高，不热敷不揉搓，情况严重立即就医。</td></tr>
+  <tr><th>课后反思</th><td contenteditable="true" style="height:70px">（1）本次八拍是否达到教学目标：<br>（2）学生掌握情况与共性问题：<br>（3）组织与教法需改进之处：<br>（4）下次课调整：</td></tr>
+  </table>`;
+  $('#paper').innerHTML=h;
+  toast('教案已生成，表格文字可直接点击修改');
+  $('#paper').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+/* ================= 手位 / 步伐 / 队形 / 知识 ================= */
+function renderHands(){
+  $('#hdgrid').innerHTML=HANDS.map((h,i)=>`<div class="hcard" data-i="${i}">${fig(h,100)}
+    <div class="nm">${esc(h.n)}</div><div class="en">${esc(h.en)}</div></div>`).join('');
+  $('#hdgrid').onclick=e=>{const c=e.target.closest('.hcard');if(!c)return;
+    const h=HANDS[+c.dataset.i];
+    $('#modalbox').innerHTML=`<div style="text-align:center">${fig(h,150)}</div>
+      <h3 style="text-align:center;color:var(--brand);font-size:18px;margin-top:6px">${esc(h.n)}</h3>
+      <div style="text-align:center;font-size:12px;color:var(--sub);margin-bottom:10px">${esc(h.en)}</div>
+      <p style="font-size:13.5px"><b style="color:#6b5375">做法：</b>${esc(h.d)}</p>
+      <p style="font-size:13.5px"><b style="color:#6b5375">要点：</b>${esc(h.p)}</p>
+      <p style="font-size:13.5px"><b style="color:var(--danger)">常见错误：</b>${esc(h.e)}</p>
+      <button class="btn-g" style="width:100%;margin-top:10px" onclick="document.getElementById('modal').classList.remove('on')">知道了</button>`;
+    $('#modal').classList.add('on');};
+}
+function renderSteps(){
+  $('#stepout').innerHTML=STEPS.map(s=>`<div class="kcard" style="margin-bottom:8px">
+    <h4>${esc(s.n)}</h4>
+    <p><span class="lbl">做法：</span>${esc(s.d)}</p>
+    <p><span class="lbl">要点：</span>${s.p}</p>
+    <p><span class="lbl" style="color:var(--danger)">常见错误：</span>${esc(s.e)}</p></div>`).join('');
+}
+function renderForms(){
+  $('#fmout').innerHTML=FORMS.map(f=>`<div class="fmt"><h4>${esc(f.n)}</h4>
+    <div class="dg">${esc(f.dg)}</div>
+    <p><span style="font-weight:700;color:#6b5375">用途：</span>${esc(f.u)}</p>
+    <p><span style="font-weight:700;color:#6b5375">教学提示：</span>${esc(f.t)}</p></div>`).join('');
+}
+function renderKnow(k){
+  const K=KNOW.find(x=>x.k===k)||KNOW[0];
+  $('#knowout').innerHTML=`<div class="card"><h3><span class="bar"></span>${K.t}</h3>
+   ${K.c.map(c=>`<div style="margin-bottom:12px"><div style="font-weight:700;color:var(--brand);font-size:14px;margin-bottom:3px">${c[0]}</div>
+     <div style="font-size:13.5px">${c[1]}</div></div>`).join('')}</div>`;
+}
+
+/* ================= 导出 Word ================= */
+function exportWord(inner,name){
+  if(!inner||inner.indexOf('class="empty"')>=0){toast('还没有可导出的内容');return}
+  const css=`body{font-family:"宋体",SimSun;font-size:10.5pt;line-height:1.6}
+   table{border-collapse:collapse;width:100%} td,th{border:1px solid #333;padding:4px 6px;vertical-align:top;font-size:9.5pt}
+   th{background:#eee;text-align:center}
+   .pa-title{text-align:center;font-size:16pt;font-weight:bold;font-family:"黑体",SimHei;margin-bottom:4px}
+   .pa-sub{text-align:center;font-size:9pt;color:#555;margin-bottom:10px}
+   .part-cell{text-align:center;font-weight:bold;background:#f5f5f5}
+   ul{margin:2px 0;padding-left:16px} li{margin:1px 0}
+   @page{size:A4 portrait;margin:2cm 1.6cm}`;
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+  <head><meta charset="utf-8"><title>${esc(name)}</title><style>${css}</style></head><body>${inner}</body></html>`;
+  const blob=new Blob(['﻿'+html],{type:'application/msword;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download=name.replace(/[\\/:*?"<>|]/g,'')+'.doc';
+  document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+  toast('已导出 Word，可用 WPS / Word 打开继续编辑');
+}
+
+init();
+</script>
+</body>
+</html>
