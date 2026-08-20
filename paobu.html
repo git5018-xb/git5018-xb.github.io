@@ -2,75 +2,239 @@
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=5">
-<title>七年级400米与800米跑两周教案</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>七年级400米与800米跑详细教案生成器</title>
 <style>
-:root{--bg:#edf3f0;--paper:#fff;--ink:#17221f;--sub:#66736e;--line:#d6ded9;--green:#123c31;--lime:#d8f45f;--orange:#ed6548;--blue:#2381c4;--shadow:0 12px 36px rgba(16,54,43,.10)}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif;font-size:14px;line-height:1.65;padding-bottom:48px}
-button{font:inherit;cursor:pointer}.top{background:var(--green);color:#fff;padding:18px 16px 20px;box-shadow:0 4px 18px rgba(10,40,32,.18)}
-.topin{max-width:1080px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:18px}.top a{color:#d8f45f;text-decoration:none;font-size:12px;font-weight:700}
-.top h1{font-size:22px;margin:4px 0 2px}.top p{margin:0;color:rgba(255,255,255,.62);font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}
-.actions button{border:1px solid rgba(255,255,255,.25);border-radius:9px;padding:8px 11px;color:#fff;background:rgba(255,255,255,.08)}.actions .word{color:var(--green);background:var(--lime);border-color:var(--lime);font-weight:800}
-.wrap{max-width:1080px;margin:0 auto;padding:16px}.switch{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.switch button{border:1px solid var(--line);border-radius:12px;padding:13px;background:#fff;color:var(--sub);font-weight:800;box-shadow:0 2px 8px rgba(16,54,43,.04)}
-.switch button.on{background:var(--green);color:#fff;border-color:var(--green)}.switch button b{font:800 21px Georgia,serif;color:var(--orange);margin-right:4px}.switch button.on b{color:var(--lime)}
-.lesson-nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:8px}.lesson-nav::-webkit-scrollbar{display:none}.lesson-nav button{flex:0 0 auto;border:1px solid var(--line);border-radius:9px;padding:8px 12px;background:#fff;color:#53625d;font-size:12px}.lesson-nav button.on{color:#fff;background:var(--orange);border-color:var(--orange)}
-.paper{background:var(--paper);border-radius:15px;box-shadow:var(--shadow);overflow:hidden}.hero{padding:25px 28px;color:#fff;background:linear-gradient(120deg,var(--green),#1d5d4c);display:flex;align-items:center;justify-content:space-between;gap:15px}
-.hero small{color:var(--lime);font-weight:800;letter-spacing:.1em}.hero h2{font-size:25px;margin:5px 0}.hero p{margin:0;color:rgba(255,255,255,.6);font-size:12px}.badge{width:76px;height:76px;border:1px solid rgba(216,244,95,.55);border-radius:50%;display:grid;place-content:center;text-align:center;color:var(--lime);flex:0 0 auto}.badge b{font:800 28px Georgia,serif;line-height:1}.badge span{font-size:9px;margin-top:4px}
-.body{padding:24px 28px 30px}.eyebrow{font-size:9px;color:var(--orange);font-weight:900;letter-spacing:.15em}.body h3{font-size:17px;margin:5px 0 14px}.goals{margin:0;padding-left:21px;color:#46544f}.goals li{margin:7px 0}.keygrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:20px 0}.keygrid>div,.evalgrid>div{border:1px solid var(--line);border-radius:10px;padding:14px;background:#f8faf8}.keygrid b,.evalgrid b{font-size:11px;color:var(--orange)}.keygrid p{font-size:12px;margin:6px 0 0;color:#52605b}
-.schedule{border-top:1px solid var(--line)}.srow{display:grid;grid-template-columns:48px 95px 1fr;gap:10px;align-items:center;min-height:52px;border-bottom:1px solid var(--line)}.srow>em{font:800 18px Georgia,serif;color:var(--orange);font-style:normal}.srow>span{font-size:10px;color:var(--sub)}.srow>b{font-size:12px}
-.evalgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.evalgrid ul{margin:7px 0 0;padding-left:18px;color:#53605c;font-size:11px}.evalgrid li{margin:5px 0}.safe{background:#f3f7dd!important}.source{border-left:3px solid var(--lime);background:#f8faf6;padding:10px 12px;margin:18px 0 0;color:#77817d;font-size:10px}
-.meta{width:100%;border-collapse:collapse;margin-bottom:10px}.meta th,.meta td{border:1px solid #aebbb4;padding:7px;vertical-align:top}.meta th{background:#edf3ef;color:#274b40;width:75px}.objectives{display:grid;grid-template-columns:82px 1fr;border:1px solid #aebbb4;margin-bottom:10px}.objectives>b{padding:10px;background:#edf3ef;color:#274b40}.objectives ol{margin:0;padding:9px 10px 9px 30px}.objectives li{margin:3px 0}
-.tablewrap{overflow-x:auto}.lesson{width:100%;min-width:900px;border-collapse:collapse;table-layout:fixed;font-size:11px}.lesson th,.lesson td{border:1px solid #aebbb4;padding:7px;vertical-align:top}.lesson thead th{background:#dfece6;color:#23483d}.lesson thead th:nth-child(1){width:65px}.lesson thead th:nth-child(2){width:46px}.lesson thead th:nth-child(3){width:24%}.lesson thead th:nth-child(4){width:19%}.lesson thead th:nth-child(5){width:18%}.lesson thead th:nth-child(6){width:23%}.lesson p{margin:0 0 5px}.lesson tbody th{background:#f2f6f3;color:#274b40}.footgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:10px}.footgrid div{border:1px solid var(--line);border-radius:9px;padding:11px}.footgrid b{font-size:10px;color:var(--orange)}.footgrid p{margin:4px 0 0;font-size:11px;color:#56635e}
-#printAllDoc{display:none}.tip{text-align:center;color:#71807a;font-size:11px;margin:15px 0 0}
-@media(max-width:620px){.topin{display:block}.actions{justify-content:flex-start;margin-top:12px}.wrap{padding:10px}.hero{padding:20px 17px}.hero h2{font-size:20px}.badge{width:60px;height:60px}.body{padding:18px 13px 22px}.keygrid,.evalgrid,.footgrid{grid-template-columns:1fr}.srow{grid-template-columns:38px 1fr}.srow>span{display:none}.switch button{padding:11px 6px;font-size:12px}}
-@media print{@page{size:A4 portrait;margin:11mm 9mm}body{background:#fff;padding:0;font-size:10px}.top,.switch,.lesson-nav,.tip{display:none!important}.wrap{max-width:none;padding:0}.paper{box-shadow:none;border-radius:0}.hero{padding:12px 15px;-webkit-print-color-adjust:exact;print-color-adjust:exact}.body{padding:12px 0}.lesson{font-size:9px;min-width:0}.lesson th,.lesson td{padding:4px}.lesson-page{page-break-after:always}.lesson-page:last-child{page-break-after:auto}body.print-all #screen{display:none}body.print-all #printAllDoc{display:block}body:not(.print-all) #printAllDoc{display:none}}
+:root{--brand:#1f6feb;--brand2:#0ea5a5;--ink:#10233f;--sub:#60718b;--line:#d8e1ee;--bg:#f3f6fa;--ok:#079455;--warm:#ee6c35;--shadow:0 6px 18px rgba(31,53,88,.09)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;font-size:14px;line-height:1.65}
+button,input{font:inherit}.top{background:linear-gradient(120deg,#1f6feb,#0ea5a5);color:#fff;padding:18px 16px}.topin{max-width:1180px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:16px}.top a{color:#fff;text-decoration:none;font-size:12px;font-weight:700}.top h1{font-size:22px;margin:3px 0 0}.top p{margin:2px 0 0;color:rgba(255,255,255,.82);font-size:12px}.actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.actions button,.btn{border:1px solid rgba(255,255,255,.45);border-radius:8px;padding:8px 12px;color:#fff;background:rgba(255,255,255,.12);cursor:pointer;font-weight:700}.actions .word{background:#fff;color:var(--brand);border-color:#fff}
+.wrap{max-width:1180px;margin:auto;padding:14px}.control{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px;margin-bottom:12px}.switch{display:grid;grid-template-columns:1fr 1fr;gap:8px}.switch button{border:1px solid var(--line);border-radius:9px;padding:10px;background:#f8fafc;color:#465870;cursor:pointer;font-weight:800}.switch button b{font:800 21px Georgia,serif;color:#ef6545;margin-right:5px}.switch button.on{background:var(--brand);border-color:var(--brand);color:#fff}.switch button.on b{color:#fff}
+.lesson-nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding:10px 0}.lesson-nav::-webkit-scrollbar{display:none}.lesson-nav button{flex:0 0 auto;border:1px solid var(--line);border-radius:8px;padding:7px 11px;background:#fff;color:#52647c;font-size:12px;cursor:pointer}.lesson-nav button.on{color:#fff;background:var(--warm);border-color:var(--warm)}
+.formgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.field label{display:block;font-size:11px;color:var(--sub);font-weight:700;margin-bottom:2px}.field input{width:100%;border:1px solid var(--line);border-radius:7px;padding:7px 8px;color:var(--ink);background:#fbfdff}.form-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:9px}.form-foot .hint{font-size:11.5px;color:var(--sub)}.regen{background:var(--brand);border:0}
+.paper-scroll{overflow-x:auto;padding-bottom:8px}#paper,#printAllDoc .one-plan{background:#fff;border-radius:12px;box-shadow:var(--shadow);padding:18px;min-width:1000px}.pa-title{text-align:center;font-size:20px;font-weight:800;letter-spacing:2px;margin-bottom:3px}.pa-sub{text-align:center;font-size:12.5px;color:var(--sub);margin-bottom:12px}
+table.pa{width:100%;border-collapse:collapse;font-size:13px;table-layout:fixed}table.pa th,table.pa td{border:1px solid #9fb0c8;padding:6px 7px;vertical-align:top;line-height:1.6;word-break:break-word}table.pa th{background:#eef3fa;font-weight:700;text-align:center;color:#16305c}.cen{text-align:center}.part-cell{font-weight:700;background:#f6f9fd;text-align:center;color:#16305c;letter-spacing:2px;width:34px;padding:4px 2px!important}
+[contenteditable]{outline:none}[contenteditable]:focus{background:#fffbe8;box-shadow:inset 0 0 0 2px #fbbf24;border-radius:3px}.formation{font-family:"Courier New",Consolas,monospace;font-size:12px;line-height:1.35;white-space:pre;background:#f8fafd;border-radius:5px;padding:5px 6px;display:inline-block;margin-top:4px;color:#33475f}.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:5px;background:#e7f0ff;color:var(--brand);font-weight:700;margin-right:5px}.tag.g{background:#eafaf1;color:var(--ok)}.tag.o{background:#fff4ea;color:var(--warm)}ul.pl{margin:3px 0;padding-left:16px}ul.pl li{margin:1px 0}.loadbox{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.loadstat{font-size:12.5px;color:#33475f;min-width:145px;line-height:1.9}.loadstat b{color:var(--brand);font-size:15px}.loadnote{font-size:10.5px;color:#728198;margin-top:5px}.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:rgba(18,32,58,.95);color:#fff;padding:9px 17px;border-radius:22px;opacity:0;pointer-events:none;transition:.22s;z-index:99}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}#printAllDoc{display:none}
+@media(max-width:760px){.topin{display:block}.actions{justify-content:flex-start;margin-top:11px}.formgrid{grid-template-columns:1fr 1fr}.form-foot{display:block}.form-foot .btn{margin-top:8px}.wrap{padding:9px}.control{padding:10px}.paper-scroll{margin-right:-9px}.switch button{padding:9px 5px}.top h1{font-size:19px}}
+@media print{@page{size:A4 portrait;margin:11mm 9mm}body{background:#fff;padding:0;font-size:11px}.top,.control,.noprint,.toast{display:none!important}.wrap{max-width:none;padding:0;margin:0}.paper-scroll{overflow:visible;padding:0}#paper,#printAllDoc .one-plan{min-width:0;box-shadow:none;border-radius:0;padding:0;margin:0}table.pa{font-size:9.5px}table.pa th,table.pa td{padding:3px 4px;border:1px solid #333}table.pa th{background:#eee!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.part-cell{background:#f5f5f5!important;-webkit-print-color-adjust:exact}.pa-title{font-size:17px}.pa-sub{font-size:10px;margin-bottom:7px}.formation{font-size:8.5px;padding:3px}.loadbox svg{max-width:280px}tr,td,th{page-break-inside:avoid}body.print-all #paper{display:none}body.print-all #printAllDoc{display:block}.one-plan{page-break-after:always!important}.one-plan:last-child{page-break-after:auto!important}}
 </style>
 </head>
 <body>
-<header class="top noprint"><div class="topin"><div><a href="pe.html">← 返回体育教学工具箱</a><h1>七年级跑类两周教案</h1><p>每周3节 · 每节45分钟 · 400米与800米</p></div><div class="actions"><button id="printOne">打印当前</button><button id="printAll">打印整套</button><button class="word" id="wordAll">导出整套Word</button></div></div></header>
+<header class="top noprint"><div class="topin"><div><a href="pe.html">← 返回体育教学工具箱</a><h1>七年级400米与800米跑详细教案</h1><p>与网站现有教案生成器同款表格 · 每周3节 · 两周6课时 · 每节45分钟</p></div><div class="actions"><button id="printOne">打印本节</button><button id="printAll">打印整套</button><button class="word" id="wordOne">导出本节Word</button><button class="word" id="wordAll">导出整套Word</button></div></div></header>
 <main class="wrap">
-  <div class="switch noprint"><button data-event="400"><b>400m</b> 两周教案</button><button data-event="800"><b>800m</b> 两周教案</button></div>
-  <nav class="lesson-nav noprint" id="lessonNav"></nav>
-  <section class="paper" id="screen"></section>
-  <p class="tip noprint">点击上方“单元总览”或具体课时查看；表格可横向滑动，整套可导出Word继续修改。</p>
-  <section id="printAllDoc"></section>
+  <section class="control noprint">
+    <div class="switch"><button data-event="400"><b>400m</b> 两周详细教案</button><button data-event="800"><b>800m</b> 两周详细教案</button></div>
+    <div class="lesson-nav" id="lessonNav"></div>
+    <div class="formgrid">
+      <div class="field"><label for="teacher">授课教师</label><input id="teacher" placeholder="填写姓名"></div>
+      <div class="field"><label for="className">班级</label><input id="className" value="七年级（1）班"></div>
+      <div class="field"><label for="studentNum">人数</label><input id="studentNum" type="number" min="1" max="80" value="40"></div>
+      <div class="field"><label for="lessonDate">授课日期</label><input id="lessonDate" type="date"></div>
+      <div class="field"><label for="venue">场地</label><input id="venue" value="标准田径场"></div>
+    </div>
+    <div class="form-foot"><span class="hint">表格中的文字可以直接点击修改；手机上可左右滑动查看完整六列表格。</span><button class="btn regen" id="regenerate">按上方信息更新教案</button></div>
+  </section>
+  <div class="paper-scroll"><div id="paper"></div></div>
+  <div id="printAllDoc"></div>
 </main>
+<div class="toast" id="toast"></div>
 <script>
-const COMMON={
- start:{name:'开始部分',min:5,c:['体育委员集合整队，清点人数。','师生问好，检查着装、鞋带和健康状况。','宣布本课内容、学习目标、练习路线和安全要求。'],t:['检查场地器材，询问伤病和当日身体状态。','安排见习生承担计时或观察任务。'],s:['快速集合，如实报告身体状况。','听清分组、路线和停止信号。'],o:'四列横队集合；要求快、静、齐。'},
- prep:{name:'准备部分',min:10,c:['慢跑2圈或3—4分钟，逐步提高体温。','肩、髋、膝、踝动态活动，每项4×8拍。','小步跑、高抬腿跑、后踢腿跑各20米×2组。'],t:['示范动态热身并控制节奏。','观察踝、膝、髋活动是否充分，体弱学生降低强度。'],s:['保持间距，按口令完成热身。','做到身体微微发热，疼痛或不适及时报告。'],o:'两路纵队慢跑，随后四列横队散开。'},
- end:{name:'结束部分',min:5,c:['慢走并调整呼吸。','拉伸股四头肌、腘绳肌和小腿肌群，每项15—20秒。','回顾本课要点，完成自评，回收器材。'],t:['带领放松并观察恢复情况。','围绕重点提问，布置简短课后练习。'],s:['认真放松，逐步恢复平静。','回答问题，记录改进点。'],o:'四列横队散开；不立即坐下或躺下。'}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const formation={
+  gather:`○ ○ ○ ○ ○ ○ ○ ○\n○ ○ ○ ○ ○ ○ ○ ○\n○ ○ ○ ○ ○ ○ ○ ○\n○ ○ ○ ○ ○ ○ ○ ○\n        ▲`,
+  warm:`○   ○   ○   ○   ○\n  ○   ○   ○   ○\n○   ○   ○   ○   ○\n        ▲`,
+  lanes:`第1道  ○ → → → →\n第2道  ○ → → → →\n第3道  ○ → → → →\n第4道  ○ → → → →\n       ▲（跑道外侧）`,
+  groups:`[1组] ○○○    [2组] ○○○\n[3组] ○○○    [4组] ○○○\n          ▲（巡回）`,
+  circle:`    ○ ○ ○\n  ○       ○\n ○    ▲    ○\n  ○       ○\n    ○ ○ ○`
 };
+const baseSafety='课前询问伤病、心血管及呼吸系统病史和当日身体状态，身体不适者见习或降低负荷；练习区、等待区、观察区和返回路线分开，严禁横穿跑道、逆向跑和推挤；出现胸闷、眩晕、恶心、面色苍白或动作失控时立即停止练习并按学校应急预案处理；遇高温、雷雨、强风或跑道湿滑时改为室内理论、低强度练习或延期。';
+function row(m,i,name,c,t,s,x,f,r,tag='学练一',color=''){return {m,i,name,c,t,s,x,f,r,tag,color};}
 const PLANS={
-'400':{title:'七年级400米跑两周单元教案',key:'站立式起跑、弯道跑、途中节奏与终点跑的衔接。',diff:'在疲劳状态下保持技术动作和合理体力分配。',goals:['运动能力：掌握站立式起跑、弯道跑、途中跑和终点跑技术，能够按个人计划完成400米。','健康行为：学会跑前热身、强度判断、分段配速和跑后恢复方法。','体育品德：遵守分道与发令规则，在计时、观察和互评中承担责任。'],lessons:[
- {t:'站立式起跑与诊断跑',type:'新授课',obj:['掌握站立式起跑和起跑后加速的基本动作。','能依据呼吸和动作质量调节速度。','遵守分道规则，认真记录同伴表现。'],key:'听信号快速启动，起跑后逐渐抬高重心。',diff:'避免起跑过猛，在完整跑中保持放松。',c:['站立式起跑姿势练习。','站立式起跑3×30米，起跑接加速跑3×60米。','分组完成400米诊断跑1次，不进行名次比较。','记录时间、后100米动作变化和RPE。'],tch:['正侧面示范前后脚位置、身体前倾和积极摆臂。','按能力分组发令，记录时间并观察呼吸和动作。','强调跑过终点后继续减速。'],stu:['听信号依次起跑，保持本跑道。','诊断跑中不盲目跟跑。','未跑学生担任计时员和观察员。'],org:'每组6—10人；终点设置20米减速区，返回走跑道外侧。',dose:'30米×3；60米×3；400米×1',load:'中等至中高强度，RPE 6—7。'},
- {t:'弯道跑技术',type:'新授课',obj:['能做出整体内倾、外侧臂摆幅略大、沿分道跑进。','掌握弯道跑前踝、膝热身方法。','在同伴评价中合作改进。'],key:'身体从脚踝起向圆心适度内倾。',diff:'根据速度调整内倾，使摆臂、蹬地和姿态协调。',c:['讲解弯道跑原理，进行正误对比。','原地弯道摆臂20次×2组，小圆圈跑2圈×2组。','弧线跑30米×2组，弯道100米×3组。','围绕整体内倾、摆臂协调、不越分道互评。'],tch:['多角度示范并用标志桶划分练习区。','按示范—练习—反馈—再练习组织。','纠正折腰、横摆臂和越线。'],stu:['复述三个动作要点并按组练习。','保持8—10米间距。','给同伴提出一条具体建议。'],org:'每道单向练习；练习区与观察区分开；跑后直道减速。',dose:'摆臂20次×2；30米×2；100米×3',load:'中等强度，RPE 5—7。'},
- {t:'分段配速与途中跑',type:'复习巩固课',obj:['理解前程控制、途中稳定、末段坚持。','能利用呼吸和RPE判断速度。','按组完成计时记录。'],key:'前100米不过度冲刺，途中保持步频和放松摆臂。',diff:'疲劳后保持躯干稳定和呼吸节奏。',c:['讲解400米体力分配。','2组“200米＋200米”分段跑，组内间歇60—90秒。','4×50米节奏接力。','比较各段时间，判断是否前快后慢。'],tch:['给不同能力组节奏提示，不规定统一秒数。','在200米点计时并反馈。','动作质量明显下降时降低强度。'],stu:['主动控制第一段速度。','利用RPE和呼吸评价用力程度。','小组合作分析前后段差异。'],org:'按能力分3—4组；计时员站跑道外侧。',dose:'200米＋200米×2组；50米×4',load:'中高强度，RPE 6—7。'},
- {t:'速度耐力',type:'复习巩固课',obj:['提高重复快速跑能力。','能按动作质量主动调整练习量。','坚持完成适合自身水平的任务。'],key:'放松快速跑，步频稳定，积极摆臂。',diff:'最后阶段避免耸肩、后仰和跨大步。',c:['起跑接加速跑3×50米。','4×120米快速跑，组间休息约2分钟。','300米节奏跑1次。','提踵15次×2组、平板支撑25秒×2组。'],tch:['按基础、提高、挑战组调整重复次数。','用短语提示放松肩颈、积极摆臂。','控制高强度重复量。'],stu:['不与他人盲目比较。','组间慢走、补水。','动作明显变形时主动降级。'],org:'直道与弯道分区；设置减速区和补水点。',dose:'50米×3；120米×4；300米×1',load:'中高强度，RPE 7；基础组120米做3次。'},
- {t:'完整节奏与模拟',type:'复习巩固课',obj:['形成个人400米分段策略。','学会测试前检查身体状态。','承担计时、观察和鼓励角色。'],key:'起跑积极不冲猛，中段稳定，最后100米坚持摆臂。',diff:'把个人计划转化为稳定实际节奏。',c:['填写个人分段计划卡。','300米模拟跑1次，记录100米分段。','充分恢复后2×100米放松快速跑。','小组确定一个测试改进点。'],tch:['帮助学生制定现实目标。','在分段点计时并反馈。','恢复不足不追加高强度练习。'],stu:['按计划完成模拟跑。','充分恢复后再参加下一练习。','与同伴交换评价。'],org:'按预计成绩分组分道完成；观察员固定站位。',dose:'300米×1；100米×2',load:'中高强度，RPE 7。'},
- {t:'单元展示与评价',type:'考核课',obj:['完整运用400米技术。','独立完成热身和跑后恢复。','客观记录并尊重个体进步。'],key:'执行个人配速计划，完整运用技术。',diff:'最后100米保持动作和意志品质。',c:['复习起跑、弯道和终点减速。','按能力分组完成400米测试1次。','未测试学生负责计时和观察。','完成技术、配速、进步和合作四维评价。'],tch:['再次确认健康状况和跑道安全。','按能力分组发令并记录。','以个人进步和技术运用为主评价。'],stu:['独立热身并按计划测试。','终点后继续慢走。','认真履行计时观察任务。'],org:'每组6—10人；测试、等待、恢复三区分开。',dose:'400米×1',load:'高强度单次测试，RPE 8—9；之后只恢复。'}]},
-'800':{title:'七年级800米跑两周单元教案',key:'均匀配速、呼吸节奏和终点跑。',diff:'在疲劳状态下保持动作与速度稳定。',goals:['运动能力：掌握站立式起跑、途中跑、弯道跑和终点跑技术，能合理完成800米。','健康行为：学会用谈话测试、RPE和分段时间控制强度。','体育品德：遵守跑进与超越规则，互相鼓励并客观评价。'],lessons:[
- {t:'呼吸节奏与耐力诊断',type:'新授课',obj:['掌握放松跑与基本呼吸节奏。','能用谈话测试和RPE判断强度。','按自身水平完成任务。'],key:'动作放松、步频自然，口鼻配合呼吸。',diff:'找到能够持续的个人速度。',c:['讲解口鼻配合和两步一吸、两步一呼。','连续慢跑4—5分钟，以能说短句为宜。','3×200米匀速跑，间歇慢走90秒。','记录RPE、呼吸和动作感受。'],tch:['示范放松跑和呼吸方法。','观察面色、呼吸和动作，指导分层。','不进行公开名次比较。'],stu:['尝试呼吸节奏。','按能力完成练习。','如实记录RPE和感受。'],org:'按能力分组，前后8—10米，超越从外侧。',dose:'连续跑4—5分钟；200米×3',load:'中等强度，RPE 5—6。'},
- {t:'站立式起跑与安全超越',type:'新授课',obj:['掌握起跑、跟随跑和外侧超越。','识别拥挤和突然变道风险。','不推挤、不阻挡。'],key:'起跑后建立节奏，超越前观察并从外侧完成。',diff:'多人跑进时保持位置感和安全距离。',c:['讲解起跑、跟随和超越规则。','小组起跑4×60米。','3×300米匀速跑，间歇2分钟。','指定区域练习安全超越。'],tch:['设置超越区并示范完整流程。','控制每组人数。','及时制止突然变道和推挤。'],stu:['按信号起跑并进入节奏。','超越前观察，不封堵路线。','组间慢走恢复。'],org:'每组6—8人；设置超越区、减速区和返回通道。',dose:'60米×4；300米×3',load:'中等强度，RPE 5—6。'},
- {t:'均匀配速',type:'复习巩固课',obj:['实践均匀配速。','根据时间、呼吸和RPE调整速度。','认真计时并尊重差异。'],key:'前程控制，中段维持，分段时间相对稳定。',diff:'避免跟跑导致速度失控。',c:['讲解800米分段策略。','2×400米配速跑，间歇3—4分钟。','4×50米放松加速跑。','比较两次400米时间和RPE。'],tch:['提供三种能力节奏提示。','记录分段并反馈。','恢复不足者减少重复。'],stu:['按个人计划完成。','组间慢走、补水。','用数据和感受调整节奏。'],org:'分组错时出发；计时员固定站位。',dose:'400米×2；50米×4',load:'中等至中高强度，RPE 6—7。'},
- {t:'间歇跑与速度耐力',type:'复习巩固课',obj:['提高维持目标节奏能力。','掌握组间恢复和补水。','在挑战中遵守规则。'],key:'每次200米速度基本稳定。',diff:'后两次仍保持躯干和摆臂稳定。',c:['4×200米目标节奏跑，间歇90—120秒。','2×100米放松快速跑。','弓步蹲8次/侧×2组、死虫8次/侧×2组。','记录四次200米差值。'],tch:['按水平给目标区间。','用短语提示保持动作。','禁止缩短恢复时间竞赛。'],stu:['第一组不跑成全力测试。','组间慢走恢复。','完成数据记录。'],org:'按能力分组，直道设置计时点。',dose:'200米×4；100米×2；课课练2组',load:'中高强度，RPE 6—7。'},
- {t:'600米模拟与终点跑',type:'复习巩固课',obj:['完成600米模拟。','制定个人分段计划。','认真履行计时观察角色。'],key:'前200米控制，中间保持，最后逐渐提高步频。',diff:'疲劳时完成节奏转换。',c:['填写个人200米分段计划。','600米模拟跑1次，记录分段。','充分恢复后2×80米终点加速跑。','分析一次速度波动。'],tch:['帮助制定可实现目标。','在200米点报时。','检查恢复后再安排加速。'],stu:['按计划完成，不盲目跟随。','终点后继续慢走。','结合数据修正策略。'],org:'三个分段点设置记录员，跑道外设恢复区。',dose:'600米×1；80米×2',load:'中高强度，RPE 7。'},
- {t:'单元展示与评价',type:'考核课',obj:['完整运用800米技术。','独立完成热身和恢复。','遵守规则，认可个体进步。'],key:'执行个人配速计划，完整跑完全程。',diff:'最后200米安全加速并保持动作。',c:['复习规则、超越方法和停止信号。','按能力分组完成800米测试1次。','未测试学生负责计时和分段观察。','完成技术、配速、进步与合作评价。'],tch:['确认健康、天气和跑道安全。','记录分段、成绩和技术表现。','说明国家体测为男生1000米、女生800米。'],stu:['独立热身并完成测试。','终点后继续慢走。','完成岗位任务和反思。'],org:'每组8—12人；等待、测试、恢复三区分开。',dose:'800米×1',load:'高强度单次测试，RPE 8—9。'}]}
+  '400':[
+    {name:'站立式起跑与诊断跑',type:'新授课',desc:'初步学习站立式起跑，建立400米完整跑的体力分配意识',key:'站立式起跑姿势和起跑后逐渐加速',diff:'避免起跑过猛，在疲劳状态下保持动作放松',goals:[
+      '<b>运动能力：</b>通过学习，80%以上学生能说出并完成站立式起跑的主要动作，做到前后脚站立、身体前倾、听信号快速启动；能按个人能力完成1次400米诊断跑。',
+      '<b>健康行为：</b>学会用呼吸、动作质量和RPE（主观用力程度）判断强度，完成跑前动态热身和跑后慢走恢复，不盲目追逐他人。',
+      '<b>体育品德：</b>遵守分道、发令和终点减速规则，认真承担计时员、观察员角色，尊重同伴差异并如实记录。'],
+      prep:['小步跑、高抬腿、后蹬跑各2×20米','渐进加速跑2×50米'],equipment:'标志桶12个、起点线、口哨1个、秒表2—4块、记录卡若干',safety:'起跑学生前方跑道确认无人；诊断跑按能力分组错时出发，终点后继续向前慢跑或慢走20米。',stat:{avg:132,max:168,dens:42,all:76,strength:'中等'},rows:[
+        row(8,2,'站立式起跑动作学习',['前后脚开立，强脚在前','屈膝降重心，上体自然前倾','听“跑”声后后脚快速蹬地，双臂积极摆动'],`【导入与示范】对比站立式起跑与直立起跑，完整示范2次并分解脚位、重心和摆臂。<br><b>预设错误与纠正：</b><br>1. 同手同脚——先做原地前倾摆臂，再接起跑。<br>2. 重心后坐——提示“肩在前脚尖前方”。`,'观察正侧面示范；两人一组检查脚位和身体前倾；听口令轮换练习','4组×3次','四列横队分组，前后间隔3米',`口令未发不得抢跑；完成后从跑道外侧返回。<br><span class="formation">${formation.groups}</span>`,'学练一'),
+        row(8,3,'起跑后加速衔接',['站立式起跑3×30米','起跑接渐进加速跑4×50米','同伴观察前10步重心变化'],`用标志盘设置10米、30米、50米点；强调起跑后不是立即直立，而是随速度逐渐抬高重心；分别反馈第一步方向、摆臂和加速节奏。`,'按能力分组听信号起跑；前10步积极但不僵硬；观察员用“脚位—前倾—摆臂”三项口令反馈','30米×3；50米×4','4人一组分道进行',`前组越过30米线后下一组再出发；返回走跑道外侧。<br><span class="formation">${formation.lanes}</span>`,'学练二','g'),
+        row(9,4,'400米诊断跑',['填写“前100米控制—中段稳定—末段坚持”计划','按能力分组完成400米1次','记录完成时间、RPE及后100米动作表现'],`说明诊断目的不是排名，而是了解节奏；每组6—8人，发令前确认健康状态；在200米和终点报时，观察是否出现前快后慢、耸肩或步幅骤降。`,'按个人计划完成，不强行跟随更快同伴；未跑学生分任计时、分段观察和终点引导；跑后慢走并记录RPE','400米×1','按能力分3—4组错时出发',`终点设置20米减速区；计时员站跑道外侧，任何人不得突然横切。<br><span class="formation">${formation.lanes}</span>`,'学练三','g'),
+        row(5,2,'补偿性体能与恢复',['提踵15次','前弓步交换10次/侧','平板支撑20—30秒','走动中深呼吸恢复'],`示范动作标准，按“下肢—核心—呼吸”三站组织；根据诊断跑恢复情况减量，动作变形立即停止。`,'按站位完成，互相计数；保持动作规范；能完整说话后再进入下一站','3站×1—2轮','分组分站循环',`不憋气、不比拼次数；组间慢走20秒。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'弯道跑技术',type:'新授课',desc:'学习身体内倾、两臂协调和沿切线进入直道的方法',key:'身体自然向内倾斜，外侧臂摆幅稍大',diff:'内倾来自全身整体，不是折腰；直弯道衔接自然',goals:[
+      '<b>运动能力：</b>80%以上学生能在中速弯道跑中做到身体自然内倾、右臂摆幅稍大、脚掌着地稳定，并完成直道—弯道—直道衔接。',
+      '<b>健康行为：</b>能根据弯道半径和速度调整内倾程度，理解速度越快内倾越明显，练习后主动放松踝、膝、髋关节。',
+      '<b>体育品德：</b>坚持分道练习，不抢内道、不突然变线；观察同伴时使用具体、友善的技术语言。'],
+      prep:['弧线慢跑2圈（变换半径）','内外侧摆臂徒手练习2×20秒','直道渐进跑2×60米'],equipment:'标志桶16个、标志盘20个、口哨1个、秒表2块',safety:'弯道练习固定方向和跑道，前后保持20米以上间隔；禁止从内场突然进入跑道。',stat:{avg:136,max:172,dens:45,all:78,strength:'中等偏上'},rows:[
+        row(7,2,'弯道跑动作感知',['原地弯道摆臂2×20秒','沿小圆—大圆慢跑各2圈','两人一组观察身体内倾方向'],`画出身体纵轴，说明整体向圆心方向倾斜；示范右臂摆幅稍大、左臂贴近身体；用慢速弧线跑帮助学生先建立感觉。<br><b>易错：</b>只歪头或折腰；纠正为“耳—肩—髋保持一线”。`,'先徒手模仿，再沿不同半径圆弧慢跑；同伴从正面观察耳、肩、髋是否成一线','徒手2组；圆弧各2圈','4组分区练习',`各组圆弧区域不交叉；慢跑返回。<br><span class="formation">○ ○ ○　　　○ ○ ○\n  ○ ▲ ○　　　○ ▲ ○</span>`,'学练一'),
+        row(10,3,'分道弯道跑',['弯道跑6×80米','前40米中速、后40米逐渐加速','观察左右臂摆幅和脚落点'],`在弯道入口、顶点和出口设标志；先中速示范再快速示范；逐组提示“看前方—内倾—外臂大—脚下稳”。`,'每次只关注一个技术点；完成后用“做到1项、改进1项”互评；逐次提高速度但保留动作质量','80米×6，间歇60—90秒','4—6人一组分道',`同一道前后间隔20米，前人出弯后后人再出发。<br><span class="formation">${formation.lanes}</span>`,'学练二','g'),
+        row(8,4,'直弯道衔接跑',['直道30米＋弯道60米＋直道30米','保持进入弯道前的节奏','出弯后逐渐减小内倾并沿切线加速'],`示范“直道放松—入弯渐倾—出弯渐直”；在衔接点观察是否突然减速或横跨跑道；对技术稳定学生提高至85%速度。`,'按分道连续完成；出弯时不急于直立；观察员记录入弯、弯中、出弯三处表现','120米×3','按能力分组分道轮换',`跑完全程越过终点再减速；不得串道。<br><span class="formation">直道 →（弯道）→ 直道\n ○　　　　　     ○\n        ▲</span>`,'学练三','g'),
+        row(5,3,'下肢稳定性课课练',['单脚提踵12次/侧','侧向小步移动15秒','弓步静止20秒/侧','原地小步频20秒'],`强调踝、膝、髋同向和躯干稳定；设置基础量与提高量，技术动作不稳者完成基础量。`,'按站循环；相互观察膝关节是否内扣；动作规范后再加快','4站×1轮','分站循环',`站间相距4米，移动方向统一；不在疲劳下追求次数。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'分段配速与途中跑',type:'复习巩固课',desc:'学习400米前程控制、中段稳定和末段坚持的分段节奏',key:'前100米积极但不过度冲刺，中段保持步频和放松摆臂',diff:'利用分段时间、呼吸和RPE及时调整速度',goals:[
+      '<b>运动能力：</b>85%以上学生能依据个人诊断成绩制定分段计划，并在200米和“200米＋200米”练习中保持较稳定节奏。',
+      '<b>健康行为：</b>能用分段时间、呼吸和RPE共同判断强度，理解“前快过多会导致后程明显降速”，学会组间主动恢复。',
+      '<b>体育品德：</b>认真执行个人计划，不盲目攀比；计时与记录真实准确，小组共同分析并提出调整意见。'],
+      prep:['节奏小步跑2×30米','放松大步跑2×50米','按口令变速跑3×60米'],equipment:'标志桶12个、100米分段标志4组、口哨1个、秒表4—6块、配速记录卡',safety:'分段点计时员必须站在跑道外侧；组间恢复不足、呼吸急促或动作明显变形时减少重复次数。',stat:{avg:138,max:174,dens:46,all:80,strength:'中等偏上'},rows:[
+        row(7,2,'认识分段节奏',['回顾诊断跑时间和RPE','填写个人100米、200米分段计划','4×100米节奏跑，体验“可控快速”'],`用两个示例比较“前100米过快”和“相对均匀”；指导学生用个人成绩而非统一秒数制定计划；每次100米后立即反馈偏快或偏慢。`,'读懂个人计划卡；按目标节奏完成100米；与计时员核对实际时间并调整下一次','100米×4，间歇60秒','按目标节奏分3层',`不同层次错时出发，跑完继续前行至减速区。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(10,3,'200米配速跑',['按个人目标完成200米2次','记录前100米与后100米时间','比较两段差值和动作感受'],`在100米处和终点分别计时；强调前100米不抢、后100米不松；根据学生恢复情况将间歇控制在3—4分钟。`,'按计划跑，不跟随更快同伴；跑后慢走并记录分段；小组判断属于前快、均匀或后快','200米×2，间歇3—4分钟','能力分组、分道进行',`计时员固定站位；等待学生在安全区慢走恢复。<br><span class="formation">起点 ○ → 100m｜→ 终点\n      ▲计时   ▲计时</span>`,'学练二','g'),
+        row(8,4,'“200米＋200米”节奏跑',['第一段控制速度','间歇60—90秒慢走','第二段保持步频并积极摆臂','比较两段时间差'],`说明短间歇用于模拟后程疲劳；根据前两次练习确定个人提示语；第二段末80米重点观察躯干、摆臂和步频。`,'第一段保留余力；间歇时不坐地；第二段执行提示语；完成后用RPE 1—10级评分','200米＋200米×1—2组','两人搭档计时与观察',`动作明显变形者只完成1组；同组出发间隔5秒。<br><span class="formation">200m → 慢走恢复 → 200m\n ○　　　　　　　　　○</span>`,'学练三','g'),
+        row(5,2,'核心与呼吸课课练',['死虫式8次/侧','平板支撑25秒','站姿摆臂30秒','走动中两步一吸、两步一呼'],`示范躯干稳定和自然呼吸；避免憋气；根据主练习负荷只完成1轮。`,'按站完成，动作慢而准确；同伴提醒呼吸；结束后报告RPE','4站×1轮','分站循环',`不做力竭练习，组间走动恢复。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'速度耐力',type:'提高课',desc:'在合理配速基础上提高疲劳状态下维持速度和动作的能力',key:'快速跑中保持放松摆臂、稳定步频和完整动作',diff:'控制组间恢复，在疲劳出现后仍能保持技术',goals:[
+      '<b>运动能力：</b>85%以上学生能按80%—90%的个人速度完成120米、200米重复跑，后一次动作质量和时间不出现明显失控。',
+      '<b>健康行为：</b>学会依据呼吸恢复、RPE和动作质量决定是否参加下一组，掌握慢走、补水和拉伸等恢复方法。',
+      '<b>体育品德：</b>在较高负荷练习中坚持完成适宜任务，既敢于挑战又不逞强，主动关心和提醒同伴安全。'],
+      prep:['高抬腿跑2×20米','车轮跑2×30米','渐进加速跑3×60米'],equipment:'标志桶16个、口哨1个、秒表4块、分层任务卡',safety:'本课负荷较高，必须按基础组、提高组分层；组间未恢复到能完整说短句者延长间歇或减量。',stat:{avg:142,max:178,dens:48,all:82,strength:'较大'},rows:[
+        row(7,3,'快速跑技术保持',['60米放松加速跑2次','120米快速跑3次','观察摆臂、躯干和着地位置'],`强调“快而不紧”：肩颈放松、肘角稳定、脚在重心附近着地；每次只反馈一个主要问题。`,'按80%—85%速度完成；后程保持摆臂节奏；同伴记录是否耸肩、后仰或跨步过大','60米×2；120米×3','4人一组分道',`前组通过终点后下一组再出发；终点设置缓冲区。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(10,4,'200米重复跑',['基础组：200米×2','提高组：200米×3','组间慢走3—4分钟','记录每次时间与RPE'],`按能力给出不同次数，不规定全班统一目标秒数；在后100米观察技术变化；时间下降明显或RPE达到9者停止追加。`,'选择适合组别；前100米控制，后100米保持；跑后慢走并主动报告身体感受','200米×2—3','基础组与提高组分区',`不得临时跨组加量；计时员站跑道外侧。<br><span class="formation">基础组：○○○　提高组：○○○\n             ▲</span>`,'学练二','g'),
+        row(8,4,'疲劳下的末段保持',['120米×2，前60米中速、后60米加速','200米＋120米组合跑1组','最后40米用积极摆臂维持步频'],`用哨音提示变速点；示范疲劳时常见的后仰、跨大步和摆臂变小；提示“身体立—手臂快—脚下轻”。`,'听信号变速，不突然冲刺；在最后40米执行个人提示语；完成后互评动作而非只看名次','120米×2；200米＋120米×1','两人一组搭档反馈',`组合跑间歇2分钟；出现动作失控立即减速退出。<br><span class="formation">○ → 中速60m｜加速60m →\n        ▲（变速点）</span>`,'学练三','g'),
+        row(5,2,'恢复性力量课课练',['靠墙静蹲20—30秒','提踵15次','臀桥12次','小腿和股四头肌动态放松'],`控制为恢复性负荷；提示膝盖与脚尖方向一致、呼吸自然；主练习已达上限者只做放松。`,'选择基础量完成；不憋气；相互观察动作并及时减量','3项×1轮','分组原地练习',`不做到力竭，动作不稳立即停止。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'完整节奏与模拟',type:'复习巩固课',desc:'整合起跑、弯道、配速和终点跑，形成个人400米方案',key:'起跑积极不过猛，中段稳定，最后100米保持摆臂',diff:'把书面分段计划转化为稳定的实际节奏',goals:[
+      '<b>运动能力：</b>90%以上学生能在300米模拟跑中综合运用起跑、弯道和途中跑技术，实际分段与个人计划基本一致。',
+      '<b>健康行为：</b>能独立完成专项热身、检查鞋带和跑道，依据模拟结果调整测试计划并采用主动恢复。',
+      '<b>体育品德：</b>在模拟与互评中认真履行岗位职责，用进步幅度和技术表现评价同伴，不以单一成绩贴标签。'],
+      prep:['站立式起跑2×20米','弯道渐进跑2×80米','节奏跑2×100米'],equipment:'标志桶12个、分段标志4组、口哨1个、秒表4—6块、个人配速卡',safety:'模拟跑前再次确认身体状态；同组人数控制在6—8人，终点后继续前行，不在跑道内停留或折返。',stat:{avg:140,max:176,dens:45,all:79,strength:'中等偏上'},rows:[
+        row(6,2,'技术串联复习',['站立式起跑接弯道跑2×80米','直道—弯道衔接2×100米','说出个人三个技术提示词'],`快速检查脚位、内倾、摆臂和出弯衔接；用提问让学生自己归纳，不再逐项长讲。`,'两人一组完成并互相提示；选择最需要保持的三个动作要点','80米×2；100米×2','4人小组分道练习',`技术复习速度控制在75%以内，为模拟跑保留体力。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(12,4,'300米分段模拟跑',['填写100米、200米、300米目标时间','按计划完成300米1次','记录三段时间和RPE','慢走恢复4—5分钟'],`根据诊断数据帮助学生制定现实目标；在100米、200米、300米处分别报时；观察速度曲线和动作变化，避免全班统一配速。`,'执行个人计划；听到分段时间后微调而非突然变速；未跑学生完成计时、记录、终点引导','300米×1','按目标成绩分组错时出发',`计时点人员站外侧；终点后进入恢复区慢走。<br><span class="formation">起点 ○ →100m｜→200m｜→300m\n      ▲      ▲      ▲</span>`,'学练二','g'),
+        row(7,4,'终点跑与计划修订',['120米跑2次：前80米保持、后40米积极摆臂','练习跑过终点再减速','根据300米模拟修订测试计划'],`示范“保持身体姿态—加快摆臂—跑过终点”；纠正提前减速、上体后仰和突然冲线；逐人给出一个测试策略建议。`,'后40米用摆臂带动步频；越过终点后逐步减速；把策略写入个人卡','120米×2，间歇2分钟','同能力两人结伴',`禁止跳步、探身或突然停下；终点后保持本跑道。<br><span class="formation">○ → 保持80m｜积极40m → 减速区\n             ▲终点</span>`,'学练三','g'),
+        row(5,2,'赛前激活与恢复练习',['弹力式提踵12次','快速摆臂15秒×2','髋部动态活动','走动中呼吸放松'],`说明测试前一天和当天不宜额外大负荷；本环节以激活和恢复为主。`,'控制动作幅度和次数；完成后说出个人测试前准备清单','4项×1轮','原地分散练习',`不增加负重，不做力竭；保持身体温度。<br><span class="formation">${formation.warm}</span>`,'课课练（体能）','o')]
+    },
+    {name:'单元展示与评价',type:'考核课',desc:'完成400米单元展示，综合评价技术、配速、进步与合作',key:'执行个人配速计划，完整运用起跑、弯道、途中跑和终点跑技术',diff:'最后100米保持动作和意志品质，同时遵守安全规则',goals:[
+      '<b>运动能力：</b>学生能依据个人计划安全完成400米，综合展示站立式起跑、弯道跑、途中节奏和终点跑技术。',
+      '<b>健康行为：</b>能独立完成热身和跑后恢复，正确记录成绩、分段与RPE，理解成绩应结合个体基础和进步评价。',
+      '<b>体育品德：</b>遵守考核程序，诚信计时记录，主动为同伴服务和鼓励，正确面对个人结果。'],
+      prep:['个人专项热身：小步跑、高抬腿、加速跑','站立式起跑2×30米','按个人需要完成1次80米节奏跑'],equipment:'标志桶16个、口哨1个、秒表4—6块、成绩记录表、技术评价表、急救包',safety:'考核前完成健康询问和鞋带检查；不适合参加测试者采用过程性评价或延期测试；每人只进行1次高强度完整跑。',stat:{avg:144,max:180,dens:40,all:73,strength:'较大'},rows:[
+        row(5,2,'考核流程与技术复习',['明确分组、发令、计时和停止信号','站立式起跑2×30米','复习弯道内倾和终点减速'],`公布“技术30%＋配速25%＋个人进步25%＋规则合作20%”评价维度；检查学生准备状态；用简短口令完成复习。`,'确认个人组次和岗位；完成两次起跑；向教师报告身体状态','起跑2×30米','分组在检录区等待',`等待区、测试区、恢复区分开；听到停止信号立即退出。<br><span class="formation">检录区 ○○○｜测试跑道 →｜恢复区 ○○</span>`,'学练一'),
+        row(15,4,'400米单元测试',['按能力每组6—8人','执行个人分段计划','记录总成绩和关键分段','跑后慢走3—5分钟'],`逐组检录并确认计时员；发令前检查跑道；在200米处报时，在终点记录；同时评价起跑、弯道、节奏和终点跑。`,'按规则完成测试，不抢道、不推挤；跑过终点再减速；未测试学生认真履行岗位','400米×1','按能力分组、同组分道或错时出发',`终点后不躺卧、不立即坐下；身体异常立即报告。<br><span class="formation">${formation.lanes}</span>`,'学练二','g'),
+        row(5,2,'四维评价与反馈',['核对成绩和分段记录','完成技术、配速、进步、合作评价','写出一个优点和一个改进点'],`组织学生依据证据评价，避免只按成绩排序；对进步明显、规则意识强和服务认真的学生具体表扬。`,'诚信核对记录；先自评再互评；用完整句表达建议','评价表1份/人','小组围坐或站立交流',`不嘲笑、不比较身体差异；保护个人健康信息。<br><span class="formation">○ ○ ○　　○ ○ ○\n   ▲　　　　▲</span>`,'学练三','g'),
+        row(5,1,'主动恢复与补偿练习',['慢走2分钟','小腿、股四头肌、腘绳肌静态拉伸','深呼吸和补水提示','见习生完成技术口述评价'],`领做由走到拉伸的恢复；观察面色和呼吸；提醒少量多次补水；记录需要后续关注的学生。`,'不立即坐卧；每个部位拉伸15—20秒；主动反馈身体感受','放松1遍','恢复区成圆形',`拉伸不弹振、不屏气；恢复后再离开场地。<br><span class="formation">${formation.circle}</span>`,'课课练（恢复）','o')]
+    }
+  ],
+  '800':[
+    {name:'呼吸节奏与耐力诊断',type:'新授课',desc:'建立800米跑姿、呼吸节奏和有氧耐力的初步认识',key:'上体正直放松，以自然呼吸为主并保持稳定节奏',diff:'在呼吸加快后仍能保持跑姿和可控速度',goals:[
+      '<b>运动能力：</b>80%以上学生能在中等速度跑中保持上体放松、前后摆臂和稳定步频，尝试采用有节奏的呼吸完成800米诊断跑。',
+      '<b>健康行为：</b>学会使用谈话测试和RPE判断强度，理解长距离跑应从可控速度开始，跑后主动慢走恢复。',
+      '<b>体育品德：</b>尊重个体耐力差异，不嘲笑落后同伴；认真承担领跑、计时和观察岗位，互相鼓励完成任务。'],
+      prep:['小步跑、高抬腿各2×20米','跑动中呼吸节奏练习3×60米','渐进跑2×80米'],equipment:'标志桶12个、口哨1个、秒表4块、RPE记录卡',safety:'诊断跑以了解基础为目的，不要求全力；出现胸闷、眩晕、恶心或步态失控立即停止。',stat:{avg:134,max:172,dens:43,all:76,strength:'中等'},rows:[
+        row(7,2,'途中跑姿与呼吸',['原地摆臂与呼吸配合2×30秒','100米放松跑4次','尝试“两步一吸、两步一呼”或自然节奏'],`示范上体正直、肩颈放松、肘关节自然弯曲；说明呼吸节奏可个体化，不强制统一；纠正耸肩、憋气和脚步过重。`,'观察示范后结伴练习；以能说短句为可控标准；选择适合自己的呼吸方式','100米×4','两人一组分道练习',`前后间隔15米，保持直线跑进。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(8,3,'定时跑与谈话测试',['连续跑4分钟','第2分钟进行简短谈话测试','记录圈数、RPE和呼吸状态'],`按能力设置内外两条路线；提醒前1分钟控制；巡回询问是否能说完整短句，并根据面色、呼吸调整速度。`,'以稳定速度连续跑；能说短句但不轻松为适宜；结束后慢走并记录感受','4分钟×1','能力分组同向循环跑',`不得突然停下或逆向返回；超越从外侧完成。<br><span class="formation">○ → → → ○\n↑    ▲    ↓\n○ ← ← ← ○</span>`,'学练二','g'),
+        row(10,4,'800米诊断跑',['制定“前200米控制—中段稳定—末段坚持”计划','分组完成800米1次','记录总时间、400米分段和RPE'],`强调诊断不排名；按能力分组错时出发；在400米处报时，观察前后半程差异、跑姿和呼吸。`,'执行个人计划，不盲目跟跑；未跑学生计时与观察；跑后继续慢走3—5分钟','800米×1','每组8—12人，分批进行',`超越前观察，外侧完成后保持安全距离再回到内侧；终点后不坐卧。<br><span class="formation">${formation.lanes}</span>`,'学练三','g'),
+        row(5,2,'核心稳定课课练',['平板支撑20—30秒','臀桥12次','鸟狗式8次/侧','走动中深呼吸'],`控制为中低负荷，示范躯干稳定和自然呼吸；诊断跑恢复不足者只做呼吸与拉伸。`,'按个人状态选择基础量；相互观察动作；完成后报告RPE','3项×1轮','分组分站',`不憋气、不做到力竭。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'站立式起跑与安全超越',type:'新授课',desc:'学习800米起跑、并道和途中安全超越的方法',key:'起跑积极而可控，保持跑进路线，超越前观察',diff:'多人跑进中合理选择超越时机并保持安全距离',goals:[
+      '<b>运动能力：</b>80%以上学生能完成800米站立式起跑和起跑后过渡，掌握“观察—示意—外侧超越—保持距离再回线”的方法。',
+      '<b>健康行为：</b>能识别推挤、突然变线、踩踏和内侧强行超越等风险，主动保持前后安全距离。',
+      '<b>体育品德：</b>遵守跑进秩序，超越时尊重同伴，不阻挡、不推搡；在情境练习中相互提醒。'],
+      prep:['站立式起跑徒手练习3次','小步跑、高抬腿各2×20米','渐进跑2×60米'],equipment:'标志桶20个、起跑线、并道标志、口哨1个、号码背心若干',safety:'多人练习控制每组人数和出发间隔；禁止突然横切、推挤、踩脚跟和从内侧狭窄区域强行超越。',stat:{avg:136,max:174,dens:45,all:78,strength:'中等偏上'},rows:[
+        row(7,2,'站立式起跑与过渡',['前后脚开立、身体前倾','听信号起跑4×30米','起跑后50米逐渐进入个人节奏'],`示范“积极启动但不全力冲刺”；在30米处提示抬高重心、放松肩颈；纠正抢跑和第一步跨得过大。`,'按口令起跑；前10步积极，随后平稳过渡；同伴观察是否过早冲刺','30米×4；50米×2','4人一组错时出发',`口令发出前保持稳定；前组通过标志点后下一组出发。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(9,3,'并道与保持距离',['4道起跑后跑至并道线','按速度顺序逐步靠近内侧','保持前后2—3米距离','4×80米情境练习'],`用标志桶设置并道线；示范先观察再靠线，禁止斜插；安排不同速度角色，逐次增加情境难度。`,'听信号起跑，到并道线后观察；不抢位、不碰撞；完成后说出一次安全或危险行为','80米×4','每组6—8人，分道起跑后并道',`并道线前不离开本跑道；发生拥挤时宁可减速。<br><span class="formation">1道 ○↘\n2道 ○ → 内侧跑线\n3道 ○↗　　 ▲</span>`,'学练二','g'),
+        row(9,4,'安全超越情境跑',['两人一组前后跑','后者观察后从外侧超越','保持1—2个身位后再回到原路线','300米情境跑2次'],`分解“观察—口头示意—外侧通过—保持距离—回线”；设置错误示例让学生辨别；巡回制止突然变线。`,'轮换领跑与超越角色；超越时给出简短提示；前者保持路线不故意阻挡','300米×2，间歇3分钟','两人一组，组间错时',`同一时段超越人数不宜过多；始终同向跑进。<br><span class="formation">内侧 ○ → →\n外侧   ○ ↗ → ↘\n       ▲观察</span>`,'学练三','g'),
+        row(5,3,'反应与灵敏课课练',['听哨向前小步跑15秒','左右侧移15秒','5米折返2次','原地快速摆臂20秒'],`强调动作受控、转向前降低重心；根据主练习负荷控制为1—2轮。`,'按信号启动和停止；动作先准确后加快；相互保持距离','4项×1—2轮','四组分区',`相邻学生间隔2米，严禁急停碰撞。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'均匀配速',type:'复习巩固课',desc:'利用分段时间、呼吸和RPE建立相对均匀的800米节奏',key:'前程控制、中段维持，前后400米节奏相对稳定',diff:'不被同伴速度带乱，能依据反馈微调而不突然变速',goals:[
+      '<b>运动能力：</b>85%以上学生能依据诊断成绩制定个人400米分段目标，在400米和200米重复跑中保持相对稳定节奏。',
+      '<b>健康行为：</b>能综合分段时间、谈话测试、呼吸和RPE判断强度，理解配速应建立在个人能力基础上。',
+      '<b>体育品德：</b>按个人计划诚信练习，不盲从、不起哄；计时记录准确，小组合作分析数据。'],
+      prep:['呼吸节奏跑3×60米','放松大步跑2×80米','按哨音匀速跑2×100米'],equipment:'标志桶12个、200米和400米标志、秒表4—6块、配速卡',safety:'计时点和等待区设在跑道外侧；不因追求分段时间而突然冲刺或跨道。',stat:{avg:140,max:176,dens:47,all:80,strength:'中等偏上'},rows:[
+        row(7,2,'个人配速计划',['分析诊断跑前后400米差值','制定本课400米目标区间','4×100米节奏跑校准速度'],`用前后半程差值说明均匀配速；指导学生设“目标区间”而非单一秒数；100米后即时反馈偏快、合适或偏慢。`,'填写个人配速卡；按同一感觉完成4次100米；比较实际时间并调整','100米×4，间歇60秒','目标相近学生同组',`同组错时2—3秒出发，避免互相追逐。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(10,3,'400米配速跑',['按目标完成400米2次','记录200米和400米分段','比较两次时间与RPE','组间慢走3—4分钟'],`在200米和终点报时；重点提示第一圈（段）控制和最后100米保持；恢复不足者只完成1次或降低速度。`,'执行目标区间；听报时后小幅调整；跑后慢走、补水并记录','400米×2，间歇3—4分钟','按目标速度分层错时出发',`不抢内道、不突然减速；等待者在恢复区活动。<br><span class="formation">起点 ○ →200m｜→400m\n      ▲      ▲</span>`,'学练二','g'),
+        row(8,4,'200米节奏巩固',['200米×2—3','尝试每次时间差控制在合理范围','最后50米保持动作，不全力冲刺'],`根据前一环节结果分配次数；用口令提示肩颈放松、步频稳定；关注时间下降和动作质量。`,'按计划次数完成；每次后自报RPE；同伴记录时间并评价动作','200米×2—3，间歇2分钟','两人搭档轮换',`时间明显下降或RPE过高时停止追加。<br><span class="formation">${formation.lanes}</span>`,'学练三','g'),
+        row(5,2,'下肢耐力课课练',['提踵15次','徒手半蹲12次','弓步交换8次/侧','平板支撑25秒'],`示范膝脚同向和躯干稳定；控制节奏，避免快速堆数量。`,'按基础量完成1轮；互相观察；呼吸自然不憋气','4项×1轮','分组分站',`主练习疲劳明显者改做拉伸和慢走。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'间歇跑与速度耐力',type:'提高课',desc:'通过200米、300米间歇跑提高维持速度和恢复调节能力',key:'按规定强度完成重复跑，间歇期间主动恢复',diff:'疲劳后保持跑姿，并根据恢复情况选择适宜次数',goals:[
+      '<b>运动能力：</b>85%以上学生能按个人能力完成200米、300米间歇跑，重复之间速度相对稳定，疲劳后仍保持上体、摆臂和步频。',
+      '<b>健康行为：</b>掌握“跑—慢走—呼吸检查—再出发”的间歇流程，能根据RPE和动作质量主动减量。',
+      '<b>体育品德：</b>在较大负荷下坚持适宜任务，不逞强、不代跑，主动关心同伴并配合教师调控。'],
+      prep:['高抬腿跑2×20米','车轮跑2×30米','渐进加速跑3×60米'],equipment:'标志桶16个、口哨1个、秒表6块、分层任务卡',safety:'实行基础组和提高组分层；未恢复到能完整说短句、步态不稳或RPE达到9者不得继续下一组。',stat:{avg:144,max:180,dens:49,all:82,strength:'较大'},rows:[
+        row(6,3,'间歇跑节奏准备',['150米节奏跑3次','前100米稳定、后50米保持','记录每次RPE'],`说明本课重点是重复稳定而非单次最快；示范主动恢复流程；帮助学生选择基础组或提高组。`,'按80%左右速度完成；跑后慢走，不坐地；确认自己所属组别','150米×3，间歇90秒','能力分层分道',`不得因第一组感觉轻松而突然加速。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(12,4,'200米间歇跑',['基础组：200米×3','提高组：200米×4','间歇90秒慢走','记录时间、RPE和动作'],`逐组发令并报时；观察后50米动作；相邻两次时间差过大、动作失控或身体异常者停止追加。`,'按组别完成，不跨组加量；间歇慢走和调整呼吸；同伴记录三项信息','200米×3—4，间歇90秒','基础组、提高组分区',`前组出弯后后组出发；计时员站外侧。<br><span class="formation">基础组 ○○○　提高组 ○○○\n              ▲</span>`,'学练二','g'),
+        row(7,4,'300米速度耐力',['300米×1—2','前200米保持目标节奏','后100米用摆臂维持步频','组间恢复4分钟'],`根据200米完成情况决定300米次数；在200米处提示“肩松、手快、脚轻”；第二次仅对恢复充分者开放。`,'执行个人节奏；不与相邻组竞速；完成后慢走并主动报告身体感受','300米×1—2，间歇4分钟','每组6—8人错时出发',`动作明显变形者只完成1次；终点后进入恢复区。<br><span class="formation">起点 ○ →200m｜保持100m →\n      ▲      ▲</span>`,'学练三','g'),
+        row(5,2,'核心与恢复课课练',['鸟狗式8次/侧','臀桥12次','小腿拉伸20秒/侧','走动中深呼吸'],`以恢复和躯干稳定为主；不再追加跳跃或冲刺类负荷。`,'选择适合动作完成；互相提醒呼吸和姿态','3项×1轮','恢复区分散练习',`不做到力竭，身体不适只慢走和观察。<br><span class="formation">${formation.groups}</span>`,'课课练（体能）','o')]
+    },
+    {name:'600米模拟与终点跑',type:'复习巩固课',desc:'整合配速、超越和终点跑，形成个人800米测试方案',key:'前段控制、中段维持，最后200米依据余力逐步加速',diff:'600米模拟中保持配速，并作出合理的末段策略判断',goals:[
+      '<b>运动能力：</b>90%以上学生能在600米模拟跑中执行个人分段计划，保持跑姿与呼吸，并掌握最后100—200米逐步加速方法。',
+      '<b>健康行为：</b>能独立完成专项热身，利用600米分段、RPE和恢复情况修订800米方案。',
+      '<b>体育品德：</b>在模拟与互评中尊重差异，真实记录，用技术、配速和进步评价同伴。'],
+      prep:['站立式起跑2×30米','节奏跑2×100米','终点加速跑2×60米'],equipment:'标志桶12个、200米分段标志、口哨1个、秒表4—6块、策略卡',safety:'600米模拟只完成1次；跑后必须慢走恢复，禁止立即坐卧；终点加速以动作稳定为前提。',stat:{avg:142,max:178,dens:46,all:80,strength:'中等偏上'},rows:[
+        row(6,2,'技术与策略复习',['站立式起跑接100米节奏跑2次','安全超越口述与慢速演练','写出个人200米、400米、600米目标'],`通过提问复习起跑、超越和均匀配速；检查目标是否符合前课数据；让学生说出末段加速条件。`,'两人互查策略卡；完成慢速超越演练；用三个词概括个人方案','100米×2','两人搭档、分道练习',`复习速度不超过75%，为模拟跑保留体力。<br><span class="formation">${formation.lanes}</span>`,'学练一'),
+        row(13,4,'600米分段模拟跑',['按个人计划完成600米1次','记录200米、400米、600米分段','观察是否前快后慢','跑后记录RPE和恢复时间'],`按目标分组错时出发；三个分段点报时；重点观察400—600米跑姿与节奏；跑后帮助学生解释分段差异。`,'不盲目跟跑；听到报时只小幅调整；未跑学生完成计时、记录和终点引导','600米×1','每组8—10人，按能力分组',`超越从外侧完成；终点后慢走3—5分钟。<br><span class="formation">起点 ○ →200｜→400｜→600\n      ▲    ▲    ▲</span>`,'学练二','g'),
+        row(6,4,'终点跑技术',['100米终点跑3次','前60米保持、后40米逐步加速','跑过终点后再减速','修订800米末段策略'],`示范逐渐加快摆臂而非突然跨大步；纠正过早冲刺、身体后仰和到线即停；依据600米余力给出个别建议。`,'按个人策略完成；最后40米保持上体和步频；写出800米开始加速的条件','100米×3，间歇90秒','两人一组轮换观察',`不得跳步冲线；跑过终点后沿原路线减速。<br><span class="formation">○ → 保持60m｜加速40m → 减速区\n            ▲终点</span>`,'学练三','g'),
+        row(5,2,'赛前激活与放松',['快速摆臂15秒×2','弹力提踵12次','髋、膝、踝动态活动','走动中呼吸恢复'],`说明测试前不再安排大运动量；指导学生形成热身清单。`,'控制次数，不做到疲劳；完成后复述测试日准备与恢复步骤','4项×1轮','体操队形散开',`保持身体温度，避免静坐过久。<br><span class="formation">${formation.warm}</span>`,'课课练（体能）','o')]
+    },
+    {name:'单元展示与评价',type:'考核课',desc:'完成800米单元展示，综合评价技术、配速、进步与合作',key:'执行个人配速方案，安全、完整地跑完全程',diff:'最后200米根据余力加速并保持跑姿和规则意识',goals:[
+      '<b>运动能力：</b>学生能依据个人方案安全完成800米，综合运用站立式起跑、途中跑、均匀配速、安全超越和终点跑。',
+      '<b>健康行为：</b>能独立完成热身与跑后恢复，正确记录分段、总成绩和RPE，理解个体基础与进步评价。',
+      '<b>体育品德：</b>遵守考核程序和跑进规则，诚信计时记录，主动服务同伴，正确面对个人结果。'],
+      prep:['个人专项热身：跑的专门性练习','站立式起跑2×30米','按个人需要完成1次100米节奏跑'],equipment:'标志桶16个、口哨1个、秒表4—6块、号码背心、成绩记录表、技术评价表、急救包',safety:'考核前完成健康询问，伤病或身体不适者采用过程性评价或延期；每人只进行1次高强度800米。',stat:{avg:146,max:182,dens:41,all:74,strength:'较大'},rows:[
+        row(5,2,'考核流程与准备检查',['明确检录、起跑、超越、计时和停止信号','站立式起跑2×30米','核对个人配速与岗位'],`公布“技术25%＋配速30%＋个人进步25%＋规则合作20%”评价维度；检查鞋带、服装和身体状态；确认计时分工。`,'确认组次和岗位；向教师报告身体状态；完成短距离起跑但不全力','起跑2×30米','检录区分组等待',`测试区、等待区、恢复区分开；服从统一信号。<br><span class="formation">检录区 ○○○｜测试跑道 →｜恢复区 ○○</span>`,'学练一'),
+        row(15,4,'800米单元测试',['每组8—12人按能力编组','执行个人200米分段方案','记录400米分段和总成绩','跑后慢走3—5分钟'],`逐组检录发令；在400米处报时，终点记录；观察起跑、跑姿、配速、超越和终点跑；发现异常立即启动停止信号。`,'不推挤、不突然变线；超越从外侧完成；跑过终点后减速；未测试学生认真计时观察','800米×1','按能力分组错时或集体出发',`前后保持安全距离；终点后不坐卧。<br><span class="formation">${formation.lanes}</span>`,'学练二','g'),
+        row(5,2,'数据核对与四维评价',['核对400米分段和总成绩','完成技术、配速、进步、合作评价','写出一项进步和一项后续目标'],`引导学生用数据与观察证据评价；避免只看名次；对坚持、诚信、服务与进步进行具体表扬。`,'先自评再互评；如实核对；用友善语言提出建议','评价表1份/人','小组交流',`尊重身体和能力差异，不公开议论健康信息。<br><span class="formation">○ ○ ○　　○ ○ ○\n   ▲　　　　▲</span>`,'学练三','g'),
+        row(5,1,'主动恢复与整理',['慢走2分钟','小腿、股四头肌、腘绳肌拉伸','深呼吸、少量补水','见习生完成口述技术评价'],`领做放松并继续观察恢复；提醒少量多次补水；对恢复较慢学生延长观察时间。`,'不立即坐卧；每个动作15—20秒；主动反馈身体感受并协助整理场地','放松1遍','恢复区成圆形',`拉伸不弹振、不憋气；确认恢复后再离开。<br><span class="formation">${formation.circle}</span>`,'课课练（恢复）','o')]
+    }
+  ]
 };
-const safety=['课前询问伤病、哮喘、心血管问题和当日身体状态；不适者降级、见习或按规定免测。','练习区、等待区、观察区和返回路线分开；不得突然变道、推挤或横穿跑道。','出现胸痛、眩晕、异常呼吸、面色苍白或动作失控时立即停止并按学校应急程序处理。','测试后继续慢走和放松；高温、空气质量不佳或场地湿滑时调整内容。'];
-let eventKey=location.hash==='#800'?'800':'400',selected=0;
-const $=s=>document.querySelector(s), esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-function hero(P,title,sub,badge){return `<header class="hero"><div><small>PHYSICAL EDUCATION</small><h2>${esc(title)}</h2><p>${esc(sub)}</p></div><div class="badge"><b>${badge}</b><span>${badge==='6'?'课时':'分钟'}</span></div></header>`}
-function unitHtml(P){return hero(P,P.title,'每周3课时 · 每课45分钟 · 共6课时','6')+`<div class="body"><span class="eyebrow">UNIT GOALS</span><h3>单元学习目标</h3><ol class="goals">${P.goals.map(x=>`<li>${esc(x)}</li>`).join('')}</ol><div class="keygrid"><div><b>教学重点</b><p>${esc(P.key)}</p></div><div><b>教学难点</b><p>${esc(P.diff)}</p></div></div><span class="eyebrow">SCHEDULE</span><h3>课时进度</h3><div class="schedule">${P.lessons.map((x,i)=>`<div class="srow"><em>${String(i+1).padStart(2,'0')}</em><span>第${Math.floor(i/3)+1}周 · 第${i%3+1}节</span><b>${esc(x.t)}</b></div>`).join('')}</div><div class="evalgrid"><div><b>评价建议</b><ul><li>运动技术30%</li><li>配速或节奏25%</li><li>完成表现与个人进步25%</li><li>态度、安全与合作20%</li></ul></div><div class="safe"><b>安全要求</b><ul>${safety.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div><p class="source">课程目标依据《义务教育体育与健康课程标准（2022年版）》的运动能力、健康行为和体育品德三个方面组织；使用前须结合本班学情、天气和场地复核。</p></div>`}
-function lines(a){return a.map((x,i)=>`<p>${i+1}. ${esc(x)}</p>`).join('')}
-function lessonHtml(P,L,i,standalone=false){const stages=[COMMON.start,COMMON.prep,{name:'基本部分',min:25,c:L.c,t:L.tch,s:L.stu,o:L.org+' 次数：'+L.dose},COMMON.end];return `<section class="${standalone?'lesson-page paper':''}">${hero(P,`${i+1}. ${L.t}`,`第${Math.floor(i/3)+1}周 · 第${i%3+1}节 · 45分钟 · ${L.type}`,'45')}<div class="body"><table class="meta"><tr><th>学科</th><td>体育与健康</td><th>年级</th><td>七年级</td><th>课型</th><td>${esc(L.type)}</td></tr><tr><th>课题</th><td colspan="5">${esc((eventKey==='400'?'400米跑——':'800米跑——')+L.t)}</td></tr></table><div class="objectives"><b>学习目标</b><ol>${L.obj.map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div><div class="keygrid"><div><b>教学重点</b><p>${esc(L.key)}</p></div><div><b>教学难点</b><p>${esc(L.diff)}</p></div></div><div class="tablewrap"><table class="lesson"><thead><tr><th>过程</th><th>时间</th><th>教学内容</th><th>教师活动</th><th>学生活动</th><th>组织及要求</th></tr></thead><tbody>${stages.map(x=>`<tr><th>${x.name}</th><td>${x.min}′</td><td>${lines(x.c)}</td><td>${lines(x.t)}</td><td>${lines(x.s)}</td><td>${esc(x.o)}</td></tr>`).join('')}</tbody></table></div><div class="footgrid"><div><b>预计负荷</b><p>${esc(L.load)}</p></div><div><b>场地器材</b><p>田径场、标志桶8—12个、口哨1个、秒表1—2块、记录表。</p></div><div><b>安全提示</b><p>${esc(safety.join(' '))}</p></div><div><b>教学反思</b><p>课后根据目标达成、练习密度、安全组织及学生个体差异进行记录。</p></div></div></div></section>`}
-function render(){const P=PLANS[eventKey];document.querySelectorAll('.switch button').forEach(b=>b.classList.toggle('on',b.dataset.event===eventKey));$('#lessonNav').innerHTML=`<button data-i="0">单元总览</button>`+P.lessons.map((x,i)=>`<button data-i="${i+1}">${i+1}. ${esc(x.t)}</button>`).join('');document.querySelectorAll('#lessonNav button').forEach(b=>b.classList.toggle('on',+b.dataset.i===selected));$('#screen').innerHTML=selected===0?unitHtml(P):lessonHtml(P,P.lessons[selected-1],selected-1);location.hash=eventKey;}
-document.querySelectorAll('.switch button').forEach(b=>b.onclick=()=>{eventKey=b.dataset.event;selected=0;render()});$('#lessonNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;selected=+b.dataset.i;render();scrollTo({top:0,behavior:'smooth'})};
-$('#printOne').onclick=()=>print();$('#printAll').onclick=()=>{const P=PLANS[eventKey];$('#printAllDoc').innerHTML=`<section class="lesson-page paper">${unitHtml(P)}</section>`+P.lessons.map((L,i)=>lessonHtml(P,L,i,true)).join('');document.body.classList.add('print-all');setTimeout(()=>print(),60)};onafterprint=()=>document.body.classList.remove('print-all');
-function exportWord(){const P=PLANS[eventKey],body=`<h1 style="text-align:center">${esc(P.title)}</h1>${unitHtml(P)}${P.lessons.map((L,i)=>lessonHtml(P,L,i,true)).join('')}`,css=`body{font-family:'Microsoft YaHei',SimSun;font-size:10pt;line-height:1.5}table{width:100%;border-collapse:collapse;margin:8pt 0}th,td{border:1px solid #333;padding:4pt;vertical-align:top}th{background:#edf3ef}h1,h2{text-align:center}.hero{border:1px solid #333;padding:8pt}.badge{display:none}.body{padding:5pt}.lesson-page{page-break-after:always}.keygrid,.footgrid{display:table;width:100%}.keygrid>div,.footgrid>div{border:1px solid #999;padding:5pt;margin:3pt}p{margin:2pt 0}`;const html=`<html><head><meta charset="utf-8"><style>${css}</style></head><body>${body}</body></html>`,blob=new Blob(['\ufeff'+html],{type:'application/msword;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=P.title+'.doc';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1200)}
-$('#wordAll').onclick=exportWord;render();
+
+function startRow(){return {p:'开始部分',m:3,i:1,c:['体育委员集合整队，检查人数与服装','师生问好，宣布本课内容、目标和要求','安排见习生参与计时、记录或观察','询问身体状况，强调跑道与停止信号'],t:'教师提前检查跑道、终点缓冲区和器材；用哨音集合，要求“快、静、齐”；检查鞋带、服装及随身硬物；明确身体不适报告方式。',s:'体育委员整队报数；学生认真听讲，明确学习任务和安全规则；见习生领取岗位卡。',x:'1次',f:'四列横队',r:`集合迅速、精神饱满；学生间隔适当。<br><span class="formation">${formation.gather}</span>`};}
+function prepRow(plan,eventKey){return {p:'准备部分',m:8,i:2,c:[eventKey==='400'?'绕田径场慢跑2圈，逐渐提高体温':'绕田径场慢跑2圈，保持可交谈速度','徒手操：头颈、肩、腰髋、膝、踝动态活动4×8拍'].concat(plan.prep),t:'教师领跑并控制节奏；镜面示范徒手操，提示动作幅度由小到大；巡回纠正跑的专门性练习，重点激活踝、膝、髋和肩带。',s:'跟随慢跑，保持队形；按节拍完成徒手操；专项练习动作到位，逐步提高速度并体会与本课重点的联系。',x:'徒手操4×8拍；专项练习按规定次数',f:'一路纵队慢跑→体操队形→分道练习',r:`充分活动各关节，不做剧烈弹振；前后保持安全距离。<br><span class="formation">${formation.warm}</span>`};}
+function endRow(){return {p:'结束部分',m:4,i:1,c:['集合整队，慢走与深呼吸','静态拉伸：小腿、股四头肌、腘绳肌、髋部，每个动作15—20秒','课堂小结：回顾技术重点、负荷感受和规则表现','布置课后任务：低强度自主跑与本课技术复习','收还器材，师生再见'],t:'教师领做放松，语调舒缓；询问RPE和身体反应；结合具体表现评价进步与问题；说明课后只做适量巩固，不追加高强度。',s:'跟做慢走和拉伸，主动反馈身体感受；完成自评；协助清点器材并恢复场地。',x:'放松1遍',f:'成圆形或四列横队',r:`放松充分，不做弹振式拉伸；器材清点归位。<br><span class="formation">${formation.circle}</span>`};}
+function rowsFor(plan,eventKey){const basic=plan.rows.map((r,i)=>({...r,p:i===0?'基本部分':''}));return [startRow(),prepRow(plan,eventKey),...basic,endRow()];}
+function list(items){return `<ul class="pl">${items.map(x=>`<li>${x}</li>`).join('')}</ul>`;}
+function renderPlan(plan,index,eventKey,all=false){
+  const rows=rowsFor(plan,eventKey),basicCount=plan.rows.length;
+  const teacher=esc($('#teacher').value||'　　　'),cls=esc($('#className').value||'七年级（1）班'),num=esc($('#studentNum').value||'40'),date=esc($('#lessonDate').value),venue=esc($('#venue').value||'标准田径场');
+  let h=`<div class="pa-title" contenteditable="true">体育与健康课时教案</div><div class="pa-sub">水平四 · 七年级 · ${eventKey}米跑两周单元 · 第${index+1}课时</div>
+  <table class="pa"><colgroup><col style="width:13%"><col style="width:20%"><col style="width:12%"><col style="width:17%"><col style="width:13%"><col></colgroup>
+  <tr><th>授课教师</th><td contenteditable="true">${teacher}</td><th>班　级</th><td contenteditable="true">${cls}</td><th>人　数</th><td contenteditable="true">${num} 人</td></tr>
+  <tr><th>授课日期</th><td contenteditable="true">${date}</td><th>课的类型</th><td contenteditable="true">${esc(plan.type)}</td><th>课　时</th><td contenteditable="true">第${index+1}课时 / 共6课时</td></tr>
+  <tr><th>教材内容</th><td colspan="3" contenteditable="true"><b>田径·跑——${eventKey}米跑：${esc(plan.name)}</b>（${esc(plan.desc)}）</td><th>时　长</th><td contenteditable="true">45分钟</td></tr>
+  <tr><th>学习目标</th><td colspan="5" contenteditable="true">${list(plan.goals)}</td></tr>
+  <tr><th>重　点</th><td colspan="5" contenteditable="true">${esc(plan.key)}</td></tr>
+  <tr><th>难　点</th><td colspan="5" contenteditable="true">${esc(plan.diff)}</td></tr>
+  <tr><th>场地器材</th><td colspan="5" contenteditable="true">${esc(plan.equipment)}　｜　场地条件：${venue}</td></tr></table>
+  <table class="pa" style="margin-top:10px"><colgroup><col style="width:38px"><col style="width:40px"><col style="width:23%"><col style="width:25%"><col style="width:18%"><col></colgroup>
+  <tr><th>部分</th><th>时间</th><th>教学内容</th><th>教师活动（教法）</th><th>学生活动（学法）</th><th>组织与要求</th></tr>`;
+  rows.forEach((r,ri)=>{
+    const isBasic=ri>=2&&ri<2+basicCount;
+    const content=isBasic?[`<span class="tag ${r.color}">${esc(r.tag)}</span><b>${esc(r.name)}</b>`].concat(r.c):r.c;
+    const partCell=r.p?`<td class="part-cell" rowspan="${r.p==='基本部分'?basicCount:1}">${r.p}</td>`:'';
+    h+=`<tr>${partCell}<td class="cen" contenteditable="true">${r.m}′</td><td contenteditable="true">${list(content)}</td><td contenteditable="true">${r.t}</td><td contenteditable="true">${r.s}</td><td contenteditable="true"><b>次数/组数：</b>${r.x}<br><b>队形：</b>${r.f}<br><b>要求：</b>${r.r}</td></tr>`;
+  });
+  h+=`</table><table class="pa" style="margin-top:10px"><colgroup><col style="width:13%"><col></colgroup>
+  <tr><th>预计运动负荷</th><td><div class="loadbox"><div class="loadstat">平均心率约 <b>${plan.stat.avg}</b> 次/分<br>最高心率约 <b>${plan.stat.max}</b> 次/分<br>练习密度约 <b>${plan.stat.dens}%</b><br>综合密度约 <b>${plan.stat.all}%</b><br>运动强度：<b>${plan.stat.strength}</b><div class="loadnote">预计值仅供备课，课堂中按个体状态动态调整。</div></div>${loadSVG(rows)}</div></td></tr>
+  <tr><th>安全提示</th><td contenteditable="true">${esc(plan.safety)} ${esc(baseSafety)}</td></tr>
+  <tr><th>课后反思</th><td contenteditable="true" style="height:86px">（1）目标达成情况：<br>（2）学生配速、技术与负荷表现：<br>（3）组织教法的有效之处与需改进之处：<br>（4）个体差异与安全情况：<br>（5）下节课调整方向：</td></tr></table>`;
+  return all?`<section class="one-plan">${h}</section>`:h;
+}
+function loadSVG(rows){
+  const W=330,H=132,PL=34,PB=20,PT=8,tot=rows.reduce((a,b)=>a+b.m,0),x=t=>PL+(W-PL-6)*t/tot,y=hr=>PT+(H-PT-PB)*(1-(hr-60)/130);
+  let t=0,pts=[[x(0),y(75)]];rows.forEach(r=>{const hr=Math.round(72+r.i*26);pts.push([x(t+r.m*.3),y(hr)]);pts.push([x(t+r.m*.82),y(hr)]);t+=r.m});pts.push([x(tot),y(90)]);
+  let grid='';[60,100,140,190].forEach(v=>grid+=`<line x1="${PL}" y1="${y(v)}" x2="${W-6}" y2="${y(v)}" stroke="#e2e8f0"/><text x="4" y="${y(v)+4}" font-size="9" fill="#94a3b8">${v}</text>`);
+  let marks='';t=0;rows.forEach(r=>{marks+=`<text x="${x(t+r.m/2)}" y="${H-6}" font-size="8" fill="#64748b" text-anchor="middle">${r.p?r.p.slice(0,2):'学练'}</text>`;t+=r.m});
+  return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="background:#fbfdff;border-radius:8px;border:1px solid #e6eef8">${grid}<polyline points="${pts.map(p=>p.map(v=>v.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#1f6feb" stroke-width="2.2" stroke-linejoin="round"/>${pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="1.8" fill="#0ea5a5"/>`).join('')}${marks}<text x="${PL}" y="${PT+8}" font-size="9" fill="#94a3b8">心率(次/分)</text></svg>`;
+}
+let eventKey=location.hash.includes('800')?'800':'400',selected=0;
+function renderNav(){document.querySelectorAll('.switch button').forEach(b=>b.classList.toggle('on',b.dataset.event===eventKey));$('#lessonNav').innerHTML=PLANS[eventKey].map((p,i)=>`<button data-i="${i}" class="${i===selected?'on':''}">${i+1}. ${esc(p.name)}</button>`).join('');}
+function render(){renderNav();$('#paper').innerHTML=renderPlan(PLANS[eventKey][selected],selected,eventKey);location.hash=eventKey;}
+function renderAll(){return PLANS[eventKey].map((p,i)=>renderPlan(p,i,eventKey,true)).join('');}
+function today(){const d=new Date(),z=n=>String(n).padStart(2,'0');return `${d.getFullYear()}-${z(d.getMonth()+1)}-${z(d.getDate())}`;}
+function toast(msg){const el=$('#toast');el.textContent=msg;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2200);}
+function exportWord(inner,name){
+  const css=`body{font-family:"宋体",SimSun;font-size:10pt;line-height:1.55}table{border-collapse:collapse;width:100%;table-layout:fixed}td,th{border:1px solid #333;padding:4px 5px;vertical-align:top;font-size:9pt}th{background:#eee;text-align:center}.pa-title{text-align:center;font-size:16pt;font-weight:bold;font-family:"黑体",SimHei}.pa-sub{text-align:center;font-size:9pt;color:#555;margin-bottom:8px}.part-cell{text-align:center;font-weight:bold;background:#f5f5f5;width:34px}ul{margin:2px 0;padding-left:16px}.formation{font-family:"Courier New";font-size:8pt;white-space:pre}.tag{font-weight:bold;color:#1f6feb}.loadbox{display:flex;gap:12px}.one-plan{page-break-after:always}.one-plan:last-child{page-break-after:auto}@page{size:A4 portrait;margin:1.5cm 1.2cm}`;
+  const html=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><style>${css}</style></head><body>${inner}</body></html>`;
+  const blob=new Blob(['﻿'+html],{type:'application/msword;charset=utf-8'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name+'.doc';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1200);toast('Word已导出，可用WPS或Word继续修改');
+}
+$('#lessonDate').value=today();
+document.querySelectorAll('.switch button').forEach(b=>b.onclick=()=>{eventKey=b.dataset.event;selected=0;render()});
+$('#lessonNav').onclick=e=>{const b=e.target.closest('button');if(!b)return;selected=+b.dataset.i;render();scrollTo({top:0,behavior:'smooth'})};
+$('#regenerate').onclick=()=>{render();toast('教案信息已更新，表格内容可直接修改')};
+$('#printOne').onclick=()=>{document.body.classList.remove('print-all');window.print()};
+$('#printAll').onclick=()=>{$('#printAllDoc').innerHTML=renderAll();document.body.classList.add('print-all');window.print()};
+window.addEventListener('afterprint',()=>{document.body.classList.remove('print-all');$('#printAllDoc').innerHTML=''});
+$('#wordOne').onclick=()=>exportWord($('#paper').innerHTML,`七年级${eventKey}米跑第${selected+1}课时教案`);
+$('#wordAll').onclick=()=>exportWord(renderAll(),`七年级${eventKey}米跑两周6课时完整教案`);
+render();
 </script>
 </body>
 </html>
