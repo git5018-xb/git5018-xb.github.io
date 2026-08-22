@@ -1,0 +1,2489 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0e1a">
+<title>环球市场终端 · Global Market Terminal</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{
+--bg:#0a0e1a;--bg2:#111827;--panel:#141c30;--panel2:#1a2338;--line:#26314d;
+--tx:#e8ecf5;--tx2:#96a1bb;--tx3:#5f6b86;
+--up:#ff4757;--down:#2ed573;--gold:#ffb302;--blue:#3b82f6;--purple:#a855f7;
+--shadow:0 6px 24px rgba(0,0,0,.35)
+}
+html,body{margin:0;padding:0;height:100%}
+body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei","Helvetica Neue",Arial,sans-serif;font-size:14px;line-height:1.5;overscroll-behavior:none}
+body::before{content:"";position:fixed;inset:0;background:radial-gradient(1000px 500px at 15% -10%,rgba(59,130,246,.14),transparent 60%),radial-gradient(800px 400px at 100% 0%,rgba(168,85,247,.10),transparent 55%);pointer-events:none;z-index:0}
+#app{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:0 10px calc(76px + env(safe-area-inset-bottom))}
+a{color:inherit;text-decoration:none}
+::-webkit-scrollbar{width:6px;height:6px}::-webkit-scrollbar-thumb{background:#2b3652;border-radius:3px}
+header{position:sticky;top:0;z-index:30;background:rgba(10,14,26,.92);backdrop-filter:blur(12px);margin:0 -10px;padding:calc(6px + env(safe-area-inset-top)) 12px 6px;border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;gap:8px}
+.logo{font-size:15px;font-weight:800;letter-spacing:.5px;background:linear-gradient(90deg,#ffb302,#ff4757 45%,#3b82f6);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.sp{flex:1}
+.chip{font-size:11px;color:var(--tx2);background:var(--panel);border:1px solid var(--line);padding:3px 8px;border-radius:999px;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--down);box-shadow:0 0 8px var(--down);animation:pulse 1.8s infinite}
+.dot.off{background:var(--tx3);box-shadow:none;animation:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+.btn{background:var(--panel);border:1px solid var(--line);color:var(--tx);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;font-family:inherit}
+.btn:active{background:var(--panel2)}
+.btn.pri{background:linear-gradient(135deg,#3b82f6,#6366f1);border-color:transparent;color:#fff;font-weight:600}
+.btn.sm{padding:3px 9px;font-size:11px;border-radius:6px}
+.subtabs{display:flex;gap:6px;overflow-x:auto;padding:7px 0 3px;scrollbar-width:none}
+.subtabs::-webkit-scrollbar{display:none}
+.subtab{flex:0 0 auto;padding:5px 12px;border-radius:999px;background:var(--panel);border:1px solid var(--line);color:var(--tx2);font-size:12px;cursor:pointer;white-space:nowrap}
+.subtab.on{background:linear-gradient(135deg,rgba(59,130,246,.32),rgba(168,85,247,.26));border-color:#3b82f6;color:#fff;font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:40;background:rgba(13,18,32,.97);backdrop-filter:blur(14px);border-top:1px solid var(--line);display:flex;padding-bottom:env(safe-area-inset-bottom)}
+nav button{position:relative;flex:1;background:none;border:0;color:var(--tx3);padding:7px 2px 6px;font-size:10px;display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;font-family:inherit}
+nav button i{font-style:normal;font-size:19px;line-height:1;filter:grayscale(1) opacity(.55)}
+nav button.on{color:#fff}
+nav button.on i{filter:none}
+nav button.on::after{content:"";position:absolute;top:0;left:50%;margin-left:-13px;width:26px;height:2px;border-radius:2px;background:linear-gradient(90deg,#ffb302,#ff4757)}
+.card{background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:14px;padding:12px;margin:10px 0;box-shadow:var(--shadow)}
+.card h3{margin:0 0 10px;font-size:13px;color:var(--tx2);font-weight:600;display:flex;align-items:center;gap:6px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:8px}
+.q{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:9px 10px;cursor:pointer;position:relative;overflow:hidden;transition:transform .12s}
+.q:active{transform:scale(.97)}
+.q .nm{font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+.q .pv{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.q .ch{font-size:11px;font-variant-numeric:tabular-nums;display:flex;gap:6px;margin-top:1px}
+.up{color:var(--up)}.down{color:var(--down)}.flat{color:var(--tx2)}
+.q.up{border-color:rgba(255,71,87,.35);background:linear-gradient(180deg,rgba(255,71,87,.10),var(--panel2))}
+.q.down{border-color:rgba(46,213,115,.3);background:linear-gradient(180deg,rgba(46,213,115,.09),var(--panel2))}
+.muted{color:var(--tx2)}.tiny{font-size:11px}.mono{font-variant-numeric:tabular-nums}
+.rowline{display:flex;align-items:center;gap:8px;padding:9px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.rowline:last-child{border-bottom:0}
+.pill{font-size:10px;padding:2px 7px;border-radius:999px;background:var(--panel2);border:1px solid var(--line);color:var(--tx2)}
+.loading{text-align:center;color:var(--tx3);padding:22px;font-size:12px}
+.err{background:rgba(255,71,87,.1);border:1px solid rgba(255,71,87,.35);color:#ffb3b8;border-radius:10px;padding:10px;font-size:12px;margin:8px 0}
+input,select,textarea{font-family:inherit;font-size:13px;background:var(--panel2);border:1px solid var(--line);color:var(--tx);border-radius:9px;padding:8px 10px;outline:none;width:100%}
+input:focus{border-color:#3b82f6}
+.sr{display:flex;gap:6px}
+.sr input{flex:1}
+.sig{border-radius:12px;padding:12px;text-align:center;border:1px solid var(--line);background:var(--panel2)}
+.sig .lv{font-size:22px;font-weight:800;letter-spacing:1px}
+.gauge{height:8px;border-radius:999px;background:linear-gradient(90deg,#2ed573,#8b96b0 50%,#ff4757);position:relative;margin:12px 0 4px}
+.gauge i{position:absolute;top:-4px;width:4px;height:16px;background:#fff;border-radius:2px;box-shadow:0 0 8px #fff;transform:translateX(-2px)}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th,td{padding:6px 4px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--tx3);font-weight:500;font-size:11px}
+.news{padding:10px 2px;border-bottom:1px solid var(--line);cursor:pointer}
+.news:active{background:var(--panel2)}
+.news .t{font-size:13.5px;line-height:1.45;margin-bottom:4px}
+.news .m{font-size:11px;color:var(--tx3);display:flex;gap:8px;flex-wrap:wrap}
+.news .s{font-size:12px;color:var(--tx2);line-height:1.5;margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.flash{display:flex;gap:9px;padding:9px 0;border-bottom:1px dashed var(--line)}
+.flash .tm{flex:0 0 42px;font-size:11px;color:var(--gold);font-variant-numeric:tabular-nums;padding-top:2px}
+.flash .tx{flex:1;font-size:13px;line-height:1.5}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:9px}
+.gcard{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:12px 8px;text-align:center;cursor:pointer;transition:transform .12s}
+.gcard:active{transform:scale(.95)}
+.gcard .ic{font-size:27px;line-height:1.15}
+.gcard .gn{font-size:12px;font-weight:600;margin-top:5px}
+.gcard .gt{font-size:10px;color:var(--tx3);margin-top:2px}
+.gcard .bs{font-size:10px;color:var(--gold);margin-top:3px;height:13px}
+#stage{position:fixed;inset:0;z-index:60;background:#080c16;display:none;flex-direction:column}
+#stage.on{display:flex}
+#stbar{display:flex;align-items:center;gap:8px;padding:calc(8px + env(safe-area-inset-top)) 12px 8px;border-bottom:1px solid var(--line);background:var(--bg2)}
+#sttitle{font-weight:700;font-size:14px}
+#stscore{margin-left:auto;font-size:12px;color:var(--gold);font-variant-numeric:tabular-nums;text-align:right;line-height:1.35}
+#stwrap{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:10px;gap:10px;position:relative}
+#stwrap canvas{background:#0d1424;border:1px solid var(--line);border-radius:12px;touch-action:none;max-width:100%}
+.pad{display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,50px);gap:7px;justify-content:center}
+.pad button,.gbtn{background:var(--panel);border:1px solid var(--line);color:var(--tx);border-radius:11px;font-size:19px;cursor:pointer;font-family:inherit;user-select:none}
+.pad button:active,.gbtn:active{background:#2b3652}
+.gbtn{padding:9px 16px;font-size:14px}
+.gtip{font-size:12px;color:var(--tx3);text-align:center;max-width:470px;line-height:1.6}
+.gover{position:absolute;inset:0;background:rgba(8,12,22,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:5}
+.gover .big{font-size:26px;font-weight:800}
+.disc{font-size:11px;color:var(--tx3);line-height:1.6;background:var(--panel);border:1px dashed var(--line);border-radius:10px;padding:9px 11px;margin:10px 0}
+.hide{display:none!important}
+.fl{display:flex;align-items:center;gap:8px}
+.wrap{flex-wrap:wrap}
+.b2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kv{display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--line)}
+.kv:last-child{border-bottom:0}
+</style>
+</head>
+<body>
+<div id="app">
+<header>
+  <div class="hd">
+    <div class="logo">📈 环球市场终端</div>
+    <div class="sp"></div>
+    <div class="chip"><span class="dot" id="live"></span><span id="clock">--:--:--</span></div>
+    <button class="btn sm" id="refresh">↻ 刷新</button>
+  </div>
+  <div id="subnav"></div>
+</header>
+<main id="view"></main>
+</div>
+<nav id="nav"></nav>
+<div id="stage"><div id="stbar"><button class="btn sm" id="stback">← 返回</button><span id="sttitle"></span><span id="stscore"></span></div><div id="stwrap"></div></div>
+<script>
+/* ============ 环球市场终端 · 核心层 ============ */
+var App = {tab:'stock', sub:{}, timer:null, lastUp:0};
+var $ = function(s,r){return (r||document).querySelector(s)};
+var $$ = function(s,r){return [].slice.call((r||document).querySelectorAll(s))};
+var LS = {
+  get:function(k,d){try{var v=localStorage.getItem('mk_'+k);return v==null?d:JSON.parse(v)}catch(e){return d}},
+  set:function(k,v){try{localStorage.setItem('mk_'+k,JSON.stringify(v))}catch(e){}}
+};
+
+/* ---------- JSONP（绕过跨域，国内网络直连东财/新浪） ---------- */
+var _jid = 0;
+function jsonp(url, opt){
+  opt = opt || {};
+  return new Promise(function(res, rej){
+    var cb = 'mkcb_' + (++_jid) + '_' + (Date.now()%100000);
+    var s = document.createElement('script');
+    var done = false;
+    var to = setTimeout(function(){ if(!done){done=true; cleanup(); rej(new Error('超时'))} }, opt.timeout||9000);
+    function cleanup(){ clearTimeout(to); try{delete window[cb]}catch(e){window[cb]=void 0}; if(s.parentNode) s.parentNode.removeChild(s) }
+    window[cb] = function(data){ if(done)return; done=true; cleanup(); res(data) };
+    s.onerror = function(){ if(done)return; done=true; cleanup(); rej(new Error('网络失败')) };
+    s.src = url + (url.indexOf('?')<0?'?':'&') + (opt.cbName||'cb') + '=' + cb + '&_=' + Date.now();
+    document.head.appendChild(s);
+  });
+}
+/* 多域名轮询：节点被限流时自动换下一个；记住可用节点（30 分钟内优先复用） */
+var GOODHOST = {};
+function goodOf(grp){
+  var g = GOODHOST[grp] || LS.get('host_'+grp, null);
+  if(g && g.h && Date.now()-g.t < 1800000) return g.h;
+  return null;
+}
+function tryHosts(hosts, build, opt){
+  opt = opt || {timeout:8000};
+  var grp = hosts[0], order = hosts.slice(), g = goodOf(grp);
+  if(g && order.indexOf(g) > 0){ order.splice(order.indexOf(g),1); order.unshift(g) }
+  /* 阶梯式并发：2.2 秒内没回来就再叫下一个节点，谁先回来用谁 */
+  return new Promise(function(res, rej){
+    var done = false, i = 0, fails = 0, timer = 0;
+    function launch(){
+      if(done || i>=order.length) return;
+      var h = order[i++];
+      jsonp(build(h), opt).then(function(r){
+        if(done) return; done = true; clearTimeout(timer);
+        var rec = {h:h, t:Date.now()}; GOODHOST[grp] = rec; LS.set('host_'+grp, rec);
+        res(r);
+      }, function(){
+        if(done) return;
+        fails++;
+        if(fails>=order.length) return rej(new Error('行情节点全部无响应'));
+        clearTimeout(timer); launch(); timer = setTimeout(launch, 2200);
+      });
+      clearTimeout(timer); timer = setTimeout(launch, 2200);
+    }
+    launch();
+  });
+}
+function mix(a){ var b=a.slice(); for(var i=b.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=b[i];b[i]=b[j];b[j]=t} return b }
+/* 实时节点优先，被限流时退到延时节点，保证有数据 */
+var HOST_Q = ['push2.eastmoney.com'].concat(mix(['82.push2.eastmoney.com','7.push2.eastmoney.com','1.push2.eastmoney.com','48.push2.eastmoney.com','61.push2.eastmoney.com'])).concat(['push2delay.eastmoney.com']);
+var HOST_H = ['push2his.eastmoney.com'].concat(mix(['21.push2his.eastmoney.com','48.push2his.eastmoney.com','50.push2his.eastmoney.com','58.push2his.eastmoney.com','60.push2his.eastmoney.com','61.push2his.eastmoney.com','64.push2his.eastmoney.com','80.push2his.eastmoney.com','6.push2his.eastmoney.com']));
+
+/* ---------- 本地缓存：接口被限流时退化显示上次数据 ---------- */
+function cacheSet(k, d){ try{ localStorage.setItem('mkc_'+k, JSON.stringify({t:Date.now(), d:d})) }catch(e){} }
+function cacheGet(k){ try{ var v=localStorage.getItem('mkc_'+k); return v?JSON.parse(v):null }catch(e){ return null } }
+function cacheNote(t){
+  return '<div class="disc" style="border-color:#7a5a1a;color:#e5b769">⏳ 实时接口暂时限流，先显示 '+ago(t)+'缓存的数据；稍后点右上角 ↻ 重试。</div>';
+}
+/* 请求 → 成功则缓存并渲染；失败则回落到缓存 */
+function withCache(key, load, paint, onFail){
+  return load().then(function(d){ cacheSet(key, d); paint(d, 0); return d })
+  .catch(function(e){
+    var c = cacheGet(key);
+    if(c && c.d){ paint(c.d, c.t); return c.d }
+    if(onFail) onFail(e); else throw e;
+  });
+}
+
+/* ---------- 行情接口 ---------- */
+var QF = 'f1,f2,f3,f4,f5,f6,f7,f12,f13,f14,f15,f16,f17,f18,f124';
+function fmtQ(d){
+  return {sec:d.f13+'.'+d.f12, code:d.f12, mkt:d.f13, name:d.f14,
+    price:num(d.f2), pct:num(d.f3), chg:num(d.f4), vol:num(d.f5), amt:num(d.f6),
+    amp:num(d.f7), high:num(d.f15), low:num(d.f16), open:num(d.f17), pre:num(d.f18), ts:d.f124};
+}
+function num(v){ return (v==='-'||v==null||v==='')?null:(typeof v==='number'?v:parseFloat(v)) }
+/* 批量报价：一次请求拿一整版数据，尽量少打接口 */
+function quotes(secids){
+  if(!secids.length) return Promise.resolve([]);
+  return tryHosts(HOST_Q, function(h){
+    return 'https://'+h+'/api/qt/ulist.np/get?fltt=2&invt=2&fields='+QF+'&secids='+secids.join(',');
+  }).then(function(r){
+    var d = r && r.data && r.data.diff;
+    if(!d) return [];
+    if(!Array.isArray(d)) d = Object.keys(d).map(function(k){return d[k]});
+    return d.map(fmtQ);
+  });
+}
+/* 榜单：某个板块排行 */
+function clist(fs, fid, pz, po){
+  return tryHosts(HOST_Q, function(h){
+    return 'https://'+h+'/api/qt/clist/get?pn=1&pz='+(pz||30)+'&po='+(po==null?1:po)+'&np=1&fltt=2&invt=2&fid='+(fid||'f3')+'&fs='+encodeURIComponent(fs)+'&fields='+QF;
+  }).then(function(r){
+    var d = r && r.data && r.data.diff;
+    if(!d) return [];
+    if(!Array.isArray(d)) d = Object.keys(d).map(function(k){return d[k]});
+    return d.map(fmtQ);
+  });
+}
+/* K线：klt 101日 102周 103月 5/15/30/60分钟 */
+function kline(secid, klt, lmt){
+  return tryHosts(HOST_H, function(h){
+    return 'https://'+h+'/api/qt/stock/kline/get?secid='+secid+'&klt='+(klt||101)+'&fqt=1&end=20500101&lmt='+(lmt||260)+
+      '&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f52,f53,f54,f55,f56,f57,f58,f59,f60,f61';
+  }).then(function(r){
+    var d = r && r.data;
+    if(!d || !d.klines) return {name:'', rows:[]};
+    var rows = d.klines.map(function(s){
+      var a = s.split(',');
+      return {d:a[0], o:+a[1], c:+a[2], h:+a[3], l:+a[4], v:+a[5], amt:+a[6], amp:+a[7], pct:+a[8]};
+    });
+    return {name:d.name, code:d.code, rows:rows};
+  });
+}
+/* 分时（今日走势） */
+function trends(secid){
+  return tryHosts(HOST_H, function(h){
+    return 'https://'+h+'/api/qt/stock/trends2/get?secid='+secid+'&ndays=1&iscr=0&fields1=f1,f2,f3,f4&fields2=f51,f53,f56';
+  }).then(function(r){
+    var d = r && r.data; if(!d||!d.trends) return [];
+    return d.trends.map(function(s){var a=s.split(','); return {t:a[0].slice(11), c:+a[1]}});
+  });
+}
+/* 搜索：代码/名称联想 */
+function suggest(kw){
+  return jsonp('https://searchapi.eastmoney.com/api/suggest/get?input='+encodeURIComponent(kw)+
+    '&type=14&token=D43BF722C8E33BDC906FB84D85E326E8&markettype=&mktnum=&jys=&classify=&securitytype=&status=&count=12',
+    {cbName:'cb'}).then(function(r){
+    var l = (r&&r.QuotationCodeTable&&r.QuotationCodeTable.Data)||[];
+    return l.map(function(x){return {sec:x.QuoteID, name:x.Name, code:x.Code, type:x.SecurityTypeName, mkt:x.MktNum}});
+  });
+}
+
+/* ---------- 指标计算 ---------- */
+function sma(a,n){var o=[],s=0;for(var i=0;i<a.length;i++){s+=a[i];if(i>=n)s-=a[i-n];o.push(i>=n-1?s/n:null)}return o}
+function ema(a,n){var o=[],k=2/(n+1),p=null;for(var i=0;i<a.length;i++){p=(p==null)?a[i]:(a[i]*k+p*(1-k));o.push(p)}return o}
+function rsi(a,n){
+  var o=[null],g=0,l=0;
+  for(var i=1;i<a.length;i++){
+    var d=a[i]-a[i-1], up=d>0?d:0, dn=d<0?-d:0;
+    if(i<=n){g+=up/n; l+=dn/n; o.push(i===n?(l===0?100:100-100/(1+g/l)):null)}
+    else{g=(g*(n-1)+up)/n; l=(l*(n-1)+dn)/n; o.push(l===0?100:100-100/(1+g/l))}
+  }
+  return o;
+}
+function macd(a){
+  var e12=ema(a,12), e26=ema(a,26), dif=a.map(function(_,i){return e12[i]-e26[i]});
+  var dea=ema(dif,9), bar=dif.map(function(v,i){return (v-dea[i])*2});
+  return {dif:dif, dea:dea, bar:bar};
+}
+function kdj(rows,n){
+  n=n||9; var K=[],D=[],J=[],k=50,d=50;
+  for(var i=0;i<rows.length;i++){
+    var s=Math.max(0,i-n+1), hh=-1e18, ll=1e18;
+    for(var j=s;j<=i;j++){ if(rows[j].h>hh)hh=rows[j].h; if(rows[j].l<ll)ll=rows[j].l }
+    var rsv = hh===ll?50:(rows[i].c-ll)/(hh-ll)*100;
+    k=(2*k+rsv)/3; d=(2*d+k)/3; K.push(k); D.push(d); J.push(3*k-2*d);
+  }
+  return {k:K,d:D,j:J};
+}
+function boll(a,n,m){
+  n=n||20; m=m||2; var mid=sma(a,n), up=[], lo=[], pb=[];
+  for(var i=0;i<a.length;i++){
+    if(mid[i]==null){up.push(null);lo.push(null);pb.push(null);continue}
+    var s=0; for(var j=i-n+1;j<=i;j++) s+=Math.pow(a[j]-mid[i],2);
+    var sd=Math.sqrt(s/n); up.push(mid[i]+m*sd); lo.push(mid[i]-m*sd);
+    pb.push(sd===0?50:(a[i]-(mid[i]-m*sd))/(4*sd)*100);
+  }
+  return {mid:mid,up:up,lo:lo,pb:pb};
+}
+function atr(rows,n){
+  n=n||14; var tr=[], o=[];
+  for(var i=0;i<rows.length;i++){
+    var pc = i?rows[i-1].c:rows[i].o;
+    tr.push(Math.max(rows[i].h-rows[i].l, Math.abs(rows[i].h-pc), Math.abs(rows[i].l-pc)));
+  }
+  var p=null;
+  for(var i2=0;i2<tr.length;i2++){ p = p==null?tr[i2]:(p*(n-1)+tr[i2])/n; o.push(p) }
+  return o;
+}
+function slope(a,i,n){ /* 最近n根的线性回归斜率（按收盘均值归一化，%/日） */
+  var s=Math.max(0,i-n+1), c=i-s+1, sx=0,sy=0,sxy=0,sxx=0;
+  for(var j=0;j<c;j++){var x=j,y=a[s+j];sx+=x;sy+=y;sxy+=x*y;sxx+=x*x}
+  var den=c*sxx-sx*sx; if(!den) return 0;
+  var k=(c*sxy-sx*sy)/den, mean=sy/c;
+  return mean?k/mean*100:0;
+}
+
+/* ---------- 量化打分引擎 ---------- */
+function indicators(rows){
+  var c = rows.map(function(r){return r.c}), v = rows.map(function(r){return r.v||0});
+  return {rows:rows, c:c, v:v,
+    ma5:sma(c,5), ma10:sma(c,10), ma20:sma(c,20), ma60:sma(c,60),
+    rsi:rsi(c,14), macd:macd(c), kdj:kdj(rows,9), boll:boll(c,20,2),
+    atr:atr(rows,14), vma5:sma(v,5), vma20:sma(v,20)};
+}
+/* 8 个因子，各自输出 -1~1，再加权求和 → -100~100 */
+function scoreAt(X,i){
+  if(i<60) return null;
+  var f = [], w = [], c = X.c[i], det = [];
+  function add(name,val,weight,txt){ val=Math.max(-1,Math.min(1,val)); f.push(val); w.push(weight); det.push({name:name,v:val,w:weight,txt:txt}) }
+  /* 1 均线排列 */
+  var a5=X.ma5[i],a10=X.ma10[i],a20=X.ma20[i],a60=X.ma60[i], al=0;
+  if(a5>a10)al+=.3; else al-=.3; if(a10>a20)al+=.35; else al-=.35; if(a20>a60)al+=.35; else al-=.35;
+  add('均线排列', al, 1.3, al>.5?'多头排列':al<-.5?'空头排列':'纠缠');
+  /* 2 价格相对20日均线偏离 */
+  var dev = a20?(c-a20)/a20*100:0;
+  add('乖离率', dev/6, 1.0, dev.toFixed(2)+'%');
+  /* 3 MACD */
+  var bar=X.macd.bar[i], pbar=X.macd.bar[i-1], dif=X.macd.dif[i];
+  var ms = (bar>0?.5:-.5) + (bar>pbar?.3:-.3) + (dif>0?.2:-.2);
+  add('MACD', ms, 1.2, (bar>0?'红柱':'绿柱')+(bar>pbar?'放大':'缩小'));
+  /* 4 RSI（超买超卖反向） */
+  var r=X.rsi[i], rs;
+  if(r>=70) rs=-(r-70)/25-.15; else if(r<=30) rs=(30-r)/25+.15; else rs=(r-50)/40;
+  add('RSI', rs, 1.0, r.toFixed(1));
+  /* 5 KDJ */
+  var J=X.kdj.j[i], K=X.kdj.k[i], D=X.kdj.d[i], js;
+  if(J>100) js=-.6; else if(J<0) js=.7; else js=(K-D)/12;
+  add('KDJ', js, .9, 'J '+J.toFixed(1));
+  /* 6 量能 */
+  var vr = X.vma20[i]?X.vma5[i]/X.vma20[i]:1, up20 = c>X.c[i-20];
+  var vs = (vr-1)*1.2*(up20?1:-1);
+  add('量能', vs, .8, '量比 '+vr.toFixed(2));
+  /* 7 动量（20日） */
+  var mom = (c/X.c[i-20]-1)*100;
+  add('动量', mom/9, 1.1, mom.toFixed(2)+'%');
+  /* 8 布林位置 */
+  var pb=X.boll.pb[i], bs;
+  if(pb>100) bs=-.5; else if(pb<0) bs=.6; else bs=(pb-50)/55;
+  add('布林带', bs, .7, '%B '+(pb==null?'-':pb.toFixed(0)));
+  /* 9 趋势斜率 */
+  var sl = slope(X.c,i,10);
+  add('趋势斜率', sl/1.6, 1.0, sl.toFixed(2)+'%/日');
+  var tw=0, s=0;
+  for(var k=0;k<f.length;k++){ s+=f[k]*w[k]; tw+=w[k] }
+  return {score: Math.max(-100,Math.min(100, s/tw*100)), detail:det};
+}
+function levelOf(s){
+  if(s>=45) return {t:'强烈看多', c:'up', e:'🚀'};
+  if(s>=18) return {t:'偏多', c:'up', e:'📈'};
+  if(s>-18) return {t:'震荡中性', c:'flat', e:'⚖️'};
+  if(s>-45) return {t:'偏空', c:'down', e:'📉'};
+  return {t:'强烈看空', c:'down', e:'🧊'};
+}
+/* 用同一套规则跑历史回测：同类信号出现后 N 日的表现 */
+function backtest(X, cur, fwd){
+  fwd = fwd||5;
+  var n = X.c.length, hit=0, win=0, sum=0, band = 22;
+  for(var i=60;i<n-fwd;i++){
+    var s = scoreAt(X,i); if(!s) continue;
+    if(Math.abs(s.score-cur)>band) continue;
+    var ret = (X.c[i+fwd]/X.c[i]-1)*100;
+    hit++; if(ret>0) win++; sum+=ret;
+  }
+  return {n:hit, win:hit?win/hit*100:null, avg:hit?sum/hit:null, fwd:fwd};
+}
+/* 预测区间：以 ATR 波动率 + 趋势漂移外推 */
+function forecast(X, sc){
+  var i=X.c.length-1, c=X.c[i], a=X.atr[i]||c*.015;
+  var drift = (slope(X.c,i,10)*.55 + sc/100*.55)/100;      /* 每日期望漂移 */
+  var f = function(d){
+    var mid = c*(1+drift*d), band = a*Math.sqrt(d)*1.05;
+    return {mid:mid, lo:mid-band, hi:mid+band, d:d};
+  };
+  return {d1:f(1), d5:f(5), d20:f(20), atrPct:a/c*100, drift:drift*100};
+}
+
+/* ---------- 格式化 ---------- */
+function fx(v,d){
+  if(v==null||isNaN(v)) return '--';
+  d = d==null?2:d;
+  var s = Math.abs(v).toFixed(d).split('.');
+  s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  return (v<0?'-':'')+s.join('.');
+}
+function fnum(v,d){ if(v==null||isNaN(v))return '--'; var n=Math.abs(v);
+  if(n>=1e12)return (v/1e12).toFixed(2)+'万亿'; if(n>=1e8)return (v/1e8).toFixed(2)+'亿';
+  if(n>=1e4)return (v/1e4).toFixed(2)+'万'; return v.toFixed(d==null?2:d) }
+function pct(v){ return (v==null||isNaN(v))?'--':(v>0?'+':'')+v.toFixed(2)+'%' }
+function cls(v){ return v>0?'up':(v<0?'down':'flat') }
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(m){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]}) }
+function ago(ts){ var d=(Date.now()-ts)/1000; if(d<60)return Math.max(1,d|0)+'秒前'; if(d<3600)return (d/60|0)+'分钟前'; if(d<86400)return (d/3600|0)+'小时前'; return (d/86400|0)+'天前' }
+
+/* ---------- 迷你走势图 ---------- */
+function sparkline(vals, w, h, color){
+  var a = vals.filter(function(v){return v!=null});
+  if(a.length<2) return '';
+  var mn=Math.min.apply(null,a), mx=Math.max.apply(null,a), rg=(mx-mn)||1;
+  var pts = a.map(function(v,i){ return (i/(a.length-1)*w).toFixed(1)+','+(h-(v-mn)/rg*h).toFixed(1) }).join(' ');
+  var c = color || (a[a.length-1]>=a[0]?'#ff4757':'#2ed573');
+  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><polyline points="'+pts+'" fill="none" stroke="'+c+'" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+}
+/* K 线 + 均线 + 预测通道 */
+function kchart(rows, X, fc, w, h){
+  var n = Math.min(rows.length, 90), s = rows.length-n, sub = rows.slice(s);
+  var pad = 26, fw = fc?46:0, gw = w-pad-fw-4;
+  var lo=1e18, hi=-1e18;
+  sub.forEach(function(r){ if(r.l<lo)lo=r.l; if(r.h>hi)hi=r.h });
+  if(fc){ lo=Math.min(lo,fc.d20.lo); hi=Math.max(hi,fc.d20.hi) }
+  var rg=(hi-lo)||1; lo-=rg*.06; hi+=rg*.06; rg=hi-lo;
+  var Y = function(v){ return (h-14) - (v-lo)/rg*(h-24) };
+  var Xp = function(i){ return pad + i/(n-1)*gw };
+  var out = ['<svg width="100%" viewBox="0 0 '+w+' '+h+'" preserveAspectRatio="none" style="display:block">'];
+  for(var g=0; g<=3; g++){ var yy=14+g*(h-24)/3; out.push('<line x1="'+pad+'" y1="'+yy+'" x2="'+(w-2)+'" y2="'+yy+'" stroke="#26314d" stroke-width=".5"/>') }
+  var bw = Math.max(1.4, gw/n*.62);
+  sub.forEach(function(r,i){
+    var x=Xp(i), c = r.c>=r.o?'#ff4757':'#2ed573';
+    out.push('<line x1="'+x.toFixed(1)+'" y1="'+Y(r.h).toFixed(1)+'" x2="'+x.toFixed(1)+'" y2="'+Y(r.l).toFixed(1)+'" stroke="'+c+'" stroke-width=".8"/>');
+    var y1=Y(Math.max(r.o,r.c)), y2=Y(Math.min(r.o,r.c));
+    out.push('<rect x="'+(x-bw/2).toFixed(1)+'" y="'+y1.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+Math.max(.8,y2-y1).toFixed(1)+'" fill="'+c+'"/>');
+  });
+  [['ma5','#ffb302'],['ma20','#3b82f6'],['ma60','#a855f7']].forEach(function(m){
+    var arr=X[m[0]], p=[];
+    for(var i=0;i<n;i++){ var v=arr[s+i]; if(v!=null) p.push(Xp(i).toFixed(1)+','+Y(v).toFixed(1)) }
+    if(p.length>1) out.push('<polyline points="'+p.join(' ')+'" fill="none" stroke="'+m[1]+'" stroke-width="1" opacity=".85"/>');
+  });
+  if(fc){
+    var x0=Xp(n-1), c0=sub[sub.length-1].c, x20=w-fw+40;
+    var fx1=function(d){ return x0 + d/20*(x20-x0) };
+    out.push('<path d="M'+x0+','+Y(c0)+' L'+fx1(20)+','+Y(fc.d20.hi)+' L'+fx1(20)+','+Y(fc.d20.lo)+' Z" fill="rgba(59,130,246,.16)"/>');
+    out.push('<line x1="'+x0+'" y1="'+Y(c0)+'" x2="'+fx1(20)+'" y2="'+Y(fc.d20.mid)+'" stroke="#3b82f6" stroke-width="1.2" stroke-dasharray="3 3"/>');
+    out.push('<line x1="'+x0+'" y1="14" x2="'+x0+'" y2="'+(h-10)+'" stroke="#5f6b86" stroke-width=".5" stroke-dasharray="2 3"/>');
+    out.push('<text x="'+(fx1(20)-2)+'" y="'+(Y(fc.d20.mid)-4)+'" fill="#7fb0ff" font-size="9" text-anchor="end">20日中枢</text>');
+  }
+  out.push('<text x="2" y="12" fill="#5f6b86" font-size="9">'+fx(hi,2)+'</text>');
+  out.push('<text x="2" y="'+(h-3)+'" fill="#5f6b86" font-size="9">'+fx(lo,2)+'</text>');
+  out.push('</svg>');
+  return out.join('');
+}
+/* ============ 股市 / 商品 / 分析预测 ============ */
+var IDX = {
+  '中国A股': ['1.000001|上证指数','0.399001|深证成指','0.399006|创业板指','1.000300|沪深300','1.000016|上证50','0.399905|中证500','1.000688|科创50'],
+  '港股台股': ['100.HSI|恒生指数','100.HSCEI|国企指数','124.HSTECH|恒生科技','100.TWII|台湾加权'],
+  '美洲': ['100.DJIA|道琼斯','100.SPX|标普500','100.NDX|纳斯达克','100.TSX|加拿大TSX','100.BVSP|巴西BOVESPA','100.MXX|墨西哥BOLSA'],
+  '欧洲': ['100.FTSE|英国富时100','100.GDAXI|德国DAX','100.FCHI|法国CAC40','100.MIB|意大利MIB','100.IBEX|西班牙IBEX','100.SSMI|瑞士SMI','100.AEX|荷兰AEX','100.RTS|俄罗斯RTS'],
+  '亚太': ['100.N225|日经225','100.KS11|韩国KOSPI','100.STI|新加坡海峡','100.SENSEX|印度SENSEX','100.AS51|澳洲标普200','100.KLSE|马来西亚KLCI','100.JKSE|印尼雅加达','100.VNINDEX|越南胡志明']
+};
+var US_HOT = ['105.AAPL|苹果','105.MSFT|微软','105.NVDA|英伟达','105.GOOGL|谷歌A','105.AMZN|亚马逊','105.META|Meta','105.TSLA|特斯拉','105.AVGO|博通','105.NFLX|奈飞','105.AMD|AMD','105.INTC|英特尔','105.MU|美光','105.QCOM|高通','105.PLTR|Palantir','105.COST|好市多','106.BRK_B|伯克希尔B','106.JPM|摩根大通','106.V|Visa','106.WMT|沃尔玛','106.XOM|埃克森','106.JNJ|强生','106.TSM|台积电','106.BABA|阿里巴巴','105.PDD|拼多多','105.JD|京东','105.NTES|网易','105.BIDU|百度','105.COIN|Coinbase','105.MSTR|Strategy','105.ARM|ARM'];
+var HK_HOT = ['116.00700|腾讯控股','116.09988|阿里巴巴-W','116.03690|美团-W','116.09618|京东集团-SW','116.01810|小米集团-W','116.00941|中国移动','116.00939|建设银行','116.02318|中国平安','116.01299|友邦保险','116.00388|香港交易所','116.09888|百度集团-SW','116.09999|网易-S','116.01211|比亚迪股份','116.02015|理想汽车-W','116.09868|小鹏汽车-W','116.00005|汇丰控股','116.00857|中国石油股份','116.03988|中国银行'];
+var CMD = {
+  '贵金属': ['122.XAU|伦敦金(现货黄金)','122.XAG|伦敦银(现货白银)','101.GC00Y|COMEX黄金','101.SI00Y|COMEX白银','102.PL00Y|NYMEX铂金','102.PA00Y|NYMEX钯金','118.AUTD|黄金T+D','118.AGTD|白银T+D'],
+  '能源': ['102.CL00Y|WTI原油','112.B00Y|布伦特原油','102.NG00Y|NYMEX天然气','112.M00Y|ICE天然气','102.RB00Y|NYMEX汽油','102.HO00Y|NYMEX燃油','112.G00Y|ICE重柴油'],
+  '有色金属': ['101.HG00Y|COMEX铜','109.LCPT|LME综合铜'],
+  '农产品': ['103.ZS00Y|CBOT大豆','103.ZC00Y|CBOT玉米','103.ZW00Y|CBOT小麦','103.ZM00Y|CBOT豆粕','103.ZL00Y|CBOT豆油','103.ZR00Y|CBOT稻谷','103.ZO00Y|CBOT燕麦'],
+  '外汇': ['100.UDI|美元指数','119.EURUSD|欧元/美元','119.USDJPY|美元/日元','119.GBPUSD|英镑/美元','119.AUDUSD|澳元/美元','119.USDCHF|美元/瑞郎','133.USDCNH|美元/离岸人民币','120.USDCNYC|美元人民币中间价']
+};
+function pl(arr){ return arr.map(function(s){var a=s.split('|');return {sec:a[0], alias:a[1]}}) }
+function secsOf(map){ var o=[]; for(var k in map) o=o.concat(pl(map[k])); return o }
+
+/* ---------- 报价卡片 ---------- */
+function qcard(q, alias){
+  var c = cls(q.pct), nm = alias || q.name;
+  return '<div class="q '+c+'" data-sec="'+q.sec+'" data-nm="'+esc(nm)+'">'+
+    '<div class="nm">'+esc(nm)+'</div>'+
+    '<div class="pv '+c+'">'+fx(q.price, q.price!=null&&q.price<10?4:2)+'</div>'+
+    '<div class="ch '+c+'"><span>'+pct(q.pct)+'</span><span>'+(q.chg>0?'+':'')+fx(q.chg,q.price!=null&&q.price<10?4:2)+'</span></div>'+
+    '</div>';
+}
+function renderBoard(map, aliasMap){
+  var html = '';
+  for(var g in map){
+    html += '<div class="card"><h3>'+g+'<span class="sp"></span><span class="tiny muted">点开看预测</span></h3><div class="grid" id="g_'+encodeURIComponent(g)+'">'+
+      pl(map[g]).map(function(x){return '<div class="q" data-sec="'+x.sec+'" data-nm="'+esc(x.alias)+'"><div class="nm">'+esc(x.alias)+'</div><div class="pv">--</div><div class="ch">--</div></div>'}).join('')+
+      '</div></div>';
+  }
+  return html;
+}
+function fillBoard(list){
+  var m = {}; list.forEach(function(q){ m[q.sec]=q });
+  $$('#view .q').forEach(function(el){
+    var q = m[el.dataset.sec]; if(!q) return;
+    var c = cls(q.pct), dec = (q.price!=null&&q.price<10)?4:2;
+    el.className = 'q '+c;
+    el.querySelector('.pv').className = 'pv '+c;
+    el.querySelector('.pv').textContent = fx(q.price, dec);
+    el.querySelector('.ch').className = 'ch '+c;
+    el.querySelector('.ch').innerHTML = '<span>'+pct(q.pct)+'</span><span>'+(q.chg>0?'+':'')+fx(q.chg,dec)+'</span>';
+  });
+}
+
+/* ---------- 股市页 ---------- */
+var STOCK_SUBS = [
+  {id:'idx', name:'🌍 全球指数'},
+  {id:'us', name:'🇺🇸 美股热门'},
+  {id:'hk', name:'🇭🇰 港股热门'},
+  {id:'a', name:'🇨🇳 A股榜单'},
+  {id:'scan', name:'🎯 信号扫描'},
+  {id:'my', name:'⭐ 自选'}
+];
+function viewStock(sub){
+  var v = $('#view');
+  if(sub==='idx'){ v.innerHTML = renderBoard(IDX); refreshStock(); return }
+  if(sub==='us'){ v.innerHTML = renderBoard({'美股热门':US_HOT}); refreshStock(); return }
+  if(sub==='hk'){ v.innerHTML = renderBoard({'港股热门':HK_HOT}); refreshStock(); return }
+  if(sub==='a'){ viewAList(); return }
+  if(sub==='scan'){ viewScan('stock'); return }
+  if(sub==='my'){ viewMy(); return }
+}
+function refreshStock(){
+  var secs = $$('#view .q').map(function(e){return e.dataset.sec});
+  if(!secs.length) return Promise.resolve();
+  var key = 'q_'+App.tab+'_'+(App.sub[App.tab]||'');
+  var jobs = [], step = 40;
+  for(var i=0;i<secs.length;i+=step) jobs.push(secs.slice(i,i+step));
+  return withCache(key, function(){
+    return Promise.all(jobs.map(quotes)).then(function(rs){ return [].concat.apply([],rs) });
+  }, function(list, ct){
+    fillBoard(list);
+    if(ct) banner(cacheNote(ct)); else markUpdated();
+  }, showErr);
+}
+function banner(html){
+  var v = $('#view');
+  if(!v || v.querySelector('.cachebn')) return;
+  var d = document.createElement('div'); d.className='cachebn'; d.innerHTML = html;
+  v.insertBefore(d, v.firstChild);
+}
+function viewAList(){
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><h3>A股实时榜单<span class="sp"></span>'+
+    '<select id="alist" style="width:auto;padding:4px 8px;font-size:12px">'+
+    '<option value="f3|1">涨幅榜</option><option value="f3|0">跌幅榜</option><option value="f6|1">成交额榜</option><option value="f8|1">换手率榜</option></select></h3>'+
+    '<div id="alistbox" class="loading">加载中…</div></div>';
+  $('#alist').onchange = loadAList; loadAList();
+}
+function loadAList(){
+  var v = ($('#alist')||{value:'f3|1'}).value.split('|');
+  var box = $('#alistbox'); box.className='loading'; box.textContent='加载中…';
+  withCache('alist_'+v.join('_'), function(){
+    return clist('m:0+t:6,m:0+t:80,m:1+t:2,m:1+t:23,m:0+t:81+s:2048', v[0], 30, +v[1]);
+  }, function(l, ct){
+    box.className='';
+    if(ct) banner(cacheNote(ct));
+    box.innerHTML = l.map(function(q,i){
+      return '<div class="rowline q" data-sec="'+q.sec+'" data-nm="'+esc(q.name)+'" style="background:none;border-radius:0">'+
+        '<span class="muted tiny mono" style="width:20px">'+(i+1)+'</span>'+
+        '<div style="flex:1;min-width:0"><div style="font-size:13px">'+esc(q.name)+'</div><div class="tiny muted mono">'+q.code+'</div></div>'+
+        '<div style="text-align:right"><div class="mono '+cls(q.pct)+'">'+fx(q.price)+'</div><div class="tiny mono muted">额 '+fnum(q.amt)+'</div></div>'+
+        '<div class="mono '+cls(q.pct)+'" style="width:66px;text-align:right;font-weight:700">'+pct(q.pct)+'</div></div>';
+    }).join('') || '<div class="loading">暂无数据</div>';
+    if(!ct) markUpdated();
+  }).catch(function(e){ box.className=''; box.innerHTML='<div class="err">榜单加载失败：'+esc(e.message)+'（接口限流，稍后重试）</div>' });
+}
+
+/* ---------- 自选 ---------- */
+function getWatch(){ return LS.get('watch', [{sec:'1.000001',alias:'上证指数'},{sec:'100.NDX',alias:'纳斯达克'},{sec:'116.00700',alias:'腾讯控股'},{sec:'122.XAU',alias:'伦敦金'}]) }
+function setWatch(w){ LS.set('watch', w) }
+function inWatch(sec){ return getWatch().some(function(x){return x.sec===sec}) }
+function toggleWatch(sec, alias){
+  var w = getWatch(), i = -1;
+  w.forEach(function(x,k){ if(x.sec===sec) i=k });
+  if(i>=0) w.splice(i,1); else w.push({sec:sec, alias:alias});
+  setWatch(w); return i<0;
+}
+function viewMy(){
+  var w = getWatch(), v = $('#view');
+  v.innerHTML = '<div class="card"><h3>🔎 搜索添加</h3><div class="sr"><input id="skw" placeholder="输入代码/名称，如 腾讯 / AAPL / 600519"><button class="btn pri" id="sgo">搜索</button></div><div id="sres"></div></div>'+
+    (w.length? '<div class="card"><h3>⭐ 我的自选 <span class="sp"></span><span class="tiny muted">长按/点右侧 ✕ 删除</span></h3><div class="grid">'+
+      w.map(function(x){return '<div class="q" data-sec="'+x.sec+'" data-nm="'+esc(x.alias)+'"><div class="nm">'+esc(x.alias)+'<span class="delw" data-sec="'+x.sec+'" style="float:right;color:#5f6b86;padding:0 3px">✕</span></div><div class="pv">--</div><div class="ch">--</div></div>'}).join('')+
+      '</div></div>' : '<div class="card"><div class="loading">还没有自选，搜索后点 ☆ 添加</div></div>');
+  var run = function(){
+    var kw = $('#skw').value.trim(); if(!kw) return;
+    $('#sres').innerHTML = '<div class="loading">搜索中…</div>';
+    suggest(kw).then(function(l){
+      $('#sres').innerHTML = l.length? l.map(function(x){
+        return '<div class="rowline"><div style="flex:1" class="q" data-sec="'+x.sec+'" data-nm="'+esc(x.name)+'" style="background:none;padding:0"><div style="font-size:13px">'+esc(x.name)+'</div><div class="tiny muted mono">'+esc(x.code)+' · '+esc(x.type||'')+'</div></div>'+
+          '<button class="btn sm addw" data-sec="'+x.sec+'" data-nm="'+esc(x.name)+'">'+(inWatch(x.sec)?'已添加':'☆ 自选')+'</button></div>';
+      }).join('') : '<div class="loading">没找到</div>';
+    }).catch(function(e){ $('#sres').innerHTML='<div class="err">搜索失败：'+esc(e.message)+'</div>' });
+  };
+  $('#sgo').onclick = run;
+  $('#skw').onkeydown = function(e){ if(e.key==='Enter') run() };
+  refreshStock();
+}
+
+/* ---------- 信号扫描 ---------- */
+var SCAN_CACHE = {};
+function viewScan(kind){
+  var list = kind==='stock' ? secsOf(IDX).concat(pl(US_HOT).slice(0,12)) : secsOf(CMD);
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><h3>🎯 量化信号扫描 <span class="sp"></span><button class="btn pri sm" id="scango">开始扫描</button></h3>'+
+    '<div class="tiny muted">对 '+list.length+' 个标的跑同一套技术面模型（均线/MACD/RSI/KDJ/量能/动量/布林/斜率），按看多分数排序。首次扫描约需 20–40 秒。</div>'+
+    '<div id="scanbox"></div></div>'+
+    '<div class="disc">⚠️ 分数由公开历史行情按固定公式计算，仅作技术面参考，<b>不构成任何投资建议</b>；市场有风险，决策请自行判断。</div>';
+  $('#scango').onclick = function(){ runScan(kind, list) };
+  if(SCAN_CACHE[kind] && Date.now()-SCAN_CACHE[kind].t < 600000) paintScan(SCAN_CACHE[kind].data);
+}
+function runScan(kind, list){
+  var box = $('#scanbox'), done = 0, res = [];
+  box.innerHTML = '<div class="loading">扫描中 0/'+list.length+'…</div>';
+  var i = 0, CONC = 3;
+  function worker(){
+    if(i>=list.length) return Promise.resolve();
+    var it = list[i++];
+    return kline(it.sec, 101, 200).then(function(k){
+      if(k.rows.length>65){
+        var X = indicators(k.rows), s = scoreAt(X, k.rows.length-1);
+        if(s){ var last=k.rows[k.rows.length-1];
+          res.push({sec:it.sec, name:it.alias||k.name, score:s.score, pct:last.pct, price:last.c, fc:forecast(X,s.score)}) }
+      }
+    }).catch(function(){}).then(function(){
+      done++; if(box) box.innerHTML='<div class="loading">扫描中 '+done+'/'+list.length+'…</div>';
+      return worker();
+    });
+  }
+  var ws = []; for(var w=0;w<CONC;w++) ws.push(worker());
+  Promise.all(ws).then(function(){
+    res.sort(function(a,b){return b.score-a.score});
+    SCAN_CACHE[kind] = {t:Date.now(), data:res};
+    paintScan(res); markUpdated();
+  });
+}
+function paintScan(res){
+  var box = $('#scanbox'); if(!box) return;
+  if(!res.length){ box.innerHTML='<div class="err">扫描失败，稍后重试（数据节点可能限流）</div>'; return }
+  box.innerHTML = '<table><thead><tr><th>标的</th><th>最新</th><th>信号</th><th>分数</th><th>5日中枢</th></tr></thead><tbody>'+
+    res.map(function(r){
+      var lv = levelOf(r.score);
+      return '<tr class="q" data-sec="'+r.sec+'" data-nm="'+esc(r.name)+'" style="background:none;cursor:pointer">'+
+        '<td>'+esc(r.name)+'</td><td class="mono '+cls(r.pct)+'">'+fx(r.price, r.price<10?4:2)+'</td>'+
+        '<td class="'+lv.c+'">'+lv.e+' '+lv.t+'</td>'+
+        '<td class="mono '+lv.c+'" style="font-weight:700">'+(r.score>0?'+':'')+r.score.toFixed(0)+'</td>'+
+        '<td class="mono muted">'+fx(r.fc.d5.mid, r.price<10?4:2)+'</td></tr>';
+    }).join('')+'</tbody></table>';
+}
+
+/* ---------- 大宗商品页 ---------- */
+var CMD_SUBS = [{id:'intl',name:'🌐 国际盘'},{id:'cn',name:'🇨🇳 国内期货'},{id:'scan',name:'🎯 信号扫描'}];
+function viewCmd(sub){
+  var v = $('#view');
+  if(sub==='intl'){ v.innerHTML = renderBoard(CMD); refreshStock(); return }
+  if(sub==='scan'){ viewScan('cmd'); return }
+  v.innerHTML = '<div class="card"><h3>国内期货主力连续（上期所/大商所/郑商所/广期所/中金所）</h3><div id="cnbox" class="loading">加载中…</div></div>';
+  withCache('cnfut', function(){
+    return clist('m:113,m:114,m:115,m:142,m:8', 'f3', 250, 1).then(function(l){
+      return l.filter(function(q){return /主连$/.test(q.name)}).sort(function(a,b){ return (b.pct||0)-(a.pct||0) });
+    });
+  }, function(main, ct){
+    var box = $('#cnbox'); if(!box) return;
+    box.className = 'grid';
+    box.innerHTML = main.map(function(q){ return qcard(q, q.name.replace('主连','')) }).join('') || '<div class="loading">暂无数据</div>';
+    if(ct) banner(cacheNote(ct)); else markUpdated();
+  }).catch(function(e){ var b=$('#cnbox'); if(b){b.className='';b.innerHTML='<div class="err">加载失败：'+esc(e.message)+'（接口限流，稍后重试）</div>'} });
+}
+
+/* ---------- 详情 + 预测 ---------- */
+function openDetail(sec, name){
+  App.detail = {sec:sec, name:name};
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><div class="fl"><button class="btn sm" id="dback">← 返回</button><span class="sp"></span>'+
+    '<button class="btn sm" id="dwatch">'+(inWatch(sec)?'★ 已自选':'☆ 加自选')+'</button></div>'+
+    '<div id="dhead" style="margin-top:10px"><div class="loading">加载行情…</div></div></div>'+
+    '<div class="card"><h3>📉 日K线 + 20日预测通道 <span class="sp"></span><span class="tiny muted" id="dktip"></span></h3><div id="dk"><div class="loading">加载中…</div></div></div>'+
+    '<div id="dsig"></div>';
+  $('#dback').onclick = function(){ App.detail=null; App.render() };
+  $('#dwatch').onclick = function(){ var a=toggleWatch(sec,name); this.textContent = a?'★ 已自选':'☆ 加自选' };
+  quotes([sec]).then(function(l){
+    var q = l[0], h = $('#dhead'); if(!q||!h) return;
+    var c = cls(q.pct), dec = q.price<10?4:2;
+    h.innerHTML = '<div style="font-size:15px;font-weight:700">'+esc(name||q.name)+' <span class="tiny muted mono">'+q.code+'</span></div>'+
+      '<div class="fl" style="gap:12px;margin:6px 0 8px"><div class="'+c+'" style="font-size:30px;font-weight:800" class="mono">'+fx(q.price,dec)+'</div>'+
+      '<div class="'+c+'" style="font-size:14px;line-height:1.3"><div>'+(q.chg>0?'+':'')+fx(q.chg,dec)+'</div><div>'+pct(q.pct)+'</div></div></div>'+
+      '<div class="b2 tiny">'+
+      '<div class="kv"><span class="muted">今开</span><span class="mono">'+fx(q.open,dec)+'</span></div>'+
+      '<div class="kv"><span class="muted">昨收</span><span class="mono">'+fx(q.pre,dec)+'</span></div>'+
+      '<div class="kv"><span class="muted">最高</span><span class="mono up">'+fx(q.high,dec)+'</span></div>'+
+      '<div class="kv"><span class="muted">最低</span><span class="mono down">'+fx(q.low,dec)+'</span></div>'+
+      '<div class="kv"><span class="muted">振幅</span><span class="mono">'+(q.amp==null?'--':q.amp+'%')+'</span></div>'+
+      '<div class="kv"><span class="muted">成交额</span><span class="mono">'+fnum(q.amt)+'</span></div></div>';
+  }).catch(function(){});
+  withCache('k_'+sec, function(){
+    return kline(sec, 101, 260).then(function(k){ if(!k.rows.length) throw new Error('无K线数据'); return k });
+  }, function(k, ct){
+    if(ct) banner(cacheNote(ct));
+    var X = indicators(k.rows), n = k.rows.length, s = scoreAt(X, n-1);
+    if(!s) throw new Error('历史数据不足 60 根，无法建模');
+    var fc = forecast(X, s.score), bt = backtest(X, s.score, 5), lv = levelOf(s.score);
+    var dec = k.rows[n-1].c<10?4:2;
+    $('#dktip').textContent = '共 '+n+' 根，显示最近 90 根';
+    $('#dk').innerHTML = kchart(k.rows, X, fc, 360, 170)+
+      '<div class="tiny muted" style="margin-top:6px">'+
+      '<span style="color:#ffb302">— MA5</span> <span style="color:#3b82f6">— MA20</span> <span style="color:#a855f7">— MA60</span> · 蓝色扇形为 ATR 波动率外推的 20 日概率通道</div>';
+    var pos = (s.score+100)/2;
+    $('#dsig').innerHTML =
+      '<div class="card"><h3>🎯 量化信号</h3><div class="sig">'+
+        '<div class="lv '+lv.c+'">'+lv.e+' '+lv.t+'</div>'+
+        '<div class="mono '+lv.c+'" style="font-size:13px">综合分 '+(s.score>0?'+':'')+s.score.toFixed(1)+' / 100</div>'+
+        '<div class="gauge"><i style="left:'+pos.toFixed(1)+'%"></i></div>'+
+        '<div class="fl tiny muted"><span>看空</span><span class="sp"></span><span>中性</span><span class="sp"></span><span>看多</span></div>'+
+      '</div>'+
+      '<table style="margin-top:10px"><thead><tr><th>驱动因子</th><th>读数</th><th>方向</th><th>权重</th></tr></thead><tbody>'+
+        s.detail.map(function(d){
+          var c = d.v>0.12?'up':(d.v<-0.12?'down':'flat'), t = d.v>0.12?'偏多':(d.v<-0.12?'偏空':'中性');
+          return '<tr><td>'+d.name+'</td><td class="mono muted">'+esc(d.txt)+'</td><td class="'+c+'">'+t+' '+(d.v>0?'+':'')+d.v.toFixed(2)+'</td><td class="mono muted">'+d.w.toFixed(1)+'</td></tr>';
+        }).join('')+
+      '</tbody></table></div>'+
+      '<div class="card"><h3>🔮 价格区间推演（ATR 波动率模型）</h3>'+
+      '<table><thead><tr><th>周期</th><th>下沿</th><th>中枢</th><th>上沿</th></tr></thead><tbody>'+
+        [['次一交易日',fc.d1],['未来 5 日',fc.d5],['未来 20 日',fc.d20]].map(function(r){
+          return '<tr><td>'+r[0]+'</td><td class="mono down">'+fx(r[1].lo,dec)+'</td><td class="mono" style="font-weight:700">'+fx(r[1].mid,dec)+'</td><td class="mono up">'+fx(r[1].hi,dec)+'</td></tr>';
+        }).join('')+
+      '</tbody></table>'+
+      '<div class="tiny muted" style="margin-top:8px">日均波动率(ATR) '+fc.atrPct.toFixed(2)+'% · 模型日漂移 '+(fc.drift>0?'+':'')+fc.drift.toFixed(3)+'%'+
+      ' · 通道 ≈ 68% 置信带，价格越出通道属正常小概率事件</div></div>'+
+      '<div class="card"><h3>📚 同类信号历史回测</h3>'+
+      (bt.n>=8?
+        '<div class="b2">'+
+        '<div class="kv"><span class="muted">历史相似样本</span><span class="mono">'+bt.n+' 次</span></div>'+
+        '<div class="kv"><span class="muted">5日上涨概率</span><span class="mono '+(bt.win>50?'up':'down')+'">'+bt.win.toFixed(1)+'%</span></div>'+
+        '<div class="kv"><span class="muted">5日平均涨跌</span><span class="mono '+cls(bt.avg)+'">'+pct(bt.avg)+'</span></div>'+
+        '<div class="kv"><span class="muted">样本区间</span><span class="mono">'+esc(k.rows[0].d)+' 起</span></div></div>'+
+        '<div class="tiny muted" style="margin-top:6px">统计口径：本标的历史上综合分与当前相差 ±22 以内的交易日，其后 5 个交易日的表现。样本量小于 30 时参考价值有限。</div>'
+        : '<div class="loading">该标的历史上相似信号样本不足（'+bt.n+' 次），暂不做统计</div>')+
+      '</div>'+
+      '<div class="disc">⚠️ <b>免责声明</b>：本页所有"信号""概率""区间"均由公开历史行情按固定技术指标公式计算得出，属于对历史规律的统计描述，<b>不是预言，也不构成任何投资建议或买卖要约</b>。历史表现不代表未来收益，市场受政策、突发事件等非技术因素影响巨大。据此操作，风险自负。</div>';
+  }).catch(function(e){
+    var d=$('#dk'); if(d) d.innerHTML = '<div class="err">K线/建模失败：'+esc(e.message)+'<br><span class="tiny">行情节点限流时会出现，稍等 1-2 分钟点右上角 ↻ 重试即可。</span></div>';
+  });
+}
+/* ============ 基金 ============ */
+var FUND_BASE = 'https://fundmobapi.eastmoney.com/', FP = 'plat=Android&appType=ttjj&product=EFund&Version=1&deviceid=mkterm';
+function fapi(path, qs){ return jsonp(FUND_BASE+path+'?'+FP+'&'+qs, {cbName:'callback', timeout:11000}) }
+var FUND_TYPES = [
+  {k:'001', n:'股票型'},{k:'002', n:'混合型'},{k:'003', n:'债券型'},{k:'004', n:'指数型'},
+  {k:'005', n:'QDII'},{k:'006', n:'LOF'},{k:'007', n:'FOF'},{k:'melon', n:'货币型'}
+];
+var FUND_SORT = [
+  {k:'RZDF', n:'日涨幅'},{k:'SYL_Z', n:'近一周'},{k:'SYL_Y', n:'近一月'},{k:'SYL_3Y', n:'近三月'},
+  {k:'SYL_6Y', n:'近六月'},{k:'SYL_1N', n:'近一年'},{k:'SYL_JN', n:'今年来'},{k:'SYL_LN', n:'成立来'}
+];
+var FUND_SUBS = [{id:'rank',name:'🏆 全球基金排行'},{id:'my',name:'⭐ 我的基金'},{id:'etf',name:'📊 场内ETF'},{id:'qdii',name:'🌏 QDII海外'}];
+function getFW(){ return LS.get('fwatch', ['110022','161725','005827','012414','270042']) }
+function setFW(v){ LS.set('fwatch', v) }
+
+function viewFund(sub){
+  if(sub==='rank') return fundRank();
+  if(sub==='my') return fundMy();
+  if(sub==='etf') return fundEtf();
+  if(sub==='qdii') return fundRank('005');
+}
+function fundRank(force){
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><h3>🏆 基金业绩排行 <span class="sp"></span>'+
+    '<select id="ftype" style="width:auto;padding:4px 6px;font-size:12px">'+FUND_TYPES.map(function(t){return '<option value="'+t.k+'"'+(force===t.k?' selected':'')+'>'+t.n+'</option>'}).join('')+'</select>'+
+    '<select id="fsort" style="width:auto;padding:4px 6px;font-size:12px;margin-left:5px">'+FUND_SORT.map(function(t){return '<option value="'+t.k+'"'+(t.k==='SYL_1N'?' selected':'')+'>'+t.n+'</option>'}).join('')+'</select></h3>'+
+    '<div id="frbox" class="loading">加载中…</div></div>'+
+    '<div class="disc">数据来自天天基金公开接口，净值按交易日更新（QDII 因时差通常延后 1–2 日）。排行仅反映历史业绩，<b>不构成投资建议</b>。</div>';
+  $('#ftype').onchange = $('#fsort').onchange = loadFundRank;
+  loadFundRank();
+}
+function loadFundRank(){
+  var t = $('#ftype').value, s = $('#fsort').value, box = $('#frbox');
+  box.className = 'loading'; box.textContent = '加载中…';
+  withCache('frank_'+t+'_'+s, function(){
+    return fapi('FundMApi/FundRankNewList.ashx', 'FundType='+t+'&SortColumn='+s+'&Sort=desc&pageIndex=1&pageSize=40&isShowSE=false&showmktcap=0')
+      .then(function(r){ return (r&&r.Datas)||[] });
+  }, function(l, ct){
+    box.className='';
+    if(ct) banner(cacheNote(ct));
+    var sn = (FUND_SORT.filter(function(x){return x.k===s})[0]||{}).n;
+    box.innerHTML = '<table><thead><tr><th>基金</th><th>净值</th><th>日涨</th><th>'+sn+'</th></tr></thead><tbody>'+
+      l.map(function(f,i){
+        var r1 = parseFloat(f.RZDF), r2 = parseFloat(f[s]);
+        return '<tr class="fitem" data-fc="'+f.FCODE+'" data-fn="'+esc(f.SHORTNAME)+'" style="cursor:pointer">'+
+          '<td><div style="max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+(i+1)+'. '+esc(f.SHORTNAME)+'</div><div class="tiny muted mono">'+f.FCODE+'</div></td>'+
+          '<td class="mono">'+esc(f.DWJZ)+'</td>'+
+          '<td class="mono '+cls(r1)+'">'+(isNaN(r1)?'--':pct(r1))+'</td>'+
+          '<td class="mono '+cls(r2)+'" style="font-weight:700">'+(isNaN(r2)?'--':pct(r2))+'</td></tr>';
+      }).join('')+'</tbody></table>';
+    if(!ct) markUpdated();
+  }).catch(function(e){ box.className=''; box.innerHTML='<div class="err">排行加载失败：'+esc(e.message)+'（天天基金接口限流，稍后点 ↻ 重试）</div>' });
+}
+function fundMy(){
+  var v = $('#view'), w = getFW();
+  v.innerHTML = '<div class="card"><h3>🔎 搜索基金</h3><div class="sr"><input id="fkw" placeholder="基金代码或名称，如 白酒 / 110022"><button class="btn pri" id="fgo">搜索</button></div><div id="fres"></div></div>'+
+    '<div class="card"><h3>⭐ 我的基金 <span class="sp"></span><span class="tiny muted">盘中为估算净值</span></h3><div id="fmybox" class="loading">加载中…</div></div>';
+  var run = function(){
+    var kw = $('#fkw').value.trim(); if(!kw) return;
+    $('#fres').innerHTML = '<div class="loading">搜索中…</div>';
+    jsonp('https://fundsuggest.eastmoney.com/FundSearch/api/FundSearchAPI.ashx?m=1&key='+encodeURIComponent(kw), {cbName:'callback'})
+    .then(function(r){
+      var l = (r&&r.Datas)||[];
+      l = l.filter(function(x){return x.CODE&&x.CATEGORYDESC!=='沪深港'}).slice(0,12);
+      $('#fres').innerHTML = l.length? l.map(function(x){
+        var on = getFW().indexOf(x.CODE)>=0;
+        return '<div class="rowline"><div style="flex:1" class="fitem" data-fc="'+x.CODE+'" data-fn="'+esc(x.NAME)+'"><div style="font-size:13px">'+esc(x.NAME)+'</div><div class="tiny muted mono">'+x.CODE+' · '+esc(x.CATEGORYDESC||x.FundBaseInfo&&x.FundBaseInfo.FTYPE||'')+'</div></div>'+
+          '<button class="btn sm addf" data-fc="'+x.CODE+'">'+(on?'已添加':'☆ 添加')+'</button></div>';
+      }).join('') : '<div class="loading">没找到，试试基金代码</div>';
+    }).catch(function(e){ $('#fres').innerHTML='<div class="err">搜索失败：'+esc(e.message)+'</div>' });
+  };
+  $('#fgo').onclick = run;
+  $('#fkw').onkeydown = function(e){ if(e.key==='Enter') run() };
+  loadFundMy();
+}
+function loadFundMy(){
+  var w = getFW(), box = $('#fmybox');
+  if(!box) return;
+  if(!w.length){ box.className=''; box.innerHTML='<div class="loading">还没添加基金，上方搜索后点 ☆</div>'; return }
+  withCache('fmy_'+w.join('_'), function(){
+    return Promise.all([
+      fapi('FundMNewApi/FundMNFInfo', 'pageIndex=1&pageSize=50&Fcodes='+w.join(',')),
+      fapi('FundMNewApi/FundMNIVInfoMultiple', 'Fcodes='+w.join(',')).catch(function(){return null})
+    ]).then(function(rs){ return {l:(rs[0]&&rs[0].Datas)||[], iv:(rs[1]&&rs[1].Datas)||[]} });
+  }, function(data, ct){
+    var l = data.l, iv = {};
+    data.iv.forEach(function(x){ iv[x.FCODE]=x });
+    box.className = '';
+    if(ct) banner(cacheNote(ct));
+    box.innerHTML = l.map(function(f){
+      var g = iv[f.FCODE]||{}, gz = parseFloat(g.GSZZL!=null?g.GSZZL:f.GSZZL), nv = parseFloat(f.NAVCHGRT);
+      return '<div class="rowline"><div style="flex:1;min-width:0" class="fitem" data-fc="'+f.FCODE+'" data-fn="'+esc(f.SHORTNAME)+'">'+
+        '<div style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(f.SHORTNAME)+'</div>'+
+        '<div class="tiny muted mono">'+f.FCODE+' · 净值日 '+esc(f.PDATE||'')+'</div></div>'+
+        '<div style="text-align:right"><div class="mono">'+esc(f.NAV)+'</div><div class="tiny mono '+cls(nv)+'">'+ (isNaN(nv)?'--':pct(nv)) +'</div></div>'+
+        '<div style="text-align:right;width:74px"><div class="tiny muted">估算</div><div class="mono '+cls(gz)+'" style="font-weight:700">'+(isNaN(gz)?'--':pct(gz))+'</div></div>'+
+        '<span class="delf muted" data-fc="'+f.FCODE+'" style="padding:0 4px">✕</span></div>';
+    }).join('') || '<div class="loading">暂无数据</div>';
+    if(!ct) markUpdated();
+  }).catch(function(e){ box.className=''; box.innerHTML='<div class="err">加载失败：'+esc(e.message)+'（接口限流，稍后重试）</div>' });
+}
+function fundEtf(){
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><h3>📊 场内 ETF 实时行情 <span class="sp"></span><span class="tiny muted">按涨幅排序</span></h3><div id="etfbox" class="loading">加载中…</div></div>';
+  withCache('etf', function(){ return clist('b:MK0021,b:MK0022,b:MK0023,b:MK0024', 'f3', 40, 1) },
+  function(l, ct){
+    var box = $('#etfbox'); if(!box) return;
+    box.className = 'grid';
+    box.innerHTML = l.map(function(q){return qcard(q)}).join('') || '<div class="loading">暂无数据</div>';
+    if(ct) banner(cacheNote(ct)); else markUpdated();
+  }).catch(function(e){ var b=$('#etfbox'); if(b){ b.className=''; b.innerHTML='<div class="err">加载失败：'+esc(e.message)+'（接口限流，稍后重试）</div>' } });
+}
+/* 基金详情：净值序列 → 同一套量化模型 */
+function openFund(code, name){
+  App.detail = {fund:code, name:name};
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><div class="fl"><button class="btn sm" id="fback">← 返回</button><span class="sp"></span>'+
+    '<button class="btn sm" id="fwbtn">'+(getFW().indexOf(code)>=0?'★ 已添加':'☆ 加自选')+'</button></div>'+
+    '<div id="fhead" style="margin-top:10px"><div class="loading">加载中…</div></div></div>'+
+    '<div class="card"><h3>📈 单位净值走势（近 1 年）</h3><div id="fchart"><div class="loading">加载中…</div></div></div>'+
+    '<div id="fsig"></div>';
+  $('#fback').onclick = function(){ App.detail=null; App.render() };
+  $('#fwbtn').onclick = function(){
+    var w = getFW(), i = w.indexOf(code);
+    if(i>=0) w.splice(i,1); else w.push(code);
+    setFW(w); this.textContent = i<0?'★ 已添加':'☆ 加自选';
+  };
+  Promise.all([
+    fapi('FundMNewApi/FundMNDetailInformation', 'FCODE='+code).catch(function(){return null}),
+    fapi('FundMNewApi/FundMNFInfo', 'pageIndex=1&pageSize=1&Fcodes='+code),
+    fapi('FundMNewApi/FundMNHisNetList', 'FCODE='+code+'&RANGE=y&pageIndex=1&pageSize=260')
+  ]).then(function(rs){
+    var info = rs[0]&&rs[0].Datas||{}, f = (rs[1]&&rs[1].Datas&&rs[1].Datas[0])||{}, his = (rs[2]&&rs[2].Datas)||[];
+    var nv = parseFloat(f.NAVCHGRT);
+    $('#fhead').innerHTML = '<div style="font-size:15px;font-weight:700">'+esc(name||info.SHORTNAME||'')+' <span class="tiny muted mono">'+code+'</span></div>'+
+      '<div class="fl" style="gap:12px;margin:6px 0 8px"><div class="'+cls(nv)+' mono" style="font-size:30px;font-weight:800">'+esc(f.NAV||'--')+'</div>'+
+      '<div class="'+cls(nv)+'" style="font-size:14px"><div>'+(isNaN(nv)?'--':pct(nv))+'</div><div class="tiny muted">'+esc(f.PDATE||'')+'</div></div></div>'+
+      '<div class="b2 tiny">'+
+      '<div class="kv"><span class="muted">累计净值</span><span class="mono">'+esc(f.ACCNAV||'--')+'</span></div>'+
+      '<div class="kv"><span class="muted">类型</span><span>'+esc(info.FTYPE||'--')+'</span></div>'+
+      '<div class="kv"><span class="muted">基金经理</span><span>'+esc(info.JJJL||'--')+'</span></div>'+
+      '<div class="kv"><span class="muted">基金公司</span><span style="max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+esc(info.JJGS||'--')+'</span></div>'+
+      '<div class="kv"><span class="muted">规模</span><span class="mono">'+(info.ENDNAV?fnum(parseFloat(info.ENDNAV))+'元':'--')+'</span></div>'+
+      '<div class="kv"><span class="muted">成立日</span><span class="mono">'+esc(info.ESTABDATE||'--')+'</span></div></div>';
+    if(his.length<40){ $('#fchart').innerHTML = '<div class="loading">历史净值不足，无法建模</div>'; return }
+    var rows = his.slice().reverse().map(function(x){ var c=parseFloat(x.DWJZ); return {d:x.FSRQ, o:c, c:c, h:c, l:c, v:1, pct:parseFloat(x.JZZZL)||0} })
+      .filter(function(r){ return !isNaN(r.c) });
+    var vals = rows.map(function(r){return r.c});
+    $('#fchart').innerHTML = '<div style="width:100%">'+sparkline(vals, 340, 90)+'</div>'+
+      '<div class="b2 tiny" style="margin-top:8px">'+
+      '<div class="kv"><span class="muted">近1年最高</span><span class="mono up">'+fx(Math.max.apply(null,vals),4)+'</span></div>'+
+      '<div class="kv"><span class="muted">近1年最低</span><span class="mono down">'+fx(Math.min.apply(null,vals),4)+'</span></div>'+
+      '<div class="kv"><span class="muted">区间涨跌</span><span class="mono '+cls(vals[vals.length-1]-vals[0])+'">'+pct((vals[vals.length-1]/vals[0]-1)*100)+'</span></div>'+
+      '<div class="kv"><span class="muted">最大回撤</span><span class="mono down">'+pct(-maxDD(vals))+'</span></div>'+
+      '<div class="kv"><span class="muted">年化波动率</span><span class="mono">'+annVol(vals).toFixed(2)+'%</span></div>'+
+      '<div class="kv"><span class="muted">夏普(粗算)</span><span class="mono">'+sharpe(vals).toFixed(2)+'</span></div></div>';
+    if(rows.length>65){
+      var X = indicators(rows), s = scoreAt(X, rows.length-1);
+      if(s){
+        var fc = forecast(X, s.score), bt = backtest(X, s.score, 5), lv = levelOf(s.score), pos=(s.score+100)/2;
+        $('#fsig').innerHTML = '<div class="card"><h3>🎯 净值趋势信号</h3><div class="sig">'+
+          '<div class="lv '+lv.c+'">'+lv.e+' '+lv.t+'</div>'+
+          '<div class="mono '+lv.c+'" style="font-size:13px">综合分 '+(s.score>0?'+':'')+s.score.toFixed(1)+' / 100</div>'+
+          '<div class="gauge"><i style="left:'+pos.toFixed(1)+'%"></i></div></div>'+
+          '<table style="margin-top:10px"><tbody>'+s.detail.filter(function(d){return d.name!=='量能'}).map(function(d){
+            var c = d.v>0.12?'up':(d.v<-0.12?'down':'flat');
+            return '<tr><td>'+d.name+'</td><td class="mono muted">'+esc(d.txt)+'</td><td class="'+c+'">'+(d.v>0?'+':'')+d.v.toFixed(2)+'</td></tr>';
+          }).join('')+'</tbody></table>'+
+          '<div class="b2 tiny" style="margin-top:8px">'+
+          '<div class="kv"><span class="muted">5日净值中枢</span><span class="mono">'+fx(fc.d5.mid,4)+'</span></div>'+
+          '<div class="kv"><span class="muted">20日区间</span><span class="mono">'+fx(fc.d20.lo,4)+' ~ '+fx(fc.d20.hi,4)+'</span></div>'+
+          (bt.n>=8?'<div class="kv"><span class="muted">同类信号样本</span><span class="mono">'+bt.n+' 次</span></div>'+
+          '<div class="kv"><span class="muted">5日上涨概率</span><span class="mono '+(bt.win>50?'up':'down')+'">'+bt.win.toFixed(0)+'%</span></div>':'')+
+          '</div></div>'+
+          '<div class="disc">⚠️ 基金信号基于<b>历史净值序列</b>的技术统计，不含持仓穿透与基本面分析，且申赎按当日收盘净值成交、存在时滞。<b>不构成投资建议</b>，基金有风险，投资需谨慎。</div>';
+      }
+    }
+    markUpdated();
+  }).catch(function(e){
+    $('#fhead').innerHTML = '<div class="err">加载失败：'+esc(e.message)+'</div>';
+  });
+}
+function maxDD(v){ var peak=v[0], dd=0; for(var i=1;i<v.length;i++){ if(v[i]>peak)peak=v[i]; var d=(peak-v[i])/peak*100; if(d>dd)dd=d } return dd }
+function dailyRet(v){ var r=[]; for(var i=1;i<v.length;i++) r.push(v[i]/v[i-1]-1); return r }
+function annVol(v){ var r=dailyRet(v); if(!r.length)return 0; var m=r.reduce(function(a,b){return a+b},0)/r.length;
+  var s=r.reduce(function(a,b){return a+(b-m)*(b-m)},0)/r.length; return Math.sqrt(s)*Math.sqrt(244)*100 }
+function sharpe(v){ var r=dailyRet(v); if(!r.length)return 0; var m=r.reduce(function(a,b){return a+b},0)/r.length;
+  var s=Math.sqrt(r.reduce(function(a,b){return a+(b-m)*(b-m)},0)/r.length); if(!s)return 0;
+  return (m*244-0.02)/(s*Math.sqrt(244)) }
+/* ============ 实时资讯 ============ */
+var NEWS_SUBS = [
+  {id:'flash', name:'🔴 7×24 快讯'},
+  {id:'intl', name:'🌍 国际要闻'},
+  {id:'fin', name:'💹 财经头条'},
+  {id:'cmd', name:'🛢️ 能源商品'},
+  {id:'us', name:'🇺🇸 美股'}
+];
+function stripTag(s){ return String(s||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').trim() }
+/* 失败自动重试一次，避免偶发限流 */
+function retryOnce(fn, wait){
+  return fn().catch(function(){
+    return new Promise(function(res){ setTimeout(res, wait||1800) }).then(fn);
+  });
+}
+function viewNews(sub){
+  var v = $('#view');
+  v.innerHTML = '<div class="card"><h3 id="nhd">加载中…<span class="sp"></span><span class="tiny muted" id="nts"></span></h3><div id="nbox"><div class="loading">正在拉取最新资讯…</div></div></div>';
+  if(sub==='flash') return loadFlash();
+  var map = {
+    intl:{c:351, n:'🌍 国际要闻', fb:function(){ loadFlash('🌍 国际要闻（备用源：全球快讯）', /美国|欧洲|日本|俄|乌克兰|中东|以色列|伊朗|印度|韩国|加拿大|英国|德国|法国|关税|美联储|央行|OPEC|联合国|北约|总统|总理/) }},
+    fin:{c:350, n:'💹 财经头条', fb:function(){ loadSinaRoll(2516, '💹 财经头条（备用源：新浪财经）') }},
+    cmd:{c:356, n:'🛢️ 能源与大宗商品', fb:function(){ loadFlash('🛢️ 能源与大宗商品（备用源：全球快讯）', /原油|黄金|白银|铜|天然气|大宗|商品|能源|OPEC|钢|铁矿|农产品|大豆|玉米|小麦|期货/) }}
+  };
+  if(map[sub]) return loadEmNews(map[sub].c, map[sub].n, map[sub].fb);
+  if(sub==='us') return loadSinaRoll(2518, '🇺🇸 美股资讯');
+}
+function loadFlash(title, filter){
+  $('#nhd').innerHTML = (title||'🔴 全球财经 7×24 直播')+'<span class="sp"></span><span class="tiny muted" id="nts"></span>';
+  withCache('news_flash', function(){
+    return retryOnce(function(){
+      return jsonp('https://zhibo.sina.com.cn/api/zhibo/feed?page=1&page_size=60&zhibo_id=152&tag_id=0&dire=f&dpc=1', {cbName:'callback'})
+        .then(function(r){ return (((r.result||{}).data||{}).feed||{}).list||[] });
+    });
+  }, function(l, ct){
+    var box = $('#nbox'); if(!box) return;
+    if(filter) l = l.filter(function(x){ return filter.test(stripTag(x.rich_text)) });
+    box.innerHTML = l.map(function(x){
+      var t = (x.create_time||'').slice(11,16), tx = stripTag(x.rich_text);
+      var hot = /涨|跌|美联储|央行|黄金|原油|关税|降息|加息|GDP|CPI/.test(tx);
+      var ext = {}; try{ ext = JSON.parse(x.ext||'{}') }catch(e){}
+      var url = ext.docurl||'';
+      return '<div class="flash'+(hot?' hot':'')+'"><div class="tm">'+esc(t)+'</div><div class="tx">'+esc(tx)+
+        (url?' <a href="'+esc(url)+'" target="_blank" rel="noopener" class="tiny" style="color:#3b82f6">详情›</a>':'')+'</div></div>';
+    }).join('') || '<div class="loading">暂无快讯</div>';
+    var ts=$('#nts'); if(ts) ts.textContent = (ct?'缓存 '+ago(ct):'更新 '+new Date().toTimeString().slice(0,8));
+    if(!ct) markUpdated();
+  }).catch(function(e){ var b=$('#nbox'); if(b) b.innerHTML='<div class="err">快讯加载失败：'+esc(e.message)+'（新浪接口暂时不可用，稍后重试）</div>' });
+}
+function loadEmNews(col, title, fb){
+  $('#nhd').innerHTML = esc(title)+'<span class="sp"></span><span class="tiny muted" id="nts"></span>';
+  withCache('news_em_'+col, function(){
+    return retryOnce(function(){ return jsonp('https://np-listapi.eastmoney.com/comm/web/getNewsByColumns?client=web&biz=web_news_col&column='+col+
+      '&order=1&needInteractData=0&page_index=1&page_size=30&req_trace=mk&fields=code,showTime,title,mediaName,summary,image,url,uniqueUrl&types=1,20', {cbName:'callback'})
+      .then(function(r){ var l=((r.data||{}).list)||[]; if(!l.length) throw new Error('空列表'); return l }) });
+  }, function(l, ct){
+    var box = $('#nbox'); if(!box) return;
+    box.innerHTML = l.map(function(x){
+      return '<div class="news" onclick="window.open(\''+esc(x.uniqueUrl||x.url)+'\',\'_blank\')">'+
+        '<div class="t">'+esc(x.title)+'</div>'+
+        (x.summary?'<div class="s">'+esc(stripTag(x.summary))+'</div>':'')+
+        '<div class="m"><span>'+esc(x.mediaName||'')+'</span><span>'+esc((x.showTime||'').slice(5,16))+'</span></div></div>';
+    }).join('') || '<div class="loading">暂无内容</div>';
+    var ts=$('#nts'); if(ts) ts.textContent = (ct?'缓存 '+ago(ct):'更新 '+new Date().toTimeString().slice(0,8));
+    if(!ct) markUpdated();
+  }).catch(function(e){
+    if(fb) return fb();
+    var b=$('#nbox'); if(b) b.innerHTML='<div class="err">资讯加载失败：'+esc(e.message)+'（东财接口限流，稍后点 ↻ 重试）</div>';
+  });
+}
+function loadSinaRoll(lid, title){
+  $('#nhd').innerHTML = esc(title)+'<span class="sp"></span><span class="tiny muted" id="nts"></span>';
+  withCache('news_sina_'+lid, function(){
+    return retryOnce(function(){
+      return jsonp('https://feed.mix.sina.com.cn/api/roll/get?pageid=153&lid='+lid+'&k=&num=30&page=1', {cbName:'callback'})
+        .then(function(r){ return ((r.result||{}).data)||[] });
+    });
+  }, function(l, ct){
+    var box = $('#nbox'); if(!box) return;
+    box.innerHTML = l.map(function(x){
+      var d = new Date(+x.ctime*1000);
+      return '<div class="news" onclick="window.open(\''+esc(x.url)+'\',\'_blank\')">'+
+        '<div class="t">'+esc(x.title)+'</div>'+
+        (x.intro?'<div class="s">'+esc(stripTag(x.intro))+'</div>':'')+
+        '<div class="m"><span>'+esc(x.media_name||x.author||'新浪财经')+'</span><span>'+
+        (d.getMonth()+1)+'-'+d.getDate()+' '+('0'+d.getHours()).slice(-2)+':'+('0'+d.getMinutes()).slice(-2)+'</span></div></div>';
+    }).join('') || '<div class="loading">暂无内容</div>';
+    var ts=$('#nts'); if(ts) ts.textContent = (ct?'缓存 '+ago(ct):'更新 '+new Date().toTimeString().slice(0,8));
+    if(!ct) markUpdated();
+  }).catch(function(e){ var b=$('#nbox'); if(b) b.innerHTML='<div class="err">资讯加载失败：'+esc(e.message)+'（接口暂时不可用，稍后重试）</div>' });
+}
+/* ============ 游戏引擎（33 款） ============ */
+var GAMES = [];
+function defGame(id, icon, name, cat, tip, init){ GAMES.push({id:id, icon:icon, name:name, cat:cat, tip:tip, init:init}) }
+var GC = null;
+function bestKey(id){ return 'best_'+id }
+function getBest(id){ return LS.get(bestKey(id), 0) }
+
+function openGame(g){
+  closeGame();
+  var wrap = $('#stwrap');
+  wrap.innerHTML = '';
+  $('#sttitle').textContent = g.icon+' '+g.name;
+  $('#stscore').textContent = '';
+  $('#stage').classList.add('on');
+  document.body.style.overflow = 'hidden';
+  var ctx = {
+    id: g.id, wrap: wrap, cleans: [], raf: 0, keys: {},
+    el: function(html){ var d=document.createElement('div'); d.innerHTML=html; var n=d.firstElementChild; wrap.appendChild(n); return n },
+    node: function(tag, css){ var n=document.createElement(tag); if(css) n.style.cssText=css; wrap.appendChild(n); return n },
+    canvas: function(w, h){
+      var maxw = Math.min(window.innerWidth-24, 430);
+      var maxh = window.innerHeight - 180;
+      var fit = Math.min(maxw, maxh*w/h);
+      var dpr = Math.min(window.devicePixelRatio||1, 2);
+      var cv = document.createElement('canvas');
+      cv.width = w*dpr; cv.height = h*dpr;
+      cv.style.width = fit+'px'; cv.style.height = (fit*h/w)+'px';
+      wrap.appendChild(cv);
+      var c = cv.getContext('2d'); c.scale(dpr,dpr);
+      c.W = w; c.H = h; c.cv = cv;
+      cv.pos = function(e){
+        var r = cv.getBoundingClientRect(), t = (e.touches&&e.touches[0])||(e.changedTouches&&e.changedTouches[0])||e;
+        return {x:(t.clientX-r.left)/r.width*w, y:(t.clientY-r.top)/r.height*h};
+      };
+      return c;
+    },
+    tip: function(t){ var d=document.createElement('div'); d.className='gtip'; d.innerHTML=t; wrap.appendChild(d); return d },
+    row: function(btns){
+      var d = document.createElement('div'); d.className='fl wrap'; d.style.justifyContent='center'; d.style.gap='8px';
+      btns.forEach(function(b){ var x=document.createElement('button'); x.className='gbtn'; x.textContent=b.t; x.onclick=b.fn; d.appendChild(x); b.el=x });
+      wrap.appendChild(d); return d;
+    },
+    dpad: function(fn, labels){
+      var L = labels||['','↑','','←','↓','→'];
+      var d = document.createElement('div'); d.className='pad';
+      var dirs = ['','up','','left','down','right'];
+      L.forEach(function(t,i){
+        var b = document.createElement('button');
+        if(!t){ b.style.visibility='hidden' } else { b.textContent = t;
+          var act = function(e){ e.preventDefault(); fn(dirs[i]||t) };
+          b.addEventListener('touchstart', act, {passive:false}); b.addEventListener('mousedown', act);
+        }
+        d.appendChild(b);
+      });
+      wrap.appendChild(d); return d;
+    },
+    on: function(target, ev, fn, opt){ target.addEventListener(ev, fn, opt); ctx.cleans.push(function(){ target.removeEventListener(ev, fn, opt) }) },
+    key: function(fn){ ctx.on(window,'keydown',function(e){ if(/^Arrow| $/.test(e.key)) e.preventDefault(); fn(e.key, e) }) },
+    swipe: function(el, fn){
+      var sx=0, sy=0, st=0;
+      ctx.on(el,'touchstart',function(e){ var t=e.touches[0]; sx=t.clientX; sy=t.clientY; st=Date.now() },{passive:true});
+      ctx.on(el,'touchend',function(e){
+        var t=e.changedTouches[0], dx=t.clientX-sx, dy=t.clientY-sy;
+        if(Math.abs(dx)<22 && Math.abs(dy)<22){ if(Date.now()-st<400) fn('tap', t); return }
+        fn(Math.abs(dx)>Math.abs(dy) ? (dx>0?'right':'left') : (dy>0?'down':'up'), t);
+      },{passive:true});
+    },
+    loop: function(fn){
+      ctx._fn = fn;
+      var last = performance.now();
+      function step(now){ var dt=Math.min(50, now-last); last=now; if(fn(dt/16.67, now)===false){ ctx.raf=0; return } ctx.raf=requestAnimationFrame(step) }
+      ctx.raf = requestAnimationFrame(step);
+    },
+    stop: function(){ if(ctx.raf) cancelAnimationFrame(ctx.raf); ctx.raf=0 },
+    score: function(s, extra){
+      var b = getBest(ctx.id);
+      if(typeof s==='number' && s>b){ b=s; LS.set(bestKey(ctx.id), s) }
+      $('#stscore').innerHTML = '<div>得分 '+s+'</div><div class="tiny muted">最佳 '+b+(extra?' · '+extra:'')+'</div>';
+    },
+    info: function(html){ $('#stscore').innerHTML = html },
+    over: function(title, sub, btn, fn){
+      ctx.stop();
+      var d = document.createElement('div'); d.className='gover';
+      d.innerHTML = '<div class="big">'+title+'</div><div class="muted">'+(sub||'')+'</div>';
+      var b = document.createElement('button'); b.className='gbtn'; b.textContent = btn||'再来一局';
+      b.onclick = function(){ d.remove(); fn&&fn(); if(ctx._fn && !ctx.raf) ctx.loop(ctx._fn) }; d.appendChild(b);
+      wrap.appendChild(d); return d;
+    },
+    rnd: function(n){ return Math.floor(Math.random()*n) },
+    shuffle: function(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i];a[i]=a[j];a[j]=t } return a }
+  };
+  GC = ctx;
+  ctx.on(window,'keydown',function(e){ ctx.keys[e.key]=1 });
+  ctx.on(window,'keyup',function(e){ ctx.keys[e.key]=0 });
+  try{ g.init(ctx) }catch(err){ wrap.innerHTML = '<div class="err">游戏加载出错：'+esc(err.message)+'</div>' }
+}
+function closeGame(){
+  if(GC){ GC.stop(); GC.cleans.forEach(function(f){ try{f()}catch(e){} }); GC=null }
+  $('#stage').classList.remove('on');
+  $('#stwrap').innerHTML = '';
+  document.body.style.overflow = '';
+}
+/* 游戏列表页 */
+function viewGames(sub){
+  var cats = ['全部','益智','街机','棋牌','反应','休闲'];
+  var list = (sub==='全部'||!sub) ? GAMES : GAMES.filter(function(g){return g.cat===sub});
+  $('#view').innerHTML = '<div class="card"><h3>🎮 休息一下 · 共 '+GAMES.length+' 款离线小游戏 <span class="sp"></span><span class="tiny muted">无需联网</span></h3>'+
+    '<div class="ggrid">'+list.map(function(g){
+      var b = getBest(g.id);
+      return '<div class="gcard" data-g="'+g.id+'"><div class="ic">'+g.icon+'</div><div class="gn">'+g.name+'</div>'+
+        '<div class="gt">'+g.cat+'</div><div class="bs">'+(b?'最佳 '+b:'')+'</div></div>';
+    }).join('')+'</div></div>';
+}
+/* ---------- 游戏 1-11 ---------- */
+defGame('g2048','🔢','2048','益智','滑动或方向键合并数字，凑出 2048',function(gc){
+  var c = gc.canvas(400,400), N=4, b=[], sc=0;
+  var CL={0:'#1a2338',2:'#3a4664',4:'#465682',8:'#c78b3d',16:'#d97b39',32:'#e0603c',64:'#e04040',128:'#e0c040',256:'#e0b020',512:'#dda000',1024:'#d08c00',2048:'#f0b000'};
+  function reset(){ b=[]; for(var i=0;i<16;i++)b.push(0); sc=0; add(); add(); draw() }
+  function add(){ var e=[]; b.forEach(function(v,i){if(!v)e.push(i)}); if(!e.length)return; b[e[gc.rnd(e.length)]] = Math.random()<0.9?2:4 }
+  function draw(){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,400,400);
+    for(var i=0;i<16;i++){
+      var x=(i%4)*97+8, y=((i/4)|0)*97+8, v=b[i];
+      c.fillStyle = CL[v]||'#f09000'; c.beginPath(); c.roundRect(x,y,89,89,10); c.fill();
+      if(v){ c.fillStyle = v<=4?'#e8ecf5':'#fff'; c.font='bold '+(v>=1024?26:v>=128?32:38)+'px sans-serif';
+        c.textAlign='center'; c.textBaseline='middle'; c.fillText(v, x+44, y+46) }
+    }
+    gc.score(sc);
+  }
+  function move(d){
+    var moved=false, idx=[0,1,2,3];
+    for(var r=0;r<4;r++){
+      var line=[];
+      for(var k=0;k<4;k++){ var i = d==='left'||d==='right' ? r*4+k : k*4+r; line.push({i:i,v:b[i]}) }
+      if(d==='right'||d==='down') line.reverse();
+      var vals = line.map(function(o){return o.v}).filter(function(v){return v});
+      for(var k2=0;k2<vals.length-1;k2++){ if(vals[k2]===vals[k2+1]){ vals[k2]*=2; sc+=vals[k2]; vals.splice(k2+1,1) } }
+      while(vals.length<4) vals.push(0);
+      line.forEach(function(o,k3){ if(b[o.i]!==vals[k3]){ moved=true; b[o.i]=vals[k3] } });
+    }
+    if(moved){ add(); draw();
+      if(b.indexOf(2048)>=0 && !gc.won){ gc.won=1; gc.over('🎉 2048 达成！','继续挑战更高分','继续',function(){}) }
+      if(dead()) gc.over('游戏结束','得分 '+sc,'再来一局',reset);
+    }
+  }
+  function dead(){
+    if(b.indexOf(0)>=0) return false;
+    for(var r=0;r<4;r++)for(var k=0;k<4;k++){ var i=r*4+k;
+      if(k<3&&b[i]===b[i+1]) return false; if(r<3&&b[i]===b[i+4]) return false }
+    return true;
+  }
+  gc.key(function(k){ if(k==='ArrowLeft')move('left'); if(k==='ArrowRight')move('right'); if(k==='ArrowUp')move('up'); if(k==='ArrowDown')move('down') });
+  gc.swipe(c.cv, function(d){ if(d!=='tap') move(d) });
+  gc.dpad(move);
+  gc.row([{t:'重开',fn:reset}]);
+  gc.tip('滑动屏幕 / 方向键 / 下方按键均可操作');
+  reset();
+});
+
+defGame('gsnake','🐍','贪吃蛇','街机','吃到食物变长，别撞墙撞自己',function(gc){
+  var c=gc.canvas(360,360), N=18, S=20, sn, dir, food, sp, tick=0, sc=0, dead=false;
+  function reset(){ sn=[{x:9,y:9},{x:8,y:9},{x:7,y:9}]; dir={x:1,y:0}; sc=0; sp=8; dead=false; drop(); }
+  function drop(){ do{ food={x:gc.rnd(N),y:gc.rnd(N)} }while(sn.some(function(s){return s.x===food.x&&s.y===food.y})) }
+  function turn(d){
+    var m={left:{x:-1,y:0},right:{x:1,y:0},up:{x:0,y:-1},down:{x:0,y:1}}[d];
+    if(m && !(m.x===-dir.x&&m.y===-dir.y) && !(m.x===dir.x&&m.y===dir.y)) dir=m;
+  }
+  gc.key(function(k){ turn({ArrowLeft:'left',ArrowRight:'right',ArrowUp:'up',ArrowDown:'down'}[k]) });
+  gc.swipe(c.cv,function(d){ turn(d) }); gc.dpad(turn);
+  function step(dt){
+    tick+=dt; if(tick<sp) { return draw(), true } tick=0;
+    if(dead) return true;
+    var h={x:sn[0].x+dir.x, y:sn[0].y+dir.y};
+    if(h.x<0||h.y<0||h.x>=N||h.y>=N||sn.some(function(s){return s.x===h.x&&s.y===h.y})){
+      dead=true; gc.over('撞到了！','长度 '+sn.length+' · 得分 '+sc,'再来一局',function(){ reset(); gc.loop(step) });
+      return false;
+    }
+    sn.unshift(h);
+    if(h.x===food.x&&h.y===food.y){ sc+=10; drop(); if(sp>3&&sc%50===0)sp-=0.6 } else sn.pop();
+    draw(); return true;
+  }
+  gc.loop(step);
+  function draw(){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,360,360);
+    c.fillStyle='#26314d'; for(var i=0;i<=N;i++){ c.fillRect(i*S,0,.5,360); c.fillRect(0,i*S,360,.5) }
+    c.fillStyle='#ff4757'; c.beginPath(); c.arc(food.x*S+S/2, food.y*S+S/2, S/2-2, 0, 7); c.fill();
+    sn.forEach(function(s,i){ c.fillStyle = i?'#2ed573':'#7bffb0'; c.beginPath(); c.roundRect(s.x*S+1.5,s.y*S+1.5,S-3,S-3,4); c.fill() });
+    gc.score(sc, '长度 '+sn.length);
+  }
+  reset();
+});
+
+defGame('gtetris','🧱','俄罗斯方块','街机','消行得分，速度会越来越快',function(gc){
+  var c=gc.canvas(240,440), W=10,H=20,S=22, g=[], cur, sc=0, lines=0, t=0, sp=30, over=false;
+  var P=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0,0],[1,1,1]],[[0,0,1],[1,1,1]],[[1,1,0],[0,1,1]],[[0,1,1],[1,1,0]]];
+  var CO=['#00d8ff','#ffd400','#c77dff','#ff9f1c','#4d8bff','#2ed573','#ff4757'];
+  function reset(){ g=[]; for(var y=0;y<H;y++){g.push([]); for(var x=0;x<W;x++)g[y].push(0)} sc=0; lines=0; sp=30; over=false; spawn() }
+  function spawn(){ var i=gc.rnd(7); cur={s:P[i].map(function(r){return r.slice()}), c:i+1, x:3, y:0};
+    if(hit(cur.s,cur.x,cur.y)){ over=true; gc.over('游戏结束','消除 '+lines+' 行 · 得分 '+sc,'再来一局',function(){reset()}) } }
+  function hit(s,px,py){
+    for(var y=0;y<s.length;y++)for(var x=0;x<s[y].length;x++){ if(!s[y][x])continue;
+      var nx=px+x, ny=py+y; if(nx<0||nx>=W||ny>=H) return true; if(ny>=0&&g[ny][nx]) return true }
+    return false;
+  }
+  function lock(){
+    cur.s.forEach(function(r,y){ r.forEach(function(v,x){ if(v&&cur.y+y>=0) g[cur.y+y][cur.x+x]=cur.c }) });
+    var n=0;
+    for(var y=H-1;y>=0;y--){ if(g[y].every(function(v){return v})){ g.splice(y,1); g.unshift(new Array(W).fill(0)); n++; y++ } }
+    if(n){ lines+=n; sc += [0,100,300,600,1000][n]; if(sp>8) sp-=n*0.8 }
+    spawn();
+  }
+  function rot(){
+    var s=cur.s, n=s[0].map(function(_,i){ return s.map(function(r){return r[i]}).reverse() });
+    if(!hit(n,cur.x,cur.y)) cur.s=n; else if(!hit(n,cur.x-1,cur.y)){cur.s=n;cur.x--} else if(!hit(n,cur.x+1,cur.y)){cur.s=n;cur.x++}
+  }
+  function mv(d){ if(over)return;
+    if(d==='left'&&!hit(cur.s,cur.x-1,cur.y))cur.x--;
+    else if(d==='right'&&!hit(cur.s,cur.x+1,cur.y))cur.x++;
+    else if(d==='down'){ if(!hit(cur.s,cur.x,cur.y+1)){cur.y++; sc+=1} else lock() }
+    else if(d==='up') rot();
+    else if(d==='drop'){ while(!hit(cur.s,cur.x,cur.y+1)){cur.y++; sc+=2} lock() }
+  }
+  gc.key(function(k){ mv({ArrowLeft:'left',ArrowRight:'right',ArrowDown:'down',ArrowUp:'up',' ':'drop'}[k]) });
+  gc.swipe(c.cv,function(d){ mv(d==='tap'?'up':d) });
+  gc.dpad(mv,['','↻','','←','↓','→']);
+  gc.row([{t:'瞬降 ⤓',fn:function(){mv('drop')}},{t:'重开',fn:reset}]);
+  gc.loop(function(dt){
+    if(!over){ t+=dt; if(t>sp){ t=0; if(!hit(cur.s,cur.x,cur.y+1))cur.y++; else lock() } }
+    c.fillStyle='#0d1424'; c.fillRect(0,0,240,440);
+    for(var y=0;y<H;y++)for(var x=0;x<W;x++){ if(g[y][x]){ c.fillStyle=CO[g[y][x]-1]; c.fillRect(x*S+11,y*S+1,S-2,S-2) } }
+    if(cur&&!over) cur.s.forEach(function(r,y){ r.forEach(function(v,x){ if(v){ c.fillStyle=CO[cur.c-1]; c.fillRect((cur.x+x)*S+11,(cur.y+y)*S+1,S-2,S-2) } }) });
+    c.strokeStyle='#26314d'; c.strokeRect(10,0,W*S,H*S);
+    gc.score(sc, '消行 '+lines); return true;
+  });
+  reset();
+});
+
+defGame('gbreak','🎯','打砖块','街机','拖动挡板接球，打光所有砖块',function(gc){
+  var c=gc.canvas(360,420), px=150, ball, bricks, sc=0, lv=1, lifes=3, run=false;
+  function reset(full){
+    if(full){ sc=0; lv=1; lifes=3 }
+    bricks=[]; for(var r=0;r<4+Math.min(2,lv);r++)for(var k=0;k<7;k++) bricks.push({x:k*50+6,y:r*20+40,w:44,h:14,c:['#ff4757','#ffb302','#2ed573','#3b82f6','#a855f7','#00d8ff'][r%6]});
+    ball={x:180,y:330,vx:2.4+lv*0.25,vy:-3-lv*0.2,r:6}; run=false;
+  }
+  function launch(){ run=true }
+  gc.on(c.cv,'pointermove',function(e){ px = Math.max(0,Math.min(300, c.cv.pos(e).x-30)) });
+  gc.on(c.cv,'pointerdown',function(e){ px = Math.max(0,Math.min(300, c.cv.pos(e).x-30)); launch() });
+  gc.key(function(k){ if(k==='ArrowLeft')px=Math.max(0,px-24); if(k==='ArrowRight')px=Math.min(300,px+24); if(k===' ')launch() });
+  gc.tip('手指拖动 / 方向键移动挡板，点击屏幕发球');
+  gc.loop(function(dt){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,360,420);
+    if(run){
+      ball.x+=ball.vx*dt; ball.y+=ball.vy*dt;
+      if(ball.x<6||ball.x>354) ball.vx*=-1;
+      if(ball.y<6) ball.vy*=-1;
+      if(ball.y>390-8 && ball.y<400 && ball.x>px && ball.x<px+60){ ball.vy=-Math.abs(ball.vy); ball.vx += (ball.x-(px+30))/14 }
+      if(ball.y>420){ lifes--; if(lifes<=0){ gc.over('游戏结束','得分 '+sc,'再来一局',function(){reset(1)}); return false } ball={x:180,y:330,vx:2.4,vy:-3,r:6}; run=false }
+      for(var i=0;i<bricks.length;i++){ var b=bricks[i];
+        if(ball.x>b.x-4&&ball.x<b.x+b.w+4&&ball.y>b.y-4&&ball.y<b.y+b.h+4){ bricks.splice(i,1); ball.vy*=-1; sc+=10*lv; break } }
+      if(!bricks.length){ lv++; sc+=100; reset() }
+    } else { ball.x = px+30; ball.y=384 }
+    bricks.forEach(function(b){ c.fillStyle=b.c; c.beginPath(); c.roundRect(b.x,b.y,b.w,b.h,3); c.fill() });
+    c.fillStyle='#e8ecf5'; c.beginPath(); c.roundRect(px,390,60,9,4); c.fill();
+    c.fillStyle='#ffb302'; c.beginPath(); c.arc(ball.x,ball.y,ball.r,0,7); c.fill();
+    gc.score(sc, '第'+lv+'关 · 命 '+lifes); return true;
+  });
+  reset(1);
+});
+
+defGame('gmine','💣','扫雷','益智','9×9 十颗雷，长按或开旗标记',function(gc){
+  var N=9, M=10, g, open, flag, dead, win, flagMode=false, t0=0;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(9,34px);gap:2px;justify-content:center');
+  function reset(){
+    g=[]; open=[]; flag=[]; dead=false; win=false; t0=Date.now();
+    for(var i=0;i<81;i++){ g.push(0); open.push(0); flag.push(0) }
+    var p=[]; for(var i2=0;i2<81;i2++)p.push(i2); gc.shuffle(p);
+    p.slice(0,M).forEach(function(i){ g[i]=-1 });
+    for(var i3=0;i3<81;i3++){ if(g[i3]===-1)continue; g[i3]=nb(i3).filter(function(j){return g[j]===-1}).length }
+    draw();
+  }
+  function nb(i){ var x=i%N, y=(i/N)|0, o=[];
+    for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){ if(!dx&&!dy)continue;
+      var nx=x+dx, ny=y+dy; if(nx>=0&&nx<N&&ny>=0&&ny<N) o.push(ny*N+nx) }
+    return o }
+  function dig(i){
+    if(open[i]||flag[i]||dead)return;
+    open[i]=1;
+    if(g[i]===-1){ dead=true; for(var k=0;k<81;k++) if(g[k]===-1) open[k]=1;
+      draw(); gc.over('💥 踩雷了','再接再厉','再来一局',reset); return }
+    if(g[i]===0) nb(i).forEach(dig);
+    if(open.filter(function(v){return v}).length===81-M){ win=true;
+      var s=Math.max(1, 999-((Date.now()-t0)/1000|0)); draw(); gc.over('🎉 全部排除！','用时 '+((Date.now()-t0)/1000|0)+' 秒','再来一局',reset); gc.score(s) }
+    draw();
+  }
+  function draw(){
+    var CL=['','#3b82f6','#2ed573','#ff4757','#a855f7','#ffb302','#00d8ff','#e8ecf5','#96a1bb'];
+    box.innerHTML='';
+    for(var i=0;i<81;i++){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:34px;display:flex;align-items:center;justify-content:center;border-radius:5px;font-weight:700;font-size:15px;cursor:pointer;'+
+        (open[i]?'background:#0f1626;color:'+(CL[g[i]]||'#fff'):'background:#2b3652;color:#e8ecf5');
+      d.textContent = open[i] ? (g[i]===-1?'💣':(g[i]||'')) : (flag[i]?'🚩':'');
+      box.appendChild(d);
+    }
+    gc.info('<div>雷 '+M+' · 旗 '+flag.filter(function(v){return v}).length+'</div><div class="tiny muted">'+(flagMode?'🚩 标记模式':'⛏️ 挖掘模式')+'</div>');
+  }
+  gc.on(box,'click',function(e){
+    var i = e.target.dataset && e.target.dataset.i; if(i==null)return; i=+i;
+    if(flagMode){ if(!open[i]) flag[i]=flag[i]?0:1; draw() } else dig(i);
+  });
+  var r = gc.row([{t:'🚩 标记模式',fn:function(){ flagMode=!flagMode; r.children[0].textContent = flagMode?'⛏️ 挖掘模式':'🚩 标记模式'; draw() }},{t:'重开',fn:reset}]);
+  gc.tip('先切到「标记模式」再点格子插旗');
+  reset();
+});
+
+defGame('gsudoku','🔢','数独','益智','填满 9×9，每行每列每宫 1-9 不重复',function(gc){
+  var sol=[], puz=[], cur=[], sel=-1, hard=40;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(9,1fr);gap:1px;width:min(94vw,360px);background:#26314d;border:2px solid #3b82f6;border-radius:6px;overflow:hidden');
+  function gen(){
+    sol = new Array(81).fill(0);
+    fill(0);
+    puz = sol.slice();
+    var p=[]; for(var i=0;i<81;i++)p.push(i); gc.shuffle(p);
+    p.slice(0,hard+10).forEach(function(i){ puz[i]=0 });
+    cur = puz.slice(); sel=-1; draw();
+  }
+  function ok(b,i,v){
+    var x=i%9,y=(i/9)|0;
+    for(var k=0;k<9;k++){ if(b[y*9+k]===v||b[k*9+x]===v) return false }
+    var bx=((x/3)|0)*3, by=((y/3)|0)*3;
+    for(var dy=0;dy<3;dy++)for(var dx=0;dx<3;dx++) if(b[(by+dy)*9+bx+dx]===v) return false;
+    return true;
+  }
+  function fill(i){
+    if(i>=81) return true;
+    var vs=gc.shuffle([1,2,3,4,5,6,7,8,9]);
+    for(var k=0;k<9;k++){ if(ok(sol,i,vs[k])){ sol[i]=vs[k]; if(fill(i+1)) return true; sol[i]=0 } }
+    return false;
+  }
+  function draw(){
+    box.innerHTML='';
+    for(var i=0;i<81;i++){
+      var d=document.createElement('div'), fixed=puz[i]!==0, x=i%9, y=(i/9)|0;
+      d.dataset.i=i;
+      d.style.cssText='aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:'+(fixed?'800':'500')+
+        ';background:'+(sel===i?'#3b5087':(((x/3|0)+(y/3|0))%2?'#141c30':'#1a2338'))+';color:'+(fixed?'#e8ecf5':(cur[i]&&cur[i]!==sol[i]?'#ff4757':'#4da3ff'))+
+        ';cursor:pointer;'+(x%3===2&&x<8?'border-right:1.5px solid #3b82f6;':'')+(y%3===2&&y<8?'border-bottom:1.5px solid #3b82f6;':'');
+      d.textContent = cur[i]||'';
+      box.appendChild(d);
+    }
+    var left = cur.filter(function(v,i){return !v}).length;
+    gc.info('<div>剩 '+left+' 空</div><div class="tiny muted">'+(left===0?'完成！':'点格子再点数字')+'</div>');
+    if(left===0 && cur.every(function(v,i){return v===sol[i]})) gc.over('🎉 数独完成！','逻辑满分','再来一局',gen);
+  }
+  gc.on(box,'click',function(e){ var i=e.target.dataset&&e.target.dataset.i; if(i==null)return; i=+i; if(puz[i])return; sel=i; draw() });
+  var pad = gc.node('div','display:grid;grid-template-columns:repeat(5,52px);gap:6px;justify-content:center');
+  [1,2,3,4,5,6,7,8,9,'⌫'].forEach(function(n){
+    var b=document.createElement('button'); b.className='gbtn'; b.textContent=n; b.style.padding='9px 0';
+    b.onclick=function(){ if(sel<0)return; cur[sel] = n==='⌫'?0:n; draw() };
+    pad.appendChild(b);
+  });
+  gc.row([{t:'新题',fn:gen},{t:'提示',fn:function(){ if(sel>=0){ cur[sel]=sol[sel]; draw() } }}]);
+  gen();
+});
+
+defGame('gmemory','🃏','记忆翻牌','益智','翻开两张相同图案即可消除',function(gc){
+  var EM=['🍎','🍌','🍇','🍒','🥝','🍑','🍍','🥥'], cards, flip=[], done, moves, t0;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(4,72px);gap:8px;justify-content:center');
+  function reset(){
+    cards = gc.shuffle(EM.concat(EM).map(function(e,i){return {e:e, open:false, done:false}}));
+    flip=[]; done=0; moves=0; t0=Date.now(); draw();
+  }
+  function draw(){
+    box.innerHTML='';
+    cards.forEach(function(c,i){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:72px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;transition:.15s;'+
+        (c.done?'background:#16311f;opacity:.5':(c.open?'background:#2b3652':'background:linear-gradient(135deg,#3b82f6,#a855f7)'));
+      d.textContent = (c.open||c.done)?c.e:'';
+      box.appendChild(d);
+    });
+    gc.info('<div>步数 '+moves+'</div><div class="tiny muted">已配对 '+done+'/8</div>');
+  }
+  gc.on(box,'click',function(e){
+    var i=e.target.dataset&&e.target.dataset.i; if(i==null)return; i=+i;
+    var c=cards[i]; if(c.open||c.done||flip.length>=2)return;
+    c.open=true; flip.push(i); draw();
+    if(flip.length===2){
+      moves++;
+      var a=cards[flip[0]], b=cards[flip[1]];
+      if(a.e===b.e){ a.done=b.done=true; done++; flip=[]; draw();
+        if(done===8){ var s=Math.max(10, 300-moves*5-((Date.now()-t0)/1000|0)); gc.score(s); gc.over('🎉 全部配对','步数 '+moves,'再来一局',reset) } }
+      else setTimeout(function(){ a.open=b.open=false; flip=[]; draw() }, 620);
+    }
+  });
+  gc.row([{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('gpuzzle','🧩','数字华容道','益智','把 1-15 按顺序排好',function(gc){
+  var b=[], moves=0;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(4,72px);gap:6px;justify-content:center');
+  function reset(){
+    b=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,0];
+    for(var i=0;i<300;i++){ var m=movesOf(); var pick=m[gc.rnd(m.length)]; swap(pick) }
+    moves=0; draw();
+  }
+  function movesOf(){ var z=b.indexOf(0), x=z%4, y=(z/4)|0, o=[];
+    if(x>0)o.push(z-1); if(x<3)o.push(z+1); if(y>0)o.push(z-4); if(y<3)o.push(z+4); return o }
+  function swap(i){ var z=b.indexOf(0); b[z]=b[i]; b[i]=0 }
+  function draw(){
+    box.innerHTML='';
+    b.forEach(function(v,i){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:72px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:800;cursor:pointer;'+
+        (v?'background:linear-gradient(160deg,#2b3652,#1a2338);color:#e8ecf5':'background:transparent');
+      d.textContent=v||''; box.appendChild(d);
+    });
+    gc.info('<div>步数 '+moves+'</div><div class="tiny muted">最佳 '+(getBest('gpuzzle')||'-')+'</div>');
+    if(b.slice(0,15).every(function(v,i){return v===i+1}) && b[15]===0 && moves>0){
+      var s=Math.max(10,600-moves); LS.set(bestKey('gpuzzle'), Math.max(getBest('gpuzzle'), s));
+      gc.over('🎉 复原成功','用了 '+moves+' 步','再来一局',reset);
+    }
+  }
+  gc.on(box,'click',function(e){
+    var i=e.target.dataset&&e.target.dataset.i; if(i==null)return; i=+i;
+    if(movesOf().indexOf(i)<0)return; swap(i); moves++; draw();
+  });
+  gc.row([{t:'重排',fn:reset}]);
+  reset();
+});
+
+defGame('ggomoku','⚫','五子棋','棋牌','与 AI 对弈，先连成五子者胜',function(gc){
+  var N=15, S=24, P=12, c=gc.canvas(N*S+P*2, N*S+P*2), b=[], my=1, over=false;
+  function reset(){ b=new Array(N*N).fill(0); over=false; draw() }
+  function draw(){
+    c.fillStyle='#c8a165'; c.fillRect(0,0,c.W,c.H);
+    c.strokeStyle='#5a4520'; c.lineWidth=1;
+    for(var i=0;i<N;i++){
+      c.beginPath(); c.moveTo(P+i*S+S/2, P+S/2); c.lineTo(P+i*S+S/2, P+(N-1)*S+S/2); c.stroke();
+      c.beginPath(); c.moveTo(P+S/2, P+i*S+S/2); c.lineTo(P+(N-1)*S+S/2, P+i*S+S/2); c.stroke();
+    }
+    b.forEach(function(v,i){ if(!v)return;
+      var x=P+(i%N)*S+S/2, y=P+((i/N)|0)*S+S/2;
+      c.beginPath(); c.arc(x,y,S/2-2,0,7); c.fillStyle = v===1?'#101010':'#f5f5f5'; c.fill();
+      c.strokeStyle='#0006'; c.stroke();
+    });
+  }
+  function win(bd,p){
+    for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+      if(bd[y*N+x]!==p)continue;
+      var ds=[[1,0],[0,1],[1,1],[1,-1]];
+      for(var k=0;k<4;k++){ var n=1;
+        for(var s=1;s<5;s++){ var nx=x+ds[k][0]*s, ny=y+ds[k][1]*s;
+          if(nx<0||nx>=N||ny<0||ny>=N||bd[ny*N+nx]!==p)break; n++ }
+        if(n>=5) return true }
+    }
+    return false;
+  }
+  function evalPt(bd,i,p){
+    var x=i%N, y=(i/N)|0, sc=0, ds=[[1,0],[0,1],[1,1],[1,-1]];
+    for(var k=0;k<4;k++){
+      var cnt=1, open=0;
+      for(var d=-1;d<=1;d+=2){
+        for(var s=1;s<5;s++){
+          var nx=x+ds[k][0]*s*d, ny=y+ds[k][1]*s*d;
+          if(nx<0||nx>=N||ny<0||ny>=N)break;
+          var v=bd[ny*N+nx];
+          if(v===p) cnt++; else { if(!v) open++; break }
+        }
+      }
+      sc += [0,1,12,120,1200,100000][Math.min(5,cnt)] * (open?1:0.25) + open*2;
+    }
+    return sc;
+  }
+  function ai(){
+    var best=-1, bi=-1;
+    for(var i=0;i<N*N;i++){
+      if(b[i])continue;
+      var near=false, x=i%N, y=(i/N)|0;
+      for(var dy=-2;dy<=2&&!near;dy++)for(var dx=-2;dx<=2;dx++){
+        var nx=x+dx, ny=y+dy; if(nx<0||nx>=N||ny<0||ny>=N)continue;
+        if(b[ny*N+nx]){near=true;break} }
+      if(!near) continue;
+      var s = evalPt(b,i,2)*1.05 + evalPt(b,i,1);
+      if(s>best){ best=s; bi=i }
+    }
+    if(bi<0) bi=(N*N-1)/2|0;
+    b[bi]=2; draw();
+    if(win(b,2)){ over=true; gc.over('😈 AI 获胜','再接再厉','再来一局',reset) }
+  }
+  gc.on(c.cv,'click',function(e){
+    if(over)return;
+    var p=c.cv.pos(e), x=Math.round((p.x-P-S/2)/S), y=Math.round((p.y-P-S/2)/S);
+    if(x<0||x>=N||y<0||y>=N)return;
+    var i=y*N+x; if(b[i])return;
+    b[i]=1; draw();
+    if(win(b,1)){ over=true; gc.score(getBest('ggomoku')+1); gc.over('🎉 你赢了！','击败 AI','再来一局',reset); return }
+    setTimeout(ai, 120);
+  });
+  gc.row([{t:'重开',fn:reset}]);
+  gc.tip('你执黑先手。AI 会优先堵你的活三活四');
+  reset();
+});
+
+defGame('gttt','❌','井字棋','棋牌','和必胜 AI 对局，能逼平就是高手',function(gc){
+  var b, over;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(3,86px);gap:6px;justify-content:center');
+  var W=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  function reset(){ b=new Array(9).fill(0); over=false; draw() }
+  function winner(x){ for(var i=0;i<8;i++){ var w=W[i]; if(x[w[0]]&&x[w[0]]===x[w[1]]&&x[w[1]]===x[w[2]]) return x[w[0]] } return x.indexOf(0)<0?3:0 }
+  function mini(x,p){
+    var r=winner(x); if(r===2)return {s:10}; if(r===1)return {s:-10}; if(r===3)return {s:0};
+    var best=null;
+    for(var i=0;i<9;i++){ if(x[i])continue;
+      x[i]=p; var s=mini(x,p===1?2:1).s; x[i]=0;
+      if(!best || (p===2? s>best.s : s<best.s)) best={s:s,i:i} }
+    return best;
+  }
+  function draw(){
+    box.innerHTML='';
+    b.forEach(function(v,i){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:86px;border-radius:12px;background:#1a2338;border:1px solid #26314d;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer';
+      d.textContent = v===1?'❌':(v===2?'⭕':''); box.appendChild(d);
+    });
+    gc.info('<div class="tiny muted">你 ❌ / AI ⭕</div>');
+  }
+  gc.on(box,'click',function(e){
+    var i=e.target.dataset&&e.target.dataset.i; if(i==null||over)return; i=+i; if(b[i])return;
+    b[i]=1; draw();
+    var r=winner(b);
+    if(r){ end(r); return }
+    var m=mini(b.slice(),2); b[m.i]=2; draw();
+    r=winner(b); if(r) end(r);
+  });
+  function end(r){ over=true;
+    gc.over(r===1?'🎉 你赢了':(r===2?'😈 AI 赢了':'🤝 平局'), r===3?'这个 AI 不会输，平局已是最优':'', '再来一局', reset) }
+  gc.row([{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('greversi','⚪','黑白棋','棋牌','夹住对方棋子即可翻转，多者胜',function(gc){
+  var N=8, S=42, c=gc.canvas(N*S, N*S), b=[], over=false;
+  var WT=[[99,-8,8,6,6,8,-8,99],[-8,-24,-4,-3,-3,-4,-24,-8],[8,-4,7,4,4,7,-4,8],[6,-3,4,0,0,4,-3,6],[6,-3,4,0,0,4,-3,6],[8,-4,7,4,4,7,-4,8],[-8,-24,-4,-3,-3,-4,-24,-8],[99,-8,8,6,6,8,-8,99]];
+  function reset(){ b=new Array(64).fill(0); b[27]=b[36]=2; b[28]=b[35]=1; over=false; draw() }
+  function flips(bd,i,p){
+    if(bd[i]) return [];
+    var x=i%N, y=(i/N)|0, out=[], ds=[[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+    ds.forEach(function(d){
+      var line=[], nx=x+d[0], ny=y+d[1];
+      while(nx>=0&&nx<N&&ny>=0&&ny<N){
+        var v=bd[ny*N+nx];
+        if(v===0) return;
+        if(v===p){ out=out.concat(line); return }
+        line.push(ny*N+nx); nx+=d[0]; ny+=d[1];
+      }
+    });
+    return out;
+  }
+  function valid(bd,p){ var o=[]; for(var i=0;i<64;i++) if(flips(bd,i,p).length) o.push(i); return o }
+  function put(i,p){ var f=flips(b,i,p); if(!f.length)return false; b[i]=p; f.forEach(function(k){b[k]=p}); return true }
+  function draw(){
+    c.fillStyle='#14663c'; c.fillRect(0,0,c.W,c.H);
+    c.strokeStyle='#0a3f26';
+    for(var i=0;i<=N;i++){ c.beginPath();c.moveTo(i*S,0);c.lineTo(i*S,N*S);c.stroke(); c.beginPath();c.moveTo(0,i*S);c.lineTo(N*S,i*S);c.stroke() }
+    b.forEach(function(v,i){ if(!v)return;
+      c.beginPath(); c.arc((i%N)*S+S/2, ((i/N)|0)*S+S/2, S/2-4, 0, 7);
+      c.fillStyle = v===1?'#101010':'#f5f5f5'; c.fill() });
+    var mv = valid(b,1);
+    c.fillStyle='rgba(255,255,255,.22)';
+    mv.forEach(function(i){ c.beginPath(); c.arc((i%N)*S+S/2, ((i/N)|0)*S+S/2, 5, 0, 7); c.fill() });
+    var n1=b.filter(function(v){return v===1}).length, n2=b.filter(function(v){return v===2}).length;
+    gc.info('<div>⚫ 你 '+n1+' : '+n2+' ⚪ AI</div><div class="tiny muted">可落子 '+mv.length+' 处</div>');
+  }
+  function aiMove(){
+    var mv = valid(b,2);
+    if(!mv.length){ if(!valid(b,1).length) return end(); return draw() }
+    var best=-1e9, bi=mv[0];
+    mv.forEach(function(i){
+      var s = WT[(i/N)|0][i%N] + flips(b,i,2).length;
+      if(s>best){best=s;bi=i}
+    });
+    put(bi,2); draw();
+    if(!valid(b,1).length){ if(!valid(b,2).length) return end(); setTimeout(aiMove,400) }
+  }
+  function end(){
+    over=true;
+    var n1=b.filter(function(v){return v===1}).length, n2=b.filter(function(v){return v===2}).length;
+    gc.over(n1>n2?'🎉 你赢了':(n1<n2?'😈 AI 赢了':'🤝 平局'), n1+' : '+n2, '再来一局', reset);
+  }
+  gc.on(c.cv,'click',function(e){
+    if(over)return;
+    var p=c.cv.pos(e), i=(((p.y/S)|0)*N + ((p.x/S)|0));
+    if(!put(i,1))return;
+    draw();
+    setTimeout(function(){ if(!valid(b,1).length&&!valid(b,2).length) return end(); aiMove() }, 200);
+  });
+  gc.row([{t:'重开',fn:reset}]);
+  gc.tip('半透明白点是你可以落子的位置，角落价值最高');
+  reset();
+});
+/* ---------- 游戏 12-22 ---------- */
+defGame('gpong','🏓','乒乓对战','街机','拖动下方球拍，先得 7 分者胜',function(gc){
+  var c=gc.canvas(320,420), px=130, ax=130, ball, s1=0, s2=0;
+  function serve(dir){ ball={x:160,y:210,vx:(Math.random()*2-1)*2.2, vy:3.2*dir} }
+  gc.on(c.cv,'pointermove',function(e){ px=Math.max(0,Math.min(260, c.cv.pos(e).x-30)) });
+  gc.key(function(k){ if(k==='ArrowLeft')px=Math.max(0,px-26); if(k==='ArrowRight')px=Math.min(260,px+26) });
+  function step(dt){
+    ax += Math.max(-3.1, Math.min(3.1, (ball.x-30-ax)*0.11))*dt;
+    ax = Math.max(0, Math.min(260, ax));
+    ball.x += ball.vx*dt; ball.y += ball.vy*dt;
+    if(ball.x<7||ball.x>313) ball.vx*=-1;
+    if(ball.y<26 && ball.x>ax && ball.x<ax+60){ ball.vy=Math.abs(ball.vy); ball.vx+=(ball.x-ax-30)/16 }
+    if(ball.y>394 && ball.x>px && ball.x<px+60){ ball.vy=-Math.abs(ball.vy); ball.vx+=(ball.x-px-30)/16 }
+    if(ball.y<0){ s1++; serve(1) }
+    if(ball.y>420){ s2++; serve(-1) }
+    c.fillStyle='#0d1424'; c.fillRect(0,0,320,420);
+    c.strokeStyle='#26314d'; c.setLineDash([6,6]); c.beginPath(); c.moveTo(0,210); c.lineTo(320,210); c.stroke(); c.setLineDash([]);
+    c.fillStyle='#ff4757'; c.beginPath(); c.roundRect(ax,14,60,9,4); c.fill();
+    c.fillStyle='#2ed573'; c.beginPath(); c.roundRect(px,398,60,9,4); c.fill();
+    c.fillStyle='#ffb302'; c.beginPath(); c.arc(ball.x,ball.y,7,0,7); c.fill();
+    gc.info('<div>你 '+s2+' : '+s1+' AI</div><div class="tiny muted">先到 7 分</div>');
+    if(s1>=7||s2>=7){ gc.over(s2>s1?'🎉 你赢了':'😈 AI 赢了', s2+' : '+s1, '再来一局', function(){ s1=s2=0; serve(1); gc.loop(step) }); return false }
+    return true;
+  }
+  serve(1); gc.loop(step);
+});
+
+defGame('gplane','✈️','飞机大战','街机','拖动躲避并射击，敌机越来越猛',function(gc){
+  var c=gc.canvas(320,440), px=160, py=380, bs=[], es=[], sc=0, t=0, cd=0, hp=3;
+  gc.on(c.cv,'pointermove',function(e){ var p=c.cv.pos(e); px=Math.max(16,Math.min(304,p.x)); py=Math.max(60,Math.min(420,p.y)) });
+  gc.key(function(k){ if(k==='ArrowLeft')px-=18; if(k==='ArrowRight')px+=18; if(k==='ArrowUp')py-=18; if(k==='ArrowDown')py+=18 });
+  function step(dt){
+    t+=dt; cd-=dt;
+    if(cd<=0){ bs.push({x:px,y:py-16}); cd=9 }
+    if(Math.random()<0.028*dt) es.push({x:20+Math.random()*280, y:-16, v:1+Math.random()*1.5+sc/900, r:13});
+    bs.forEach(function(b){ b.y-=7*dt }); bs=bs.filter(function(b){return b.y>-10});
+    es.forEach(function(e){ e.y+=e.v*dt });
+    es = es.filter(function(e){
+      if(e.y>452){ return false }
+      for(var i=0;i<bs.length;i++){ if(Math.abs(bs[i].x-e.x)<15&&Math.abs(bs[i].y-e.y)<16){ bs.splice(i,1); sc+=10; return false } }
+      if(Math.abs(e.x-px)<17&&Math.abs(e.y-py)<18){ hp--; return false }
+      return true;
+    });
+    c.fillStyle='#0a0f1e'; c.fillRect(0,0,320,440);
+    c.fillStyle='#1b2745'; for(var i=0;i<18;i++){ var y=((t*1.6+i*40)%460); c.fillRect((i*53)%310, y, 2, 12) }
+    c.font='24px sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+    c.fillText('🚀', px, py);
+    es.forEach(function(e){ c.fillText('👾', e.x, e.y) });
+    c.fillStyle='#ffb302'; bs.forEach(function(b){ c.fillRect(b.x-1.5,b.y-8,3,9) });
+    gc.score(sc, '❤'.repeat(Math.max(0,hp)));
+    if(hp<=0){ gc.over('💥 被击落','得分 '+sc,'再来一局',function(){ sc=0;hp=3;es=[];bs=[];px=160;py=380; gc.loop(step) }); return false }
+    return true;
+  }
+  gc.loop(step);
+});
+
+defGame('gmole','🔨','打地鼠','反应','30 秒内打中尽量多的地鼠',function(gc){
+  var box=gc.node('div','display:grid;grid-template-columns:repeat(3,84px);gap:10px;justify-content:center'), sc=0, left=30, cells=[], tm, iv;
+  for(var i=0;i<9;i++){
+    var d=document.createElement('div');
+    d.style.cssText='height:84px;border-radius:50%;background:#1a2338;border:2px solid #26314d;display:flex;align-items:center;justify-content:center;font-size:38px;cursor:pointer';
+    box.appendChild(d); cells.push({el:d, on:0});
+  }
+  function start(){
+    sc=0; left=30; cells.forEach(function(c){c.on=0;c.el.textContent=''});
+    clearInterval(iv); clearInterval(tm);
+    iv = setInterval(function(){
+      cells.forEach(function(c){ if(c.on&&Math.random()<0.4){ c.on=0; c.el.textContent='' } });
+      var n=cells[gc.rnd(9)]; if(!n.on){ n.on = Math.random()<0.18?2:1; n.el.textContent = n.on===2?'💣':'🐹' }
+    }, 620);
+    tm = setInterval(function(){ left--; gc.score(sc,'剩 '+left+'s');
+      if(left<=0){ clearInterval(iv); clearInterval(tm); cells.forEach(function(c){c.el.textContent=''});
+        gc.over('⏰ 时间到','打中 '+sc+' 分','再来一局',start) } }, 1000);
+    gc.score(sc,'剩 '+left+'s');
+  }
+  gc.cleans.push(function(){ clearInterval(iv); clearInterval(tm) });
+  gc.on(box,'click',function(e){
+    var c = cells.filter(function(x){return x.el===e.target})[0];
+    if(!c||!c.on)return;
+    if(c.on===2){ sc=Math.max(0,sc-15); c.el.textContent='💥' } else { sc+=10; c.el.textContent='✨' }
+    c.on=0; setTimeout(function(){ c.el.textContent='' },160); gc.score(sc,'剩 '+left+'s');
+  });
+  gc.row([{t:'开始 / 重来',fn:start}]);
+  gc.tip('🐹 +10 分，💣 -15 分');
+  start();
+});
+
+defGame('greact','⚡','反应速度','反应','变绿立刻点，测你的神经反射',function(gc){
+  var box=gc.node('div','width:min(90vw,320px);height:220px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;cursor:pointer;background:#3b82f6;color:#fff;text-align:center;padding:10px');
+  var st=0, t0=0, tmo, rs=[];
+  function idle(){ st=0; box.style.background='#3b82f6'; box.textContent='点击开始，屏幕变绿时立刻再点' }
+  function wait(){
+    st=1; box.style.background='#c9302c'; box.textContent='等待绿色…（提前点算犯规）';
+    tmo = setTimeout(function(){ st=2; t0=performance.now(); box.style.background='#2ed573'; box.textContent='点！' }, 900+Math.random()*2600);
+  }
+  gc.cleans.push(function(){ clearTimeout(tmo) });
+  box.onclick = function(){
+    if(st===0) return wait();
+    if(st===1){ clearTimeout(tmo); box.style.background='#ffb302'; box.textContent='太早啦！点一下重来'; st=0; return }
+    if(st===2){
+      var ms = Math.round(performance.now()-t0); rs.push(ms);
+      var avg = Math.round(rs.reduce(function(a,b){return a+b},0)/rs.length);
+      var best = getBest('greact'); var v = 1000-ms;
+      if(v>best) LS.set(bestKey('greact'), v);
+      box.style.background='#3b82f6';
+      box.innerHTML = ms+' ms<br><span style="font-size:13px;font-weight:400">'+(ms<200?'⚡ 电竞级':ms<280?'👍 很快':ms<380?'🙂 正常':'🐢 再来一次')+
+        ' · 平均 '+avg+'ms · '+rs.length+' 次</span><br><span style="font-size:12px;opacity:.8">点击继续</span>';
+      st=0;
+    }
+  };
+  gc.info('<div class="tiny muted">越小越好</div>');
+  idle();
+});
+
+defGame('gschulte','🔢','舒尔特方格','反应','按 1→25 顺序点击，练注意力',function(gc){
+  var box=gc.node('div','display:grid;grid-template-columns:repeat(5,64px);gap:5px;justify-content:center'), nums=[], next=1, t0=0, tm;
+  function start(){
+    nums = gc.shuffle(Array.from({length:25},function(_,i){return i+1}));
+    next=1; t0=Date.now(); clearInterval(tm);
+    tm = setInterval(function(){ gc.info('<div>下一个 '+next+'</div><div class="tiny muted">'+((Date.now()-t0)/1000).toFixed(1)+'s</div>') }, 100);
+    draw();
+  }
+  gc.cleans.push(function(){ clearInterval(tm) });
+  function draw(){
+    box.innerHTML='';
+    nums.forEach(function(n){
+      var d=document.createElement('div'); d.dataset.n=n;
+      d.style.cssText='height:64px;border-radius:9px;background:'+(n<next?'#16311f':'#1a2338')+';border:1px solid #26314d;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;cursor:pointer;color:'+(n<next?'#2ed573':'#e8ecf5');
+      d.textContent=n; box.appendChild(d);
+    });
+  }
+  gc.on(box,'click',function(e){
+    var n=e.target.dataset&&e.target.dataset.n; if(!n)return; n=+n;
+    if(n!==next) return;
+    next++; draw();
+    if(next>25){
+      clearInterval(tm);
+      var sec=(Date.now()-t0)/1000, s=Math.max(1, Math.round(3000/sec));
+      gc.score(s); gc.over('🎉 完成','用时 '+sec.toFixed(1)+' 秒 '+(sec<12?'（优秀）':sec<20?'（良好）':''),'再来一局',start);
+    }
+  });
+  gc.row([{t:'重开',fn:start}]);
+  start();
+});
+
+defGame('gtiles','🎹','别踩白块','反应','只点黑块，越往下越快',function(gc){
+  var c=gc.canvas(300,420), rows=[], sc=0, sp=2.4, over=false;
+  function reset(){ rows=[]; sc=0; sp=2.4; over=false; for(var i=0;i<5;i++) rows.push({y:-i*105, k:gc.rnd(3), hit:false}) }
+  gc.on(c.cv,'pointerdown',function(e){
+    if(over)return;
+    var p=c.cv.pos(e), col=(p.x/100)|0;
+    var hit=false;
+    rows.forEach(function(r){ if(!r.hit && p.y>r.y && p.y<r.y+105 && col===r.k){ r.hit=true; sc+=10; sp+=0.045; hit=true } });
+    if(!hit){ over=true; gc.over('💥 踩到白块','得分 '+sc,'再来一局',function(){ reset(); gc.loop(step) }) }
+  });
+  function step(dt){
+    if(over) return false;
+    rows.forEach(function(r){ r.y += sp*dt });
+    rows = rows.filter(function(r){
+      if(r.y>420){ if(!r.hit){ over=true; gc.over('😵 漏掉一块','得分 '+sc,'再来一局',function(){ reset(); gc.loop(step) }) } return false }
+      return true;
+    });
+    while(rows.length<5){ var top=Math.min.apply(null, rows.map(function(r){return r.y})); rows.push({y:top-105, k:gc.rnd(3), hit:false}) }
+    c.fillStyle='#f2f4f8'; c.fillRect(0,0,300,420);
+    c.strokeStyle='#d6dae4'; [100,200].forEach(function(x){ c.beginPath(); c.moveTo(x,0); c.lineTo(x,420); c.stroke() });
+    rows.forEach(function(r){ c.fillStyle = r.hit?'#c9d3e6':'#14192b'; c.fillRect(r.k*100+2, r.y+2, 96, 101) });
+    gc.score(sc); return !over;
+  }
+  reset(); gc.loop(step);
+});
+
+defGame('gdino','🦖','恐龙跑酷','街机','点击跳跃，躲开仙人掌',function(gc){
+  var c=gc.canvas(360,180), y=0, vy=0, sc=0, sp=5, obs=[], t=0, over=false;
+  function jump(){ if(y<=0 && !over){ vy=9.2 } }
+  gc.on(c.cv,'pointerdown',jump); gc.key(function(k){ if(k===' '||k==='ArrowUp') jump() });
+  function reset(){ y=0;vy=0;sc=0;sp=5;obs=[];t=0;over=false }
+  function step(dt){
+    t+=dt; sc += dt*0.35; sp = 5+sc/90;
+    vy -= 0.55*dt; y += vy*dt; if(y<0){ y=0; vy=0 }
+    if(!obs.length || obs[obs.length-1].x < 360-120-Math.random()*160) obs.push({x:380, w:12+gc.rnd(14), h:20+gc.rnd(18)});
+    obs.forEach(function(o){ o.x -= sp*dt });
+    obs = obs.filter(function(o){ return o.x>-30 });
+    obs.forEach(function(o){ if(o.x<52 && o.x+o.w>26 && y < o.h-4){ over=true } });
+    c.fillStyle='#0d1424'; c.fillRect(0,0,360,180);
+    c.strokeStyle='#26314d'; c.beginPath(); c.moveTo(0,150); c.lineTo(360,150); c.stroke();
+    c.fillStyle='#5f6b86'; for(var i=0;i<10;i++){ var x=(i*57-t*sp*0.6)%380; c.fillRect(x,146,10,2) }
+    c.font='26px sans-serif'; c.textAlign='left'; c.textBaseline='alphabetic';
+    c.fillText('🦖', 22, 150-y);
+    obs.forEach(function(o){ c.fillStyle='#2ed573'; c.fillRect(o.x, 150-o.h, o.w, o.h) });
+    gc.score(Math.floor(sc));
+    if(over){ gc.over('💥 撞上了','得分 '+Math.floor(sc),'再来一局',function(){ reset(); gc.loop(step) }); return false }
+    return true;
+  }
+  gc.tip('点击画面或按空格跳跃');
+  gc.loop(step);
+});
+
+defGame('gflappy','🐦','飞翔小鸟','街机','点击上升，穿过管道缝隙',function(gc){
+  var c=gc.canvas(300,420), by=200, vy=0, pipes=[], sc=0, over=false, started=false;
+  function flap(){ if(over)return; started=true; vy=-5.4 }
+  gc.on(c.cv,'pointerdown',flap); gc.key(function(k){ if(k===' '||k==='ArrowUp') flap() });
+  function reset(){ by=200; vy=0; pipes=[]; sc=0; over=false; started=false }
+  function step(dt){
+    if(started){
+      vy += 0.42*dt; by += vy*dt;
+      if(!pipes.length || pipes[pipes.length-1].x<160) pipes.push({x:310, gap:120+gc.rnd(46), top:50+gc.rnd(150), got:false});
+      pipes.forEach(function(p){ p.x -= 2.4*dt;
+        if(!p.got && p.x<58){ p.got=true; sc++ }
+        if(p.x<76 && p.x+52>44 && (by<p.top || by>p.top+p.gap)) over=true;
+      });
+      pipes = pipes.filter(function(p){return p.x>-60});
+      if(by>412||by<0) over=true;
+    }
+    c.fillStyle='#0e1830'; c.fillRect(0,0,300,420);
+    pipes.forEach(function(p){
+      c.fillStyle='#2ed573';
+      c.fillRect(p.x,0,52,p.top); c.fillRect(p.x,p.top+p.gap,52,420-p.top-p.gap);
+      c.fillStyle='#26a35a'; c.fillRect(p.x,p.top-10,52,10); c.fillRect(p.x,p.top+p.gap,52,10);
+    });
+    c.font='26px sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+    c.fillText('🐤', 58, by);
+    if(!started){ c.fillStyle='#96a1bb'; c.font='13px sans-serif'; c.fillText('点击开始', 150, 340) }
+    gc.score(sc);
+    if(over){ gc.over('💥 撞管道了','穿过 '+sc+' 个','再来一局',function(){ reset(); gc.loop(step) }); return false }
+    return true;
+  }
+  gc.loop(step);
+});
+
+defGame('gmaze','🧭','迷宫探险','益智','走到右下角绿点出口',function(gc){
+  var N=13, S=26, c=gc.canvas(N*S+2, N*S+2), g=[], px=0, py=0, t0=0, lv=1;
+  function gen(){
+    g=[]; for(var i=0;i<N*N;i++) g.push({n:1,e:1,s:1,w:1,v:0});
+    var st=[0]; g[0].v=1;
+    while(st.length){
+      var i=st[st.length-1], x=i%N, y=(i/N)|0, ns=[];
+      if(y>0&&!g[i-N].v)ns.push([i-N,'n','s']); if(y<N-1&&!g[i+N].v)ns.push([i+N,'s','n']);
+      if(x>0&&!g[i-1].v)ns.push([i-1,'w','e']); if(x<N-1&&!g[i+1].v)ns.push([i+1,'e','w']);
+      if(!ns.length){ st.pop(); continue }
+      var p=ns[gc.rnd(ns.length)];
+      g[i][p[1]]=0; g[p[0]][p[2]]=0; g[p[0]].v=1; st.push(p[0]);
+    }
+    px=0; py=0; t0=Date.now(); draw();
+  }
+  function draw(){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,c.W,c.H);
+    c.strokeStyle='#4d8bff'; c.lineWidth=2; c.lineCap='round';
+    for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+      var cc=g[y*N+x], X=x*S+1, Y=y*S+1;
+      c.beginPath();
+      if(cc.n){c.moveTo(X,Y);c.lineTo(X+S,Y)}
+      if(cc.w){c.moveTo(X,Y);c.lineTo(X,Y+S)}
+      if(y===N-1&&cc.s){c.moveTo(X,Y+S);c.lineTo(X+S,Y+S)}
+      if(x===N-1&&cc.e){c.moveTo(X+S,Y);c.lineTo(X+S,Y+S)}
+      c.stroke();
+    }
+    c.fillStyle='#2ed573'; c.fillRect((N-1)*S+7,(N-1)*S+7,S-11,S-11);
+    c.fillStyle='#ffb302'; c.beginPath(); c.arc(px*S+S/2+1, py*S+S/2+1, S/2-6, 0, 7); c.fill();
+    gc.info('<div>第 '+lv+' 关</div><div class="tiny muted">'+((Date.now()-t0)/1000).toFixed(0)+'s</div>');
+  }
+  function mv(d){
+    var i=py*N+px, cc=g[i];
+    if(d==='up'&&!cc.n)py--; else if(d==='down'&&!cc.s)py++;
+    else if(d==='left'&&!cc.w)px--; else if(d==='right'&&!cc.e)px++;
+    draw();
+    if(px===N-1&&py===N-1){
+      var sec=(Date.now()-t0)/1000;
+      gc.score(getBest('gmaze')+1);
+      gc.over('🎉 走出迷宫','用时 '+sec.toFixed(1)+' 秒','下一关',function(){ lv++; gen() });
+    }
+  }
+  gc.key(function(k){ mv({ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right'}[k]) });
+  gc.swipe(c.cv, function(d){ if(d!=='tap') mv(d) });
+  gc.dpad(mv);
+  gc.row([{t:'换一张',fn:gen}]);
+  gen();
+});
+
+defGame('gmatch3','🍬','消消乐','休闲','交换相邻糖果，三个连线即消除',function(gc){
+  var W=7,H=8, EM=['🍎','🍇','🍋','🍬','🍓','🫐'], b=[], sel=-1, sc=0, moves=25;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(7,44px);gap:3px;justify-content:center');
+  function reset(){ b=[]; for(var i=0;i<W*H;i++) b.push(gc.rnd(6)); while(clear(true)){} sc=0; moves=25; draw() }
+  function at(x,y){ return (x<0||x>=W||y<0||y>=H)?-1:b[y*W+x] }
+  function clear(silent){
+    var kill={};
+    for(var y=0;y<H;y++)for(var x=0;x<W;x++){
+      var v=at(x,y); if(v<0)continue;
+      if(at(x+1,y)===v&&at(x+2,y)===v){ kill[y*W+x]=kill[y*W+x+1]=kill[y*W+x+2]=1 }
+      if(at(x,y+1)===v&&at(x,y+2)===v){ kill[y*W+x]=kill[(y+1)*W+x]=kill[(y+2)*W+x]=1 }
+    }
+    var ks=Object.keys(kill); if(!ks.length) return false;
+    if(!silent) sc += ks.length*10;
+    ks.forEach(function(i){ b[i]=-1 });
+    for(var x2=0;x2<W;x2++){
+      var col=[]; for(var y2=0;y2<H;y2++){ var v2=b[y2*W+x2]; if(v2>=0) col.push(v2) }
+      while(col.length<H) col.unshift(gc.rnd(6));
+      for(var y3=0;y3<H;y3++) b[y3*W+x2]=col[y3];
+    }
+    return true;
+  }
+  function draw(){
+    box.innerHTML='';
+    b.forEach(function(v,i){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:44px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer;background:'+(sel===i?'#3b5087':'#1a2338');
+      d.textContent=EM[v]||''; box.appendChild(d);
+    });
+    gc.score(sc, '剩 '+moves+' 步');
+    if(moves<=0) gc.over('⏰ 步数用完','得分 '+sc,'再来一局',reset);
+  }
+  gc.on(box,'click',function(e){
+    var i=e.target.dataset&&e.target.dataset.i; if(i==null||moves<=0)return; i=+i;
+    if(sel<0){ sel=i; return draw() }
+    var x1=sel%W,y1=(sel/W)|0,x2=i%W,y2=(i/W)|0;
+    if(Math.abs(x1-x2)+Math.abs(y1-y2)!==1){ sel=i; return draw() }
+    var t=b[sel]; b[sel]=b[i]; b[i]=t;
+    if(!clear()){ b[i]=b[sel]; b[sel]=t; sel=-1; return draw() }
+    while(clear()){}
+    moves--; sel=-1; draw();
+  });
+  gc.row([{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('gcatch','🧺','接水果','休闲','接住掉落的水果，别接炸弹',function(gc){
+  var c=gc.canvas(320,420), px=140, items=[], sc=0, hp=3, t=0;
+  gc.on(c.cv,'pointermove',function(e){ px=Math.max(0,Math.min(260, c.cv.pos(e).x-30)) });
+  gc.key(function(k){ if(k==='ArrowLeft')px=Math.max(0,px-26); if(k==='ArrowRight')px=Math.min(260,px+26) });
+  function step(dt){
+    t+=dt;
+    if(Math.random()<0.035*dt) items.push({x:20+Math.random()*280, y:-14, v:1.6+Math.random()*1.6+sc/500, bad:Math.random()<0.2, e:'🍎🍊🍇🍉🍌'[gc.rnd(5)]});
+    items.forEach(function(o){ o.y+=o.v*dt });
+    items = items.filter(function(o){
+      if(o.y>398 && o.y<420 && o.x>px && o.x<px+60){
+        if(o.bad){ hp--; } else sc+=10;
+        return false;
+      }
+      if(o.y>430){ if(!o.bad) hp-=0.34; return false }
+      return true;
+    });
+    c.fillStyle='#0d1424'; c.fillRect(0,0,320,420);
+    c.font='24px sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+    items.forEach(function(o){ c.fillText(o.bad?'💣':o.e, o.x, o.y) });
+    c.fillStyle='#c78b3d'; c.beginPath(); c.roundRect(px,398,60,14,5); c.fill();
+    gc.score(sc, '❤ '+Math.max(0,Math.ceil(hp)));
+    if(hp<=0){ gc.over('🧺 结束','得分 '+sc,'再来一局',function(){ sc=0;hp=3;items=[]; gc.loop(step) }); return false }
+    return true;
+  }
+  gc.tip('漏掉水果扣 1/3 命，接到炸弹直接扣 1 命');
+  gc.loop(step);
+});
+/* ---------- 游戏 23-33 ---------- */
+defGame('gguess','🔍','猜数字 1A2B','益智','猜 4 位不重复数字，A=位置对，B=数字对',function(gc){
+  var ans, tries;
+  var log = gc.node('div','width:min(92vw,340px);max-height:230px;overflow:auto;background:#141c30;border:1px solid #26314d;border-radius:10px;padding:8px;font-size:13px');
+  var inp = document.createElement('input'); inp.placeholder='输入 4 位不重复数字'; inp.maxLength=4; inp.inputMode='numeric';
+  inp.style.cssText='width:min(92vw,340px)'; gc.wrap.appendChild(inp);
+  function reset(){
+    var d=gc.shuffle([0,1,2,3,4,5,6,7,8,9]); ans=d.slice(0,4).join(''); tries=0;
+    log.innerHTML='<div class="muted tiny">我已经想好一个 4 位不重复的数字了，开始猜吧！</div>'; inp.value='';
+    gc.info('<div>已猜 0 次</div>');
+  }
+  function guess(){
+    var g=inp.value.trim();
+    if(!/^\d{4}$/.test(g) || new Set(g.split('')).size!==4){ log.innerHTML = '<div class="up tiny">请输入 4 位不重复数字</div>'+log.innerHTML; return }
+    tries++;
+    var A=0,B=0;
+    for(var i=0;i<4;i++){ if(g[i]===ans[i])A++; else if(ans.indexOf(g[i])>=0)B++ }
+    log.innerHTML = '<div class="mono">#'+tries+' <b>'+g+'</b> → <span class="up">'+A+'A</span> <span class="down">'+B+'B</span></div>'+log.innerHTML;
+    inp.value='';
+    gc.info('<div>已猜 '+tries+' 次</div>');
+    if(A===4){ var s=Math.max(10,150-tries*10); gc.score(s); gc.over('🎉 猜中了！','答案 '+ans+'，用了 '+tries+' 次','再来一局',reset) }
+  }
+  inp.onkeydown = function(e){ if(e.key==='Enter') guess() };
+  gc.row([{t:'猜！',fn:guess},{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('gblackjack','🂡','21点','棋牌','尽量接近 21 点又不爆牌',function(gc){
+  var deck, my, dl, over, chips = LS.get('bj_chips', 100), bet=10;
+  var area = gc.node('div','width:min(92vw,360px);background:#14663c;border:1px solid #0a3f26;border-radius:14px;padding:12px;min-height:190px');
+  function newDeck(){ deck=[]; for(var s=0;s<4;s++)for(var v=1;v<=13;v++) deck.push(v); gc.shuffle(deck) }
+  function val(h){ var s=0,a=0; h.forEach(function(v){ if(v===1){a++;s+=11} else s+=Math.min(10,v) }); while(s>21&&a){s-=10;a--} return s }
+  function nm(v){ return ['','A','2','3','4','5','6','7','8','9','10','J','Q','K'][v] }
+  function deal(){
+    if(chips<bet){ chips=100; LS.set('bj_chips',chips) }
+    newDeck(); my=[deck.pop(),deck.pop()]; dl=[deck.pop(),deck.pop()]; over=false; draw();
+  }
+  function draw(){
+    area.innerHTML = '<div style="font-size:12px;opacity:.85">庄家 '+(over?val(dl):'?')+'</div>'+
+      '<div style="font-size:26px;margin:4px 0 10px">'+dl.map(function(v,i){return (over||i===0)?'🂠'+nm(v):'🂠?'}).join(' ')+'</div>'+
+      '<div style="font-size:12px;opacity:.85">你 '+val(my)+'</div>'+
+      '<div style="font-size:26px;margin-top:4px">'+my.map(function(v){return '🂠'+nm(v)}).join(' ')+'</div>';
+    gc.info('<div>筹码 '+chips+'</div><div class="tiny muted">下注 '+bet+'</div>');
+  }
+  function end(msg, win){
+    over=true; chips += win*bet; LS.set('bj_chips', chips); draw();
+    gc.score(chips);
+    gc.over(msg, '筹码 '+chips, '再来一局', deal);
+  }
+  function hit(){ if(over)return; my.push(deck.pop()); draw(); if(val(my)>21) end('💥 爆牌', -1) }
+  function stand(){
+    if(over)return;
+    while(val(dl)<17) dl.push(deck.pop());
+    var m=val(my), d=val(dl); draw();
+    if(d>21||m>d) end('🎉 你赢了', 1); else if(m===d) end('🤝 平局', 0); else end('😈 庄家赢', -1);
+  }
+  gc.row([{t:'要牌',fn:hit},{t:'停牌',fn:stand},{t:'下注±10',fn:function(){ bet = bet>=50?10:bet+10; draw() }}]);
+  gc.tip('A 可当 1 或 11；庄家 17 点及以上必须停牌。筹码输光自动补 100');
+  deal();
+});
+
+defGame('gslot','🎰','老虎机','休闲','拉一把，试试今天的手气',function(gc){
+  var SY=['🍒','🍋','🔔','⭐','💎','7️⃣'], credits=LS.get('slot_c',100), spinning=false;
+  var view = gc.node('div','font-size:52px;letter-spacing:8px;background:#141c30;border:2px solid #ffb302;border-radius:14px;padding:14px 20px');
+  var msg = gc.node('div','font-size:14px;color:#96a1bb;height:22px');
+  view.textContent = '🍒 🍋 🔔';
+  function spin(){
+    if(spinning) return;
+    if(credits<10){ credits=100; LS.set('slot_c',credits) }
+    credits-=10; spinning=true; msg.textContent='转动中…';
+    var n=0, iv=setInterval(function(){
+      var r=[SY[gc.rnd(6)],SY[gc.rnd(6)],SY[gc.rnd(6)]];
+      view.textContent = r.join(' ');
+      if(++n>16){
+        clearInterval(iv); spinning=false;
+        var win=0;
+        if(r[0]===r[1]&&r[1]===r[2]) win = r[0]==='7️⃣'?300:(r[0]==='💎'?150:60);
+        else if(r[0]===r[1]||r[1]===r[2]||r[0]===r[2]) win = 15;
+        credits+=win; LS.set('slot_c',credits);
+        msg.innerHTML = win? '<span class="up">🎉 中奖 +'+win+'</span>' : '<span class="muted">再试一次</span>';
+        gc.score(credits);
+      }
+      gc.info('<div>筹码 '+credits+'</div><div class="tiny muted">每次 10</div>');
+    }, 70);
+  }
+  gc.row([{t:'🎰 拉一把（10）',fn:spin}]);
+  gc.tip('三个相同：7️⃣×300 / 💎×150 / 其他×60；两个相同 ×15');
+  gc.score(credits);
+});
+
+defGame('glights','💡','关灯游戏','益智','点一下会连带翻转上下左右，全部关掉即胜',function(gc){
+  var N=5, b=[], steps=0;
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(5,58px);gap:6px;justify-content:center');
+  function reset(){
+    b=new Array(25).fill(0); steps=0;
+    for(var i=0;i<12;i++) tog(gc.rnd(25), true);
+    if(b.every(function(v){return !v})) tog(7,true);
+    draw();
+  }
+  function tog(i, silent){
+    var x=i%N, y=(i/N)|0;
+    [[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(function(d){
+      var nx=x+d[0], ny=y+d[1];
+      if(nx>=0&&nx<N&&ny>=0&&ny<N) b[ny*N+nx]^=1;
+    });
+    if(!silent) steps++;
+  }
+  function draw(){
+    box.innerHTML='';
+    b.forEach(function(v,i){
+      var d=document.createElement('div'); d.dataset.i=i;
+      d.style.cssText='height:58px;border-radius:11px;cursor:pointer;transition:.15s;background:'+(v?'radial-gradient(circle at 35% 30%,#ffe08a,#ffb302)':'#1a2338')+';border:1px solid '+(v?'#ffb302':'#26314d');
+      box.appendChild(d);
+    });
+    var on=b.filter(function(v){return v}).length;
+    gc.info('<div>步数 '+steps+'</div><div class="tiny muted">亮着 '+on+' 盏</div>');
+    if(!on&&steps>0){ gc.score(Math.max(10,200-steps*5)); gc.over('🎉 全部关闭','用了 '+steps+' 步','再来一局',reset) }
+  }
+  gc.on(box,'click',function(e){ var i=e.target.dataset&&e.target.dataset.i; if(i==null)return; tog(+i); draw() });
+  gc.row([{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('ghanoi','🗼','汉诺塔','益智','把所有盘子移到最右柱，大不能压小',function(gc){
+  var n=4, pegs=[[],[],[]], sel=-1, steps=0;
+  var c = gc.canvas(360,200);
+  function reset(){ pegs=[[],[],[]]; for(var i=n;i>=1;i--) pegs[0].push(i); sel=-1; steps=0; draw() }
+  function draw(){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,360,200);
+    c.fillStyle='#3a4664'; c.fillRect(10,175,340,8);
+    [0,1,2].forEach(function(p){
+      var cx=60+p*120;
+      c.fillStyle = sel===p?'#ffb302':'#3a4664'; c.fillRect(cx-3,60,6,118);
+      pegs[p].forEach(function(d,i){
+        var w=24+d*16, y=163-i*22;
+        c.fillStyle=['#ff4757','#ffb302','#2ed573','#3b82f6','#a855f7','#00d8ff'][d-1];
+        c.beginPath(); c.roundRect(cx-w/2, y, w, 18, 5); c.fill();
+      });
+    });
+    gc.info('<div>步数 '+steps+'</div><div class="tiny muted">最少 '+(Math.pow(2,n)-1)+' 步 · '+n+' 盘</div>');
+    if(pegs[2].length===n){ gc.score(Math.max(10, 300-steps*3)); gc.over('🎉 成功','用了 '+steps+' 步（最少 '+(Math.pow(2,n)-1)+'）','加一个盘子',function(){ n=Math.min(7,n+1); reset() }) }
+  }
+  gc.on(c.cv,'click',function(e){
+    var p = Math.min(2, Math.max(0, Math.round((c.cv.pos(e).x-60)/120)));
+    if(sel<0){ if(pegs[p].length) sel=p }
+    else if(sel===p){ sel=-1 }
+    else {
+      var d=pegs[sel][pegs[sel].length-1], t=pegs[p][pegs[p].length-1];
+      if(!t||d<t){ pegs[p].push(pegs[sel].pop()); steps++; sel=-1 } else sel=p;
+    }
+    draw();
+  });
+  gc.row([{t:'重来',fn:reset},{t:'减一盘',fn:function(){ n=Math.max(3,n-1); reset() }}]);
+  reset();
+});
+
+defGame('gsimon','🎵','西蒙记忆','反应','记住颜色顺序并复现，越来越长',function(gc){
+  var seq=[], step=0, playing=false, lvl=0;
+  var CL=['#ff4757','#2ed573','#3b82f6','#ffb302'];
+  var box = gc.node('div','display:grid;grid-template-columns:repeat(2,92px);gap:10px;justify-content:center');
+  var pads = CL.map(function(col,i){
+    var d=document.createElement('div');
+    d.style.cssText='height:92px;border-radius:16px;background:'+col+';opacity:.42;cursor:pointer;transition:.12s';
+    d.dataset.i=i; box.appendChild(d); return d;
+  });
+  function flash(i){
+    pads[i].style.opacity='1'; pads[i].style.transform='scale(1.05)';
+    setTimeout(function(){ pads[i].style.opacity='.42'; pads[i].style.transform='' }, 260);
+  }
+  function play(){
+    playing=true; step=0;
+    seq.forEach(function(v,k){ setTimeout(function(){ flash(v); if(k===seq.length-1) setTimeout(function(){playing=false},300) }, 450*k+250) });
+  }
+  function next(){ seq.push(gc.rnd(4)); lvl=seq.length; gc.score(lvl-1, '长度 '+lvl); play() }
+  function reset(){ seq=[]; next() }
+  gc.on(box,'click',function(e){
+    var i=e.target.dataset&&e.target.dataset.i; if(i==null||playing)return; i=+i;
+    flash(i);
+    if(seq[step]===i){
+      step++;
+      if(step===seq.length) setTimeout(next, 620);
+    } else {
+      gc.over('❌ 记错了','达到长度 '+seq.length,'再来一局',reset);
+    }
+  });
+  gc.row([{t:'重播',fn:function(){ if(!playing) play() }},{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('gtype','⌨️','打字速度','反应','60 秒内尽量多打对单词',function(gc){
+  var WD='market data trend price index fund gold future news rally bear bull hedge yield asset stock chart alpha beta cycle risk value growth cash rate swap bond quant model signal volume'.split(' ');
+  var cur=[], idx=0, ok=0, err=0, left=60, tm=null, started=false;
+  var show = gc.node('div','width:min(92vw,360px);background:#141c30;border:1px solid #26314d;border-radius:12px;padding:14px;font-size:17px;line-height:1.9;min-height:80px;font-family:ui-monospace,monospace');
+  var inp = document.createElement('input'); inp.placeholder='在这里打字，空格确认'; inp.autocapitalize='off'; inp.autocomplete='off';
+  inp.style.cssText='width:min(92vw,360px)'; gc.wrap.appendChild(inp);
+  function reset(){
+    cur=[]; for(var i=0;i<60;i++) cur.push(WD[gc.rnd(WD.length)]);
+    idx=0; ok=0; err=0; left=60; started=false; clearInterval(tm); inp.value=''; draw();
+    gc.info('<div>准备</div><div class="tiny muted">开始打字即计时</div>');
+  }
+  function draw(){
+    show.innerHTML = cur.slice(idx, idx+14).map(function(w,i){
+      return i===0 ? '<b style="color:#ffb302;border-bottom:2px solid #ffb302">'+w+'</b>' : '<span class="muted">'+w+'</span>';
+    }).join(' ');
+  }
+  inp.oninput = function(){
+    if(!started){
+      started=true;
+      tm = setInterval(function(){
+        left--; gc.info('<div>'+ok+' 词</div><div class="tiny muted">剩 '+left+'s · 错 '+err+'</div>');
+        if(left<=0){ clearInterval(tm); inp.blur();
+          var wpm=ok; gc.score(wpm); gc.over('⏰ 时间到', 'WPM '+wpm+' · 正确率 '+(ok+err?Math.round(ok/(ok+err)*100):0)+'%','再来一局',reset) }
+      }, 1000);
+    }
+    var v = inp.value;
+    if(v.slice(-1)===' '){
+      var w = v.trim();
+      if(w===cur[idx]) ok++; else err++;
+      idx++; inp.value=''; draw();
+      gc.info('<div>'+ok+' 词</div><div class="tiny muted">剩 '+left+'s · 错 '+err+'</div>');
+    }
+  };
+  gc.cleans.push(function(){ clearInterval(tm) });
+  gc.row([{t:'重开',fn:reset}]);
+  reset();
+});
+
+defGame('g24','🧮','24 点','益智','用四个数与 +−×÷ 算出 24',function(gc){
+  var nums=[], ansTxt='';
+  var view = gc.node('div','font-size:34px;font-weight:800;letter-spacing:8px;color:#ffb302');
+  var inp = document.createElement('input'); inp.placeholder='例如 (8-4)*(1+5)'; inp.style.cssText='width:min(92vw,340px)';
+  gc.wrap.appendChild(inp);
+  var msg = gc.node('div','font-size:13px;color:#96a1bb;min-height:40px;text-align:center;max-width:340px');
+  function solve(a){
+    var eps=1e-6;
+    function go(list){
+      if(list.length===1) return Math.abs(list[0].v-24)<eps ? list[0].s : null;
+      for(var i=0;i<list.length;i++)for(var j=0;j<list.length;j++){
+        if(i===j)continue;
+        var rest=list.filter(function(_,k){return k!==i&&k!==j});
+        var x=list[i], y=list[j];
+        var cand=[{v:x.v+y.v,s:'('+x.s+'+'+y.s+')'},{v:x.v-y.v,s:'('+x.s+'-'+y.s+')'},{v:x.v*y.v,s:'('+x.s+'×'+y.s+')'}];
+        if(Math.abs(y.v)>eps) cand.push({v:x.v/y.v,s:'('+x.s+'÷'+y.s+')'});
+        for(var k2=0;k2<cand.length;k2++){ var r=go(rest.concat([cand[k2]])); if(r) return r }
+      }
+      return null;
+    }
+    return go(a.map(function(v){return {v:v,s:''+v}}));
+  }
+  function reset(){
+    var t=0;
+    do{ nums=[1,2,3,4].map(function(){ return 1+gc.rnd(9) }); ansTxt=solve(nums); t++ }while(!ansTxt && t<200);
+    view.textContent = nums.join(' ');
+    inp.value=''; msg.textContent='用这四个数各一次，算出 24';
+    gc.info('<div class="tiny muted">有解题目</div>');
+  }
+  function check(){
+    var e = inp.value.replace(/×/g,'*').replace(/÷/g,'/').replace(/[^0-9+\-*/(). ]/g,'');
+    var used = (e.match(/\d+/g)||[]).map(Number).sort().join(',');
+    if(used !== nums.slice().sort().join(',')){ msg.innerHTML='<span class="up">必须且只能各用一次这四个数</span>'; return }
+    var v; try{ v = Function('"use strict";return ('+e+')')() }catch(err){ msg.innerHTML='<span class="up">算式写错了</span>'; return }
+    if(Math.abs(v-24)<1e-6){ gc.score(getBest('g24')+1); gc.over('🎉 答对了','24 = '+inp.value,'下一题',reset) }
+    else msg.innerHTML='<span class="up">结果是 '+(Math.round(v*100)/100)+'，不是 24</span>';
+  }
+  inp.onkeydown=function(e){ if(e.key==='Enter') check() };
+  gc.row([{t:'验算',fn:check},{t:'看答案',fn:function(){ msg.innerHTML='参考解：<b>'+ansTxt+'</b>' }},{t:'换一题',fn:reset}]);
+  reset();
+});
+
+defGame('gdodge','☄️','躲避流星','街机','拖动躲开流星，活得越久分越高',function(gc){
+  var c=gc.canvas(320,440), px=160, py=380, ms=[], t=0, over=false;
+  gc.on(c.cv,'pointermove',function(e){ var p=c.cv.pos(e); px=Math.max(12,Math.min(308,p.x)); py=Math.max(12,Math.min(428,p.y)) });
+  gc.key(function(k){ if(k==='ArrowLeft')px-=20; if(k==='ArrowRight')px+=20; if(k==='ArrowUp')py-=20; if(k==='ArrowDown')py+=20 });
+  function step(dt){
+    t+=dt;
+    if(Math.random()<0.05*dt+t/9000) ms.push({x:Math.random()*320, y:-20, vx:(Math.random()-.5)*2, vy:2+Math.random()*2+t/900, r:6+gc.rnd(8)});
+    ms.forEach(function(m){ m.x+=m.vx*dt; m.y+=m.vy*dt });
+    ms = ms.filter(function(m){ return m.y<470 });
+    c.fillStyle='#080c18'; c.fillRect(0,0,320,440);
+    c.fillStyle='#1b2745'; for(var i=0;i<20;i++){ c.fillRect((i*47)%315, (i*83+t*0.6)%445, 2, 2) }
+    ms.forEach(function(m){
+      c.fillStyle='#ff6b35'; c.beginPath(); c.arc(m.x,m.y,m.r,0,7); c.fill();
+      c.strokeStyle='rgba(255,180,60,.35)'; c.beginPath(); c.moveTo(m.x,m.y); c.lineTo(m.x-m.vx*8, m.y-m.vy*8); c.lineWidth=m.r/2; c.stroke();
+      if(Math.hypot(m.x-px, m.y-py) < m.r+8) over=true;
+    });
+    c.font='20px sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillText('🛸', px, py);
+    gc.score(Math.floor(t/6), '存活 '+(t/60).toFixed(1)+'s');
+    if(over){ gc.over('💥 被击中','存活 '+(t/60).toFixed(1)+' 秒','再来一局',function(){ t=0;ms=[];over=false;px=160;py=380 }); return false }
+    return true;
+  }
+  gc.loop(step);
+});
+
+defGame('gjump','🦘','跳跳板','街机','左右移动接住台阶，一路向上',function(gc){
+  var c=gc.canvas(300,440), x=150, vx=0, y=360, vy=-6, plats=[], sc=0, top=0, over=false;
+  function reset(){
+    plats=[]; for(var i=0;i<9;i++) plats.push({x:Math.random()*230, y:420-i*48, w:66});
+    x=150; y=360; vy=-7; vx=0; sc=0; top=0; over=false;
+  }
+  gc.on(c.cv,'pointermove',function(e){ vx = (c.cv.pos(e).x - x)*0.16 });
+  gc.on(c.cv,'pointerdown',function(e){ vx = (c.cv.pos(e).x - x)*0.16 });
+  gc.key(function(k){ if(k==='ArrowLeft')vx=-4.5; if(k==='ArrowRight')vx=4.5 });
+  function step(dt){
+    vy += 0.30*dt; y += vy*dt; x += vx*dt;
+    if(x<0)x=300; if(x>300)x=0;
+    if(vy>0) plats.forEach(function(p){
+      if(x>p.x-8 && x<p.x+p.w+8 && y>p.y-6 && y<p.y+10){ vy=-7.4 }
+    });
+    if(y<170){ var d=170-y; y=170; plats.forEach(function(p){ p.y+=d }); sc+=d*0.35 }
+    plats = plats.filter(function(p){ return p.y<460 });
+    while(plats.length<9){
+      var minY = Math.min.apply(null, plats.map(function(p){return p.y}));
+      plats.push({x:Math.random()*230, y:minY-40-gc.rnd(28), w:60+gc.rnd(16)});
+    }
+    c.fillStyle='#0d1424'; c.fillRect(0,0,300,440);
+    plats.forEach(function(p){ c.fillStyle='#2ed573'; c.beginPath(); c.roundRect(p.x,p.y,p.w,9,4); c.fill() });
+    c.font='22px sans-serif'; c.textAlign='center'; c.textBaseline='middle'; c.fillText('🦘', x, y-10);
+    gc.score(Math.floor(sc));
+    if(y>452){ over=true; gc.over('⬇️ 掉下去了','高度 '+Math.floor(sc),'再来一局',reset); return false }
+    return true;
+  }
+  gc.tip('手指按住屏幕左右滑动控制方向');
+  reset(); gc.loop(step);
+});
+
+defGame('gcat','🐱','围住小猫','益智','点空格挡住去路，别让猫跑到边界',function(gc){
+  var N=11, R=19, c=gc.canvas(N*2*R+R*2, N*Math.round(R*1.72)+R*2), b=[], cat, over=false, steps=0;
+  function key(x,y){ return y*N+x }
+  function reset(){
+    b=new Array(N*N).fill(0); cat={x:5,y:5}; over=false; steps=0;
+    for(var i=0;i<9+gc.rnd(4);i++){ var p=gc.rnd(N*N); if(p!==key(5,5)) b[p]=1 }
+    draw();
+  }
+  function cxy(x,y){ return {cx: R + x*2*R + (y%2)*R + R*0.2, cy: R + y*Math.round(R*1.72) + R} }
+  function nbs(x,y){
+    var o = y%2 ? [[1,0],[-1,0],[0,-1],[1,-1],[0,1],[1,1]] : [[1,0],[-1,0],[-1,-1],[0,-1],[-1,1],[0,1]];
+    return o.map(function(d){ return {x:x+d[0], y:y+d[1]} }).filter(function(p){ return p.x>=0&&p.x<N&&p.y>=0&&p.y<N });
+  }
+  function edge(p){ return p.x===0||p.y===0||p.x===N-1||p.y===N-1 }
+  function bfs(){
+    var q=[{x:cat.x,y:cat.y,first:null}], seen={}; seen[key(cat.x,cat.y)]=1;
+    while(q.length){
+      var cu=q.shift();
+      if(edge(cu) && (cu.x!==cat.x||cu.y!==cat.y)) return cu.first;
+      nbs(cu.x,cu.y).forEach(function(p){
+        if(b[key(p.x,p.y)]||seen[key(p.x,p.y)])return;
+        seen[key(p.x,p.y)]=1;
+        q.push({x:p.x,y:p.y, first: cu.first||p});
+      });
+    }
+    return null;
+  }
+  function draw(){
+    c.fillStyle='#0d1424'; c.fillRect(0,0,c.W,c.H);
+    for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+      var p=cxy(x,y);
+      c.beginPath(); c.arc(p.cx, p.cy, R-2.5, 0, 7);
+      c.fillStyle = b[key(x,y)] ? '#ffb302' : (edge({x:x,y:y}) ? '#212c46' : '#2b3652');
+      c.fill();
+    }
+    var cp=cxy(cat.x,cat.y);
+    c.font=(R*1.3)+'px sans-serif'; c.textAlign='center'; c.textBaseline='middle';
+    c.fillText('🐱', cp.cx, cp.cy);
+    gc.info('<div>步数 '+steps+'</div><div class="tiny muted">堵住所有出路</div>');
+  }
+  gc.on(c.cv,'click',function(e){
+    if(over)return;
+    var p=c.cv.pos(e), best=null, bd=1e9;
+    for(var y=0;y<N;y++)for(var x=0;x<N;x++){
+      var q=cxy(x,y), d=Math.hypot(q.cx-p.x, q.cy-p.y);
+      if(d<bd){ bd=d; best={x:x,y:y} }
+    }
+    if(bd>R*1.2 || b[key(best.x,best.y)] || (best.x===cat.x&&best.y===cat.y)) return;
+    b[key(best.x,best.y)]=1; steps++;
+    var mv = bfs();
+    if(!mv){
+      var free = nbs(cat.x,cat.y).filter(function(q){ return !b[key(q.x,q.y)] });
+      if(!free.length){ over=true; draw(); gc.score(Math.max(10,200-steps*5)); return gc.over('🎉 抓住小猫','用了 '+steps+' 步','再来一局',reset) }
+      cat = free[gc.rnd(free.length)];
+    } else cat = mv;
+    draw();
+    if(edge(cat)){ over=true; gc.over('🐱 猫跑掉了','再试一次','再来一局',reset) }
+  });
+  gc.row([{t:'重开',fn:reset}]);
+  gc.tip('猫每回合朝最短逃跑路线走一格，先堵关键路口');
+  reset();
+});
+/* ============ 路由 / 自动刷新 / 事件 ============ */
+var TABS = [
+  {id:'stock', icon:'📊', name:'股市', subs:STOCK_SUBS, def:'idx', render:viewStock, freq:30000},
+  {id:'fund',  icon:'💰', name:'基金', subs:FUND_SUBS,  def:'rank', render:viewFund, freq:300000},
+  {id:'cmd',   icon:'🛢️', name:'商品', subs:CMD_SUBS,   def:'intl', render:viewCmd,  freq:30000},
+  {id:'news',  icon:'📰', name:'资讯', subs:NEWS_SUBS,  def:'flash', render:viewNews, freq:60000},
+  {id:'game',  icon:'🎮', name:'游戏', subs:[{id:'全部',name:'全部'},{id:'益智',name:'益智'},{id:'街机',name:'街机'},{id:'棋牌',name:'棋牌'},{id:'反应',name:'反应'},{id:'休闲',name:'休闲'}], def:'全部', render:viewGames, freq:0}
+];
+function curTab(){ return TABS.filter(function(t){return t.id===App.tab})[0] }
+function markUpdated(){ App.lastUp = Date.now(); $('#live').classList.remove('off') }
+function showErr(e){
+  var v = $('#view');
+  if(v && !v.querySelector('.q') && !v.querySelector('table')) {
+    var d = document.createElement('div'); d.className='err';
+    d.innerHTML = '数据获取失败：'+esc(e.message||e)+'<br><span class="tiny">行情节点可能限流，稍后点右上角 ↻ 重试；也可切换网络后再试。</span>';
+    v.insertBefore(d, v.firstChild);
+  }
+}
+App.render = function(){
+  var t = curTab();
+  $('#nav').innerHTML = TABS.map(function(x){
+    return '<button data-t="'+x.id+'" class="'+(x.id===App.tab?'on':'')+'"><i>'+x.icon+'</i>'+x.name+'</button>';
+  }).join('');
+  var sub = App.sub[t.id] || t.def;
+  $('#subnav').innerHTML = '<div class="subtabs">'+t.subs.map(function(s){
+    return '<div class="subtab '+(s.id===sub?'on':'')+'" data-s="'+s.id+'">'+s.name+'</div>';
+  }).join('')+'</div>';
+  if(App.detail){
+    if(App.detail.fund) openFund(App.detail.fund, App.detail.name);
+    else openDetail(App.detail.sec, App.detail.name);
+  } else {
+    $('#view').innerHTML = '';
+    t.render(sub);
+  }
+  LS.set('tab', App.tab); LS.set('subs', App.sub);
+  schedule();
+};
+function go(tab, sub){
+  App.tab = tab;
+  if(sub!=null) App.sub[tab] = sub;
+  App.detail = null;
+  window.scrollTo(0,0);
+  App.render();
+}
+function refreshNow(){
+  var t = curTab();
+  if(App.detail){
+    if(App.detail.fund) openFund(App.detail.fund, App.detail.name);
+    else openDetail(App.detail.sec, App.detail.name);
+    return;
+  }
+  var sub = App.sub[t.id] || t.def;
+  if(t.id==='stock'){
+    if(sub==='a') loadAList(); else if(sub==='my'){ refreshStock() } else if(sub!=='scan') refreshStock();
+  }
+  else if(t.id==='cmd'){ if(sub==='intl') refreshStock(); else if(sub==='cn') viewCmd('cn') }
+  else if(t.id==='fund'){ if(sub==='my') loadFundMy(); else if(sub==='etf') fundEtf(); else loadFundRank() }
+  else if(t.id==='news'){ viewNews(sub) }
+}
+function schedule(){
+  clearInterval(App.timer);
+  var t = curTab();
+  if(!t.freq) return;
+  App.timer = setInterval(function(){
+    if(document.hidden || $('#stage').classList.contains('on')) return;
+    refreshNow();
+  }, t.freq);
+}
+/* 事件委托 */
+document.addEventListener('click', function(e){
+  var n;
+  if(n = e.target.closest('#nav button')) return go(n.dataset.t);
+  if(n = e.target.closest('.subtab')) return go(App.tab, n.dataset.s);
+  if(n = e.target.closest('.delw')){ e.stopPropagation(); toggleWatch(n.dataset.sec); return App.render() }
+  if(n = e.target.closest('.addw')){
+    var added = toggleWatch(n.dataset.sec, n.dataset.nm);
+    n.textContent = added?'已添加':'☆ 自选'; return;
+  }
+  if(n = e.target.closest('.delf')){
+    var w=getFW(), i=w.indexOf(n.dataset.fc); if(i>=0) w.splice(i,1); setFW(w); return loadFundMy();
+  }
+  if(n = e.target.closest('.addf')){
+    var w2=getFW(), fc=n.dataset.fc, j=w2.indexOf(fc);
+    if(j>=0){ w2.splice(j,1); n.textContent='☆ 添加' } else { w2.push(fc); n.textContent='已添加' }
+    setFW(w2); loadFundMy(); return;
+  }
+  if(n = e.target.closest('.fitem')) return openFund(n.dataset.fc, n.dataset.fn);
+  if(n = e.target.closest('.q')){ if(n.dataset.sec) return openDetail(n.dataset.sec, n.dataset.nm) }
+  if(n = e.target.closest('.gcard')){
+    var g = GAMES.filter(function(x){return x.id===n.dataset.g})[0];
+    if(g) openGame(g); return;
+  }
+});
+$('#refresh').onclick = function(){ this.textContent='↻ …'; var b=this; refreshNow(); setTimeout(function(){ b.textContent='↻ 刷新' }, 900) };
+$('#stback').onclick = function(){ closeGame(); App.render() };
+document.addEventListener('visibilitychange', function(){ if(!document.hidden && Date.now()-App.lastUp>20000) refreshNow() });
+
+/* 时钟 + 在线状态 */
+setInterval(function(){
+  var d = new Date();
+  $('#clock').textContent = d.toTimeString().slice(0,8);
+  var stale = Date.now()-App.lastUp > 120000;
+  $('#live').classList.toggle('off', stale || !App.lastUp);
+}, 1000);
+
+/* 启动 */
+App.tab = LS.get('tab','stock');
+App.sub = LS.get('subs',{});
+if(!TABS.some(function(t){return t.id===App.tab})) App.tab='stock';
+App.render();
+</script>
+</body>
+</html>
