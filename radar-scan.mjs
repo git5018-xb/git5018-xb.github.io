@@ -16,6 +16,10 @@ const SOURCES = [
   { id: "xa-h2", name: "2026下半年市事业单位招聘公告页", url: "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html" },
   { id: "gaoxin", name: "西安高新区通知公告", url: "https://xdz.xa.gov.cn/xwzx/tzgg/1.html" },
   { id: "edu", name: "西安市教育局", url: "https://edu.xa.gov.cn/" },
+  { id: "szeb", name: "深圳市教育局公办学校招聘", url: "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/" },
+  { id: "yuexiu", name: "广州市越秀区招考", url: "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/" },
+  { id: "zhuhai", name: "珠海市公职招考", url: "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/" },
+  { id: "fuzhou", name: "福州市政府通知公告", url: "https://www.fuzhou.gov.cn/zwgk/tzgg/" },
 ];
 
 const KEEP = /公开招聘|教师招聘|教职工|体育教师|特岗|人才引进|事业单位公开招聘|公开招聘工作人员/;
