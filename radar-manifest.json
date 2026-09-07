@@ -1,0 +1,9 @@
+{
+  "name": "西安体育教师编制岗位雷达",
+  "short_name": "西安体育岗雷达",
+  "start_url": "/radar.html",
+  "display": "standalone",
+  "background_color": "#f3efe6",
+  "theme_color": "#2d5a45",
+  "lang": "zh-CN"
+}
