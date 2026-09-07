@@ -100,8 +100,8 @@ body.locked #gate{display:flex}
 <header class="app">
   <div class="inner">
     <div>
-      <h1>西安体育教师编制岗位雷达</h1>
-      <p>只看西安 · 小学/初中/高中 · 有证据才标事业编</p>
+      <h1>体育教师编制岗位雷达</h1>
+      <p>西安 / 深圳 / 广州 / 珠海 / 赣州 / 福州 / 遂川 · 有证据才标事业编</p>
     </div>
     <nav class="nav-top">
       <button data-go="jobs" class="on">岗位雷达</button>
@@ -115,8 +115,8 @@ body.locked #gate{display:flex}
 <main class="wrap">
   <section id="page-jobs" class="page">
     <div class="hero">
-      <h2>2026 西安体育教师岗位库 · 2027 备考对照</h2>
-      <p>工资没有官方数字就写「官方未公开」。没有公告原文就不标事业编。已关闭岗位的报名人数写「历史数据未公开」。</p>
+      <h2>多地体育教师岗位库 · 2027 备考对照</h2>
+      <p>可切换城市。合适度看你能不能报，性价比看编制、门槛和生活成本。工资没有官方数字就写「官方未公开」，不编年薪。</p>
     </div>
     <div class="flash" id="h2-banner">2026年下半年市事业单位公开招聘正在报名：<b>9月7日 8:00 – 9月11日 18:00</b>。请到西安人事考试网下载岗位表，用「体育」筛选后点「上传岗位表」。本库尚未自动解析到该批次体育教师明细，禁止编造。</div>
     <div class="card" id="watch-box">
@@ -140,6 +140,8 @@ body.locked #gate{display:flex}
       <button class="btn" data-stage="高中">高中</button>
       <button class="btn" data-stage="中职">中职</button>
     </div>
+    <div class="toolbar" id="city-bar"></div>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 8px">性价比不是工资预测。没有官方工资时，只按「是否明确事业编 + 你能不能报 + 城市生活成本参考」给理由。</p>
     <div id="flash" class="flash hidden"></div>
     <div id="list"></div>
   </section>
@@ -208,8 +210,8 @@ body.locked #gate{display:flex}
   </section>
 
   <section id="page-housing" class="page hidden">
-    <h2>西安住房公积金（2026年度）</h2>
-    <p>执行期：2026年7月至2027年6月。文号：西房金管发〔2026〕1号。本页不猜测某所学校的缴存比例，也不估算税后工资。</p>
+    <h2>住房公积金</h2>
+    <p>执行期示例按西安 2026 年度政策。切换到深圳、广州等地时，不要套用西安数字，请打开当地公积金中心官网。本页不猜测某所学校的缴存比例，也不估算税后工资。</p>
     <div class="stats">
       <div class="stat"><b>32,726</b><span>缴存基数上限（元）</span></div>
       <div class="stat"><b>2,376</b><span>主城区等下限</span></div>
@@ -309,8 +311,25 @@ const SOURCES=[
   ["2026下半年市事业单位招聘","https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html","报名 9月7日–11日"],
   ["西安市教育局","https://edu.xa.gov.cn/","直属学校、教师资格"],
   ["西安高新区管委会","https://xdz.xa.gov.cn/","高新区学校招聘"],
-  ["西安住房公积金管理中心","https://www.xazfgjj.com/","缴存政策"]
+  ["西安住房公积金管理中心","https://www.xazfgjj.com/","缴存政策"],
+  ["深圳市教育局教师招聘","https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html","2026年6月公办中小学教师"],
+  ["广州市越秀区招考","http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10849865.html","事业编制教师"],
+  ["珠海市政府公职招考","https://www.zhuhai.gov.cn/zw/rsxx/gzzk/","市、区教师招聘"],
+  ["江西人事考试网","https://www.jxpta.com/","全省中小学教师招聘岗位表"],
+  ["赣州市教育局","https://edu.ganzhou.gov.cn/","赣州教师招聘面试"],
+  ["福建省人社厅事业单位招聘","https://rst.fujian.gov.cn/","福州编制内教师方案"],
+  ["遂川县人民政府","https://www.suichuan.gov.cn/","遂川公告入口"]
 ];
+const CITIES=["西安市","深圳市","广州市","珠海市","赣州市","福州市","遂川县"];
+const CITY_COST={
+  "西安市":{delta:0,label:"新一线",why:"生活成本低于深广。西安事业编仍要看具体单位，工资官方未公开。"},
+  "深圳市":{delta:-14,label:"一线高成本",why:"住房和消费公开认知高。事业编含金量高，但工资数字官方未公开，不按网络传说年薪打分。"},
+  "广州市":{delta:-12,label:"一线高成本",why:"生活成本高。越秀等多区明确事业编且不少岗要研究生，硕士对口加分。"},
+  "珠海市":{delta:-6,label:"珠三角中高",why:"成本低于深广。市属暑期职位表未列出体育岗，斗门区公告有编制教师及体育技能测试。"},
+  "福州市":{delta:-2,label:"省会中等",why:"省会消费低于深广。编制内岗位稳定性好，工资官方未公开。"},
+  "赣州市":{delta:10,label:"相对低成本",why:"同等事业编在较低生活成本地区通常更「够用」。具体实发工资官方未公开。"},
+  "遂川县":{delta:14,label:"县城低成本",why:"县城生活成本低，事业编性价比往往高于一线合同制。人数须以省岗位表「遂川+体育」为准。"}
+};
 const DEFAULT_PROFILE={graduationYear:2027,education:"硕士研究生",bachelorMajor:"体育教育",masterMajor:"体育教育训练学",teacherCert:"在考",teacherCertStages:[],birthYear:2001,workYears:0,specialties:[],school:"西安体育学院"};
 const PE_KEYS=["体育","运动训练","运动人体","武术","民族传统体育","社会体育","休闲体育","竞赛组织","体育教学","学科教学"];
 
@@ -401,38 +420,73 @@ function matchJob(job, p){
   return {verdict, reasons};
 }
 function badgeClass(v){return v==="可以报"?"ok":v==="可能可以报"?"maybe":v==="不能报"?"no":"ask"}
+function valueFit(job, match){
+  const city=job.city||"西安市";
+  const cost=CITY_COST[city]||{delta:0,label:"待定",why:"该城市生活成本未单列，性价比主要看编制和匹配。"};
+  const why=[];
+  let score=55;
+  if(job.isBianzhiExplicit){ score+=22; why.push("公告明确事业编，稳定性是最大加分项。"); }
+  else if(job.recruitType==="全员聘用制"){ score+=6; why.push("全员聘用制，不是事业编。"); }
+  else if(job.recruitType==="合同制"){ score-=12; why.push("合同制，编制含金量低于事业编。"); }
+  else { why.push("招聘类型不明确，编制项不加分。"); }
+  if(match.verdict==="不能报"){ score-=30; why.push("按你填的条件目前不能报，性价比再高也报不上这一轮。"); }
+  else if(match.verdict==="可以报"){ score+=14; why.push("条件匹配，硕士学历用得上。"); }
+  else if(match.verdict==="可能可以报"){ score+=6; why.push("条件大体能对上，仍有要咨询单位的点。"); }
+  else { why.push("条件需要咨询招聘单位，合适度暂时打折。"); }
+  if(/硕士|研究生/.test(job.education||"") && !/本科/.test(job.education||"")){
+    score+=6; why.push("学历明确到研究生，硕士不浪费。");
+  } else if(/本科/.test(job.education||"")){
+    why.push("本科即可报的话，硕士有优势但岗位不强制。");
+  }
+  if(/一级运动员|运动健将|健将/.test((job.notes||"")+(job.sportsSpecialty||"")+(job.workExperience||""))){
+    score-=8; why.push("专项证书/运动员等级门槛高，合适度下降。");
+  }
+  if((job.salary&&job.salary!==U&&!/未公开/.test(job.salary))){
+    why.push("工资按官方原文：「"+job.salary+"」。");
+  } else {
+    why.push("工资官方未公开，不猜测税后收入。");
+  }
+  score+=cost.delta;
+  why.push("生活成本参考（不是该校工资）："+city+cost.label+"。"+cost.why);
+  score=Math.max(0,Math.min(100,Math.round(score)));
+  const grade=score>=78?"高":score>=58?"中":score>=40?"偏低":"低";
+  return {score, grade, why};
+}
 function allJobs(){return (window.SEED||[]).concat(state().extra)}
 function esc(s){const m={"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"};return String(s??"").replace(/[&<>"']/g,c=>m[c]);}
 
-let onlyBz=false, onlyMine=false, stage="全部", q="";
+let onlyBz=false, onlyMine=false, stage="全部", q="", city="西安市";
 
 function renderStats(jobs, matched){
-  const heads=jobs.reduce((s,j)=>s+(j.headcount||0),0);
+  const heads=jobs.reduce((s,j)=>s+(Number(j.headcount)||0),0);
+  const vf=matched.map(m=>valueFit(m.job,m.match));
+  const high=vf.filter(v=>v.grade==="高").length;
   document.getElementById("stats").innerHTML=
-    [["岗位条数",jobs.length],["招聘人数",heads||"若干"],["明确事业编",jobs.filter(j=>j.isBianzhiExplicit).length],["可以报/可能可以报",matched.filter(m=>m.match.verdict==="可以报"||m.match.verdict==="可能可以报").length]]
+    [["本城岗位",jobs.length],["招聘人数",heads||"若干"],["明确事业编",jobs.filter(j=>j.isBianzhiExplicit).length],["性价比高",high]]
     .map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
 }
 function renderList(){
   if(!window.SEED||!window.SEED.length){document.getElementById("list").innerHTML='<div class="card">岗位数据还在加载。请刷新一次。</div>';return;}
   const p=state().profile;
-  const jobs=allJobs();
-  const matched=jobs.map(job=>({job, match:matchJob(job,p)}));
+  const jobs=allJobs().filter(j=>(j.city||"西安市")===city);
+  const matched=jobs.map(job=>({job, match:matchJob(job,p), value:valueFit(job, matchJob(job,p))}));
   renderStats(jobs, matched);
   const vis=matched.filter(({job,match})=>{
     if(onlyBz && !job.isBianzhiExplicit) return false;
     if(onlyMine && match.verdict!=="可以报" && match.verdict!=="可能可以报") return false;
     if(stage!=="全部" && job.stage!==stage) return false;
-    if(q && !(job.school+job.title+job.district+job.recruitType).includes(q)) return false;
+    if(q && !(job.school+job.title+job.district+job.recruitType+(job.city||"")).includes(q)) return false;
     return true;
   });
   const box=document.getElementById("list");
-  if(!vis.length){box.innerHTML='<div class="card">没有符合筛选的岗位。2027届对照 2026 事业编时，多数会显示「不能报」，这是公告原文限制，不是系统出错。</div>';return;}
-  box.innerHTML=vis.map(({job,match})=>`
+  if(!vis.length){box.innerHTML='<div class="card">'+esc(city)+'暂时没有符合筛选的体育岗。可切换城市，或上传该地官方岗位表。珠海、赣州、遂川若只有批次说明、没有校级明细，是因为岗位表还没解析到，禁止编造人数。</div>';return;}
+  box.innerHTML=vis.map(({job,match,value})=>`
     <article class="card" data-id="${esc(job.id)}">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div>
           <h3>${esc(job.school)} · ${esc(job.title)}</h3>
           <div class="meta">
+            <span class="tag bz">${esc(job.city||city)}</span>
             <span class="tag">${esc(job.district)}</span>
             <span class="tag">${esc(job.stage)}</span>
             <span class="tag ${job.isBianzhiExplicit?"bz":"no"}">${esc(job.recruitType)}${job.isBianzhiExplicit?"":" · 非明确事业编"}</span>
@@ -440,16 +494,19 @@ function renderList(){
             <span class="tag">${esc(job.status)}</span>
           </div>
         </div>
-        <span class="badge ${badgeClass(match.verdict)}">${esc(match.verdict)}</span>
+        <div style="text-align:right">
+          <span class="badge ${badgeClass(match.verdict)}">${esc(match.verdict)}</span>
+          <div class="tag ${value.grade==="高"?"bz":""}" style="display:block;margin-top:6px">性价比 ${esc(value.grade)} · ${value.score}</div>
+        </div>
       </div>
-      <ul class="reasons">${match.reasons.slice(0,3).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+      <ul class="reasons">${value.why.slice(0,3).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
       <div class="toolbar"><button class="btn" data-open="${esc(job.id)}">查看全部字段</button>
         ${job.announcementUrl && job.announcementUrl!==U?`<a class="btn" target="_blank" rel="noopener" href="${esc(job.announcementUrl)}">打开公告</a>`:""}
       </div>
     </article>`).join("");
 }
 function fieldRows(job){
-  const labels={year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
+  const labels={city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
   return Object.keys(labels).map(k=>{
     let v=job[k];
     if(k==="isBianzhiExplicit") v=job[k]?"是":"否";
@@ -462,12 +519,15 @@ function fieldRows(job){
 function openJob(id){
   const job=allJobs().find(j=>j.id===id); if(!job) return;
   const m=matchJob(job, state().profile);
+  const v=valueFit(job, m);
   document.getElementById("sheet-body").innerHTML=`
     <div style="display:flex;justify-content:space-between;align-items:center">
       <h3 style="margin:0">${esc(job.school)}</h3>
       <button class="btn" id="close-sheet">关闭</button>
     </div>
-    <p>${esc(job.title)} · <span class="badge ${badgeClass(m.verdict)}">${esc(m.verdict)}</span></p>
+    <p>${esc(job.city||"")} · ${esc(job.title)} · <span class="badge ${badgeClass(m.verdict)}">${esc(m.verdict)}</span> · 性价比 ${esc(v.grade)}（${v.score}）</p>
+    <ul class="reasons">${v.why.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+    <p style="color:var(--muted);font-size:13px">报考判断：</p>
     <ul class="reasons">${m.reasons.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
     <div class="kv" style="margin-top:12px">${fieldRows(job)}</div>
     <div class="card" style="margin-top:12px">
@@ -559,16 +619,17 @@ function exportExcel(){
   const p=state().profile;
   const rows=allJobs().map(j=>{
     const m=matchJob(j,p);
-    return {"我的判断":m.verdict,"判断原因":m.reasons.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
+    const vf=valueFit(j,m);
+    return {城市:j.city||"西安市","合适度":m.verdict,"合适度原因":m.reasons.join("；"),"性价比":vf.grade,"性价比分数":vf.score,"性价比理由":vf.why.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
   });
   loadXlsx().then(XLSX=>{
     const wb=XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), "体育教师岗位");
-    XLSX.writeFile(wb, "西安体育教师岗位.xlsx");
+    XLSX.writeFile(wb, "体育教师岗位雷达.xlsx");
   }).catch(()=>{
     const header=Object.keys(rows[0]);
     const csv="\ufeff"+[header.join(","),...rows.map(r=>header.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
-    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="西安体育教师岗位.csv"; a.click();
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="体育教师岗位雷达.csv"; a.click();
   });
 }
 function guessHeader(cells){
@@ -606,7 +667,7 @@ function ingestGrid(grid, meta){
     const typeText=(row.join(" ")+(meta.note||""));
     const isBz=/事业单位公开招聘|事业编制|事业编/.test(typeText) && !/非编制|不是事业编|全员聘用/.test(typeText);
     added.push({
-      id:"up-"+Date.now()+"-"+i, year:2026, publishedAt:today(), district:meta.district||"待核对",
+      id:"up-"+Date.now()+"-"+i, year:2026, publishedAt:today(), city:city||"待核对", district:meta.district||"待核对",
       school, schoolNature:"公办", stage:/小学/.test(title)?"小学":/初中/.test(title)?"初中":/高中/.test(title)?"高中":"不明确",
       title, code:String(row[map.code??4]||U), headcount:Number(row[map.n??5])||null,
       education:String(row[map.edu??7]||U), degree:String(row[map.deg??8]||U),
@@ -702,7 +763,7 @@ function addManual(){
   if(type==="事业编" && !bz){alert("没有公告原文证据，不能登记为事业编。");return;}
   const s=state();
   s.extra.push({
-    id:"m-"+Date.now(), year:2027, publishedAt:today(), district:document.getElementById("n-dist").value.trim()||"待核对",
+    id:"m-"+Date.now(), year:2027, publishedAt:today(), city:city, district:document.getElementById("n-dist").value.trim()||"待核对",
     school, schoolNature:"公办", stage:document.getElementById("n-stage").value,
     title:document.getElementById("n-title").value.trim()||"体育教师",
     code:U, headcount:+document.getElementById("n-n").value||null, education:U, degree:U, bachelorMajors:U, masterMajors:U,
@@ -717,6 +778,14 @@ function addManual(){
   save(s); alert("已入库。"); go("jobs"); renderList();
 }
 
+document.getElementById("city-bar").innerHTML=CITIES.map(c=>`<button class="btn ${c===city?"on":""}" data-city="${c}">${c.replace("市","").replace("县","")}</button>`).join("");
+document.getElementById("city-bar").onclick=e=>{
+  const c=e.target.dataset.city; if(!c) return;
+  city=c;
+  document.querySelectorAll("#city-bar .btn").forEach(b=>b.classList.toggle("on", b.dataset.city===city));
+  document.getElementById("h2-banner").classList.toggle("hidden", city!=="西安市");
+  renderList();
+};
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
 document.getElementById("btn-bz").onclick=()=>{onlyBz=!onlyBz; document.getElementById("btn-bz").classList.toggle("on",onlyBz); renderList();};
 document.getElementById("btn-mine").onclick=()=>{onlyMine=!onlyMine; document.getElementById("btn-mine").classList.toggle("on",onlyMine); renderList();};
