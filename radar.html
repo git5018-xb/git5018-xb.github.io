@@ -485,11 +485,12 @@ function applyInfo(job){
   const now=new Date();
   let phase="unknown", label="报名时间未公开", hint="公告里没写清起止时间，不猜测。";
   if(end && now>end){ phase="closed"; label="已截止"; hint="报名已于 "+fmtWhen(endS)+" 结束，仅作对照。"; }
+  else if(job.status==="已结束"){ phase="closed"; label="已截止"; hint=end?"报名已于 "+fmtWhen(endS)+" 结束，仅作对照。":"岗位状态为已结束。截止日期如未写明，显示「官方未公开」。"; }
   else if(start && now<start){ phase="soon"; label="未开始"; const d=Math.ceil((start-now)/86400000); hint=d+" 天后开始报名。"; }
   else if((start && end && now>=start && now<=end) || (!start && end && now<=end) || (start && !end && now>=start)){
     phase="open"; label="正在报名";
     hint=end?("截止 "+fmtWhen(endS)+(Math.ceil((end-now)/86400000)>0?"，还剩约 "+Math.ceil((end-now)/86400000)+" 天":"")):"截止时间官方未公开。";
-  } else if(job.status==="已结束"){ phase="closed"; label="已截止"; hint="岗位状态为已结束。"; }
+  }
   return {phase,label,hint,startText:fmtWhen(startS),endText:fmtWhen(endS)};
 }
 function renderApplyBoard(jobs){
