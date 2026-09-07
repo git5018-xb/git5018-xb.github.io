@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#2d5a45">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="西安体育岗雷达">
+<meta name="robots" content="noindex,nofollow">
 <title>西安体育教师编制岗位雷达</title>
 <link rel="manifest" href="radar-manifest.json">
 <style>
@@ -66,6 +67,13 @@ input[type=search],input[type=text],input[type=number],select,textarea{
 .page h2{margin:8px 0 12px}
 .cal{border-left:3px solid var(--pine);padding:4px 0 4px 12px;margin:12px 0}
 footer.note{color:var(--muted);font-size:12px;margin-top:24px}
+body.locked header.app,body.locked main,body.locked .bottom,body.locked #sheet{display:none !important}
+#gate{display:none;min-height:100dvh;align-items:center;justify-content:center;padding:24px}
+body.locked #gate{display:flex}
+#gate .box{width:min(420px,100%);background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:28px;box-shadow:var(--shadow)}
+#gate h2{margin:0 0 8px;font-size:22px}
+#gate p{color:var(--muted);margin:0 0 16px}
+#gate-err{color:var(--danger);font-size:14px;min-height:1.2em}
 @media(min-width:860px){
   .nav-top{display:flex}
   .bottom{display:none}
@@ -79,7 +87,16 @@ footer.note{color:var(--muted);font-size:12px;margin-top:24px}
 }
 </style>
 </head>
-<body>
+<body class="locked">
+<div id="gate">
+  <div class="box">
+    <h2>西安体育教师编制岗位雷达</h2>
+    <p>这是私人备考页。输入口令后进入，岗位和个人条件不会出现在未解锁的页面上。</p>
+    <label>访问口令<input id="gate-pass" type="password" autocomplete="current-password"></label>
+    <p id="gate-err"></p>
+    <button class="btn primary" id="gate-btn" style="width:100%;margin-top:8px">进入</button>
+  </div>
+</div>
 <header class="app">
   <div class="inner">
     <div>
@@ -237,10 +254,43 @@ footer.note{color:var(--muted);font-size:12px;margin-top:24px}
   <button data-go="sources">来源</button>
 </nav>
 <div id="sheet" class="sheet hidden"><div class="panel" id="sheet-body"></div></div>
-<script src="radar-data.js"></script>
 <script>
 
-const SEED = window.SEED;
+const GATE_HASH="a888493c7217cab3587d760a173206acd962923823b921d2d37422db23ed4d94";
+const GATE_KEY="xa-pe-radar-gate-v1";
+async function sha256hex(text){
+  const buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+function loadSeed(){
+  if(window.SEED && window.SEED.length) return Promise.resolve();
+  return new Promise((resolve,reject)=>{
+    const s=document.createElement("script");
+    s.src="radar-data.js";
+    s.onload=resolve;
+    s.onerror=()=>reject(new Error("岗位数据加载失败"));
+    document.head.appendChild(s);
+  });
+}
+async function openApp(){
+  await loadSeed();
+  window.SEED = window.SEED || [];
+  document.body.classList.remove("locked");
+  renderList();
+}
+async function tryUnlock(pass){
+  const h=await sha256hex(String(pass||"").trim());
+  if(h!==GATE_HASH) return false;
+  localStorage.setItem(GATE_KEY,"ok");
+  await openApp();
+  return true;
+}
+document.getElementById("gate-btn").onclick=async()=>{
+  const ok=await tryUnlock(document.getElementById("gate-pass").value);
+  document.getElementById("gate-err").textContent=ok?"":"口令不对。";
+};
+document.getElementById("gate-pass").addEventListener("keydown",e=>{if(e.key==="Enter") document.getElementById("gate-btn").click();});
+
 const U="官方未公开", H="历史数据未公开";
 const PK="xa-pe-radar-web-v1";
 const SPORTS=["足球","篮球","排球","田径","武术","体操","健美操","操舞","游泳"];
@@ -342,7 +392,7 @@ function matchJob(job, p){
   return {verdict, reasons};
 }
 function badgeClass(v){return v==="可以报"?"ok":v==="可能可以报"?"maybe":v==="不能报"?"no":"ask"}
-function allJobs(){return SEED.concat(state().extra)}
+function allJobs(){return (window.SEED||[]).concat(state().extra)}
 function esc(s){const m={"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"};return String(s??"").replace(/[&<>"']/g,c=>m[c]);}
 
 let onlyBz=false, onlyMine=false, stage="全部", q="";
@@ -354,7 +404,7 @@ function renderStats(jobs, matched){
     .map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
 }
 function renderList(){
-  if(!window.SEED||!SEED.length){document.getElementById("list").innerHTML='<div class="card">岗位数据还在加载。请刷新一次。</div>';return;}
+  if(!window.SEED||!window.SEED.length){document.getElementById("list").innerHTML='<div class="card">岗位数据还在加载。请刷新一次。</div>';return;}
   const p=state().profile;
   const jobs=allJobs();
   const matched=jobs.map(job=>({job, match:matchJob(job,p)}));
@@ -647,7 +697,9 @@ document.getElementById("btn-copy").onclick=async()=>{
 document.getElementById("btn-install").onclick=()=>document.getElementById("install-help").classList.toggle("hidden");
 document.getElementById("official-links").innerHTML="<h3>官方入口</h3>"+SOURCES.map(([n,u,d])=>`<p><a href="${u}" target="_blank" rel="noopener">${n}</a> · ${d}</p>`).join("");
 document.getElementById("sheet").addEventListener("click",e=>{if(e.target.id==="sheet") e.currentTarget.classList.add("hidden");});
-renderList();
+if(localStorage.getItem(GATE_KEY)==="ok"){
+  openApp().catch(()=>{document.getElementById("gate-err").textContent="岗位数据加载失败，请刷新。";});
+}
 </script>
 </body>
 </html>
