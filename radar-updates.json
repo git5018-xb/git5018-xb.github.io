@@ -1,0 +1,223 @@
+{
+  "updatedAt": "2026-09-07T16:27:25.627+08:00",
+  "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
+  "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
+  "sources": [
+    {
+      "id": "xa-exam",
+      "name": "西安市人民政府招考信息",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1.html",
+      "ok": true,
+      "error": null,
+      "found": 14
+    },
+    {
+      "id": "xa-h2",
+      "name": "2026下半年市事业单位招聘公告页",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
+      "ok": true,
+      "error": null,
+      "found": 4
+    },
+    {
+      "id": "gaoxin",
+      "name": "西安高新区通知公告",
+      "url": "https://xdz.xa.gov.cn/xwzx/tzgg/1.html",
+      "ok": true,
+      "error": null,
+      "found": 0
+    },
+    {
+      "id": "edu",
+      "name": "西安市教育局",
+      "url": "https://edu.xa.gov.cn/",
+      "ok": true,
+      "error": null,
+      "found": 0
+    }
+  ],
+  "peNew": 0,
+  "newCount": 2,
+  "hits": [
+    {
+      "id": "2f4a248a92b173a8",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": true
+    },
+    {
+      "id": "8367b80bd024726c",
+      "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079767900058054657.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "fd279e0b0659566a",
+      "title": "西安市教育局关于2026年直属事业单位公开招聘工作人员第一批拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079766721292980226.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "509ced5d850e95d3",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年西安市事业单位公开招聘高层次及紧缺特殊专业人才的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2054741847663222786.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "ec38da940649dc65",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于削减和取消2026年西安市事业单位公开招聘（募）工作人员部分岗位招聘计划的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2031938501023465473.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "ea46d8603ae659c9",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2025年下半年西安市事业单位公开招聘工作人员笔试成绩查询和有关事项安排的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1982998167804219394.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "bf236316deecf9d6",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2025年下半年西安市事业单位公开招聘拟加分退役士兵情况的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1978656381350744066.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "f59d72b74167de97",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2025年下半年西安市事业单位公开招聘工作人员的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1960179596680785922.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "39d53d41d09d4795",
+      "title": "西安市长安区人力资源和社会保障局关于2025年第二批长安区事业单位公开招聘工作人员拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1958722731298525185.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "46b4401b6cb294ee",
+      "title": "共青团西安市委员会关于2025年事业单位公开招聘拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1958721308632670210.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "d46cd7e50bfda739",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告 市人事考试中心 2026-09-01",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": true
+    },
+    {
+      "id": "0a5ea65c403d32f7",
+      "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示 市人事考试中心 2026-07-21",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079767900058054657.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "876788b65539f9f2",
+      "title": "西安市教育局关于2026年直属事业单位公开招聘工作人员第一批拟聘用人员的公示 市人事考试中心 2026-07-16",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079766721292980226.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "0c5e68e8a3342f51",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年西安市事业单位公开招聘高层次及紧缺特殊专业人才的公告 市人事考试中心 2026-05-14",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2054741847663222786.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "98a210eec465a2fa",
+      "title": "附件1：2026年下半年西安市事业单位公开招聘工作人员岗位表",
+      "url": "http://1.85.18.184/1209014056234913794.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "2026下半年市事业单位招聘公告页",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "ac1692ddc6ba1dec",
+      "title": "附件2：西安市2026年事业单位公开招聘自主就业退役士兵加分申请表.doc",
+      "url": "https://www.xa.gov.cn/web_files/xian/file/2026/09/01/202609011019243452627.doc",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "2026下半年市事业单位招聘公告页",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "d8e2907402d35497",
+      "title": "附件3：事业单位公开招聘分类考试公共科目笔试考试大纲（2026年版）.pdf",
+      "url": "https://www.xa.gov.cn/web_files/xian/file/2026/09/01/202609011019300059074.pdf",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "2026下半年市事业单位招聘公告页",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    },
+    {
+      "id": "51941a09f1294a08",
+      "title": "附件4：事业单位公开招聘违纪违规行为处理规定.doc",
+      "url": "https://www.xa.gov.cn/web_files/xian/file/2026/09/01/202609011021076919435.doc",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "2026下半年市事业单位招聘公告页",
+      "foundAt": "2026-09-07T16:27:25.627+08:00",
+      "new": false
+    }
+  ]
+}
