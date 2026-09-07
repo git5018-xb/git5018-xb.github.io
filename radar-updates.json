@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T16:29:35.956+08:00",
+  "updatedAt": "2026-09-07T23:48:40.439+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -34,11 +34,423 @@
       "ok": true,
       "error": null,
       "found": 0
+    },
+    {
+      "id": "szeb",
+      "name": "深圳市教育局公办学校招聘",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
+      "ok": true,
+      "error": null,
+      "found": 15
+    },
+    {
+      "id": "yuexiu",
+      "name": "广州市越秀区招考",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/",
+      "ok": true,
+      "error": null,
+      "found": 14
+    },
+    {
+      "id": "zhuhai",
+      "name": "珠海市公职招考",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/",
+      "ok": true,
+      "error": null,
+      "found": 9
+    },
+    {
+      "id": "fuzhou",
+      "name": "福州市政府通知公告",
+      "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     }
   ],
-  "peNew": 0,
-  "newCount": 2,
+  "peNew": 1,
+  "newCount": 40,
   "hits": [
+    {
+      "id": "e5a971634b93c65e",
+      "title": "深圳市第二实验学校明远高中2025年8月面向2025年应届毕业生赴外公开招聘教师拟聘人员公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12970755.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "31069d7c608e27c8",
+      "title": "深圳外国语小学关于深圳市公办中小学2025年12月面向2026年应届毕业生公开招聘教师拟聘人员公示（三）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12970748.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "763dfb6eb61b9061",
+      "title": "深圳市云端学校关于深圳市公办中小学2025年12月面向2026年应届毕业生公开招聘教师拟聘人员公示（四）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968420.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "2d9ff29f5a3011d6",
+      "title": "深圳市高级中学高中园2026年公开招聘教师拟聘人员公示（二）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968004.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "f35c849ed999d13d",
+      "title": "深圳市第二实验学校2025年4月（第二批）、2025年6月面向2025年应届毕业生公开招聘教师拟聘人员名单公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12965379.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "413137cb0736e8ce",
+      "title": "深圳益新中学2026年5月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963298.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "fd20037ce66ef7f8",
+      "title": "深圳实验学校2025年11月面向2026年应届毕业生公开招聘教师拟聘人员公示（第三批）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963210.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "9ff08dbcb87bb7a8",
+      "title": "深圳市云端学校关于深圳市公办中小学2025年11月公开招聘教师拟聘人员公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963142.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "8205eba8b2dbe97d",
+      "title": "深圳市教育局2026年5月公开招聘体育教练员入围体检人员名单公布",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12962176.html",
+      "peMention": true,
+      "kind": "招聘公告",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "f61d061c6538a47f",
+      "title": "深圳市教育局直属学校2026年6月公开招聘教师入围体检人员名单公布",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12962179.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "601637194919d61b",
+      "title": "深圳创新高级中学2026年4月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12958907.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "9c5b83b4d576ce95",
+      "title": "深圳中学高中园2026年公开招聘教师拟聘人员公示（第五批）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12957684.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "d337ab8c9167f01c",
+      "title": "深圳市高级中学面向2026年应届毕业生公开招聘教师拟聘人员公示（三）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12956534.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "e0e18ee1207b24ec",
+      "title": "深圳北理莫斯科大学附属实验中学2026年公开招聘教师拟聘人员公示（三）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12954820.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "ec2aac18b30a8a92",
+      "title": "深圳启元中学面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（一）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12954685.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "04d76ed0cc69705a",
+      "title": "登峰街道办事处公开招聘辅助人员公告 2026-08-31",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10984520.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "56aa7818072c8b37",
+      "title": "广州市越秀区农林街除四害消毒管理站关于公开招聘工作人员的公告 2026-08-07",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10956575.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "3fb104227ad3f856",
+      "title": "越秀区华乐街道办事处公开招聘综合救助窗口工作人员的公告 2026-07-23",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10914365.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "6ce8cbe3d83ba679",
+      "title": "越秀区应急管理关于公开招聘应急管理行政执法技术检查员的公告 2026-07-08",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10892824.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "69d5fc7ab570bb11",
+      "title": "“百万英才汇南粤”——广州市越秀区教育局2026年上半年第二批公开招聘事业编制教师公告 2026-06-10",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10849865.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "75eb4d9559994cf9",
+      "title": "流花街2026年公开招聘辅助人员公告 2026-06-04",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10840947.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "137681dc44203e5e",
+      "title": "越秀区梅花村街道办事处面向社会公开招聘辅助人员公告 2026-06-01",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10836261.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "8ed0fb3fd48ed000",
+      "title": "广州市越秀区农林街道办事处关于公开招聘辅助人员的公告 2026-06-01",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10835460.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "4b4f9800e43873d9",
+      "title": "中共广州市越秀区纪委关于2026年公开招聘合同制工作人员笔试成绩及进入面试人员名单的公告 2026-05-13",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10810366.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "4825d54f65a97135",
+      "title": "越秀区梅花村街道办事处面向社会公开招聘辅助人员公告 2026-05-12",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10809076.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "92ff48b92f2246e1",
+      "title": "2026年广州市越秀区事业单位集中公开招聘高校毕业生进入面试人员名单及面试安排的公告 2026-05-12",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10806547.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "6dc4038a2374d994",
+      "title": "广州市越秀区教育局2026年上半年公开招聘事业编制教师现场资格审查公告 2026-04-27",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10789071.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "57953b0b986dbf5e",
+      "title": "广东省事业单位2026年集中公开招聘高校毕业生越秀区区属事业单位笔试合格分数线的公告 2026-04-15",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10770502.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "087fa461f735ce65",
+      "title": "“百万英才汇南粤”——广州市越秀区教育局2026年上半年公开招聘事业编制教师公告 2026-04-02",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10753518.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "ed82df05ab5ef310",
+      "title": "珠海城市职业技术学院2025年下半年公开招聘事业编制教师拟录用人员名...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3932047.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "8522a8812b42df18",
+      "title": "珠海市教育局2026年暑期面向社会公开招聘所属学校事业编制教师公告",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3923121.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "85152baab4c1b884",
+      "title": "珠海市卫生健康局直属事业单位2026年公开招聘博士和高级职称人员公告",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3922820.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "27071d727755a0fd",
+      "title": "中共珠海市委老干部局关于广东省事业单位2026年集中公开招聘高校毕业...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3919607.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "234b603d8c9b08c6",
+      "title": "珠海市北京师范大学香山中学2026年夏季面向社会公开招聘事业编制教师...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3918385.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "305ddacd3548c675",
+      "title": "珠海市技师学院关于广东省事业单位2026年集中公开招聘高校毕业生拟聘...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3912441.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "9331746d490aeff8",
+      "title": "珠海市投资服务署关于2026年集中公开招聘高校毕业生拟聘用人员名单的...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3911032.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "f5649488e4831018",
+      "title": "珠海市纪委监委2025年下半年公开招聘所属事业单位工作人员拟聘人员公...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3907409.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
+    {
+      "id": "9151883bd67dc91d",
+      "title": "珠海市北京师范大学香山中学2026年春季面向社会公开招聘事业编制教师...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3902780.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-09-07T23:48:40.439+08:00",
+      "new": true
+    },
     {
       "id": "2f4a248a92b173a8",
       "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告",
