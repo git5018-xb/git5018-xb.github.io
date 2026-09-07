@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2d5a45">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="西安体育岗雷达">
+<title>西安体育教师编制岗位雷达</title>
+<link rel="manifest" href="radar-manifest.json">
+<style>
+:root{
+  --bg:#f3efe6;--paper:#fbf8f1;--ink:#1c1914;--muted:#6b6358;--line:#ddd4c6;
+  --pine:#2d5a45;--pine-fg:#f6f3ec;--warn:#8a5a2b;--danger:#8b3a2f;--ask:#3d4f5f;
+  --ok:#2d5a45;--shadow:0 10px 30px rgba(28,25,20,.08);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{color:var(--pine)}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 96px}
+header.app{position:sticky;top:0;z-index:20;background:rgba(251,248,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.app .inner{max-width:1100px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+header.app h1{margin:0;font-size:18px;letter-spacing:.02em}
+header.app p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.nav-top{display:none;gap:6px}
+.nav-top button,.bottom button{border:0;background:transparent;color:var(--muted);padding:8px 10px;border-radius:10px}
+.nav-top button.on,.bottom button.on{background:var(--pine);color:var(--pine-fg)}
+.bottom{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:var(--paper);border-top:1px solid var(--line);z-index:20;padding-bottom:env(safe-area-inset-bottom)}
+.bottom button{min-height:58px;font-size:11px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.hero{background:linear-gradient(135deg,#2d5a45,#3d4f5f);color:#f6f3ec;border-radius:18px;padding:22px;margin:16px 0;box-shadow:var(--shadow)}
+.hero h2{margin:0 0 6px;font-size:22px}
+.hero p{margin:0;opacity:.9}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:22px}
+.stat span{color:var(--muted);font-size:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:10px 14px;min-height:44px}
+.btn.primary{background:var(--pine);color:var(--pine-fg);border-color:var(--pine)}
+.btn.on{background:#e7efe8;border-color:var(--pine);color:var(--pine)}
+.btn.danger{background:#f7ece9;color:var(--danger);border-color:#e8cfc8}
+input[type=search],input[type=text],input[type=number],select,textarea{
+  width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;min-height:44px
+}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0;box-shadow:0 1px 0 rgba(28,25,20,.02)}
+.card h3{margin:0 0 6px;font-size:17px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{font-size:12px;border-radius:999px;padding:3px 8px;background:#ebe4d6}
+.tag.bz{background:#e7efe8;color:var(--pine)}
+.tag.no{background:#f4efe6;color:var(--warn)}
+.badge{display:inline-block;font-size:12px;border-radius:999px;padding:4px 10px;font-weight:600}
+.badge.ok{background:var(--ok);color:#fff}
+.badge.maybe{background:var(--warn);color:#fff}
+.badge.no{background:var(--danger);color:#fff}
+.badge.ask{background:var(--ask);color:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.reasons{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
+.flash{background:#fff7e6;border-left:4px solid #f59e0b;padding:12px 14px;border-radius:10px;margin:10px 0}
+.hidden{display:none !important}
+.sheet{position:fixed;inset:0;background:rgba(28,25,20,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet .panel{background:var(--paper);width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:8px 12px;font-size:14px}
+.kv b{color:var(--muted);font-weight:500}
+.page h2{margin:8px 0 12px}
+.cal{border-left:3px solid var(--pine);padding:4px 0 4px 12px;margin:12px 0}
+footer.note{color:var(--muted);font-size:12px;margin-top:24px}
+@media(min-width:860px){
+  .nav-top{display:flex}
+  .bottom{display:none}
+  .wrap{padding-bottom:32px}
+  header.app h1{font-size:20px}
+}
+@media(max-width:720px){
+  .stats{grid-template-columns:1fr 1fr}
+  .row{grid-template-columns:1fr}
+  .kv{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="app">
+  <div class="inner">
+    <div>
+      <h1>西安体育教师编制岗位雷达</h1>
+      <p>只看西安 · 小学/初中/高中 · 有证据才标事业编</p>
+    </div>
+    <nav class="nav-top">
+      <button data-go="jobs" class="on">岗位雷达</button>
+      <button data-go="me">我的条件</button>
+      <button data-go="monitor">2027监控</button>
+      <button data-go="housing">公积金</button>
+      <button data-go="sources">数据来源</button>
+    </nav>
+  </div>
+</header>
+<main class="wrap">
+  <section id="page-jobs" class="page">
+    <div class="hero">
+      <h2>2026 西安体育教师岗位库 · 2027 备考对照</h2>
+      <p>工资没有官方数字就写「官方未公开」。没有公告原文就不标事业编。已关闭岗位的报名人数写「历史数据未公开」。</p>
+    </div>
+    <div class="flash" id="h2-banner">2026年下半年市事业单位公开招聘正在报名：<b>9月7日 8:00 – 9月11日 18:00</b>。请到西安人事考试网下载岗位表，用「体育」筛选后点「上传岗位表」。本库尚未自动解析到该批次体育教师明细，禁止编造。</div>
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <button class="btn primary" id="btn-update">更新数据</button>
+      <button class="btn" id="btn-bz">只看事业编</button>
+      <button class="btn" id="btn-mine">只看我能报</button>
+      <button class="btn" id="btn-export">导出Excel</button>
+      <button class="btn" id="btn-upload">上传岗位表</button>
+      <input id="file" type="file" accept=".xls,.xlsx,.csv" hidden>
+      <input id="q" type="search" placeholder="搜索学校 / 岗位 / 区县" style="flex:1;min-width:180px">
+    </div>
+    <div class="toolbar">
+      <button class="btn on" data-stage="全部">全部学段</button>
+      <button class="btn" data-stage="小学">小学</button>
+      <button class="btn" data-stage="初中">初中</button>
+      <button class="btn" data-stage="高中">高中</button>
+      <button class="btn" data-stage="中职">中职</button>
+    </div>
+    <div id="flash" class="flash hidden"></div>
+    <div id="list"></div>
+  </section>
+
+  <section id="page-me" class="page hidden">
+    <h2>我的条件</h2>
+    <p class="flash">系统只根据公告里写得清的条件判断。专业近似、证书学段不清或公告含糊时，会提示「需要咨询招聘单位」。</p>
+    <div class="card">
+      <div class="row">
+        <label>毕业年份<input id="p-year" type="number" min="2020" max="2032"></label>
+        <label>学历<select id="p-edu"><option>专科</option><option>本科</option><option selected>硕士研究生</option><option>博士研究生</option></select></label>
+        <label>出生年份<input id="p-birth" type="number" min="1975" max="2010"></label>
+        <label>本科专业<input id="p-bmaj" type="text"></label>
+        <label>研究生专业<input id="p-mmaj" type="text"></label>
+        <label>教师资格证<select id="p-cert"><option>无</option><option selected>在考</option><option>已取得</option></select></label>
+        <label>相关工作年限<input id="p-work" type="number" min="0" max="40" step="0.5"></label>
+        <label>学校<input id="p-school" type="text"></label>
+      </div>
+      <p style="margin:12px 0 6px">教师资格证学段（已取得时勾选）</p>
+      <div class="toolbar" id="p-stages">
+        <label class="btn"><input type="checkbox" value="小学"> 小学</label>
+        <label class="btn"><input type="checkbox" value="初中"> 初中</label>
+        <label class="btn"><input type="checkbox" value="高中"> 高中</label>
+      </div>
+      <p style="margin:12px 0 6px">专项（可多选）</p>
+      <div class="toolbar" id="p-sports"></div>
+      <button class="btn primary" id="btn-save-me" style="margin-top:12px">保存并重新判断</button>
+      <p id="me-saved" class="hidden" style="color:var(--pine)">已保存在这台手机/电脑的浏览器里。</p>
+    </div>
+  </section>
+
+  <section id="page-monitor" class="page hidden">
+    <h2>2027 招聘监控</h2>
+    <div class="flash">电脑或手机不会在关机时自动抓取官网。点「更新数据」会打开官方入口并记下本次核对。发现新的体育教师公告后，可在下面手工登记入库。</div>
+    <div class="card">
+      <h3>按 2026 节奏预估的关注窗口</h3>
+      <div class="cal"><b>2027年2月前后</b><br>预计发布 2027 年西安市事业单位公开招聘（上半年）。2026 年上半年公告于 2 月 9 日发布。</div>
+      <div class="cal"><b>2027年5月前后</b><br>关注高层次及紧缺特殊专业人才招聘。</div>
+      <div class="cal"><b>2027年8月底–9月初</b><br>预计发布下半年市事业单位公开招聘。2026 年下半年公告于 9 月 1 日发布。</div>
+      <div class="cal"><b>全年不定期</b><br>区县教育局、开发区管委会、学校官网的体育教师招聘。多数学校自招未写明事业编。</div>
+    </div>
+    <div class="card">
+      <h3>登记一条 2027 新公告</h3>
+      <div class="row">
+        <label>学校<input id="n-school" type="text"></label>
+        <label>区县<input id="n-dist" type="text" placeholder="例如：雁塔区"></label>
+        <label>学段<select id="n-stage"><option>小学</option><option>初中</option><option>高中</option></select></label>
+        <label>岗位名称<input id="n-title" type="text" value="体育教师"></label>
+        <label>招聘人数<input id="n-n" type="number" min="1" value="1"></label>
+        <label>招聘类型<select id="n-type"><option>不明确</option><option>事业编</option><option>全员聘用制</option><option>合同制</option><option>特岗</option><option>人才引进</option></select></label>
+        <label>官方公告网址<input id="n-url" type="text" placeholder="必须是公告链接"></label>
+        <label>报名截止<input id="n-end" type="text" placeholder="例如 2027-03-04"></label>
+      </div>
+      <p style="font-size:13px;color:var(--muted)">只有勾选「公告原文写明事业编」时才会标成事业编。没有原文证据，系统拒绝标事业编。</p>
+      <label class="btn"><input id="n-bz" type="checkbox"> 公告原文写明事业编 / 事业单位公开招聘</label>
+      <div style="margin-top:12px"><button class="btn primary" id="btn-add">登记入库</button></div>
+    </div>
+    <div class="card">
+      <h3>核对记录</h3>
+      <div id="checks"></div>
+    </div>
+  </section>
+
+  <section id="page-housing" class="page hidden">
+    <h2>西安住房公积金（2026年度）</h2>
+    <p>执行期：2026年7月至2027年6月。文号：西房金管发〔2026〕1号。本页不猜测某所学校的缴存比例，也不估算税后工资。</p>
+    <div class="stats">
+      <div class="stat"><b>32,726</b><span>缴存基数上限（元）</span></div>
+      <div class="stat"><b>2,376</b><span>主城区等下限</span></div>
+      <div class="stat"><b>2,250</b><span>鄠邑 / 蓝田 / 周至下限</span></div>
+      <div class="stat"><b>5%–12%</b><span>个人、单位各自比例区间</span></div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <label>本人月平均工资（元）<input id="h-wage" type="number" value="8000" min="0"></label>
+        <label>个人比例 %<input id="h-p" type="number" value="12" min="5" max="12"></label>
+        <label>单位比例 %<input id="h-u" type="number" value="12" min="5" max="12"></label>
+        <label>地区<select id="h-area"><option value="one">新城、碑林、莲湖、灞桥、未央、雁塔、阎良、临潼、长安、高陵及分中心</option><option value="two">鄠邑区、蓝田县、周至县</option></select></label>
+      </div>
+      <div id="h-out" class="flash" style="margin-top:14px"></div>
+      <p>公式：月缴存额 = 缴存基数 × 个人比例 + 缴存基数 × 单位比例；两项分别四舍五入到元。</p>
+      <p><a href="https://zfgjj.xa.gov.cn/gzdt/tzgg/2070405479618592769.html" target="_blank" rel="noopener">查看西安住房公积金管理中心政策原文</a></p>
+    </div>
+  </section>
+
+  <section id="page-sources" class="page hidden">
+    <h2>数据来源与使用说明</h2>
+    <div class="card">
+      <p>这个网页就是你的「小程序」。把下面网址发给自己，或者添加到手机主屏幕，随时打开。</p>
+      <p><b id="live-url"></b></p>
+      <div class="toolbar">
+        <button class="btn primary" id="btn-copy">复制网址</button>
+        <button class="btn" id="btn-install">怎样添加到主屏幕</button>
+      </div>
+      <p id="install-help" class="hidden">iPhone：用 Safari 打开本页 → 点底部分享 → 添加到主屏幕。<br>安卓：用 Chrome 打开 → 右上角 ⋮ → 添加到主屏幕 / 安装应用。</p>
+    </div>
+    <div class="card" id="official-links"></div>
+    <div class="card">
+      <h3>诚实规则</h3>
+      <ul>
+        <li>招聘类型只采用公告明确表述：事业编、全员聘用制、合同制、特岗、人才引进、不明确。</li>
+        <li>没有官方证据，不允许标成事业编。</li>
+        <li>工资、绩效、社保、公积金没有官方数字时显示「官方未公开」。</li>
+        <li>历史已经关闭、无法获得报名人数的岗位显示「历史数据未公开」。</li>
+        <li>高新区 22 条来自管委会 2026 年官方岗位表 XLSX，招聘类型为全员聘用制，不是事业编。</li>
+      </ul>
+    </div>
+  </section>
+  <footer class="note">代码仓库：<a href="https://github.com/git5018-xb/xian-sports-teacher-radar">github.com/git5018-xb/xian-sports-teacher-radar</a></footer>
+</main>
+<nav class="bottom">
+  <button data-go="jobs" class="on">雷达</button>
+  <button data-go="me">条件</button>
+  <button data-go="monitor">监控</button>
+  <button data-go="housing">公积金</button>
+  <button data-go="sources">来源</button>
+</nav>
+<div id="sheet" class="sheet hidden"><div class="panel" id="sheet-body"></div></div>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const SEED = [{"id":"gx-2026-0111","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新一中实验中学","schoolNature":"公办","stage":"高中","title":"高中体育教师","code":"0111","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有高中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区竹南路816号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-0112","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新一中实验中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"0112","headcount":3,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区竹南路816号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-0808","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第六学校","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"0808","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区集贤产业园振兴路以北","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-0904","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安市高新一中初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"0904","headcount":2,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区高新路62号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1009","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安市高新逸翠园初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1009","headcount":2,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区锦业二路交通辅道76号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1205","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第三初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1205","headcount":3,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、教育、体育学、体育","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区博文路30号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1301","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第四初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1301","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、教育、体育学、体育","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区天谷三路","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1402","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第五初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1402","headcount":5,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区经十二路与纬三十二路交叉口东南角南侧","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1504","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第六初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1504","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区毕原二路","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-1810","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第十一初级中学","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"1810","headcount":4,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"体育教育、运动训练、社会体育指导与管理、运动人体科学、体能训练","masterMajors":"学科教学（体育）、课程与教学论、运动人体科学、体育教育训练学、民族传统体育学、体育教学、运动训练、社会体育指导","teacherCert":"具有初中及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区规划九路以西、纬二十四路以北","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-2005","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区实验小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"2005","headcount":3,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"体育教育，运动训练","masterMajors":"体育教育训练学，民族传统体育学，学科教学（体育），体育人文社会学、课程与教学论","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"具有1年及以上，小学及以上相关学科教学工作经验","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区西沣辅道80号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-2102","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新第五小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"2102","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、教育、体育学、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区瞪羚路12号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-2204","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新第六小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"2204","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、体育学、教育、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区博士路与艺术大街十字东北角","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-2404","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新第八小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"2404","headcount":3,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"体育学类、教育学类、舞蹈表演","masterMajors":"体育学、体育、教育、教育学","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区育文路203号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-2604","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第十三小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"2604","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育、教育学、体育、体育学","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"具有1年及以上，小学及以上相关学科教学工作经验","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区鱼化一路1300号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-3205","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第十九小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"3205","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类、舞蹈表演","masterMajors":"教育学、体育学、教育、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区天谷二路云水三路西南角","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-3403","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第二十一小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"3403","headcount":3,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、体育学、教育、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"具有2年及以上，小学及以上相关学科教学工作经验","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区纬二十六路规划十三路东南角","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-3603","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第二十三小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"3603","headcount":2,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类、舞蹈表演","masterMajors":"教育学、教育、体育、体育学","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区纬三十二路、经十六路东南角","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-3903","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第二十八小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"3903","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"体育学、教育、教育学、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区沣惠南路与唐兴路交汇西南角","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-4205","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第三十一小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"4205","headcount":2,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"体育学类、教育学类、舞蹈表演","masterMajors":"体育学、体育、教育、教育学","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区义方路812号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-4307","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第五十小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"4307","headcount":4,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学类、体育学类","masterMajors":"教育学、体育学、教育、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区骏业路1263号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"gx-2026-4404","year":2026,"publishedAt":"2026-05-26","district":"高新区","school":"西安高新区第五十一小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"4404","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"教育学、教育学类、体育学类","masterMajors":"教育学、体育学、教育、体育","teacherCert":"具有小学及以上相应学科教师资格证","age":"38周岁以下","freshGraduate":"允许2026届；在读的非2026年应届毕业生不得报考（以高新区公告原文为准）","workExperience":"无明确要求","sportsSpecialty":"官方未公开","recruitType":"全员聘用制","isBianzhiExplicit":false,"bianzhiEvidence":"西安高新区2026年公办学校公开招聘教职工。按公告原文记为全员聘用制，没有写明事业编制，不得自行标成事业编。","minServiceYears":"由学校明确3—6年","applyStart":"2026-06-01 09:00","applyEnd":"2026-06-05 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"教育类职业能力倾向测验、教育基础知识、教育心理学等","writtenExam":"闭卷，150分，120分钟","interview":"微课、说课（讲课）、答辩及专业能力测试等","salary":"参照省、市及高新区规定的事业单位工作人员标准；官方未公开具体数字","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://xdz.xa.gov.cn/xwzx/tzgg/2059192984942489602.html","jobTableUrl":"https://xdz.xa.gov.cn/web_files/xdz/file/2026/05/26/202605261637198255462.xlsx","updatedAt":"2026-09-07","notes":"地址：西安高新技术产业开发区创智路2351号","status":"已结束","sourceName":"西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）"},{"id":"xa-2026-yizhong-pe","year":2026,"publishedAt":"2026-02-09","district":"市属","school":"西安市第一中学","schoolNature":"公办","stage":"高中","title":"高中体育教师","code":"官方未公开","headcount":1,"education":"官方未公开","degree":"官方未公开","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"公告要求具有招聘岗位所需资格条件，具体学段以岗位表为准","age":"18周岁以上、38周岁以下（1987年2月27日至2008年2月26日期间出生），岗位表另有规定的从其规定","freshGraduate":"应届岗位向2026届及2024、2025年毕业未落实编制内工作的高校毕业生开放；在读的非2026年应届毕业生不得报考","workExperience":"官方未公开","sportsSpecialty":"官方未公开","recruitType":"事业编","isBianzhiExplicit":true,"bianzhiEvidence":"列入《2026年西安市事业单位公开招聘工作人员岗位表》，由市委组织部、市人社局发布。","minServiceYears":"新招聘的区县及以下事业单位工作人员基层最低服务年限为5年","applyStart":"2026-02-27 08:00","applyEnd":"2026-03-04 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"《职业能力倾向测验》《综合应用能力》两科（中小学教师类按公告分类）","writtenExam":"闭卷笔试，两科各满分150分，2026年3月28日上午","interview":"面试满分100分；总成绩=笔试折算×60%+面试×40%","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","jobTableUrl":"https://xapta.xa.gov.cn/","updatedAt":"2026-09-07","notes":"岗位存在于2026年市统招。专业、学历、岗位代码等未在可核验的官方网页正文列出，请以西安人事考试网岗位表为准。第三方网站曾展示缴费人数，但非官网逐日公开数据，本库不记为官方报名人数。","status":"已结束","sourceName":"西安市人民政府招考信息 / 西安人事考试网"},{"id":"xa-2026-yanta-zygz-pe","year":2026,"publishedAt":"2026-02-09","district":"雁塔区","school":"西安市雁塔区职业高级中学","schoolNature":"公办","stage":"中职","title":"体育教师","code":"官方未公开","headcount":1,"education":"本科及以上","degree":"学士及以上","bachelorMajors":"040201体育教育，040202K运动训练","masterMajors":"045112学科教学（体育），045201体育教学，040303体育教育训练学","teacherCert":"官方未公开","age":"18周岁以上、38周岁以下（市统招通用年龄，岗位表另有规定的从其规定）","freshGraduate":"应届岗位向2026届及2024、2025年毕业未落实编制内工作的高校毕业生开放；在读的非2026年应届毕业生不得报考","workExperience":"官方未公开","sportsSpecialty":"官方未公开","recruitType":"事业编","isBianzhiExplicit":true,"bianzhiEvidence":"列入2026年西安市事业单位公开招聘，单位经费形式为公益二类/全额拨款。","minServiceYears":"新招聘的区县及以下事业单位工作人员基层最低服务年限为5年","applyStart":"2026-02-27 08:00","applyEnd":"2026-03-04 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"《职业能力倾向测验》《综合应用能力》两科（中小学教师类按公告分类）","writtenExam":"闭卷笔试，两科各满分150分，2026年3月28日上午","interview":"面试满分100分；总成绩=笔试折算×60%+面试×40%","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","jobTableUrl":"https://xapta.xa.gov.cn/","updatedAt":"2026-09-07","notes":"职业高中岗位。专业条件转引自公开职位库对官方岗位表的摘录，请以西安人事考试网岗位表原文核对。咨询电话据公开摘录为029-81166939。","status":"已结束","sourceName":"2026年西安市事业单位公开招聘岗位表（公开摘录）"},{"id":"xa-2026-85zhong-pe","year":2026,"publishedAt":"2026-02-11","district":"市属","school":"西安市第八十五中学","schoolNature":"公办","stage":"高中","title":"高中体育教师","code":"官方未公开","headcount":1,"education":"硕士研究生及以上","degree":"硕士及以上","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"具有高级中学及以上相应学科教师资格证","age":"38周岁以下（1987年2月27日至2008年2月26日期间出生）","freshGraduate":"应届岗位向2026届及2024、2025年毕业未落实编制内工作的高校毕业生开放；在读的非2026年应届毕业生不得报考","workExperience":"具有2年及以上普通高中教学工作经验","sportsSpecialty":"官方未公开","recruitType":"事业编","isBianzhiExplicit":true,"bianzhiEvidence":"学校公开说明：符合条件的，按西安市人力资源和社会保障局相关规定和程序解决事业单位编制。报名入口为西安人事考试网。","minServiceYears":"新招聘的区县及以下事业单位工作人员基层最低服务年限为5年","applyStart":"2026-02-27 08:00","applyEnd":"2026-03-04 18:00","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"《职业能力倾向测验》《综合应用能力》两科（中小学教师类按公告分类）","writtenExam":"闭卷笔试，两科各满分150分，2026年3月28日上午","interview":"面试满分100分；总成绩=笔试折算×60%+面试×40%","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","jobTableUrl":"https://xapta.xa.gov.cn/","updatedAt":"2026-09-07","notes":"学校宣传稿与市统招同步。专业目录未在宣传稿列出。","status":"已结束","sourceName":"西安市第八十五中学2026年事业单位公开招聘宣传 / 市统招公告"},{"id":"xa-2026-xagaoji-pe","year":2026,"publishedAt":"2026-02-10","district":"市属","school":"西安高级中学","schoolNature":"公办","stage":"高中","title":"体育教师","code":"官方未公开","headcount":2,"education":"大学本科及以上学历","degree":"官方未公开","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"具备相应的教师资格","age":"原则上不超过35周岁，特别优秀的可适当放宽","freshGraduate":"公告未限制仅应届","workExperience":"官方未公开","sportsSpecialty":"主要招聘方向为足球、田径、健美操专项","recruitType":"合同制","isBianzhiExplicit":false,"bianzhiEvidence":"学校公告原文写明「面向社会招聘体育教师2名（非编制）」，不得自行判断为事业编。","minServiceYears":"官方未公开","applyStart":"2026-02-09","applyEnd":"官方未公开","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"初审后综合考评","writtenExam":"官方未公开","interview":"综合考评（公告未写明结构化面试细则）","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.gaoxiaojob.com/announcement/detail/379659.html","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"西安市教育局直属省级示范高中。官方明确非编制。报名通过学校登记表。","status":"已结束","sourceName":"西安高级中学2026年春季开学体育教师招聘公告"},{"id":"xa-2026-qujiang6-pe","year":2026,"publishedAt":"2026-02-05","district":"曲江新区","school":"西安市曲江第六小学","schoolNature":"公办","stage":"小学","title":"体育教师","code":"官方未公开","headcount":null,"education":"高等学校师范体育专业本科毕业及其以上学历","degree":"1987年1月1日以后出生的，还应具有相应学位","bachelorMajors":"师范体育专业","masterMajors":"师范体育专业本科起点及以上","teacherCert":"具有体育教师资格证","age":"40周岁以下（工作年限、年龄计算截止2026年2月28日）","freshGraduate":"毕业证、学位证须于2026年2月28日前取得","workExperience":"近两年年度考核均为合格及以上等次（在职人员适用）","sportsSpecialty":"具有个人专业强项","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"学校公告未写明事业编制，第三方标注不能作为事业编证据。","minServiceYears":"官方未公开","applyStart":"2026-02-05","applyEnd":"2026-02-12","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.fenbi.com/page/fenxiaozhaokaodetail/33/0/464112349892608","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"邮件报名：QJLX20200901@163.com。人数为「若干」，官方未给具体数字。","status":"已结束","sourceName":"西安市曲江第六小学2026年度体育教师招聘公告"},{"id":"xa-2026-zhouzhi-xijie-pe","year":2026,"publishedAt":"2026-02-03","district":"周至县","school":"周至县西街小学","schoolNature":"公办","stage":"小学","title":"体育教师","code":"官方未公开","headcount":2,"education":"本科及以上学历","degree":"官方未公开","bachelorMajors":"体育教育、运动训练等相关专业","masterMajors":"体育教育、运动训练等相关专业","teacherCert":"持有小学或以上体育教师资格证","age":"官方未公开","freshGraduate":"公告未写明仅限应届","workExperience":"有小学体育教学经验、特长突出者优先","sportsSpecialty":"篮球、足球、武术、体操等特长突出者优先","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"学校自行发布的招聘公告，未写明事业编制。","minServiceYears":"官方未公开","applyStart":"官方未公开","applyEnd":"2026-03-04","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"初审后面试","writtenExam":"官方未公开","interview":"初审合格者电话通知面试","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.kkgwy.com/zk/js/155703.html","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"联系人王老师 13709223098、15129391931。请以学校官方渠道为准。","status":"已结束","sourceName":"周至县西街小学2026年体育教师招聘公告（公开转载）"},{"id":"xa-2026-chanba11-pe","year":2026,"publishedAt":"2026-01-19","district":"浐灞国际港","school":"西安市浐灞第十一小学","schoolNature":"公办","stage":"小学","title":"体育教师","code":"官方未公开","headcount":null,"education":"本科及以上学历","degree":"相关专业毕业证和学位证","bachelorMajors":"体育相关专业","masterMajors":"体育相关专业","teacherCert":"具有相对应学科教师资格证；普通话二级乙等及以上","age":"官方未公开","freshGraduate":"公告要求已具备学历学位证书","workExperience":"3年以上工作经验","sportsSpecialty":"武术和操舞类专业体育教师优先考虑","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"学校公告未写明事业编制。","minServiceYears":"官方未公开","applyStart":"2026-01-16","applyEnd":"2026-01-30","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.snhrm.com/zdxyzp/8041013.jhtml","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"邮箱 18165346964@163.com。人数未写明。","status":"已结束","sourceName":"西安市浐灞第十一小学招聘公告"},{"id":"xa-2026-xidian-aff-pe","year":2026,"publishedAt":"2026-01-09","district":"市属","school":"西安电子科技大学附属中学","schoolNature":"公办","stage":"高中","title":"高中体育教师","code":"官方未公开","headcount":1,"education":"本科学历需为所学专业与应聘学科一致的应届公费师范生或具有5年以上工作经验；硕士及以上学历需专业与应聘学科一致或高度相关","degree":"官方未公开","bachelorMajors":"与体育学科一致","masterMajors":"与体育学科一致或高度相关","teacherCert":"具有相应学科初、高中教师资格证书；普通话标准","age":"35周岁以下，获得市级教学能手及以上称号的可适当放宽","freshGraduate":"本科通道限应届公费师范生（或5年经验）","workExperience":"本科非公费师范生须5年以上工作经验；硕士未要求教龄","sportsSpecialty":"官方未公开","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"常规岗位未写明事业编。公告另称：正高级/特级/省名师等符合条件者经考察可纳入大学事业编制，不适用于普通应届硕士默认路径。","minServiceYears":"官方未公开","applyStart":"2026-01-08","applyEnd":"官方未公开","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://news.qq.com/rain/a/20260109A05FLU00","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"高校附中。名师入大学编制条款不得理解为普通体育教师默认有编。","status":"已结束","sourceName":"西安电子科技大学附属中学2026年教师招聘公开报道"},{"id":"xa-2026-snnu-chanba-pri-pe","year":2026,"publishedAt":"2026-01-09","district":"浐灞国际港","school":"陕西师范大学西安市浐灞教育集团（小学）","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"官方未公开","headcount":null,"education":"大学本科及以上学历（有三年以上相关工作经验者适用该条）","degree":"官方未公开","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"有相应学科教师资格证（以集团公告细则为准）","age":"官方未公开","freshGraduate":"公告未写明仅限应届","workExperience":"三年以上相关工作经验者列出本科门槛；其余以原文为准","sportsSpecialty":"官方未公开","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"集团公开招聘稿未写明事业编制。","minServiceYears":"官方未公开","applyStart":"2026-01-08","applyEnd":"官方未公开","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://news.qq.com/rain/a/20260109A05FLU00","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"公开报道列出小学体育岗位，人数为若干。请以集团官方公告为准。","status":"已结束","sourceName":"陕西师范大学西安市浐灞教育集团2026年招聘公开报道"},{"id":"xa-2026-snnu-chanba-mid-pe","year":2026,"publishedAt":"2026-01-09","district":"浐灞国际港","school":"陕西师范大学西安市浐灞教育集团（初中）","schoolNature":"公办","stage":"初中","title":"初中体育教师","code":"官方未公开","headcount":null,"education":"大学本科及以上学历（有三年以上相关工作经验者适用该条）","degree":"官方未公开","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"有相应学科教师资格证（以集团公告细则为准）","age":"官方未公开","freshGraduate":"公告未写明仅限应届","workExperience":"三年以上相关工作经验者列出本科门槛；其余以原文为准","sportsSpecialty":"官方未公开","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"集团公开招聘稿未写明事业编制。","minServiceYears":"官方未公开","applyStart":"2026-01-08","applyEnd":"官方未公开","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://news.qq.com/rain/a/20260109A05FLU00","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"公开报道列出初中体育岗位，人数为若干。","status":"已结束","sourceName":"陕西师范大学西安市浐灞教育集团2026年招聘公开报道"},{"id":"xa-2026-hongjing-pe","year":2026,"publishedAt":"2026-06-08","district":"未央区","school":"西安市宏景小学","schoolNature":"公办","stage":"小学","title":"小学体育教师","code":"官方未公开","headcount":2,"education":"官方未公开","degree":"官方未公开","bachelorMajors":"官方未公开","masterMajors":"官方未公开","teacherCert":"官方未公开","age":"计算截止日期为2026年8月31日（获得高级职称或市级以上政府荣誉可适当放宽）","freshGraduate":"公告未写明仅限应届","workExperience":"官方未公开","sportsSpecialty":"官方未公开","recruitType":"不明确","isBianzhiExplicit":false,"bianzhiEvidence":"2026年6月学校自行招聘，与2月市统招不是同一份岗位表。本条未写明事业编制。","minServiceYears":"官方未公开","applyStart":"2026-06-06","applyEnd":"2026-06-18","applicants":"历史数据未公开","competitionRatio":"历史数据未公开","examContent":"官方未公开","writtenExam":"官方未公开","interview":"官方未公开","salary":"官方未公开","performancePay":"官方未公开","socialInsurance":"官方未公开","housingFund":"官方未公开","announcementUrl":"https://www.snhrm.com/zdxyzp/8253381.jhtml","jobTableUrl":"官方未公开","updatedAt":"2026-09-07","notes":"市教育局直属公办小学。邮箱 420800685@qq.com。学历学位等细则请核对公告原文。","status":"已结束","sourceName":"西安市宏景小学教师招聘公告（2026年6月）"}];
+const U="官方未公开", H="历史数据未公开";
+const PK="xa-pe-radar-web-v1";
+const SPORTS=["足球","篮球","排球","田径","武术","体操","健美操","操舞","游泳"];
+const SOURCES=[
+  ["西安人事考试网","https://xapta.xa.gov.cn/","市统招报名、岗位表、准考证"],
+  ["西安市人民政府招考信息","https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","市委组织部、市人社局公告"],
+  ["2026下半年市事业单位招聘","https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html","报名 9月7日–11日"],
+  ["西安市教育局","https://edu.xa.gov.cn/","直属学校、教师资格"],
+  ["西安高新区管委会","https://xdz.xa.gov.cn/","高新区学校招聘"],
+  ["西安住房公积金管理中心","https://www.xazfgjj.com/","缴存政策"]
+];
+const DEFAULT_PROFILE={graduationYear:2027,education:"硕士研究生",bachelorMajor:"体育教育",masterMajor:"体育教育训练学",teacherCert:"在考",teacherCertStages:[],birthYear:2001,workYears:0,specialties:[],school:"西安体育学院"};
+const PE_KEYS=["体育","运动训练","运动人体","武术","民族传统体育","社会体育","休闲体育","竞赛组织","体育教学","学科教学"];
+
+function load(){try{return JSON.parse(localStorage.getItem(PK))||{}}catch(e){return {}}}
+function save(s){localStorage.setItem(PK, JSON.stringify(s))}
+function state(){
+  const s=load();
+  return {
+    profile: Object.assign({}, DEFAULT_PROFILE, s.profile||{}),
+    extra: s.extra||[],
+    checks: s.checks||[],
+    logs: s.logs||{}
+  };
+}
+function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function isUnknown(v){return !v || v===U || v===H || /未公开|未写明|未列/.test(v)}
+function ageOf(y){return 2026-y}
+function majorLooksPe(m){return PE_KEYS.some(k=>m.includes(k))}
+function majorMatches(allowed, majors){
+  if(isUnknown(allowed)||/相关专业|专业目录/.test(allowed)) return "unknown";
+  if(majors.some(m=>m && allowed.includes(m))) return "yes";
+  if(majors.some(majorLooksPe) && /体育|运动|师范体育/.test(allowed)) return "likely";
+  return "no";
+}
+function parseAge(text){
+  if(isUnknown(text)) return {flexible:false};
+  const flexible=/放宽/.test(text);
+  const m=text.match(/不超过\s*(\d+)\s*周岁/)||text.match(/(\d+)\s*周岁以下/);
+  if(m) return {max:+m[1], flexible};
+  return {flexible};
+}
+function certCovers(stage, owned){
+  if(!owned.length) return false;
+  if(owned.includes(stage)) return true;
+  if(stage==="小学" && (owned.includes("初中")||owned.includes("高中"))) return true;
+  if((stage==="初中"||stage==="中职") && owned.includes("高中")) return true;
+  return false;
+}
+function matchJob(job, p){
+  const blockers=[], cautions=[], asks=[], ok=[];
+  const age=ageOf(p.birthYear);
+  const majors=[p.bachelorMajor,p.masterMajor].map(s=>s.trim()).filter(Boolean);
+  if(/在读的非2026年应届/.test(job.freshGraduate) && p.graduationYear!==2026){
+    blockers.push("公告写明：在读的非2026年应届毕业生不得报考。你填写的毕业年份是"+p.graduationYear+"年，不能参加该年度这次招聘。");
+  }
+  if(p.graduationYear>2026){
+    if(/须于2026|2026年\d+月\d+日前取得/.test(job.freshGraduate+job.notes)) blockers.push("公告要求毕业证、学位证在2026年规定日期前取得，2027年毕业来不及。");
+    if(job.status==="已结束") cautions.push("该岗位报名已经结束，仅作2027年备考对照，不能再交报名表。");
+  }
+  const rank={专科:1,本科:2,硕士研究生:3,博士研究生:4};
+  if(/博士/.test(job.education) && rank[p.education]<4) blockers.push("学历要求为"+job.education+"，你目前是"+p.education+"。");
+  else if(/硕士/.test(job.education) && !/本科/.test(job.education) && rank[p.education]<3) blockers.push("学历要求为"+job.education+"，你目前是"+p.education+"。");
+  else if(/本科/.test(job.education) && rank[p.education]>=2) ok.push("学历：岗位要求「"+job.education+"」，你是"+p.education+"，这一条符合。");
+  else if(isUnknown(job.education)) asks.push("学历要求在可见材料中未写清，需要核对官方岗位表。");
+  const under=majorMatches(job.bachelorMajors, majors);
+  const grad=majorMatches(job.masterMajors, majors);
+  if(rank[p.education]>=3){
+    if(grad==="yes"||under==="yes") ok.push("专业名称能在允许专业表述中找到对应。");
+    else if(grad==="likely"||under==="likely") cautions.push("你的专业是「"+majors.join(" / ")+"」，岗位写的是「"+(job.masterMajors||job.bachelorMajors)+"」。体育类很可能对口，但目录代号必须以岗位表为准。");
+    else if(grad==="unknown"&&under==="unknown") asks.push("允许专业未在可见材料中列全。");
+    else if(grad==="no"&&under==="no") cautions.push("按字面匹配，你的专业没有出现在已摘录的允许专业里。");
+  }
+  const al=parseAge(job.age);
+  if(al.max){
+    if(age>al.max){ if(al.flexible) cautions.push("年龄约"+age+"岁，超过「"+al.max+"周岁」原则线，但公告写了可放宽。"); else blockers.push("年龄约"+age+"岁，超过公告"+al.max+"周岁限制。"); }
+    else ok.push("年龄约"+age+"岁，未超过可见的"+al.max+"周岁限制。");
+  } else if(isUnknown(job.age)) asks.push("年龄条件未写清。");
+  if(/教师资格/.test(job.teacherCert)){
+    if(p.teacherCert==="无") blockers.push("岗位要求教师资格证，你填写的是「无」。");
+    else if(p.teacherCert==="在考") cautions.push("教师资格证仍在考。能否先报后补证，必须问招聘单位。");
+    else if(!certCovers(job.stage, p.teacherCertStages||[])) cautions.push("岗位学段是"+job.stage+"，你勾选的学段是"+((p.teacherCertStages||[]).join("、")||"未勾选")+"。");
+    else ok.push("教师资格证学段覆盖该岗位。");
+  }
+  const years=job.workExperience.match(/(\d+)\s*年/);
+  if(years){
+    const need=+years[1];
+    const required=/须|应具有|及以上/.test(job.workExperience) && !/优先/.test(job.workExperience);
+    if((p.workYears||0)<need){ if(required) blockers.push("岗位要求"+need+"年工作经历，你填写的是"+p.workYears+"年。"); else cautions.push("岗位写「"+need+"年以上优先」，你目前是"+p.workYears+"年。"); }
+  }
+  if(job.recruitType==="不明确") asks.push("招聘类型在官方原文中没有写清。按规则：没有官方证据，不能当成事业编。");
+  if(!job.isBianzhiExplicit && job.recruitType!=="事业编") ok.push("本条未把岗位标成事业编，因为公告没有写出编制依据。");
+  let verdict="可以报";
+  if(blockers.length) verdict="不能报";
+  else if(asks.length) verdict="需要咨询招聘单位";
+  else if(cautions.length) verdict="可能可以报";
+  const reasons=[...blockers.map(t=>"不能报："+t),...asks.map(t=>"需要咨询："+t),...cautions.map(t=>"提醒："+t),...ok.map(t=>"符合："+t)];
+  if(!reasons.length) reasons.push("可见条件未发现硬性冲突，但仍建议对照官方岗位表原文。");
+  return {verdict, reasons};
+}
+function badgeClass(v){return v==="可以报"?"ok":v==="可能可以报"?"maybe":v==="不能报"?"no":"ask"}
+function allJobs(){return SEED.concat(state().extra)}
+function esc(s){const m={"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"};return String(s??"").replace(/[&<>"']/g,c=>m[c]);}
+
+let onlyBz=false, onlyMine=false, stage="全部", q="";
+
+function renderStats(jobs, matched){
+  const heads=jobs.reduce((s,j)=>s+(j.headcount||0),0);
+  document.getElementById("stats").innerHTML=
+    [["岗位条数",jobs.length],["招聘人数",heads||"若干"],["明确事业编",jobs.filter(j=>j.isBianzhiExplicit).length],["可以报/可能可以报",matched.filter(m=>m.match.verdict==="可以报"||m.match.verdict==="可能可以报").length]]
+    .map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
+}
+function renderList(){
+  const p=state().profile;
+  const jobs=allJobs();
+  const matched=jobs.map(job=>({job, match:matchJob(job,p)}));
+  renderStats(jobs, matched);
+  const vis=matched.filter(({job,match})=>{
+    if(onlyBz && !job.isBianzhiExplicit) return false;
+    if(onlyMine && match.verdict!=="可以报" && match.verdict!=="可能可以报") return false;
+    if(stage!=="全部" && job.stage!==stage) return false;
+    if(q && !(job.school+job.title+job.district+job.recruitType).includes(q)) return false;
+    return true;
+  });
+  const box=document.getElementById("list");
+  if(!vis.length){box.innerHTML='<div class="card">没有符合筛选的岗位。2027届对照 2026 事业编时，多数会显示「不能报」，这是公告原文限制，不是系统出错。</div>';return;}
+  box.innerHTML=vis.map(({job,match})=>`
+    <article class="card" data-id="${esc(job.id)}">
+      <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
+        <div>
+          <h3>${esc(job.school)} · ${esc(job.title)}</h3>
+          <div class="meta">
+            <span class="tag">${esc(job.district)}</span>
+            <span class="tag">${esc(job.stage)}</span>
+            <span class="tag ${job.isBianzhiExplicit?"bz":"no"}">${esc(job.recruitType)}${job.isBianzhiExplicit?"":" · 非明确事业编"}</span>
+            <span class="tag">${job.headcount?job.headcount+"人":"人数未公开"}</span>
+            <span class="tag">${esc(job.status)}</span>
+          </div>
+        </div>
+        <span class="badge ${badgeClass(match.verdict)}">${esc(match.verdict)}</span>
+      </div>
+      <ul class="reasons">${match.reasons.slice(0,3).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+      <div class="toolbar"><button class="btn" data-open="${esc(job.id)}">查看全部字段</button>
+        ${job.announcementUrl && job.announcementUrl!==U?`<a class="btn" target="_blank" rel="noopener" href="${esc(job.announcementUrl)}">打开公告</a>`:""}
+      </div>
+    </article>`).join("");
+}
+function fieldRows(job){
+  const labels={year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
+  return Object.keys(labels).map(k=>{
+    let v=job[k];
+    if(k==="isBianzhiExplicit") v=job[k]?"是":"否";
+    if(k==="headcount") v=job.headcount??"官方未公开";
+    if(typeof v==="string" && /^https?:/.test(v)) v=`<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`;
+    else v=esc(v);
+    return `<b>${labels[k]}</b><div>${v||U}</div>`;
+  }).join("");
+}
+function openJob(id){
+  const job=allJobs().find(j=>j.id===id); if(!job) return;
+  const m=matchJob(job, state().profile);
+  document.getElementById("sheet-body").innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h3 style="margin:0">${esc(job.school)}</h3>
+      <button class="btn" id="close-sheet">关闭</button>
+    </div>
+    <p>${esc(job.title)} · <span class="badge ${badgeClass(m.verdict)}">${esc(m.verdict)}</span></p>
+    <ul class="reasons">${m.reasons.map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+    <div class="kv" style="margin-top:12px">${fieldRows(job)}</div>
+    <div class="card" style="margin-top:12px">
+      <h3>报名人数（仅官网公开时才记）</h3>
+      <p>已关闭且无法取得的显示「历史数据未公开」，禁止编造。</p>
+      <p>当前：${esc(job.applicants||H)}</p>
+      <div class="row">
+        <label>日期<input id="log-date" type="text" value="${today()}"></label>
+        <label>官网人数<input id="log-n" type="number" min="0" placeholder="没有公开就不要填"></label>
+      </div>
+      <button class="btn" id="log-save" style="margin-top:8px">保存当天快照</button>
+      <div id="log-list"></div>
+    </div>`;
+  document.getElementById("sheet").classList.remove("hidden");
+  const logs=(state().logs[id]||[]);
+  document.getElementById("log-list").innerHTML=logs.length?logs.map(x=>`<p>${esc(x.date)}：${x.count} 人（${esc(x.source)}）</p>`).join(""):`<p>${H}</p>`;
+  document.getElementById("close-sheet").onclick=()=>document.getElementById("sheet").classList.add("hidden");
+  document.getElementById("log-save").onclick=()=>{
+    const n=document.getElementById("log-n").value;
+    if(n===""){alert("官网没有公开人数就不要填，系统不会编造。");return;}
+    const s=state(); s.logs[id]=s.logs[id]||[]; s.logs[id].push({date:document.getElementById("log-date").value,count:+n,source:"手工登记官网人数"}); save(s); openJob(id);
+  };
+}
+function go(name){
+  document.querySelectorAll(".page").forEach(p=>p.classList.add("hidden"));
+  document.getElementById("page-"+name).classList.remove("hidden");
+  document.querySelectorAll("[data-go]").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
+  if(name==="me") fillMe();
+  if(name==="monitor") renderChecks();
+  if(name==="housing") calcFund();
+  if(name==="sources") document.getElementById("live-url").textContent=location.href.split("#")[0];
+  window.scrollTo(0,0);
+}
+function fillMe(){
+  const p=state().profile;
+  document.getElementById("p-year").value=p.graduationYear;
+  document.getElementById("p-edu").value=p.education;
+  document.getElementById("p-birth").value=p.birthYear;
+  document.getElementById("p-bmaj").value=p.bachelorMajor;
+  document.getElementById("p-mmaj").value=p.masterMajor;
+  document.getElementById("p-cert").value=p.teacherCert;
+  document.getElementById("p-work").value=p.workYears;
+  document.getElementById("p-school").value=p.school;
+  document.querySelectorAll("#p-stages input").forEach(c=>c.checked=(p.teacherCertStages||[]).includes(c.value));
+  document.getElementById("p-sports").innerHTML=SPORTS.map(s=>`<label class="btn"><input type="checkbox" value="${s}" ${(p.specialties||[]).includes(s)?"checked":""}> ${s}</label>`).join("");
+}
+function saveMe(){
+  const s=state();
+  s.profile={
+    graduationYear:+document.getElementById("p-year").value,
+    education:document.getElementById("p-edu").value,
+    birthYear:+document.getElementById("p-birth").value,
+    bachelorMajor:document.getElementById("p-bmaj").value.trim(),
+    masterMajor:document.getElementById("p-mmaj").value.trim(),
+    teacherCert:document.getElementById("p-cert").value,
+    workYears:+document.getElementById("p-work").value,
+    school:document.getElementById("p-school").value.trim(),
+    teacherCertStages:[...document.querySelectorAll("#p-stages input:checked")].map(x=>x.value),
+    specialties:[...document.querySelectorAll("#p-sports input:checked")].map(x=>x.value)
+  };
+  save(s);
+  document.getElementById("me-saved").classList.remove("hidden");
+  renderList();
+}
+function renderChecks(){
+  const s=state();
+  document.getElementById("checks").innerHTML = s.checks.length? s.checks.slice().reverse().map(c=>`<p>${esc(c.at)} · ${esc(c.source)} · ${esc(c.result)}</p>`).join("") : "<p>还没有核对记录。点「更新数据」开始。</p>";
+}
+function calcFund(){
+  const wage=+document.getElementById("h-wage").value||0;
+  const p=+document.getElementById("h-p").value||12;
+  const u=+document.getElementById("h-u").value||12;
+  const lower=document.getElementById("h-area").value==="two"?2250:2376;
+  const base=Math.round(Math.min(32726, Math.max(lower, wage)));
+  const personal=Math.round(base*p/100), unit=Math.round(base*u/100);
+  document.getElementById("h-out").innerHTML=`计缴基数 <b>${base.toLocaleString()}</b> 元；个人 ${personal.toLocaleString()} 元 + 单位 ${unit.toLocaleString()} 元 = 每月合计 <b>${(personal+unit).toLocaleString()}</b> 元。事业单位具体比例由单位在 5%—12% 内确定，本页不猜测某所学校。`;
+}
+function exportExcel(){
+  const p=state().profile;
+  const rows=allJobs().map(j=>{
+    const m=matchJob(j,p);
+    return {"我的判断":m.verdict,"判断原因":m.reasons.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
+  });
+  if(window.XLSX){
+    const wb=XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), "体育教师岗位");
+    XLSX.writeFile(wb, "西安体育教师岗位.xlsx");
+  } else {
+    const header=Object.keys(rows[0]);
+    const csv="\ufeff"+[header.join(","),...rows.map(r=>header.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
+    const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="西安体育教师岗位.csv"; a.click();
+  }
+}
+function guessHeader(cells){
+  const map={};
+  cells.forEach((c,i)=>{
+    const t=String(c||"");
+    if(/岗位代码|职位代码/.test(t)) map.code=i;
+    else if(/岗位名称|职位名称/.test(t)) map.title=i;
+    else if(/单位名称|学校/.test(t) && map.school==null) map.school=i;
+    else if(/人数/.test(t)) map.n=i;
+    else if(/学历/.test(t)) map.edu=i;
+    else if(/学位/.test(t)) map.deg=i;
+    else if(/专业/.test(t)) map.major=i;
+    else if(/资格/.test(t)) map.cert=i;
+    else if(/年龄/.test(t)) map.age=i;
+    else if(/其他条件|工作/.test(t)) map.work=i;
+  });
+  return map;
+}
+function ingestGrid(grid, meta){
+  let headerRow=0, best=-1;
+  grid.forEach((row,i)=>{const s=row.join(""); const score=(/岗位/.test(s)?2:0)+(/学校|单位/.test(s)?1:0)+(/专业/.test(s)?1:0); if(score>best){best=score; headerRow=i;}});
+  const map=guessHeader(grid[headerRow]||[]);
+  const added=[];
+  let lastSchool="";
+  for(let i=headerRow+1;i<grid.length;i++){
+    const row=grid[i];
+    const title=String(row[map.title??3]||"");
+    if(!/体育/.test(title)) continue;
+    const school=String(row[map.school??1]||"").trim()||lastSchool;
+    if(String(row[map.school??1]||"").trim()) lastSchool=school;
+    const majors=String(row[map.major??9]||"");
+    const bm=(majors.match(/本科\s*[：:]\s*(.*?)(?=\s*研究生|$)/)||[])[1]||majors||U;
+    const gm=(majors.match(/研究生\s*[：:]\s*(.*)$/)||[])[1]||majors||U;
+    const typeText=(row.join(" ")+(meta.note||""));
+    const isBz=/事业单位公开招聘|事业编制|事业编/.test(typeText) && !/非编制|不是事业编|全员聘用/.test(typeText);
+    added.push({
+      id:"up-"+Date.now()+"-"+i, year:2026, publishedAt:today(), district:meta.district||"待核对",
+      school, schoolNature:"公办", stage:/小学/.test(title)?"小学":/初中/.test(title)?"初中":/高中/.test(title)?"高中":"不明确",
+      title, code:String(row[map.code??4]||U), headcount:Number(row[map.n??5])||null,
+      education:String(row[map.edu??7]||U), degree:String(row[map.deg??8]||U),
+      bachelorMajors:bm, masterMajors:gm, teacherCert:String(row[map.cert??10]||U),
+      age:String(row[map.age??6]||U), freshGraduate:U, workExperience:String(row[map.work??11]||U),
+      sportsSpecialty:U, recruitType:isBz?"事业编":"不明确", isBianzhiExplicit:isBz,
+      bianzhiEvidence:isBz?"上传表格或文件名中出现事业单位公开招聘等原文。":"上传表格未见事业编原文，记为不明确。",
+      minServiceYears:U, applyStart:U, applyEnd:U, applicants:H, competitionRatio:H,
+      examContent:U, writtenExam:U, interview:U, salary:U, performancePay:U, socialInsurance:U, housingFund:U,
+      announcementUrl:U, jobTableUrl:"本地上传", updatedAt:today(),
+      notes:"由用户上传岗位表解析，请人工核对列是否对上。", status:"待发布", sourceName:"用户上传岗位表", userAdded:true
+    });
+  }
+  return added;
+}
+async function onUpload(file){
+  const buf=await file.arrayBuffer();
+  let grid=[];
+  if(/\.csv$/i.test(file.name)){
+    const text=new TextDecoder("utf-8").decode(buf).replace(/^\ufeff/,"");
+    grid=text.split(/\r?\n/).map(l=>l.split(/,|\t/));
+  } else if(window.XLSX){
+    const wb=XLSX.read(buf,{type:"array"});
+    grid=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""});
+  } else { flash("请把岗位表另存为 CSV 后再上传，或等待表格组件加载。"); return; }
+  const added=ingestGrid(grid,{note:file.name, district:/高新/.test(file.name)?"高新区":"待核对"});
+  if(!added.length){ flash("没有识别到名称含「体育」的岗位。请确认上传的是官方岗位表。"); return; }
+  const s=state(); const ids=new Set(allJobs().map(j=>j.school+"|"+j.title+"|"+j.code));
+  const fresh=added.filter(j=>!ids.has(j.school+"|"+j.title+"|"+j.code));
+  s.extra=s.extra.concat(fresh); save(s);
+  flash("已从官方岗位表筛出体育岗 "+added.length+" 条，新写入 "+fresh.length+" 条。招聘类型仅在表格原文能证明时才标事业编。");
+  renderList();
+}
+function flash(msg){const el=document.getElementById("flash"); el.textContent=msg; el.classList.remove("hidden");}
+function updateData(){
+  const s=state();
+  s.checks.push({at:today(), source:"官方入口核对", result:"请打开西安人事考试网、市政府招考信息页核对最新公告。网页版不能穿透政府网站跨域抓取，不会假装已经自动入库。"});
+  save(s);
+  flash("已记录本次核对。网页不能越过政府网站的安全限制自动改库。请打开官方链接，或上传刚下载的岗位表。");
+  window.open("https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","_blank");
+  window.open("https://xapta.xa.gov.cn/","_blank");
+}
+function addManual(){
+  const school=document.getElementById("n-school").value.trim();
+  const url=document.getElementById("n-url").value.trim();
+  const type=document.getElementById("n-type").value;
+  const bz=document.getElementById("n-bz").checked;
+  if(!school||!url){alert("学校和官方公告网址都要填。");return;}
+  if(type==="事业编" && !bz){alert("没有公告原文证据，不能登记为事业编。");return;}
+  const s=state();
+  s.extra.push({
+    id:"m-"+Date.now(), year:2027, publishedAt:today(), district:document.getElementById("n-dist").value.trim()||"待核对",
+    school, schoolNature:"公办", stage:document.getElementById("n-stage").value,
+    title:document.getElementById("n-title").value.trim()||"体育教师",
+    code:U, headcount:+document.getElementById("n-n").value||null, education:U, degree:U, bachelorMajors:U, masterMajors:U,
+    teacherCert:U, age:U, freshGraduate:U, workExperience:U, sportsSpecialty:U,
+    recruitType: bz && type==="事业编" ? "事业编" : (type==="事业编"?"不明确":type),
+    isBianzhiExplicit: !!(bz && type==="事业编"),
+    bianzhiEvidence: bz?"登记时确认公告原文写明事业编/事业单位公开招聘。":"登记时未勾选原文证据，不得标事业编。",
+    minServiceYears:U, applyStart:U, applyEnd:document.getElementById("n-end").value.trim()||U,
+    applicants:H, competitionRatio:H, examContent:U, writtenExam:U, interview:U, salary:U, performancePay:U, socialInsurance:U, housingFund:U,
+    announcementUrl:url, jobTableUrl:U, updatedAt:today(), notes:"2027监控手工登记", status:"报名中", sourceName:"手工登记", userAdded:true
+  });
+  save(s); alert("已入库。"); go("jobs"); renderList();
+}
+
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+document.getElementById("btn-bz").onclick=()=>{onlyBz=!onlyBz; document.getElementById("btn-bz").classList.toggle("on",onlyBz); renderList();};
+document.getElementById("btn-mine").onclick=()=>{onlyMine=!onlyMine; document.getElementById("btn-mine").classList.toggle("on",onlyMine); renderList();};
+document.getElementById("btn-export").onclick=exportExcel;
+document.getElementById("btn-update").onclick=updateData;
+document.getElementById("btn-upload").onclick=()=>document.getElementById("file").click();
+document.getElementById("file").onchange=e=>{const f=e.target.files[0]; if(f) onUpload(f); e.target.value="";};
+document.getElementById("q").oninput=e=>{q=e.target.value.trim(); renderList();};
+document.querySelectorAll("[data-stage]").forEach(b=>b.onclick=()=>{
+  stage=b.dataset.stage; document.querySelectorAll("[data-stage]").forEach(x=>x.classList.toggle("on",x===b)); renderList();
+});
+document.getElementById("list").addEventListener("click",e=>{
+  const id=e.target.dataset.open; if(id) openJob(id);
+});
+document.getElementById("btn-save-me").onclick=saveMe;
+document.getElementById("btn-add").onclick=addManual;
+document.getElementById("h-wage").oninput=calcFund;
+document.getElementById("h-p").oninput=calcFund;
+document.getElementById("h-u").oninput=calcFund;
+document.getElementById("h-area").onchange=calcFund;
+document.getElementById("btn-copy").onclick=async()=>{
+  try{await navigator.clipboard.writeText(location.href.split("#")[0]); document.getElementById("btn-copy").textContent="已复制";}
+  catch(e){prompt("复制这个网址", location.href);}
+};
+document.getElementById("btn-install").onclick=()=>document.getElementById("install-help").classList.toggle("hidden");
+document.getElementById("official-links").innerHTML="<h3>官方入口</h3>"+SOURCES.map(([n,u,d])=>`<p><a href="${u}" target="_blank" rel="noopener">${n}</a> · ${d}</p>`).join("");
+document.getElementById("sheet").addEventListener("click",e=>{if(e.target.id==="sheet") e.currentTarget.classList.add("hidden");});
+renderList();
+</script>
+</body>
+</html>
