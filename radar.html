@@ -119,6 +119,10 @@ body.locked #gate{display:flex}
       <p>工资没有官方数字就写「官方未公开」。没有公告原文就不标事业编。已关闭岗位的报名人数写「历史数据未公开」。</p>
     </div>
     <div class="flash" id="h2-banner">2026年下半年市事业单位公开招聘正在报名：<b>9月7日 8:00 – 9月11日 18:00</b>。请到西安人事考试网下载岗位表，用「体育」筛选后点「上传岗位表」。本库尚未自动解析到该批次体育教师明细，禁止编造。</div>
+    <div class="card" id="watch-box">
+      <h3 style="margin-top:0">自动盯梢已开启</h3>
+      <p id="watch-status">正在读取最近一次官方核对结果…</p>
+    </div>
     <div class="stats" id="stats"></div>
     <div class="toolbar">
       <button class="btn primary" id="btn-update">更新数据</button>
@@ -169,7 +173,11 @@ body.locked #gate{display:flex}
 
   <section id="page-monitor" class="page hidden">
     <h2>2027 招聘监控</h2>
-    <div class="flash">电脑或手机不会在关机时自动抓取官网。点「更新数据」会打开官方入口并记下本次核对。发现新的体育教师公告后，可在下面手工登记入库。</div>
+    <div class="flash">系统会定时去查市政府招考页、高新区、市教育局。发现新的招聘标题会列在下面。标题里没有「体育」时，不会假装已经找到体育教师岗位——请下载官方岗位表后点「上传岗位表」。</div>
+    <div class="card">
+      <h3>自动盯到的官方标题</h3>
+      <div id="auto-hits">还没有读取到盯梢结果。</div>
+    </div>
     <div class="card">
       <h3>按 2026 节奏预估的关注窗口</h3>
       <div class="cal"><b>2027年2月前后</b><br>预计发布 2027 年西安市事业单位公开招聘（上半年）。2026 年上半年公告于 2 月 9 日发布。</div>
@@ -277,6 +285,7 @@ async function openApp(){
   window.SEED = window.SEED || [];
   document.body.classList.remove("locked");
   renderList();
+  pullFeed();
 }
 async function tryUnlock(pass){
   const h=await sha256hex(String(pass||"").trim());
@@ -638,13 +647,51 @@ async function onUpload(file){
   renderList();
 }
 function flash(msg){const el=document.getElementById("flash"); el.textContent=msg; el.classList.remove("hidden");}
-function updateData(){
+function renderFeed(feed){
+  window.RADAR_FEED=feed;
+  const pe=(feed.hits||[]).filter(h=>h.peMention);
+  const newest=(feed.hits||[]).slice(0,12);
+  const srcOk=(feed.sources||[]).filter(s=>s.ok).length;
+  const srcAll=(feed.sources||[]).length;
+  document.getElementById("watch-status").innerHTML=
+    "上次自动核对：<b>"+esc(feed.updatedAt||"尚无")+"</b>。官方源 "+srcOk+"/"+srcAll+" 可访问。"+
+    "含「体育」的标题 "+pe.length+" 条；新标题 "+(feed.newCount||0)+" 条。<br>"+
+    esc(feed.cadence||"定时检查官方网站")+" 打开本页也会立刻再读一次结果。没有岗位表时不会编造体育教师岗位。";
+  const box=document.getElementById("auto-hits");
+  if(!newest.length){box.innerHTML="<p>这一轮没有抓到招聘标题。可能是官网改版或暂时连不上。</p>";return;}
+  box.innerHTML=newest.map(h=>
+    "<p style=\"margin:10px 0;padding-bottom:10px;border-bottom:1px solid var(--line)\">"+
+    "<span class=\"tag "+(h.peMention?"bz":"")+"\">"+esc(h.kind||"公告")+(h.peMention?" · 含体育":"")+(h.new?" · 新":"")+"</span> "+
+    "<a href=\""+esc(h.url)+"\" target=\"_blank\" rel=\"noopener\">"+esc(h.title)+"</a><br>"+
+    "<span style=\"color:var(--muted);font-size:12px\">"+esc(h.source||"")+" · "+esc(h.foundAt||"")+"</span></p>"
+  ).join("");
+}
+async function pullFeed(){
+  try{
+    const res=await fetch("radar-updates.json?t="+Date.now(), {cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const feed=await res.json();
+    renderFeed(feed);
+    const s=state();
+    s.checks.push({at:today(), source:"自动盯梢", result:"核对完成 "+feed.updatedAt+"；新标题 "+(feed.newCount||0)+"；含体育 "+(feed.peNew||0)});
+    save(s);
+    return feed;
+  }catch(e){
+    document.getElementById("watch-status").textContent="还没有读到自动盯梢结果。后台每个工作时段约 2 小时查一次官网，稍后刷新即可。";
+    return null;
+  }
+}
+async function updateData(){
+  const feed=await pullFeed();
   const s=state();
-  s.checks.push({at:today(), source:"官方入口核对", result:"请打开西安人事考试网、市政府招考信息页核对最新公告。网页版不能穿透政府网站跨域抓取，不会假装已经自动入库。"});
-  save(s);
-  flash("已记录本次核对。网页不能越过政府网站的安全限制自动改库。请打开官方链接，或上传刚下载的岗位表。");
+  if(feed){
+    flash("已读取最新盯梢结果。若刚发布的公告还没出现，最多等一个检查周期（约 2 小时），或直接打开官方链接、上传岗位表。");
+  } else {
+    s.checks.push({at:today(), source:"官方入口核对", result:"盯梢文件暂不可用，改为打开官网。"});
+    save(s);
+    flash("自动盯梢结果暂时读不到。已为你打开官方招考页，也可上传刚下载的岗位表。");
+  }
   window.open("https://www.xa.gov.cn/gk/rsxx/gwykl/1.html","_blank");
-  window.open("https://xapta.xa.gov.cn/","_blank");
 }
 function addManual(){
   const school=document.getElementById("n-school").value.trim();
