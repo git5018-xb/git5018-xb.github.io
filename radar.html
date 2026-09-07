@@ -237,9 +237,9 @@ footer.note{color:var(--muted);font-size:12px;margin-top:24px}
   <button data-go="sources">来源</button>
 </nav>
 <div id="sheet" class="sheet hidden"><div class="panel" id="sheet-body"></div></div>
-<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="radar-data.js"></script>
 <script>
+
 const SEED = window.SEED;
 const U="官方未公开", H="历史数据未公开";
 const PK="xa-pe-radar-web-v1";
@@ -354,6 +354,7 @@ function renderStats(jobs, matched){
     .map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
 }
 function renderList(){
+  if(!window.SEED||!SEED.length){document.getElementById("list").innerHTML='<div class="card">岗位数据还在加载。请刷新一次。</div>';return;}
   const p=state().profile;
   const jobs=allJobs();
   const matched=jobs.map(job=>({job, match:matchJob(job,p)}));
@@ -485,21 +486,31 @@ function calcFund(){
   const personal=Math.round(base*p/100), unit=Math.round(base*u/100);
   document.getElementById("h-out").innerHTML=`计缴基数 <b>${base.toLocaleString()}</b> 元；个人 ${personal.toLocaleString()} 元 + 单位 ${unit.toLocaleString()} 元 = 每月合计 <b>${(personal+unit).toLocaleString()}</b> 元。事业单位具体比例由单位在 5%—12% 内确定，本页不猜测某所学校。`;
 }
+function loadXlsx(){
+  return new Promise((resolve,reject)=>{
+    if(window.XLSX) return resolve(window.XLSX);
+    const s=document.createElement("script");
+    s.src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js";
+    s.onload=()=>resolve(window.XLSX);
+    s.onerror=()=>reject(new Error("表格组件加载失败，请改用CSV"));
+    document.head.appendChild(s);
+  });
+}
 function exportExcel(){
   const p=state().profile;
   const rows=allJobs().map(j=>{
     const m=matchJob(j,p);
     return {"我的判断":m.verdict,"判断原因":m.reasons.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
   });
-  if(window.XLSX){
+  loadXlsx().then(XLSX=>{
     const wb=XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), "体育教师岗位");
     XLSX.writeFile(wb, "西安体育教师岗位.xlsx");
-  } else {
+  }).catch(()=>{
     const header=Object.keys(rows[0]);
     const csv="\ufeff"+[header.join(","),...rows.map(r=>header.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
     const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="西安体育教师岗位.csv"; a.click();
-  }
+  });
 }
 function guessHeader(cells){
   const map={};
@@ -558,10 +569,16 @@ async function onUpload(file){
   if(/\.csv$/i.test(file.name)){
     const text=new TextDecoder("utf-8").decode(buf).replace(/^\ufeff/,"");
     grid=text.split(/\r?\n/).map(l=>l.split(/,|\t/));
-  } else if(window.XLSX){
-    const wb=XLSX.read(buf,{type:"array"});
-    grid=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""});
-  } else { flash("请把岗位表另存为 CSV 后再上传，或等待表格组件加载。"); return; }
+  } else {
+    try{
+      const XLSX=await loadXlsx();
+      const wb=XLSX.read(buf,{type:"array"});
+      grid=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,defval:""});
+    }catch(e){
+      flash("Excel 组件暂时无法加载。请把岗位表另存为 CSV 后再上传。");
+      return;
+    }
+  }
   const added=ingestGrid(grid,{note:file.name, district:/高新/.test(file.name)?"高新区":"待核对"});
   if(!added.length){ flash("没有识别到名称含「体育」的岗位。请确认上传的是官方岗位表。"); return; }
   const s=state(); const ids=new Set(allJobs().map(j=>j.school+"|"+j.title+"|"+j.code));
