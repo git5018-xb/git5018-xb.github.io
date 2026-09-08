@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-07T23:48:40.439+08:00",
+  "updatedAt": "2026-09-08T12:29:01.700+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -41,7 +41,7 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
       "ok": true,
       "error": null,
-      "found": 15
+      "found": 14
     },
     {
       "id": "yuexiu",
@@ -63,14 +63,24 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 1
     }
   ],
   "peNew": 1,
-  "newCount": 40,
+  "newCount": 41,
   "hits": [
+    {
+      "id": "1ee754b873b336ff",
+      "title": "福州市文物局关于2026年福州市博物馆、福州市文物考古工作队公开招聘工作人员拟聘人选公示",
+      "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/202608/t20260810_5356441.htm",
+      "peMention": false,
+      "kind": "公示",
+      "source": "福州市政府通知公告",
+      "foundAt": "2026-09-08T12:29:01.700+08:00",
+      "new": true
+    },
     {
       "id": "e5a971634b93c65e",
       "title": "深圳市第二实验学校明远高中2025年8月面向2025年应届毕业生赴外公开招聘教师拟聘人员公示",
