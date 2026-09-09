@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-09T00:34:54.592+08:00",
+  "updatedAt": "2026-09-09T12:35:26.675+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -49,7 +49,7 @@
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/",
       "ok": true,
       "error": null,
-      "found": 14
+      "found": 15
     },
     {
       "id": "zhuhai",
@@ -69,8 +69,18 @@
     }
   ],
   "peNew": 1,
-  "newCount": 42,
+  "newCount": 43,
   "hits": [
+    {
+      "id": "2f0625560ab1c131",
+      "title": "广州市越秀区人民政府梅花村街道办事处面向社会公开招聘辅助人员公告 2026-09-09",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10996499.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-09T12:35:26.675+08:00",
+      "new": true
+    },
     {
       "id": "7205e22cf7435b6e",
       "title": "珠海市教育局2026年秋季面向社会公开招聘直属学校事业编制教师公告",
