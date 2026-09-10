@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>课堂令</title>
+<meta name="description" content="体育课小程序：随机点将、课堂分组、训练计时、班级名册。数据存在本机，打开即用。">
+<meta name="theme-color" content="#0e1210">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --canvas:#0e1210;--panel:#171c1a;--panel-2:#1e2522;--ink:#e8eee9;--quiet:#8b958e;
+  --subtle:#5c6560;--line:#2a322e;--accent:#c9d4cc;--accent-fg:#0e1210;--ok:#7a9a86;--bad:#c27666;
+  --display:"Noto Serif SC","Noto Sans SC",Georgia,serif;
+  --sans:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100dvh;background:var(--canvas);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.wrap{max-width:512px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-bottom:calc(72px + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:20;padding:12px 16px;border-bottom:1px solid var(--line);background:color-mix(in oklab,var(--canvas) 90%,transparent);backdrop-filter:blur(8px);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.brand{font-family:var(--display);font-size:11px;letter-spacing:.18em;color:var(--quiet)}
+h1{margin:2px 0 0;font-family:var(--display);font-size:20px;font-weight:500;letter-spacing:-.02em}
+.meta{font-variant-numeric:tabular-nums;font-size:12px;color:var(--quiet);text-align:right}
+main{flex:1;padding:12px 16px 16px;display:flex;flex-direction:column}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px 16px}
+.stage{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:220px;text-align:center}
+.kicker{font-size:11px;letter-spacing:.16em;color:var(--quiet)}
+.hero{margin:16px 0 0;font-family:var(--display);font-size:clamp(32px,8vw,48px);font-weight:500;letter-spacing:-.03em;min-height:56px}
+.hint{margin:8px 0 0;font-size:14px;color:var(--quiet)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.btn{min-height:52px;border-radius:12px;padding:0 16px;font-weight:500;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.primary{background:var(--accent);color:var(--accent-fg)}
+.btn.outline{border:1px solid var(--line);background:transparent;color:var(--ink)}
+.btn.ghost{color:var(--quiet)}
+.btn:disabled{opacity:.4;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{background:var(--panel-2);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--quiet);font-variant-numeric:tabular-nums}
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:30;border-top:1px solid var(--line);background:color-mix(in oklab,var(--canvas) 95%,transparent);padding-bottom:env(safe-area-inset-bottom)}
+.nav-inner{max-width:512px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
+.nav button{min-height:56px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:11px;font-weight:500;color:var(--quiet)}
+.nav button.on{color:var(--ink)}
+.sheet{position:fixed;inset:0;z-index:40;background:color-mix(in oklab,var(--canvas) 70%,transparent);display:flex;align-items:flex-end;justify-content:center;padding:12px}
+@media(min-width:640px){.sheet{align-items:center}}
+.sheet .card{position:relative;width:100%;max-width:512px;background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:16px}
+.list{max-height:260px;overflow:auto}
+.class-row,.stu{display:flex;align-items:center;gap:8px;min-height:44px}
+.field{width:100%;min-height:44px;border:1px solid var(--line);background:var(--canvas);border-radius:8px;padding:0 12px;outline:none;color:var(--ink)}
+textarea.field{padding:12px;min-height:160px;resize:vertical}
+.groups{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.gcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px}
+.gcard h3{margin:0 0 8px;font-size:13px;color:var(--quiet);font-family:var(--display);font-weight:500}
+.gcard ol{margin:0;padding-left:18px;font-size:14px}
+.clock{font-family:var(--display);font-size:clamp(52px,14vw,72px);font-variant-numeric:tabular-nums;letter-spacing:-.04em;margin:12px 0 0}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}
+.presets button{min-height:44px;border-radius:999px;padding:0 12px;font-size:14px;background:var(--panel-2);color:var(--quiet)}
+.presets button.on{background:var(--accent);color:var(--accent-fg)}
+.done{border-color:var(--ok);background:color-mix(in oklab,var(--ok) 12%,var(--panel))}
+.muted{color:var(--subtle)}
+.strike{color:var(--subtle);text-decoration:line-through}
+.iconbtn{width:44px;height:44px;display:grid;place-items:center;color:var(--subtle);flex-shrink:0}
+.iconbtn:hover{color:var(--ink)}
+.danger:hover{color:var(--bad)}
+.formrow{display:flex;gap:8px;margin-top:12px}
+.formrow .field{flex:1;min-width:0}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;font-size:14px;color:var(--quiet)}
+.roster{border:1px solid var(--line);border-radius:12px;background:var(--panel);overflow:auto}
+.stu{padding:0 8px 0 12px;border-bottom:1px solid var(--line)}
+.stu:last-child{border-bottom:0}
+.empty{padding:32px 16px;text-align:center;font-size:14px;color:var(--quiet)}
+.titlebar{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+h2{margin:0;font-family:var(--display);font-size:18px;font-weight:500}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand">课堂令</div>
+      <button type="button" id="classBtn" style="text-align:left;min-height:44px">
+        <h1 id="className">七年级（3）班</h1>
+      </button>
+    </div>
+    <div class="meta" id="attendMeta">出勤 24 / 24</div>
+  </header>
+  <main id="main"></main>
+</div>
+<nav class="nav"><div class="nav-inner" id="nav"></div></nav>
+<div class="sheet" id="sheet" hidden></div>
+
+<script>
+const KEY="ketang-v1";
+const DEMO=["陈思远","林晓晴","王浩然","赵一诺","刘子墨","周予安","吴嘉琪","郑沐阳","孙雨桐","马景行","黄诗涵","徐展鹏","胡可欣","郭子轩","何婉清","罗景深","高明哲","梁语彤","宋启航","唐若溪","冯嘉树","邓清晏","曹子谦","彭乐言"];
+const TABS=[["pick","点将"],["group","分组"],["timer","计时"],["roster","名册"]];
+const PRESETS=[["15秒",15],["30秒",30],["1分钟",60],["2分钟",120],["3分钟",180],["8分钟",480]];
+function uid(p){return p+"_"+Math.random().toString(36).slice(2,8)}
+function demo(){
+  return {activeId:"class_demo",classes:[{id:"class_demo",name:"七年级（3）班",students:DEMO.map((n,i)=>({id:"s_demo_"+i,name:n,present:true}))}]};
+}
+function load(){
+  try{const r=JSON.parse(localStorage.getItem(KEY));if(r&&r.classes&&r.classes.length)return r}catch(e){}
+  return demo();
+}
+let state=Object.assign({picked:[],tab:"pick"},load());
+let ui={spinning:false,display:"准备点将",landed:null,groups:[],groupN:4,mode:"down",remain:60,initial:60,running:false,done:false,timerId:null};
+
+function save(){try{localStorage.setItem(KEY,JSON.stringify({classes:state.classes,activeId:state.activeId}))}catch(e){}}
+function klass(){return state.classes.find(c=>c.id===state.activeId)}
+function present(){return (klass()?.students||[]).filter(s=>s.present)}
+function remaining(){const p=new Set(state.picked);return present().filter(s=>!p.has(s.id))}
+function renderHeader(){
+  const k=klass();
+  document.getElementById("className").textContent=k?k.name:"未选班级";
+  const t=(k?.students||[]).length, p=present().length;
+  document.getElementById("attendMeta").innerHTML="出勤 "+p+" <span class='muted'>/ "+t+"</span>";
+}
+function nav(){
+  document.getElementById("nav").innerHTML=TABS.map(([id,label])=>`<button type="button" data-tab="${id}" class="${state.tab===id?"on":""}">${label}</button>`).join("");
+}
+function closeSheet(){const el=document.getElementById("sheet");el.hidden=true;el.innerHTML=""}
+function openSheet(html){const el=document.getElementById("sheet");el.hidden=false;el.innerHTML=html}
+
+function renderPick(){
+  const left=remaining();
+  const picked=state.picked.map(id=>(klass()?.students||[]).find(s=>s.id===id)).filter(Boolean);
+  return `<div class="panel stage${ui.spinning?"":""}">
+      <div class="kicker">本轮剩余 ${left.length} 人</div>
+      <div class="hero">${ui.display}</div>
+      ${ui.landed&&!ui.spinning?'<p class="hint">已记下，下一名不会再抽到</p>':""}
+    </div>
+    <div class="row">
+      <button class="btn primary" id="pickBtn" ${ui.spinning||!left.length?"disabled":""}>${left.length? "抽一名":"本轮抽完"}</button>
+      <button class="btn outline" id="resetPick" ${ui.spinning?"disabled":""}>本轮重来</button>
+    </div>
+    ${picked.length?`<div style="margin-top:20px"><div class="kicker">已点 ${picked.length}</div><div class="chips">${picked.map((s,i)=>`<span class="chip">${i+1} ${s.name}</span>`).join("")}</div></div>`:""}`;
+}
+function renderGroup(){
+  const p=present();
+  return `<div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+        <div><div class="kicker">分成</div><div class="hero" style="font-size:28px;min-height:0">${ui.groupN} 组</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn outline" style="min-height:44px;width:44px" id="gMinus">−</button>
+          <button class="btn outline" style="min-height:44px;width:44px" id="gPlus">+</button>
+        </div>
+      </div>
+      <p class="hint">只排今日出勤的 ${p.length} 人，组间人数尽量均分。</p>
+      <button class="btn primary" style="width:100%;margin-top:16px" id="deal" ${p.length<2?"disabled":""}>重新分组</button>
+    </div>
+    ${ui.groups.length?`<div class="groups">${ui.groups.map((g,i)=>`<section class="gcard"><h3>第 ${i+1} 组 · ${g.length} 人</h3><ol>${g.map(s=>`<li>${s.name}</li>`).join("")}</ol></section>`).join("")}</div>`:""}`;
+}
+function clock(t){t=Math.max(0,Math.floor(t));const m=String(Math.floor(t/60)).padStart(2,"0");const s=String(t%60).padStart(2,"0");return m+":"+s}
+function renderTimer(){
+  return `<div class="panel stage${ui.done?" done":""}">
+      <div class="kicker">${ui.mode==="down"?"倒计时":"秒表"}</div>
+      <div class="clock">${clock(ui.remain)}</div>
+      ${ui.done?'<p class="hint" style="color:var(--ok)">时间到</p>':""}
+    </div>
+    <div class="presets">
+      ${PRESETS.map(([l,s])=>`<button type="button" data-sec="${s}" class="${ui.mode==="down"&&ui.initial===s?"on":""}">${l}</button>`).join("")}
+      <button type="button" data-sec="up" class="${ui.mode==="up"?"on":""}">秒表</button>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="tToggle">${ui.running?"暂停":"开始"}</button>
+      <button class="btn outline" id="tReset">复位</button>
+    </div>`;
+}
+function renderRoster(){
+  const k=klass(); const st=k?k.students:[]; const p=st.filter(s=>s.present).length;
+  return `<div class="toolbar"><div>出勤 <b style="color:var(--ink);font-variant-numeric:tabular-nums">${p}</b> <span class="muted">/ ${st.length}</span></div>
+      <div><button class="btn ghost" id="allOn" style="min-height:44px">全到</button><button class="btn ghost" id="allOff" style="min-height:44px">全缺</button></div></div>
+    <form class="formrow" id="addForm"><input class="field" id="newName" placeholder="输入姓名，回车添加"><button class="btn primary" style="min-height:44px;width:44px" type="submit">+</button><button class="btn outline" type="button" id="bulkBtn" style="min-height:44px">批量</button></form>
+    <ul class="roster" style="margin:12px 0 0;padding:0;list-style:none">${st.length?st.map(s=>`<li class="stu"><button type="button" data-tog="${s.id}" class="${s.present?"":"strike"}" style="flex:1;text-align:left;min-height:44px">${s.name} <span class="muted" style="font-size:11px">${s.present?"出勤":"缺席"}</span></button><button class="iconbtn danger" data-del="${s.id}" aria-label="删除">×</button></li>`).join(""):`<li class="empty">还没有学生。批量粘贴名单即可开课。</li>`}</ul>`;
+}
+
+function render(){
+  renderHeader(); nav();
+  const main=document.getElementById("main");
+  if(state.tab==="pick") main.innerHTML=renderPick();
+  else if(state.tab==="group") main.innerHTML=renderGroup();
+  else if(state.tab==="timer") main.innerHTML=renderTimer();
+  else main.innerHTML=renderRoster();
+}
+
+function beep(){
+  try{const c=new AudioContext();const o=c.createOscillator();const g=c.createGain();o.frequency.value=880;o.connect(g);g.connect(c.destination);g.gain.setValueAtTime(.07,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+.7);o.start();o.stop(c.currentTime+.7)}catch(e){}
+}
+function shuffle(a){const n=a.slice();for(let i=n.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[n[i],n[j]]=[n[j],n[i]]}return n}
+
+function openClassSheet(){
+  const rows=state.classes.map(c=>`<div class="class-row">
+      <button type="button" data-act="${c.id}" style="flex:1;text-align:left;min-height:44px;border-radius:8px;padding:0 12px;background:${c.id===state.activeId?"var(--panel-2)":"transparent"}">${c.name} <span class="muted">${c.students.length}人</span></button>
+      <button class="iconbtn" data-ren="${c.id}">改</button>
+      ${state.classes.length>1?`<button class="iconbtn danger" data-rm="${c.id}">删</button>`:""}
+    </div>`).join("");
+  openSheet(`<div class="card"><div class="titlebar"><h2>班级</h2><button class="iconbtn" id="closeSheet">×</button></div>
+    <div class="list">${rows}</div>
+    <form class="formrow" id="newClass"><input class="field" name="name" placeholder="新班级，如 八年级（1）班"><button class="btn primary" type="button" id="addClassBtn" style="min-height:44px">添加</button></form></div>`);
+}
+function openBulk(){
+  openSheet(`<div class="card"><div class="titlebar"><h2>批量导入</h2><button class="iconbtn" id="closeSheet">×</button></div>
+    <p class="hint">每行一个姓名，也可用顿号或逗号分隔。</p>
+    <textarea class="field" id="bulkText" placeholder="张三&#10;李四&#10;王五"></textarea>
+    <div class="formrow" style="justify-content:flex-end"><button class="btn outline" id="closeSheet2">取消</button><button class="btn primary" id="bulkGo">导入</button></div></div>`);
+}
+
+document.getElementById("classBtn").onclick=openClassSheet;
+document.getElementById("nav").onclick=e=>{
+  const b=e.target.closest("[data-tab]"); if(!b) return;
+  state.tab=b.dataset.tab; render();
+};
+document.getElementById("sheet").addEventListener("click",e=>{
+  if(e.target.id==="sheet") closeSheet();
+  if(e.target.id==="closeSheet"||e.target.id==="closeSheet2") closeSheet();
+  const act=e.target.closest("[data-act]");
+  if(act){state.activeId=act.dataset.act;state.picked=[];save();closeSheet();render();return}
+  const ren=e.target.closest("[data-ren]");
+  if(ren){const c=state.classes.find(x=>x.id===ren.dataset.ren);const n=prompt("班级名称",c.name);if(n&&n.trim()){c.name=n.trim();save();closeSheet();render()}return}
+  const rm=e.target.closest("[data-rm]");
+  if(rm && state.classes.length>1){state.classes=state.classes.filter(c=>c.id!==rm.dataset.rm);if(state.activeId===rm.dataset.rm){state.activeId=state.classes[0].id;state.picked=[]}save();closeSheet();render();return}
+  const addC=e.target.closest("#addClassBtn");
+  if(addC){e.preventDefault();const name=document.querySelector("#newClass [name=name]").value.trim();if(!name)return;const id=uid("class");state.classes.push({id,name,students:[]});state.activeId=id;state.picked=[];save();closeSheet();render();return}
+  const form=e.target.closest("#newClass");
+  if(form && e.target.matches(".btn")){e.preventDefault();const name=form.querySelector("[name=name]").value.trim();if(!name)return;const id=uid("class");state.classes.push({id,name,students:[]});state.activeId=id;state.picked=[];save();closeSheet();render()}
+  if(e.target.id==="bulkGo"){
+    const names=document.getElementById("bulkText").value.split(/[\n,，、;；]+/).map(x=>x.trim()).filter(Boolean);
+    names.forEach(n=>klass().students.push({id:uid("s"),name:n,present:true}));
+    save();closeSheet();render();
+  }
+});
+
+document.getElementById("main").addEventListener("click",e=>{
+  if(e.target.id==="pickBtn"){
+    const left=remaining(); if(!left.length||ui.spinning) return;
+    const chosen=left[Math.floor(Math.random()*left.length)];
+    const pool=present().map(s=>s.name);
+    const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(reduce){ui.display=chosen.name;ui.landed=chosen;state.picked.push(chosen.id);render();return}
+    ui.spinning=true;ui.landed=null;let ticks=0;const max=14+Math.floor(Math.random()*6);
+    const id=setInterval(()=>{
+      ticks++; ui.display=pool[Math.floor(Math.random()*pool.length)]||chosen.name;
+      if(ticks>=max){clearInterval(id);ui.display=chosen.name;ui.landed=chosen;ui.spinning=false;state.picked.push(chosen.id);render()}
+      else {document.querySelector(".hero").textContent=ui.display}
+    },70);
+    return;
+  }
+  if(e.target.id==="resetPick"){state.picked=[];ui.display="准备点将";ui.landed=null;render();return}
+  if(e.target.id==="gMinus"){ui.groupN=Math.max(2,ui.groupN-1);render();return}
+  if(e.target.id==="gPlus"){ui.groupN=Math.min(8,ui.groupN+1);render();return}
+  if(e.target.id==="deal"){
+    const p=shuffle(present()); const n=Math.max(2,Math.min(ui.groupN,Math.max(2,p.length)));
+    ui.groups=Array.from({length:n},()=>[]); p.forEach((s,i)=>ui.groups[i%n].push(s)); render(); return;
+  }
+  const sec=e.target.closest("[data-sec]");
+  if(sec){
+    stopTimer();
+    if(sec.dataset.sec==="up"){ui.mode="up";ui.remain=0;ui.done=false;render();return}
+    const s=+sec.dataset.sec; ui.mode="down";ui.initial=s;ui.remain=s;ui.done=false;render();return;
+  }
+  if(e.target.id==="tToggle"){
+    if(ui.mode==="down"&&ui.remain<=0){ui.remain=ui.initial;ui.done=false}
+    ui.running=!ui.running; ui.done=false; if(ui.running) startTimer(); else stopTimer(); render(); return;
+  }
+  if(e.target.id==="tReset"){stopTimer();ui.running=false;ui.done=false;ui.remain=ui.mode==="up"?0:ui.initial;render();return}
+  if(e.target.id==="allOn"||e.target.id==="allOff"){const on=e.target.id==="allOn";klass().students.forEach(s=>s.present=on);save();render();return}
+  if(e.target.id==="bulkBtn"){openBulk();return}
+  const tog=e.target.closest("[data-tog]");
+  if(tog){const s=klass().students.find(x=>x.id===tog.dataset.tog);if(s){s.present=!s.present;save();render()}return}
+  const del=e.target.closest("[data-del]");
+  if(del){const k=klass();k.students=k.students.filter(s=>s.id!==del.dataset.del);state.picked=state.picked.filter(id=>id!==del.dataset.del);save();render();return}
+});
+document.getElementById("main").addEventListener("submit",e=>{
+  if(e.target.id==="addForm"){e.preventDefault();const v=document.getElementById("newName").value.trim();if(!v)return;klass().students.push({id:uid("s"),name:v,present:true});save();render()}
+});
+
+let last=0;
+function startTimer(){
+  stopTimer(); last=Date.now();
+  ui.timerId=setInterval(()=>{
+    const now=Date.now(); const dt=(now-last)/1000; last=now;
+    if(ui.mode==="up") ui.remain+=dt;
+    else {ui.remain-=dt; if(ui.remain<=0){ui.remain=0;ui.running=false;ui.done=true;stopTimer();beep();render();return}}
+    const el=document.querySelector(".clock"); if(el) el.textContent=clock(ui.remain);
+  },80);
+}
+function stopTimer(){if(ui.timerId){clearInterval(ui.timerId);ui.timerId=null}}
+
+render();
+</script>
+</body>
+</html>
