@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-11T12:32:20.961+08:00",
+  "updatedAt": "2026-09-11T19:14:21.955+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 1
     }
   ],
   "peNew": 1,
-  "newCount": 45,
+  "newCount": 47,
   "hits": [
+    {
+      "id": "bd5e2a862563a43c",
+      "title": "深圳市高级中学面向2025年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12978877.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-11T19:14:21.955+08:00",
+      "new": true
+    },
+    {
+      "id": "58669498f8120685",
+      "title": "广州市越秀区光塔街2026年公开招聘辅助人员公告 2026-09-11",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_11001927.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-11T19:14:21.955+08:00",
+      "new": true
+    },
     {
       "id": "8687cc91437e4c6c",
       "title": "深圳创新高级中学2026年4月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
