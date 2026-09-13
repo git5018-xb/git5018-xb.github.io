@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>篮球突破防守实验 · 3D运动学演示</title>
+  <style>
+    :root{--navy:#071725;--panel:rgba(7,23,37,.90);--cyan:#34d6d0;--gold:#ffd54a;--muted:#9cb3c4}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#06101a;color:#fff;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif}
+    #app,#scene{position:absolute;inset:0}canvas{display:block}
+    #loading{position:fixed;inset:0;z-index:99;display:grid;place-items:center;background:#071725;font-size:18px;letter-spacing:2px;transition:.35s}
+    #loading.hide{opacity:0;pointer-events:none}
+    .topbar{position:fixed;left:16px;right:16px;top:14px;z-index:20;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:10px 12px;border:1px solid rgba(130,196,220,.22);border-radius:14px;background:var(--panel);box-shadow:0 10px 35px #0007;backdrop-filter:blur(10px)}
+    .brand{font-weight:700;white-space:nowrap;margin-right:4px}.group{display:flex;gap:6px;align-items:center;padding-left:10px;border-left:1px solid #ffffff24}.group:first-of-type{border-left:0}
+    button{appearance:none;border:1px solid #ffffff26;border-radius:8px;background:#122b3d;color:#dfeff7;padding:7px 11px;font:inherit;font-size:13px;cursor:pointer;transition:.18s}
+    button:hover{background:#1b4057;border-color:#64d8d1}button.active{color:#071725;background:var(--cyan);border-color:var(--cyan);font-weight:700}button.action{background:#173952}button.danger{background:#3a2931}
+    #hud{position:fixed;right:18px;top:92px;z-index:15;width:270px;padding:13px 15px;border-left:3px solid var(--gold);border-radius:10px;background:var(--panel);box-shadow:0 8px 30px #0006;line-height:1.55}
+    #hud .value{font-size:22px;color:var(--gold);font-weight:800}#hud small{color:#b9cbd6}
+    #scenarioInfo{position:fixed;left:18px;top:92px;z-index:15;max-width:310px;padding:10px 13px;border-radius:9px;background:rgba(7,23,37,.78);font-size:13px;color:#d5e4ec;line-height:1.55}
+    #scenarioInfo strong{color:var(--cyan);font-size:16px}
+    #eventToast{position:fixed;left:50%;top:18%;z-index:30;transform:translate(-50%,-12px);opacity:0;padding:11px 19px;border:1px solid #ffe99488;border-radius:30px;background:#172331e8;color:#fff3b0;font-weight:700;font-size:17px;box-shadow:0 0 28px #ffd84b44;pointer-events:none;transition:.25s}
+    #eventToast.show{opacity:1;transform:translate(-50%,0)}
+    #labels{position:fixed;inset:0;pointer-events:none;z-index:9}.label{position:absolute;transform:translate(-50%,-100%);padding:4px 7px;border:1px solid #ffffff35;border-radius:5px;background:#071725d9;color:#f4fbff;font-size:12px;white-space:nowrap;box-shadow:0 2px 8px #0008}.label:after{content:"";position:absolute;left:50%;top:100%;width:1px;height:12px;background:#ffffff88}
+    .timeline{position:fixed;left:18px;right:18px;bottom:12px;z-index:20;padding:12px 18px 64px;border:1px solid #ffffff22;border-radius:14px;background:var(--panel);box-shadow:0 -8px 30px #0006}
+    .tl-head{display:flex;justify-content:space-between;color:#c9dce7;font-size:12px;margin-bottom:23px}.track{position:relative;height:5px;border-radius:5px;background:#335064}.fill{position:absolute;left:0;top:0;height:100%;width:0;border-radius:5px;background:linear-gradient(90deg,var(--cyan),var(--gold))}.pointer{position:absolute;top:-6px;left:0;width:3px;height:17px;background:#fff;box-shadow:0 0 8px #fff;border-radius:2px}
+    .node{position:absolute;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;border:2px solid #8da6b6;border-radius:50%;background:#122b3d}.node.done{border-color:var(--gold);background:var(--gold);box-shadow:0 0 10px #ffd54a}.node span{position:absolute;left:50%;top:14px;transform:translateX(-50%);width:112px;text-align:center;color:#9fb5c3;font-size:11px;line-height:1.25}.node[data-t="2.2"] span{top:31px}.node[data-t="2.48"] span{top:48px}.node.done span{color:#fff3b0}
+    #help{position:fixed;left:18px;bottom:132px;z-index:12;color:#bed0da;font-size:11px;padding:6px 9px;background:#071725aa;border-radius:6px}
+    #fallback{display:none;position:fixed;inset:0;z-index:100;background:#071725;color:white;place-items:center;text-align:center;padding:30px}
+    @media(max-width:900px){.brand{width:100%}.topbar{gap:6px}.group{padding-left:5px}.view-label{display:none}#hud{top:142px;width:230px}#scenarioInfo{top:142px;max-width:230px}.node span{font-size:9px;width:80px}}
+  </style>
+</head>
+<body>
+<div id="app"><div id="scene"></div><div id="labels"></div></div>
+<div id="loading">正在搭建三维实验场景…</div>
+<div id="fallback"><div><h2>当前浏览器无法启用 WebGL</h2><p>请使用最新版 Chrome 或 Edge，并确认已开启硬件加速。</p></div></div>
+
+<div class="topbar">
+  <div class="brand">🏀 突破—滑步反应实验</div>
+  <div class="group" id="scenarioButtons">
+    <button class="active" data-s="L-SP">L-SP</button><button data-s="R-SP">R-SP</button><button data-s="L-CP">L-CP</button><button data-s="R-CP">R-CP</button>
+  </div>
+  <div class="group"><button class="action" id="play">▶ 播放</button><button id="pause">Ⅱ 暂停</button><button class="danger" id="reset">↺ 重置</button></div>
+  <div class="group"><span class="view-label" style="font-size:12px;color:#9fb5c3">视角</span><button data-view="top">俯视图</button><button data-view="front">正面机位</button><button data-view="rear">斜后方</button><button data-view="free">自由视角</button></div>
+</div>
+
+<div id="scenarioInfo"><strong id="scenarioTitle">L-SP · 向左顺步突破</strong><br><span id="scenarioDesc">进攻者左脚先向左侧跨出，球保持在左侧；防守者向左滑步。</span></div>
+<div id="hud">防守反应时 = t3 − t1<br><span class="value" id="reaction">0.480 s</span>　<span id="milliseconds">480 ms</span><br><small id="frames">120 fps 下 ≈ 58 帧（每帧 8.33 ms）</small></div>
+<div id="eventToast">t0 准备阶段</div>
+<div id="help">左键旋转 · 滚轮缩放 · 右键平移</div>
+
+<div class="timeline">
+  <div class="tl-head"><span>实验时间轴 / 刺激—反应事件链</span><span id="clock">0.00 / 5.40 s</span></div>
+  <div class="track"><div class="fill" id="fill"></div><div class="pointer" id="pointer"></div>
+    <div class="node" data-t="0" style="left:0%"><span>t0 准备<br>0.00 s</span></div>
+    <div class="node" data-t="2" style="left:37.037%"><span>t1 灯亮<br>2.00 s</span></div>
+    <div class="node" data-t="2.2" style="left:40.741%"><span>t2 进攻启动<br>2.20 s</span></div>
+    <div class="node" data-t="2.48" style="left:45.926%"><span>t3 防守启动<br>2.48 s</span></div>
+    <div class="node" data-t="2.95" style="left:54.63%"><span>t4 第一步触地<br>2.95 s</span></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+(() => {
+  'use strict';
+  // ---------- 基础场景 ----------
+  if (!window.WebGLRenderingContext || !window.THREE) { document.getElementById('fallback').style.display='grid'; document.getElementById('loading').style.display='none'; return; }
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x07131e);
+  scene.fog = new THREE.Fog(0x07131e, 16, 29);
+  const camera = new THREE.PerspectiveCamera(46, innerWidth/innerHeight, .1, 60);
+  camera.position.set(8.8,7.4,9.2);
+  const renderer = new THREE.WebGLRenderer({antialias:true,alpha:false});
+  renderer.setSize(innerWidth,innerHeight); renderer.setPixelRatio(Math.min(devicePixelRatio,1.7));
+  renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.outputEncoding=THREE.sRGBEncoding; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.05;
+  document.getElementById('scene').appendChild(renderer.domElement);
+  const controls = new THREE.OrbitControls(camera,renderer.domElement);
+  controls.target.set(0,.65,-.25); controls.enableDamping=true; controls.dampingFactor=.07; controls.minDistance=5; controls.maxDistance=23; controls.maxPolarAngle=Math.PI*.49;
+  renderer.domElement.addEventListener('contextmenu',e=>e.preventDefault());
+  scene.add(new THREE.HemisphereLight(0xbfe4ff,0x302416,1.35));
+  const key = new THREE.DirectionalLight(0xfff4db,2.0); key.position.set(-3,10,4); key.castShadow=true; key.shadow.mapSize.set(2048,2048); key.shadow.camera.left=-8; key.shadow.camera.right=8; key.shadow.camera.top=8; key.shadow.camera.bottom=-8; scene.add(key);
+
+  const mat=(color,rough=.65,metal=.05)=>new THREE.MeshStandardMaterial({color,roughness:rough,metalness:metal});
+  const mesh=(geo,material,parent=scene)=>{const m=new THREE.Mesh(geo,material);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m};
+  const box=(w,h,d,color,parent=scene)=>mesh(new THREE.BoxGeometry(w,h,d),mat(color),parent);
+  const cyl=(r,h,color,parent=scene)=>mesh(new THREE.CylinderGeometry(r,r,h,14),mat(color),parent);
+  const sphere=(r,color,parent=scene)=>mesh(new THREE.SphereGeometry(r,20,14),mat(color),parent);
+
+  // ---------- 场地、边线与滑步区 ----------
+  const floor=box(8,.12,6,0xb9824f); floor.position.y=-.09;
+  const floor2=mesh(new THREE.PlaneGeometry(20,18),mat(0x17212a),scene); floor2.rotation.x=-Math.PI/2; floor2.position.y=-.16;
+  const lineMat=new THREE.LineBasicMaterial({color:0xf5e8cc});
+  const rectLine=(w,d,y,material=lineMat)=>{const pts=[[-w/2,y,-d/2],[w/2,y,-d/2],[w/2,y,d/2],[-w/2,y,d/2],[-w/2,y,-d/2]].map(p=>new THREE.Vector3(...p));const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),material);scene.add(l);return l};
+  rectLine(7.7,5.7,.015);
+  const slide=mesh(new THREE.PlaneGeometry(4,3),new THREE.MeshStandardMaterial({color:0xd8bc8c,transparent:true,opacity:.53,roughness:.8}),scene); slide.rotation.x=-Math.PI/2; slide.position.y=.012;
+  // 虚线边界
+  const dashMat=new THREE.LineDashedMaterial({color:0xffefae,dashSize:.19,gapSize:.12});
+  const dashed=rectLine(4,3,.035,dashMat); dashed.computeLineDistances();
+  const centerLine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-3.85,.02,0),new THREE.Vector3(3.85,.02,0)]),new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.33}));scene.add(centerLine);
+
+  // ---------- 4m×3m×2m 红色标定框架（12条棱） ----------
+  const frame=new THREE.Group(), red=mat(0xdd3e3e,.28,.75);
+  const rod=(a,b)=>{const mid=a.clone().add(b).multiplyScalar(.5),len=a.distanceTo(b);const r=cyl(.023,len,0xdd3e3e,frame);r.position.copy(mid);r.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),b.clone().sub(a).normalize());};
+  const corners=[];[0,2].forEach(y=>[-2,2].forEach(x=>[-1.5,1.5].forEach(z=>corners.push(new THREE.Vector3(x,y,z)))));
+  [[0,2],[1,3],[4,6],[5,7],[0,1],[2,3],[4,5],[6,7],[0,4],[1,5],[2,6],[3,7]].forEach(e=>rod(corners[e[0]],corners[e[1]]));scene.add(frame);
+
+  // ---------- HTML 中文空间标注 ----------
+  const labels=[];
+  function addLabel(text,obj,offset=new THREE.Vector3()){const el=document.createElement('div');el.className='label';el.textContent=text;document.getElementById('labels').appendChild(el);labels.push({el,obj,offset});return el;}
+  const slideAnchor=new THREE.Object3D();slideAnchor.position.set(0,.08,1.15);scene.add(slideAnchor);addLabel('滑步区',slideAnchor);
+  const frameAnchor=new THREE.Object3D();frameAnchor.position.set(1.75,2.16,1.35);scene.add(frameAnchor);addLabel('三维标定框架',frameAnchor);
+
+  // ---------- 简单可动人形：腿、躯干、手臂独立成组 ----------
+  function createHuman(color,scale=1){
+    const root=new THREE.Group(), hips=new THREE.Group();root.add(hips); hips.position.y=.72*scale;
+    // r128 兼容：躯干用圆柱（不依赖较新版本的 CapsuleGeometry）
+    const torso=mesh(new THREE.CylinderGeometry(.18*scale,.24*scale,.62*scale,14),mat(color),hips);torso.position.y=.48*scale;
+    const head=sphere(.18*scale, color===0xe77b24?0xd89872:color,hips);head.position.y=1.03*scale;
+    const limbs={};
+    function limb(name,x,y,len,radius){const g=new THREE.Group();g.position.set(x*scale,y*scale,0);hips.add(g);const m=cyl(radius*scale,len*scale,color,g);m.position.y=-len*scale/2;limbs[name]=g;return g;}
+    limb('legL',-.13,0,.68,.075);limb('legR',.13,0,.68,.075);limb('armL',-.24,.75,.56,.055);limb('armR',.24,.75,.56,.055);
+    root.userData={hips,torso,head,limbs};return root;
+  }
+  const defender=createHuman(0x123c72,1); defender.position.set(0,0,.4); scene.add(defender);addLabel('防守者',defender,new THREE.Vector3(0,1.95,0));
+  // 防守姿态
+  defender.userData.hips.position.y=.60;defender.userData.hips.rotation.x=-.12;defender.userData.limbs.legL.rotation.z=.30;defender.userData.limbs.legR.rotation.z=-.30;defender.userData.limbs.armL.rotation.z=-1.15;defender.userData.limbs.armR.rotation.z=1.15;
+  const attacker=createHuman(0xe87322,1.02); attacker.position.set(0,0,-2.83);scene.add(attacker);addLabel('进攻者',attacker,new THREE.Vector3(0,2.05,0));
+  attacker.userData.limbs.armL.rotation.x=-.7;attacker.userData.limbs.armR.rotation.x=-.7;
+  const ball=sphere(.14,0xd76516,attacker);ball.position.set(-.34,1.04,-.13);ball.material.roughness=.82;
+  // 篮球纹理线（几何圆环暗示球纹）
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(.142,.008,5,28),mat(0x3b1e11),);ring.rotation.x=Math.PI/2;ball.add(ring);
+
+  // ---------- LED支架、控制台、主试 ----------
+  const ledRig=new THREE.Group();scene.add(ledRig);ledRig.position.set(0,0,-4.15);
+  const pole=cyl(.035,2.35,0x6c7880,ledRig);pole.position.y=1.17;const cross=box(.65,.045,.045,0x6c7880,ledRig);cross.position.set(0,2.33,0);
+  const ledMat=new THREE.MeshStandardMaterial({color:0x777777,emissive:0x000000,emissiveIntensity:0});const led=mesh(new THREE.SphereGeometry(.12,18,12),ledMat,ledRig);led.position.set(0,2.32,.03);
+  const ledLight=new THREE.PointLight(0xffdf45,0,5,2);ledLight.position.copy(led.position);ledRig.add(ledLight);addLabel('LED信号灯（刺激起点）',led,new THREE.Vector3(0,.25,0));
+  const table=new THREE.Group();scene.add(table);table.position.set(3.25,0,-1.75);const top=box(1,.08,.62,0xd9c7a6,table);top.position.y=.72;[-.4,.4].forEach(x=>[-.22,.22].forEach(z=>{const l=cyl(.025,.7,0x7c6f61,table);l.position.set(x,.35,z)}));const device=box(.5,.22,.32,0xe7e1d5,table);device.position.set(0,.87,0);const screen=box(.28,.07,.012,0x50dfc5,table);screen.position.set(0,.91,-.166);addLabel('反应时测试仪（场边安全区）',device,new THREE.Vector3(0,.28,0));
+  const starter=createHuman(0xcbd1d2,.9);starter.position.set(-3.45,0,-3.35);scene.add(starter);addLabel('主试',starter,new THREE.Vector3(0,1.78,0));
+  const switchBox=box(.32,.75,.32,0x454f55);switchBox.position.set(-3.0,.38,-3.4);addLabel('LED控制开关',switchBox,new THREE.Vector3(0,.62,0));
+
+  // ---------- 三台高速摄像机、三脚架和半透明拍摄视锥 ----------
+  const cameraViews={};
+  function createCam(name,pos,target){
+    const g=new THREE.Group();g.position.copy(pos);scene.add(g);
+    const tripodTop=new THREE.Vector3(pos.x,1.18,pos.z), body=box(.44,.28,.32,0x075a65);body.position.copy(tripodTop);
+    const lens=cyl(.13,.24,0x083944);lens.rotation.x=Math.PI/2;lens.position.set(pos.x,1.18,pos.z-.25); // 朝向会整体再校准视觉
+    // 三脚架腿
+    [[-.32,0,.25],[.32,0,.25],[0,0,-.34]].forEach(p=>{const a=tripodTop.clone(),b=new THREE.Vector3(pos.x+p[0],0,pos.z+p[2]);const mid=a.clone().add(b).multiplyScalar(.5),r=cyl(.018,a.distanceTo(b),0x326974);r.position.copy(mid);r.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),b.clone().sub(a).normalize())});
+    const aim=target.clone().sub(tripodTop),dist=aim.length(),coneGeo=new THREE.ConeGeometry(2.3,dist,4,1,true);const coneMat=new THREE.MeshBasicMaterial({color:0x3dd8e1,transparent:true,opacity:.075,side:THREE.DoubleSide,depthWrite:false});const cone=mesh(coneGeo,coneMat);cone.position.copy(tripodTop.clone().add(target).multiplyScalar(.5));cone.quaternion.setFromUnitVectors(new THREE.Vector3(0,-1,0),aim.normalize());cone.rotation.y+=Math.PI/4;
+    const anchor=new THREE.Object3D();anchor.position.copy(tripodTop).add(new THREE.Vector3(0,.48,0));scene.add(anchor);addLabel(name,anchor);
+    cameraViews[name]={position:pos.clone().add(new THREE.Vector3(0,1.1,0)),target:new THREE.Vector3(0,.8,-.5)};
+  }
+  createCam('机位1：正面',new THREE.Vector3(0,0,4.8),new THREE.Vector3(0,1,-1));
+  createCam('机位2：侧面',new THREE.Vector3(5.15,0,-.5),new THREE.Vector3(-.1,1,-1));
+  createCam('机位3：斜后方',new THREE.Vector3(-4.7,0,3.6),new THREE.Vector3(0,1,-1));
+
+  // ---------- 动画状态与关键事件 ----------
+  const DURATION=5.4, events=[
+    {t:0,text:'t0 准备阶段'}, {t:2,text:'t1 灯亮（刺激起点帧）'}, {t:2.2,text:'t2 进攻启动'},
+    {t:2.48,text:'t3 防守启动（反应时终点）'}, {t:2.95,text:'t4 第一步触地'}
+  ];
+  const info={
+    'L-SP':['L-SP · 向左顺步突破','进攻者左脚先向左侧跨出，球保持在左侧；防守者向左滑步。'],
+    'R-SP':['R-SP · 向右顺步突破','进攻者右脚先向右侧跨出，球保持在右侧；防守者向右滑步。'],
+    'L-CP':['L-CP · 向左交叉步突破','进攻者右脚向左前交叉跨出；防守者向左滑步。'],
+    'R-CP':['R-CP · 向右交叉步突破','进攻者左脚向右前交叉跨出；防守者向右滑步。']
+  };
+  let scenario='L-SP',time=0,playing=false,last=performance.now(),autoOrbit=true,toastTimer=0,lastEvent=-1,cameraTween=null;
+  const clamp01=v=>Math.max(0,Math.min(1,v)), smooth=v=>{v=clamp01(v);return v*v*(3-2*v)}, lerp=(a,b,t)=>a+(b-a)*t;
+  function pose(t){
+    const dir=scenario[0]==='L'?-1:1, cross=scenario.endsWith('CP');
+    // 全部复位
+    attacker.position.set(0,0,-2.83);attacker.rotation.set(0,0,0);ball.position.set(dir*.34,1.04,-.13);
+    attacker.userData.limbs.legL.rotation.set(0,0,0);attacker.userData.limbs.legR.rotation.set(0,0,0);
+    defender.position.set(0,0,.4);defender.rotation.set(0,0,0);defender.userData.limbs.legL.rotation.z=.30;defender.userData.limbs.legR.rotation.z=-.30;
+    starter.userData.limbs.armR.rotation.set(0,0,0);
+    const pA=smooth((t-2.2)/2.55), burst=smooth((t-2.2)/.8);
+    attacker.position.x=dir*(.15+2.85*pA);attacker.position.z=-2.83+1.95*pA;attacker.rotation.y=-dir*(.18+.28*burst);
+    // 顺步：同侧腿打开；交叉步：异侧腿越过身体中线
+    const step=smooth((t-2.2)/.52)*(1-smooth((t-2.82)/.45));
+    const lead=cross?(dir<0?'legR':'legL'):(dir<0?'legL':'legR');
+    attacker.userData.limbs[lead].rotation.z=dir*(cross?-1.0:.82)*step;
+    attacker.userData.limbs[lead].rotation.x=-.46*step;
+    ball.position.y=1.04-.46*Math.abs(Math.sin(pA*Math.PI*4));
+    // 防守者 t3 启动，t4 首步落地，此后滑步跟随
+    const pD=smooth((t-2.48)/2.35),first=smooth((t-2.48)/.47);
+    defender.position.x=dir*(.02+2.20*pD);defender.position.z=.4+.55*pD;defender.rotation.z=-dir*.07*Math.sin(pD*Math.PI*3);
+    const leadD=dir<0?'legL':'legR',trailD=dir<0?'legR':'legL';
+    defender.userData.limbs[leadD].rotation.z=dir*(.30+.75*Math.sin(Math.min(1,first)*Math.PI));
+    defender.userData.limbs[trailD].rotation.z=-dir*(.30+.36*Math.sin(pD*Math.PI*4));
+    // t1 主试按开关
+    const press=smooth((t-1.65)/.35)*(1-smooth((t-2.05)/.32));starter.userData.limbs.armR.rotation.x=-1.15*press;starter.userData.limbs.armR.rotation.z=.35*press;
+    const on=t>=2;led.material.color.setHex(on?0xffee58:0x777777);led.material.emissive.setHex(on?0xffc400:0);led.material.emissiveIntensity=on?3.2:0;ledLight.intensity=on?3.4:0;
+  }
+  function toast(text){const el=document.getElementById('eventToast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1400)}
+  function updateTimeline(){const pct=clamp01(time/DURATION)*100;document.getElementById('fill').style.width=pct+'%';document.getElementById('pointer').style.left=pct+'%';document.getElementById('clock').textContent=time.toFixed(2)+' / '+DURATION.toFixed(2)+' s';document.querySelectorAll('.node').forEach(n=>n.classList.toggle('done',time>=+n.dataset.t));}
+  function setTime(v,announce=true){const old=time;time=Math.max(0,Math.min(DURATION,v));pose(time);updateTimeline();if(announce){events.forEach((e,i)=>{if(old<e.t&&time>=e.t&&i>lastEvent){toast(e.text);lastEvent=i}})} }
+  function reset(){playing=false;time=0;lastEvent=0;pose(0);updateTimeline();toast(events[0].text)}
+
+  // ---------- UI ----------
+  document.getElementById('scenarioButtons').addEventListener('click',e=>{const b=e.target.closest('button[data-s]');if(!b)return;scenario=b.dataset.s;document.querySelectorAll('[data-s]').forEach(x=>x.classList.toggle('active',x===b));document.getElementById('scenarioTitle').textContent=info[scenario][0];document.getElementById('scenarioDesc').textContent=info[scenario][1];reset()});
+  document.getElementById('play').onclick=()=>{if(time>=DURATION-.01)reset();playing=true;autoOrbit=false;toast(time<2?'t0 准备阶段':'继续播放')};
+  document.getElementById('pause').onclick=()=>{playing=false;toast('动画已暂停')}; document.getElementById('reset').onclick=reset;
+  const presets={top:{p:new THREE.Vector3(.01,13,.01),t:new THREE.Vector3(0,0,-.25)},front:{p:new THREE.Vector3(0,2.3,9.3),t:new THREE.Vector3(0,.75,-.7)},rear:{p:new THREE.Vector3(-8,4.1,6.9),t:new THREE.Vector3(0,.65,-.6)},free:{p:new THREE.Vector3(8.8,7.4,9.2),t:new THREE.Vector3(0,.65,-.25)}};
+  document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>{const v=presets[b.dataset.view];cameraTween={fromP:camera.position.clone(),fromT:controls.target.clone(),toP:v.p,toT:v.t,start:performance.now()};autoOrbit=false});
+  // 点击时间轴可拖动查看任意时刻
+  const track=document.querySelector('.track');track.addEventListener('pointerdown',e=>{playing=false;const seek=ev=>{const r=track.getBoundingClientRect();lastEvent=-1;setTime(clamp01((ev.clientX-r.left)/r.width)*DURATION,false)};seek(e);const move=ev=>seek(ev),up=()=>{removeEventListener('pointermove',move);removeEventListener('pointerup',up)};addEventListener('pointermove',move);addEventListener('pointerup',up)});
+  controls.addEventListener('start',()=>autoOrbit=false);
+
+  function projectLabels(){const w=innerWidth,h=innerHeight;labels.forEach(l=>{const p=l.obj.getWorldPosition(new THREE.Vector3()).add(l.offset).project(camera);const visible=p.z>-1&&p.z<1;l.el.style.display=visible?'block':'none';if(visible){l.el.style.left=(p.x*.5+.5)*w+'px';l.el.style.top=(-p.y*.5+.5)*h+'px'}})}
+  function animate(now){requestAnimationFrame(animate);const dt=Math.min(.05,(now-last)/1000);last=now;if(playing){setTime(time+dt);if(time>=DURATION){playing=false;toast('演示结束：突破—滑步跟随完成')}}if(autoOrbit&&!playing){const a=now*.00008,r=12;camera.position.x=Math.cos(a)*r;camera.position.z=Math.sin(a)*r;camera.position.y=6.6}
+    if(cameraTween){const u=clamp01((now-cameraTween.start)/850),s=smooth(u);camera.position.lerpVectors(cameraTween.fromP,cameraTween.toP,s);controls.target.lerpVectors(cameraTween.fromT,cameraTween.toT,s);if(u>=1)cameraTween=null}
+    controls.update();projectLabels();renderer.render(scene,camera)}
+  addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+  reset();setTimeout(()=>document.getElementById('loading').classList.add('hide'),350);requestAnimationFrame(animate);
+})();
+</script>
+</body>
+</html>
