@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-15T12:48:43.147+08:00",
+  "updatedAt": "2026-09-15T19:38:53.986+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -41,7 +41,7 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
       "ok": true,
       "error": null,
-      "found": 15
+      "found": 16
     },
     {
       "id": "yuexiu",
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 1
     }
   ],
   "peNew": 1,
-  "newCount": 51,
+  "newCount": 53,
   "hits": [
+    {
+      "id": "3061782e77e18670",
+      "title": "深圳市第二特殊教育学校关于深圳市公办中小学2025年11月公开招聘教师拟聘人员公示（一）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12982175.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-15T19:38:53.986+08:00",
+      "new": true
+    },
+    {
+      "id": "5a8be0fec9be9c1f",
+      "title": "深圳市高级中学面向2026年应届毕业生公开招聘教师拟聘人员公示（四）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12982114.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-15T19:38:53.986+08:00",
+      "new": true
+    },
     {
       "id": "06fe58d7ca94c6d9",
       "title": "西铁院召开第42个教师节表彰暨新学期教职工大会",
