@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-14T20:38:08.322+08:00",
+  "updatedAt": "2026-09-15T12:48:43.147+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -33,15 +33,15 @@
       "url": "https://edu.xa.gov.cn/",
       "ok": true,
       "error": null,
-      "found": 0
+      "found": 2
     },
     {
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 15
     },
     {
       "id": "yuexiu",
@@ -63,14 +63,54 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
-      "found": 1
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 47,
+  "newCount": 51,
   "hits": [
+    {
+      "id": "06fe58d7ca94c6d9",
+      "title": "西铁院召开第42个教师节表彰暨新学期教职工大会",
+      "url": "https://edu.xa.gov.cn/xwzx/qydt/2099310325212979201.html",
+      "peMention": false,
+      "kind": "其他",
+      "source": "西安市教育局",
+      "foundAt": "2026-09-15T12:48:43.147+08:00",
+      "new": true
+    },
+    {
+      "id": "3ee9c2de4ad95119",
+      "title": "西铁院召开第42个教师节表彰暨新学期教职工大会 西安铁路职业技术学院 2026-09-14",
+      "url": "https://edu.xa.gov.cn/xwzx/qydt/2099310325212979201.html",
+      "peMention": false,
+      "kind": "其他",
+      "source": "西安市教育局",
+      "foundAt": "2026-09-15T12:48:43.147+08:00",
+      "new": true
+    },
+    {
+      "id": "612e3bbb9c51b311",
+      "title": "深圳中学高中园2026年公开招聘教师拟聘人员公示（第六批）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12981039.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-15T12:48:43.147+08:00",
+      "new": true
+    },
+    {
+      "id": "07b6a78bacbe2299",
+      "title": "深圳市育新学校2026年6月面向2026年应届毕业生公开招聘教师拟聘人员名单公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12981014.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-15T12:48:43.147+08:00",
+      "new": true
+    },
     {
       "id": "bd5e2a862563a43c",
       "title": "深圳市高级中学面向2025年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
