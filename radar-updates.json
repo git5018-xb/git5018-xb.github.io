@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-19T12:32:32.199+08:00",
+  "updatedAt": "2026-09-19T18:52:36.543+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -9,15 +9,15 @@
       "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1.html",
       "ok": true,
       "error": null,
-      "found": 14
+      "found": 12
     },
     {
       "id": "xa-h2",
       "name": "2026下半年市事业单位招聘公告页",
       "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
-      "ok": true,
-      "error": null,
-      "found": 4
+      "ok": false,
+      "error": "This operation was aborted",
+      "found": 0
     },
     {
       "id": "gaoxin",
@@ -55,22 +55,62 @@
       "id": "zhuhai",
       "name": "珠海市公职招考",
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 9
     },
     {
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
-      "found": 1
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 54,
+  "newCount": 58,
   "hits": [
+    {
+      "id": "1347d11f8d8faa1e",
+      "title": "西安市残疾人联合会关于2025年所属事业单位公开招聘工作人员体检考察安排的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1932272335530758146.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-19T18:52:36.543+08:00",
+      "new": true
+    },
+    {
+      "id": "2482f2a531f38ff6",
+      "title": "2025年蓝田县事业单位公开招聘（募）工作人员体检考察安排的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1930556335002861569.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-19T18:52:36.543+08:00",
+      "new": true
+    },
+    {
+      "id": "1c1cb18ec46ff970",
+      "title": "2025年西安市秦岭生态环境保护管理局事业单位公开招聘工作人员面试公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1932273817761640450.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-19T18:52:36.543+08:00",
+      "new": true
+    },
+    {
+      "id": "0cf6a2280647004e",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于削减和取消2026年西安市事业单位公开招聘（募）工作人员部分岗位招聘计划的公告 市人事考试中心 2026-03-12",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2031938501023465473.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-09-19T18:52:36.543+08:00",
+      "new": true
+    },
     {
       "id": "b1525b311b690500",
       "title": "深圳市育新学校2026年6月面向2026年应届毕业生公开招聘教师拟聘人员名单公示",
