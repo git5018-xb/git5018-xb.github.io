@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-22T12:48:23.648+08:00",
+  "updatedAt": "2026-09-22T19:30:40.383+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -65,12 +65,22 @@
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
       "ok": true,
       "error": null,
-      "found": 1
+      "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 59,
+  "newCount": 60,
   "hits": [
+    {
+      "id": "63f5030c2607e77c",
+      "title": "深圳启元中学面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12995116.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-22T19:30:40.383+08:00",
+      "new": true
+    },
     {
       "id": "e82d650f7a222a9b",
       "title": "越秀区光塔街公开招聘城管协管员公告 2026-09-21",
