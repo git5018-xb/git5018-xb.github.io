@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-23T12:40:03.822+08:00",
+  "updatedAt": "2026-09-23T19:28:31.786+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -41,7 +41,7 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
       "ok": true,
       "error": null,
-      "found": 16
+      "found": 15
     },
     {
       "id": "yuexiu",
@@ -49,7 +49,7 @@
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/",
       "ok": true,
       "error": null,
-      "found": 16
+      "found": 17
     },
     {
       "id": "zhuhai",
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
+      "ok": true,
+      "error": null,
       "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 60,
+  "newCount": 62,
   "hits": [
+    {
+      "id": "4b64c51e62c59d50",
+      "title": "深圳实验学校2025年11月面向2026年应届毕业生公开招聘教师拟聘人员公示（第四批）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12996804.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-09-23T19:28:31.786+08:00",
+      "new": true
+    },
+    {
+      "id": "f8153fee2ef384ab",
+      "title": "广州市越秀区光塔街2026年公开招聘辅助人员公告 2026-09-23",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_11018872.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-09-23T19:28:31.786+08:00",
+      "new": true
+    },
     {
       "id": "63f5030c2607e77c",
       "title": "深圳启元中学面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
