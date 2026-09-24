@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-24T19:39:19.643+08:00",
+  "updatedAt": "2026-09-25T01:06:02.688+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 15
     },
     {
       "id": "yuexiu",
@@ -63,8 +63,8 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "fetch failed",
       "found": 0
     }
   ],
