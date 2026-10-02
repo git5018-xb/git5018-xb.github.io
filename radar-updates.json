@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-01T21:05:38.497+08:00",
+  "updatedAt": "2026-10-02T13:29:08.023+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 14
     },
     {
       "id": "yuexiu",
@@ -63,14 +63,24 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
+      "ok": true,
+      "error": null,
       "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 67,
+  "newCount": 68,
   "hits": [
+    {
+      "id": "ac1692ddc6ba1dec",
+      "title": "附件2：西安市2026年事业单位公开招聘自主就业退役士兵加分申请表.doc",
+      "url": "https://www.xa.gov.cn/web_files/xian/file/2026/09/01/202609011019243452627.doc",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "2026下半年市事业单位招聘公告页",
+      "foundAt": "2026-10-02T13:29:08.023+08:00",
+      "new": true
+    },
     {
       "id": "d8e2907402d35497",
       "title": "附件3：事业单位公开招聘分类考试公共科目笔试考试大纲（2026年版）.pdf",
@@ -858,16 +868,6 @@
       "peMention": false,
       "kind": "招聘公告",
       "source": "西安市人民政府招考信息",
-      "foundAt": "2026-09-07T16:27:25.627+08:00",
-      "new": false
-    },
-    {
-      "id": "98a210eec465a2fa",
-      "title": "附件1：2026年下半年西安市事业单位公开招聘工作人员岗位表",
-      "url": "http://1.85.18.184/1209014056234913794.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "2026下半年市事业单位招聘公告页",
       "foundAt": "2026-09-07T16:27:25.627+08:00",
       "new": false
     }
