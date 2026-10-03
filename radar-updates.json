@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-03T19:34:45.399+08:00",
+  "updatedAt": "2026-10-04T00:12:49.315+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": true,
-      "error": null,
-      "found": 14
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     },
     {
       "id": "yuexiu",
@@ -71,6 +71,16 @@
   "peNew": 1,
   "newCount": 71,
   "hits": [
+    {
+      "id": "0a5ea65c403d32f7",
+      "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示 市人事考试中心 2026-07-21",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079767900058054657.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-10-04T00:12:49.315+08:00",
+      "new": true
+    },
     {
       "id": "876788b65539f9f2",
       "title": "西安市教育局关于2026年直属事业单位公开招聘工作人员第一批拟聘用人员的公示 市人事考试中心 2026-07-16",
@@ -860,16 +870,6 @@
       "source": "西安市人民政府招考信息",
       "foundAt": "2026-09-07T16:27:25.627+08:00",
       "new": false
-    },
-    {
-      "id": "d46cd7e50bfda739",
-      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告 市人事考试中心 2026-09-01",
-      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "西安市人民政府招考信息",
-      "foundAt": "2026-09-07T16:27:25.627+08:00",
-      "new": true
     }
   ]
 }
