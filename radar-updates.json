@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-04T20:15:58.493+08:00",
+  "updatedAt": "2026-10-05T13:30:43.141+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 14
     },
     {
       "id": "yuexiu",
@@ -69,8 +69,18 @@
     }
   ],
   "peNew": 1,
-  "newCount": 73,
+  "newCount": 74,
   "hits": [
+    {
+      "id": "39d53d41d09d4795",
+      "title": "西安市长安区人力资源和社会保障局关于2025年第二批长安区事业单位公开招聘工作人员拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1958722731298525185.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-10-05T13:30:43.141+08:00",
+      "new": true
+    },
     {
       "id": "46b4401b6cb294ee",
       "title": "共青团西安市委员会关于2025年事业单位公开招聘拟聘用人员的公示",
@@ -857,16 +867,6 @@
       "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1978656381350744066.html",
       "peMention": false,
       "kind": "公示",
-      "source": "西安市人民政府招考信息",
-      "foundAt": "2026-09-07T16:27:25.627+08:00",
-      "new": false
-    },
-    {
-      "id": "f59d72b74167de97",
-      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2025年下半年西安市事业单位公开招聘工作人员的公告",
-      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1960179596680785922.html",
-      "peMention": false,
-      "kind": "招聘公告",
       "source": "西安市人民政府招考信息",
       "foundAt": "2026-09-07T16:27:25.627+08:00",
       "new": false
