@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-07T21:14:36.624+08:00",
+  "updatedAt": "2026-10-08T13:55:44.625+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -63,14 +63,24 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "fetch failed",
       "found": 0
     }
   ],
   "peNew": 1,
-  "newCount": 79,
+  "newCount": 80,
   "hits": [
+    {
+      "id": "fd279e0b0659566a",
+      "title": "西安市教育局关于2026年直属事业单位公开招聘工作人员第一批拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079766721292980226.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-10-08T13:55:44.625+08:00",
+      "new": true
+    },
     {
       "id": "509ced5d850e95d3",
       "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年西安市事业单位公开招聘高层次及紧缺特殊专业人才的公告",
@@ -860,16 +870,6 @@
       "source": "西安市人民政府招考信息",
       "foundAt": "2026-09-07T16:27:25.627+08:00",
       "new": true
-    },
-    {
-      "id": "8367b80bd024726c",
-      "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示",
-      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079767900058054657.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "西安市人民政府招考信息",
-      "foundAt": "2026-09-07T16:27:25.627+08:00",
-      "new": false
     }
   ]
 }
