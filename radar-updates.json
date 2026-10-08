@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T13:55:44.625+08:00",
+  "updatedAt": "2026-10-08T21:21:10.542+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
+      "ok": true,
+      "error": null,
       "found": 0
     }
   ],
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "8367b80bd024726c",
+      "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2079767900058054657.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-10-08T21:21:10.542+08:00",
+      "new": true
+    },
+    {
+      "id": "6a3e1ee9f862b233",
+      "title": "深圳启元中学面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13010714.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-08T21:21:10.542+08:00",
+      "new": true
+    },
     {
       "id": "fd279e0b0659566a",
       "title": "西安市教育局关于2026年直属事业单位公开招聘工作人员第一批拟聘用人员的公示",
@@ -849,26 +869,6 @@
       "kind": "公示",
       "source": "珠海市公职招考",
       "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "9151883bd67dc91d",
-      "title": "珠海市北京师范大学香山中学2026年春季面向社会公开招聘事业编制教师...",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3902780.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "2f4a248a92b173a8",
-      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告",
-      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "西安市人民政府招考信息",
-      "foundAt": "2026-09-07T16:27:25.627+08:00",
       "new": true
     }
   ]
