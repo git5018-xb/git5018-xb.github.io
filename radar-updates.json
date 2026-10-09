@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-08T21:21:10.542+08:00",
+  "updatedAt": "2026-10-09T14:02:07.638+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -71,6 +71,16 @@
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "2f4a248a92b173a8",
+      "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告",
+      "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "西安市人民政府招考信息",
+      "foundAt": "2026-10-09T14:02:07.638+08:00",
+      "new": true
+    },
     {
       "id": "8367b80bd024726c",
       "title": "西安市委编办关于2026年所属事业单位公开招聘工作人员拟聘用人员的公示",
@@ -855,16 +865,6 @@
       "id": "9331746d490aeff8",
       "title": "珠海市投资服务署关于2026年集中公开招聘高校毕业生拟聘用人员名单的...",
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3911032.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "f5649488e4831018",
-      "title": "珠海市纪委监委2025年下半年公开招聘所属事业单位工作人员拟聘人员公...",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3907409.html",
       "peMention": false,
       "kind": "公示",
       "source": "珠海市公职招考",
