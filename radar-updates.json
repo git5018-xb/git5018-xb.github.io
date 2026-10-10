@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-10T13:44:48.118+08:00",
+  "updatedAt": "2026-10-10T20:24:47.608+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -71,6 +71,26 @@
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "fe2d92a8eba8853c",
+      "title": "深圳市第三高级中学2026年上半年公开招聘拟聘人员公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13015275.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-10T20:24:47.608+08:00",
+      "new": true
+    },
+    {
+      "id": "2b982559fb5a9492",
+      "title": "越秀区应急管理局关于公开招聘应急管理行政执法技术检查员的公告 2026-07-08",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10892824.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-10-10T20:24:47.608+08:00",
+      "new": true
+    },
     {
       "id": "2f4a248a92b173a8",
       "title": "中共西安市委组织部西安市人力资源和社会保障局关于2026年下半年西安市事业单位公开招聘工作人员的公告",
@@ -847,26 +867,6 @@
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3918385.html",
       "peMention": false,
       "kind": "招聘公告",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "305ddacd3548c675",
-      "title": "珠海市技师学院关于广东省事业单位2026年集中公开招聘高校毕业生拟聘...",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3912441.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "9331746d490aeff8",
-      "title": "珠海市投资服务署关于2026年集中公开招聘高校毕业生拟聘用人员名单的...",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3911032.html",
-      "peMention": false,
-      "kind": "公示",
       "source": "珠海市公职招考",
       "foundAt": "2026-09-07T23:48:40.439+08:00",
       "new": true
