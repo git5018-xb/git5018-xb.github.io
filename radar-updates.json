@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-11T13:39:45.012+08:00",
+  "updatedAt": "2026-10-11T20:42:19.211+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -7,9 +7,9 @@
       "id": "xa-exam",
       "name": "西安市人民政府招考信息",
       "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/1.html",
-      "ok": true,
-      "error": null,
-      "found": 14
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     },
     {
       "id": "xa-h2",
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
+      "ok": true,
+      "error": null,
       "found": 0
     }
   ],
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "27071d727755a0fd",
+      "title": "中共珠海市委老干部局关于广东省事业单位2026年集中公开招聘高校毕业...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3919607.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-10-11T20:42:19.211+08:00",
+      "new": true
+    },
+    {
+      "id": "234b603d8c9b08c6",
+      "title": "珠海市北京师范大学香山中学2026年夏季面向社会公开招聘事业编制教师...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3918385.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-10-11T20:42:19.211+08:00",
+      "new": true
+    },
     {
       "id": "305ddacd3548c675",
       "title": "珠海市技师学院关于广东省事业单位2026年集中公开招聘高校毕业生拟聘...",
@@ -845,26 +865,6 @@
       "id": "ed82df05ab5ef310",
       "title": "珠海城市职业技术学院2025年下半年公开招聘事业编制教师拟录用人员名...",
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3932047.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "8522a8812b42df18",
-      "title": "珠海市教育局2026年暑期面向社会公开招聘所属学校事业编制教师公告",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3923121.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "珠海市公职招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "85152baab4c1b884",
-      "title": "珠海市卫生健康局直属事业单位2026年公开招聘博士和高级职称人员公告",
-      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3922820.html",
       "peMention": false,
       "kind": "招聘公告",
       "source": "珠海市公职招考",
