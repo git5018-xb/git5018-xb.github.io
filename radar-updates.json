@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-14T19:44:46.762+08:00",
+  "updatedAt": "2026-10-15T01:05:49.902+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -63,14 +63,24 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": false,
-      "error": "fetch failed",
+      "ok": true,
+      "error": null,
       "found": 0
     }
   ],
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "4b4f9800e43873d9",
+      "title": "中共广州市越秀区纪委关于2026年公开招聘合同制工作人员笔试成绩及进入面试人员名单的公告 2026-05-13",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10810366.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-10-15T01:05:49.902+08:00",
+      "new": true
+    },
     {
       "id": "4825d54f65a97135",
       "title": "越秀区梅花村街道办事处面向社会公开招聘辅助人员公告 2026-05-12",
@@ -855,16 +865,6 @@
       "id": "137681dc44203e5e",
       "title": "越秀区梅花村街道办事处面向社会公开招聘辅助人员公告 2026-06-01",
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10836261.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "广州市越秀区招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "8ed0fb3fd48ed000",
-      "title": "广州市越秀区农林街道办事处关于公开招聘辅助人员的公告 2026-06-01",
-      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10835460.html",
       "peMention": false,
       "kind": "招聘公告",
       "source": "广州市越秀区招考",
