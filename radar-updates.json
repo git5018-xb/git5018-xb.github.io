@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-16T12:24:30.881+08:00",
+  "updatedAt": "2026-10-16T19:15:46.635+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -71,6 +71,26 @@
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "bf363ef5ec15e3ed",
+      "title": "深圳创新高级中学2026年4月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（三）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13025565.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-16T19:15:46.635+08:00",
+      "new": true
+    },
+    {
+      "id": "e556ca81ea3548a9",
+      "title": "登峰街道办事处公开招聘辅助人员公告 2026-10-16",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_11052905.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-10-16T19:15:46.635+08:00",
+      "new": true
+    },
     {
       "id": "69d5fc7ab570bb11",
       "title": "“百万英才汇南粤”——广州市越秀区教育局2026年上半年第二批公开招聘事业编制教师公告 2026-06-10",
@@ -845,26 +865,6 @@
       "id": "04d76ed0cc69705a",
       "title": "登峰街道办事处公开招聘辅助人员公告 2026-08-31",
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10984520.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "广州市越秀区招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "56aa7818072c8b37",
-      "title": "广州市越秀区农林街除四害消毒管理站关于公开招聘工作人员的公告 2026-08-07",
-      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10956575.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "广州市越秀区招考",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "3fb104227ad3f856",
-      "title": "越秀区华乐街道办事处公开招聘综合救助窗口工作人员的公告 2026-07-23",
-      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10914365.html",
       "peMention": false,
       "kind": "招聘公告",
       "source": "广州市越秀区招考",
