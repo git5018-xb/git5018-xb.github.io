@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-17T00:33:53.304+08:00",
+  "updatedAt": "2026-10-17T12:18:17.695+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 14
     },
     {
       "id": "yuexiu",
@@ -71,6 +71,16 @@
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "04d76ed0cc69705a",
+      "title": "登峰街道办事处公开招聘辅助人员公告 2026-08-31",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10984520.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-10-17T12:18:17.695+08:00",
+      "new": true
+    },
     {
       "id": "56aa7818072c8b37",
       "title": "广州市越秀区农林街除四害消毒管理站关于公开招聘工作人员的公告 2026-08-07",
@@ -855,16 +865,6 @@
       "id": "d337ab8c9167f01c",
       "title": "深圳市高级中学面向2026年应届毕业生公开招聘教师拟聘人员公示（三）",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12956534.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "e0e18ee1207b24ec",
-      "title": "深圳北理莫斯科大学附属实验中学2026年公开招聘教师拟聘人员公示（三）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12954820.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
