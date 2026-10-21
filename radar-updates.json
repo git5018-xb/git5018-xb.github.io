@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-21T00:56:36.963+08:00",
+  "updatedAt": "2026-10-21T12:38:12.473+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -41,7 +41,7 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
       "ok": true,
       "error": null,
-      "found": 14
+      "found": 15
     },
     {
       "id": "yuexiu",
@@ -63,14 +63,34 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "fetch failed",
       "found": 0
     }
   ],
   "peNew": 1,
   "newCount": 80,
   "hits": [
+    {
+      "id": "470810da22f4943c",
+      "title": "深圳科学高中2025年10月面向2026届应届毕业生赴外公开招聘教师拟聘人员公示",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13032359.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-21T12:38:12.473+08:00",
+      "new": true
+    },
+    {
+      "id": "d34d62957d4c9c6d",
+      "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘人员名单公示（深圳实验学校明理高中）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13032278.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-21T12:38:12.473+08:00",
+      "new": true
+    },
     {
       "id": "04d76ed0cc69705a",
       "title": "登峰街道办事处公开招聘辅助人员公告 2026-08-31",
@@ -845,26 +865,6 @@
       "id": "601637194919d61b",
       "title": "深圳创新高级中学2026年4月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12958907.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "9c5b83b4d576ce95",
-      "title": "深圳中学高中园2026年公开招聘教师拟聘人员公示（第五批）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12957684.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "d337ab8c9167f01c",
-      "title": "深圳市高级中学面向2026年应届毕业生公开招聘教师拟聘人员公示（三）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12956534.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
