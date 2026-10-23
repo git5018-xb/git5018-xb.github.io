@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-23T01:06:12.701+08:00",
+  "updatedAt": "2026-10-23T12:41:19.444+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": true,
-      "error": null,
-      "found": 14
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     },
     {
       "id": "yuexiu",
@@ -49,7 +49,7 @@
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/",
       "ok": true,
       "error": null,
-      "found": 17
+      "found": 18
     },
     {
       "id": "zhuhai",
@@ -68,9 +68,19 @@
       "found": 0
     }
   ],
-  "peNew": 1,
+  "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "728c81509dd0e890",
+      "title": "广州市越秀区农林街道办事处关于公开招聘辅助人员的公告 2026-10-23",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_11065634.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-10-23T12:41:19.444+08:00",
+      "new": true
+    },
     {
       "id": "0edf9879294e96b9",
       "title": "珠海市教育局2026年10月面向社会公开招聘直属学校事业编制教师公告",
@@ -857,16 +867,6 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963142.html",
       "peMention": false,
       "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "8205eba8b2dbe97d",
-      "title": "深圳市教育局2026年5月公开招聘体育教练员入围体检人员名单公布",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12962176.html",
-      "peMention": true,
-      "kind": "招聘公告",
       "source": "深圳市教育局公办学校招聘",
       "foundAt": "2026-09-07T23:48:40.439+08:00",
       "new": true
