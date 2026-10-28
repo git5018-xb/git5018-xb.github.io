@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-28T01:56:47.889+08:00",
+  "updatedAt": "2026-10-28T13:32:11.711+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": false,
-      "error": "fetch failed",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 14
     },
     {
       "id": "yuexiu",
@@ -55,9 +55,9 @@
       "id": "zhuhai",
       "name": "珠海市公职招考",
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/",
-      "ok": true,
-      "error": null,
-      "found": 8
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     },
     {
       "id": "fuzhou",
@@ -71,6 +71,16 @@
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "ccbeeefd6eca03d4",
+      "title": "深圳市市属公办中小学2026月6月公开招聘教师拟聘名单公示（深圳市第二高级中学深汕实验学校）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13043144.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-28T13:32:11.711+08:00",
+      "new": true
+    },
     {
       "id": "728c81509dd0e890",
       "title": "广州市越秀区农林街道办事处关于公开招聘辅助人员的公告 2026-10-23",
@@ -855,16 +865,6 @@
       "id": "fd20037ce66ef7f8",
       "title": "深圳实验学校2025年11月面向2026年应届毕业生公开招聘教师拟聘人员公示（第三批）",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963210.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "9ff08dbcb87bb7a8",
-      "title": "深圳市云端学校关于深圳市公办中小学2025年11月公开招聘教师拟聘人员公示",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963142.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
