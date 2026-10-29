@@ -74,8 +74,14 @@ input[type=search],input[type=text],input[type=number],select,textarea{
 .apply-closed{border-left:4px solid #c4b8a5}
 .apply-unknown{border-left:4px solid #c4b8a5;color:var(--muted)}
 #apply-board .win{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+.time-box{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f7f3ea}
+.time-box h4{margin:0 0 8px;font-size:14px}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.times div b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.times strong{font-size:14px}
 @media(max-width:720px){
   .apply-line{grid-template-columns:1fr}
+  .times{grid-template-columns:1fr 1fr}
 }
 footer.note{color:var(--muted);font-size:12px;margin-top:24px}
 body.locked header.app,body.locked main,body.locked .bottom,body.locked #sheet{display:none !important}
@@ -483,6 +489,25 @@ function valueFit(job, match){
   return {score, grade, why};
 }
 function allJobs(){return (window.SEED||[]).concat(state().extra)}
+function firstDate(s){
+  if(!s || s===U || /未公开|待核对/.test(String(s))) return "";
+  const m=String(s).match(/(\d{4})[-\/.年](\d{1,2})[-\/.月](\d{1,2})/);
+  if(!m) return "";
+  const tail=String(s).slice((m.index||0)+m[0].length, (m.index||0)+m[0].length+6);
+  const ap=tail.match(/上午|下午|晚上/);
+  return m[1]+"-"+String(+m[2]).padStart(2,"0")+"-"+String(+m[3]).padStart(2,"0")+(ap?" "+ap[0]:"");
+}
+function recruitClock(job){
+  const written=firstDate(job.writtenExam)||firstDate(job.examContent);
+  const interview=firstDate(job.interview);
+  return {
+    pub:fmtWhen(job.publishedAt),
+    written:written||"官方未公开",
+    interview:interview||"官方未公开",
+    writtenHow:(job.writtenExam && job.writtenExam!==U && !written)?job.writtenExam:"",
+    interviewHow:(job.interview && job.interview!==U && !interview)?job.interview:""
+  };
+}
 function parseWhen(s){
   if(!s || s===U || /未公开|待核对|岗位表为准/.test(String(s))) return null;
   const m=String(s).match(/(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})(?:\s+(\d{1,2}):(\d{2}))?/);
@@ -587,7 +612,9 @@ function renderList(){
   vis.sort((a,b)=>(order[a.apply.phase]-order[b.apply.phase])||String(b.job.applyEnd||"").localeCompare(String(a.job.applyEnd||"")));
   const box=document.getElementById("list");
   if(!vis.length){box.innerHTML='<div class="card">'+esc(province==="全国"?"全国":province)+'暂时没有符合筛选的已核验体育岗。选中某个省会看到该省教育厅入口。下载官方岗位表后点「上传岗位表」，私立、合同、事业编都会按原文入库，不会编造。</div>';return;}
-  box.innerHTML=vis.map(({job,match,value,apply})=>`
+  box.innerHTML=vis.map(({job,match,value,apply})=>{
+    const clock=recruitClock(job);
+    return `
     <article class="card" data-id="${esc(job.id)}">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div>
@@ -608,16 +635,23 @@ function renderList(){
           <div class="tag ${value.grade==="高"?"bz":""}" style="display:block;margin-top:6px">性价比 ${esc(value.grade)} · ${value.score}</div>
         </div>
       </div>
-      <div class="apply-line apply-${apply.phase}">
-        <div><b>报名开始</b><strong>${esc(apply.startText)}</strong></div>
-        <div><b>报名截止</b><strong>${esc(apply.endText)}</strong></div>
-        <div><b>现在</b><strong>${esc(apply.label)}</strong><div style="font-size:12px;color:var(--muted)">${esc(apply.hint)}</div></div>
+      <div class="time-box apply-${apply.phase}">
+        <h4>招聘时间 · ${esc(apply.label)}</h4>
+        <div class="times">
+          <div><b>公告发布</b><strong>${esc(clock.pub)}</strong></div>
+          <div><b>报名开始</b><strong>${esc(apply.startText)}</strong></div>
+          <div><b>报名截止</b><strong>${esc(apply.endText)}</strong></div>
+          <div><b>笔试时间</b><strong>${esc(clock.written)}</strong>${clock.writtenHow?`<div style="font-size:12px;color:var(--muted)">${esc(clock.writtenHow)}</div>`:""}</div>
+          <div><b>面试时间</b><strong>${esc(clock.interview)}</strong>${clock.interviewHow?`<div style="font-size:12px;color:var(--muted)">${esc(clock.interviewHow)}</div>`:""}</div>
+          <div><b>现在</b><strong>${esc(apply.hint)}</strong></div>
+        </div>
       </div>
       <ul class="reasons">${value.why.slice(0,3).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
       <div class="toolbar"><button class="btn" data-open="${esc(job.id)}">查看全部字段</button>
         ${job.announcementUrl && job.announcementUrl!==U?`<a class="btn" target="_blank" rel="noopener" href="${esc(job.announcementUrl)}">打开公告</a>`:""}
       </div>
-    </article>`).join("");
+    </article>`;
+  }).join("");
 }
 function fieldRows(job){
   const labels={province:"省份",city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
