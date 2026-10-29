@@ -178,7 +178,7 @@ body.locked #gate{display:flex}
       <button class="btn" data-type="全员聘用制">全员聘用</button>
     </div>
     <div class="toolbar" id="city-bar"></div>
-    <p style="color:var(--muted);font-size:13px;margin:0 0 8px">性价比不是工资预测。没有官方工资时，只按「是否明确事业编 + 你能不能报 + 城市生活成本参考」给理由。</p>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 8px">有官方工资金额的排在最前，按公告金额从高到低。半年薪会按聘期折成月均再比，卡片上仍不改写成假年薪。没写数字的不参与比工资。</p>
     <div id="flash" class="flash hidden"></div>
     <div id="list"></div>
   </section>
@@ -510,6 +510,20 @@ function payView(job){
   const hasNum=/(?:\d+(?:\.\d+)?)\s*(?:万|元)/.test(money);
   return {salary, perf:show(job.performancePay), si:show(job.socialInsurance), hf:show(job.housingFund), annual, hasNum};
 }
+function payRank(job){
+  const text=[job.salary, job.performancePay, job.annualSalary].filter(Boolean).join("。");
+  let best=-1;
+  text.split(/[。；;]/).forEach(c=>{
+    if(/没有|未写|未公开|不折算|不自行|不估算/.test(c)) return;
+    const m=c.match(/(\d+(?:\.\d+)?)\s*(万|元)/);
+    if(!m) return;
+    let yuan=+m[1]*(m[2]==="万"?10000:1);
+    if(/半年/.test(c)) yuan=yuan/6;
+    else if(/年薪|每年|年收入|全年/.test(c)) yuan=yuan/12;
+    if(yuan>best) best=yuan;
+  });
+  return best;
+}
 function firstDate(s){
   if(!s || s===U || /未公开|待核对/.test(String(s))) return "";
   const m=String(s).match(/(\d{4})[-\/.年](\d{1,2})[-\/.月](\d{1,2})/);
@@ -634,6 +648,8 @@ function renderList(){
   vis.sort((a,b)=>{
     const ap=a.job.isPortal?1:0, bp=b.job.isPortal?1:0;
     if(ap!==bp) return ap-bp;
+    const ra=payRank(a.job), rb=payRank(b.job);
+    if(ra!==rb) return rb-ra;
     return (order[a.apply.phase]-order[b.apply.phase])||String(b.job.applyEnd||"").localeCompare(String(a.job.applyEnd||""));
   });
   const box=document.getElementById("list");
