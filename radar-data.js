@@ -42,7 +42,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-0112",
@@ -87,7 +88,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-0808",
@@ -132,7 +134,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-0904",
@@ -177,7 +180,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1009",
@@ -222,7 +226,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1205",
@@ -267,7 +272,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1301",
@@ -312,7 +318,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1402",
@@ -357,7 +364,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1504",
@@ -402,7 +410,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-1810",
@@ -447,7 +456,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-2005",
@@ -492,7 +502,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-2102",
@@ -537,7 +548,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-2204",
@@ -582,7 +594,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-2404",
@@ -627,7 +640,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-2604",
@@ -672,7 +686,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-3205",
@@ -717,7 +732,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-3403",
@@ -762,7 +778,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-3603",
@@ -807,7 +824,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-3903",
@@ -852,7 +870,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-4205",
@@ -897,7 +916,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-4307",
@@ -942,7 +962,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gx-2026-4404",
@@ -987,7 +1008,8 @@ window.SEED = [
     "sourceName": "西安高新区2026年公办学校公开招聘教职工岗位表（官方XLSX）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-yizhong-pe",
@@ -1032,7 +1054,8 @@ window.SEED = [
     "sourceName": "西安市人民政府招考信息 / 西安人事考试网",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-yanta-zygz-pe",
@@ -1077,7 +1100,8 @@ window.SEED = [
     "sourceName": "2026年西安市事业单位公开招聘岗位表（公开摘录）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-85zhong-pe",
@@ -1122,7 +1146,8 @@ window.SEED = [
     "sourceName": "西安市第八十五中学2026年事业单位公开招聘宣传 / 市统招公告",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-xagaoji-pe",
@@ -1167,7 +1192,8 @@ window.SEED = [
     "sourceName": "西安高级中学2026年春季开学体育教师招聘公告",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-qujiang6-pe",
@@ -1212,7 +1238,8 @@ window.SEED = [
     "sourceName": "西安市曲江第六小学2026年度体育教师招聘公告",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-zhouzhi-xijie-pe",
@@ -1257,7 +1284,8 @@ window.SEED = [
     "sourceName": "周至县西街小学2026年体育教师招聘公告（公开转载）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-chanba11-pe",
@@ -1302,7 +1330,8 @@ window.SEED = [
     "sourceName": "西安市浐灞第十一小学招聘公告",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-xidian-aff-pe",
@@ -1347,7 +1376,8 @@ window.SEED = [
     "sourceName": "西安电子科技大学附属中学2026年教师招聘公开报道",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-snnu-chanba-pri-pe",
@@ -1392,7 +1422,8 @@ window.SEED = [
     "sourceName": "陕西师范大学西安市浐灞教育集团2026年招聘公开报道",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-snnu-chanba-mid-pe",
@@ -1437,7 +1468,8 @@ window.SEED = [
     "sourceName": "陕西师范大学西安市浐灞教育集团2026年招聘公开报道",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "xa-2026-hongjing-pe",
@@ -1482,7 +1514,8 @@ window.SEED = [
     "sourceName": "西安市宏景小学教师招聘公告（2026年6月）",
     "city": "西安市",
     "province": "陕西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-1",
@@ -1527,7 +1560,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-10",
@@ -1572,7 +1606,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-14",
@@ -1617,7 +1652,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-17",
@@ -1662,7 +1698,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-19",
@@ -1707,7 +1744,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-20",
@@ -1752,7 +1790,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-21",
@@ -1797,7 +1836,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-23",
@@ -1842,7 +1882,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-33",
@@ -1887,7 +1928,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-35",
@@ -1932,7 +1974,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-38",
@@ -1977,7 +2020,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-41",
@@ -2022,7 +2066,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-42",
@@ -2067,7 +2112,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-43",
@@ -2112,7 +2158,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-50",
@@ -2157,7 +2204,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-61",
@@ -2202,7 +2250,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-63",
@@ -2247,7 +2296,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-67",
@@ -2292,7 +2342,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "gz-yx-75",
@@ -2337,7 +2388,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "广州市越秀区教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "fz-syyy-pe-2026",
@@ -2382,7 +2434,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "福建省人社厅招聘方案",
     "province": "福建",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "jx-2026-teacher-ganzhou",
@@ -2427,7 +2480,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "江西省中小学教师招聘公告",
     "province": "江西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "jx-2026-teacher-suichuan",
@@ -2472,7 +2526,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "江西省中小学教师招聘 / 赣州市教育局面试公告",
     "province": "江西",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "zh-doumen-2026",
@@ -2517,7 +2572,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "珠海市斗门区公办中小学教师招聘公告",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-LH2026004E0025",
@@ -2551,10 +2607,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2562,7 +2618,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-LH2026004E0013",
@@ -2596,10 +2653,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2607,7 +2664,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-LH2026004E0010",
@@ -2641,10 +2699,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2652,7 +2710,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-YT2026003D0006",
@@ -2686,10 +2745,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2697,7 +2756,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-YT2026003D0008",
@@ -2731,10 +2791,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2742,7 +2802,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0042",
@@ -2776,10 +2837,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2787,7 +2848,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0043",
@@ -2821,10 +2883,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2832,7 +2894,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0020",
@@ -2866,10 +2929,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2877,7 +2940,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0006",
@@ -2911,10 +2975,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2922,7 +2986,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0080",
@@ -2956,10 +3021,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -2967,7 +3032,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0065",
@@ -3001,10 +3067,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3012,7 +3078,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-BA2026009E0063",
@@ -3046,10 +3113,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3057,7 +3124,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-GM2026005D0015",
@@ -3091,10 +3159,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3102,7 +3170,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-GM2026005D0018",
@@ -3136,10 +3205,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3147,7 +3216,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-GM2026005D0021",
@@ -3181,10 +3251,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3192,7 +3262,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-GM2026005D0024",
@@ -3226,10 +3297,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3237,7 +3308,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "id": "sz-DP2026003D0003",
@@ -3271,10 +3343,10 @@ window.SEED = [
     "examContent": "笔试（教育政策法规、教育基础理论、教师职业素养和教学实施要求，客观+主观）+面试。综合成绩笔试40%、面试60%。",
     "writtenExam": "2026-07-04",
     "interview": "面试满分100，合格线60分",
-    "salary": "官方未公开",
+    "salary": "享受政策规定的相关薪酬待遇（深圳市教育局2026-06-09公告原文）。公告没有月薪、年薪数字。",
     "performancePay": "官方未公开",
-    "socialInsurance": "官方未公开",
-    "housingFund": "官方未公开",
+    "socialInsurance": "官方未公开具体险种和金额",
+    "housingFund": "官方未公开缴存基数和比例",
     "announcementUrl": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12833188.html",
     "jobTableUrl": "https://szeb.sz.gov.cn/attachment/1/1721/1721294/12833188.xls",
     "updatedAt": "2026-09-07",
@@ -3282,7 +3354,8 @@ window.SEED = [
     "status": "已结束",
     "sourceName": "深圳市教育局岗位表",
     "province": "广东",
-    "isPortal": false
+    "isPortal": false,
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3327,7 +3400,8 @@ window.SEED = [
     "applyEnd": "2026-10-22 12:00",
     "announcementUrl": "https://www.dg.gov.cn/dgmcz/gkmlpt/content/4/4595/post_4595802.html",
     "notes": "公办小学的编外合同岗，由麻涌镇人力资源服务有限公司招聘。报名已于2026-10-22中午截止。",
-    "sourceName": "东莞市麻涌镇人民政府信息公开"
+    "sourceName": "东莞市麻涌镇人民政府信息公开",
+    "annualSalary": "聘期只有半年。公告写「半年薪约4.8万元（全包，含单位部分的五险一金）」，不按12个月折算成年薪。"
   },
   {
     "year": 2026,
@@ -3372,7 +3446,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://www.bjedu.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "北京市教育委员会"
+    "sourceName": "北京市教育委员会",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3417,7 +3492,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jy.tj.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "天津市教育委员会"
+    "sourceName": "天津市教育委员会",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3462,7 +3538,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.hebei.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "河北省教育厅"
+    "sourceName": "河北省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3507,7 +3584,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.shanxi.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "山西省教育厅"
+    "sourceName": "山西省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3552,7 +3630,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.nmg.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "内蒙古自治区教育厅"
+    "sourceName": "内蒙古自治区教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3597,7 +3676,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.ln.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "辽宁省教育厅"
+    "sourceName": "辽宁省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3642,7 +3722,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.jl.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "吉林省教育厅"
+    "sourceName": "吉林省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3687,7 +3768,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.hlj.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "黑龙江省教育厅"
+    "sourceName": "黑龙江省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3732,7 +3814,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://edu.sh.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "上海市教育委员会"
+    "sourceName": "上海市教育委员会",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3777,7 +3860,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.jiangsu.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "江苏省教育厅"
+    "sourceName": "江苏省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3822,7 +3906,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.zj.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "浙江省教育厅"
+    "sourceName": "浙江省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3867,7 +3952,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.ah.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "安徽省教育厅"
+    "sourceName": "安徽省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3912,7 +3998,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.fujian.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "福建省教育厅"
+    "sourceName": "福建省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -3957,7 +4044,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.jiangxi.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "江西省教育厅"
+    "sourceName": "江西省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4002,7 +4090,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://edu.shandong.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "山东省教育厅"
+    "sourceName": "山东省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4047,7 +4136,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.henan.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "河南省教育厅"
+    "sourceName": "河南省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4092,7 +4182,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.hubei.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "湖北省教育厅"
+    "sourceName": "湖北省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4137,7 +4228,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.hunan.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "湖南省教育厅"
+    "sourceName": "湖南省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4182,7 +4274,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://edu.gd.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "广东省教育厅"
+    "sourceName": "广东省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4227,7 +4320,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.gxzf.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "广西壮族自治区教育厅"
+    "sourceName": "广西壮族自治区教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4272,7 +4366,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://edu.hainan.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "海南省教育厅"
+    "sourceName": "海南省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4317,7 +4412,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jw.cq.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "重庆市教育委员会"
+    "sourceName": "重庆市教育委员会",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4362,7 +4458,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://edu.sc.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "四川省教育厅"
+    "sourceName": "四川省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4407,7 +4504,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.guizhou.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "贵州省教育厅"
+    "sourceName": "贵州省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4452,7 +4550,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.yn.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "云南省教育厅"
+    "sourceName": "云南省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4497,7 +4596,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://edu.xizang.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "西藏自治区教育厅"
+    "sourceName": "西藏自治区教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4542,7 +4642,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.shaanxi.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "陕西省教育厅"
+    "sourceName": "陕西省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4587,7 +4688,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.gansu.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "甘肃省教育厅"
+    "sourceName": "甘肃省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4632,7 +4734,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.qinghai.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "青海省教育厅"
+    "sourceName": "青海省教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4677,7 +4780,8 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "https://jyt.nx.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "宁夏回族自治区教育厅"
+    "sourceName": "宁夏回族自治区教育厅",
+    "annualSalary": "官方未公开"
   },
   {
     "year": 2026,
@@ -4722,6 +4826,7 @@ window.SEED = [
     "applyEnd": "官方未公开",
     "announcementUrl": "http://jyt.xinjiang.gov.cn/",
     "notes": "切换到本省后会出现这条入口。请到官网下载含「体育」的岗位表，回到本页点「上传岗位表」。私立学校公告也可以上传，系统会按表格原文区分编制、合同、民办，不会自行判断。",
-    "sourceName": "新疆维吾尔自治区教育厅"
+    "sourceName": "新疆维吾尔自治区教育厅",
+    "annualSalary": "官方未公开"
   }
 ];
