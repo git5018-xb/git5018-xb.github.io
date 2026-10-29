@@ -151,6 +151,7 @@ body.locked #gate{display:flex}
     <div class="toolbar">
       <button class="btn primary" id="btn-update">更新数据</button>
       <button class="btn" id="btn-bz">只看事业编</button>
+      <button class="btn" id="btn-mine">只看我能报</button>
       <button class="btn" id="btn-pay">只看写了工资金额</button>
       <button class="btn" id="btn-export">导出Excel</button>
       <button class="btn" id="btn-upload">上传岗位表</button>
@@ -500,9 +501,10 @@ function payView(job){
   const salary=show(job.salary);
   let annual=show(job.annualSalary);
   if(annual==="官方未公开"){
-    if(/半年薪|半年/.test(salary) && /万|元/.test(salary)) annual="公告只写了半年待遇，不折算成年薪";
-    else if(/月/.test(salary) && /\d/.test(salary)) annual="公告只写了月薪，不自行乘以12";
-    else if(/年薪/.test(salary) && /\d/.test(salary)) annual=salary;
+    const amt=/(?:\d+(?:\.\d+)?)\s*(?:万|元)/.test(salary);
+    if(/半年/.test(salary) && amt) annual="公告只写了半年待遇，不折算成年薪";
+    else if(amt && /月薪|元\/月|每月/.test(salary)) annual="公告只写了月薪，不自行乘以12";
+    else if(amt && /年薪/.test(salary)) annual=salary;
   }
   const money=[job.salary, job.socialInsurance, job.housingFund, job.performancePay, job.annualSalary].join(" ");
   const hasNum=/(?:\d+(?:\.\d+)?)\s*(?:万|元)/.test(money);
