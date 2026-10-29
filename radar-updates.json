@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-28T20:43:37.792+08:00",
+  "updatedAt": "2026-10-29T13:40:02.122+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -71,6 +71,26 @@
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "39bbc13b31b7c4df",
+      "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘名单公示（深圳市第二高级中学深汕实验学校）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13044951.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-29T13:40:02.122+08:00",
+      "new": true
+    },
+    {
+      "id": "c0bb46a4be207c39",
+      "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘人员名单公示（深圳实验学校明理高中）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13044845.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-29T13:40:02.122+08:00",
+      "new": true
+    },
     {
       "id": "ccbeeefd6eca03d4",
       "title": "深圳市市属公办中小学2026月6月公开招聘教师拟聘名单公示（深圳市第二高级中学深汕实验学校）",
@@ -845,26 +865,6 @@
       "id": "f35c849ed999d13d",
       "title": "深圳市第二实验学校2025年4月（第二批）、2025年6月面向2025年应届毕业生公开招聘教师拟聘人员名单公示",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12965379.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "413137cb0736e8ce",
-      "title": "深圳益新中学2026年5月面向2026年应届毕业生赴外公开招聘教师拟聘人员公示（二）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963298.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "fd20037ce66ef7f8",
-      "title": "深圳实验学校2025年11月面向2026年应届毕业生公开招聘教师拟聘人员公示（第三批）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12963210.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
