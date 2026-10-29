@@ -112,7 +112,7 @@ body.locked #gate{display:flex}
   <div class="inner">
     <div>
       <h1>体育教师编制岗位雷达</h1>
-      <p>西安 / 深圳 / 广州 / 珠海 / 赣州 / 福州 / 遂川 · 有证据才标事业编</p>
+      <p>全国 31 个省级行政区 · 事业编 / 合同 / 私立分开看 · 有证据才标事业编</p>
     </div>
     <nav class="nav-top">
       <button data-go="jobs" class="on">岗位雷达</button>
@@ -126,10 +126,10 @@ body.locked #gate{display:flex}
 <main class="wrap">
   <section id="page-jobs" class="page">
     <div class="hero">
-      <h2>多地体育教师岗位库 · 2027 备考对照</h2>
-      <p>可切换城市。合适度看你能不能报，性价比看编制、门槛和生活成本。工资没有官方数字就写「官方未公开」，不编年薪。</p>
+      <h2>全国体育教师岗位库 · 2027 备考对照</h2>
+      <p>先选省份。事业编、合同制、私立分开筛选。没有官方岗位表的省，只显示教育厅入口，不编造学校和人数。工资没有官方数字就写「官方未公开」。</p>
     </div>
-    <div class="flash" id="h2-banner">2026年下半年市事业单位公开招聘正在报名：<b>9月7日 8:00 – 9月11日 18:00</b>。请到西安人事考试网下载岗位表，用「体育」筛选后点「上传岗位表」。本库尚未自动解析到该批次体育教师明细，禁止编造。</div>
+    <div class="flash" id="h2-banner">西安市2026年下半年事业单位公开招聘报名已于 <b>9月11日 18:00</b> 截止。该批次体育教师明细仍未解析，不要把总招聘人数当成体育岗。</div>
     <div class="card" id="watch-box">
       <h3 style="margin-top:0">自动盯梢已开启</h3>
       <p id="watch-status">正在读取最近一次官方核对结果…</p>
@@ -155,6 +155,18 @@ body.locked #gate{display:flex}
       <button class="btn" data-stage="初中">初中</button>
       <button class="btn" data-stage="高中">高中</button>
       <button class="btn" data-stage="中职">中职</button>
+    </div>
+    <div class="toolbar">
+      <label style="display:flex;align-items:center;gap:8px">省份
+        <select id="prov" style="min-width:120px;padding:8px;border-radius:10px;border:1px solid var(--line)"></select>
+      </label>
+    </div>
+    <div class="toolbar" id="type-bar">
+      <button class="btn on" data-type="全部">全部类型</button>
+      <button class="btn" data-type="事业编">事业编</button>
+      <button class="btn" data-type="合同制">合同制</button>
+      <button class="btn" data-type="私立">私立</button>
+      <button class="btn" data-type="全员聘用制">全员聘用</button>
     </div>
     <div class="toolbar" id="city-bar"></div>
     <p style="color:var(--muted);font-size:13px;margin:0 0 8px">性价比不是工资预测。没有官方工资时，只按「是否明确事业编 + 你能不能报 + 城市生活成本参考」给理由。</p>
@@ -211,7 +223,7 @@ body.locked #gate{display:flex}
         <label>学段<select id="n-stage"><option>小学</option><option>初中</option><option>高中</option></select></label>
         <label>岗位名称<input id="n-title" type="text" value="体育教师"></label>
         <label>招聘人数<input id="n-n" type="number" min="1" value="1"></label>
-        <label>招聘类型<select id="n-type"><option>不明确</option><option>事业编</option><option>全员聘用制</option><option>合同制</option><option>特岗</option><option>人才引进</option></select></label>
+        <label>招聘类型<select id="n-type"><option>不明确</option><option>事业编</option><option>全员聘用制</option><option>合同制</option><option>私立</option><option>特岗</option><option>人才引进</option></select></label>
         <label>官方公告网址<input id="n-url" type="text" placeholder="必须是公告链接"></label>
         <label>报名截止<input id="n-end" type="text" placeholder="例如 2027-03-04"></label>
       </div>
@@ -336,7 +348,7 @@ const SOURCES=[
   ["福建省人社厅事业单位招聘","https://rst.fujian.gov.cn/","福州编制内教师方案"],
   ["遂川县人民政府","https://www.suichuan.gov.cn/","遂川公告入口"]
 ];
-const CITIES=["西安市","深圳市","广州市","珠海市","赣州市","福州市","遂川县"];
+const PROVINCES=["全国","北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆"];
 const CITY_COST={
   "西安市":{delta:0,label:"新一线",why:"生活成本低于深广。西安事业编仍要看具体单位，工资官方未公开。"},
   "深圳市":{delta:-14,label:"一线高成本",why:"住房和消费公开认知高。事业编含金量高，但工资数字官方未公开，不按网络传说年薪打分。"},
@@ -444,6 +456,8 @@ function valueFit(job, match){
   if(job.isBianzhiExplicit){ score+=22; why.push("公告明确事业编，稳定性是最大加分项。"); }
   else if(job.recruitType==="全员聘用制"){ score+=6; why.push("全员聘用制，不是事业编。"); }
   else if(job.recruitType==="合同制"){ score-=12; why.push("合同制，编制含金量低于事业编。"); }
+  else if(job.recruitType==="私立" || job.schoolNature==="民办"){ score-=10; why.push("私立/民办，稳定性通常低于事业编，按公告原文，不当成编制。"); }
+  else if(job.isPortal){ why.push("这是省份官方入口，不是已核验岗位，性价比无法评估。"); }
   else { why.push("招聘类型不明确，编制项不加分。"); }
   if(match.verdict==="不能报"){ score-=30; why.push("按你填的条件目前不能报，性价比再高也报不上这一轮。"); }
   else if(match.verdict==="可以报"){ score+=14; why.push("条件匹配，硕士学历用得上。"); }
@@ -495,8 +509,8 @@ function applyInfo(job){
 }
 function renderApplyBoard(jobs){
   const extra=[];
-  if(city==="西安市"){
-    const a=applyInfo({applyStart:"2026-09-07 08:00", applyEnd:"2026-09-11 18:00", status:"报名中"});
+  if(city==="西安市" || (province==="陕西" && city==="全部")){
+    const a=applyInfo({applyStart:"2026-09-07 08:00", applyEnd:"2026-09-11 18:00", status:"已结束"});
     extra.push({
       ...a, title:"西安市事业单位公开招聘（2026下半年）",
       schools:"市统招，岗位表请到西安人事考试网下载后筛「体育」。本库尚未解析到该批次体育教师校级明细。",
@@ -504,7 +518,7 @@ function renderApplyBoard(jobs){
     });
   }
   const groups=new Map();
-  jobs.forEach(j=>{
+  jobs.filter(j=>!j.isPortal).forEach(j=>{
     const a=applyInfo(j);
     const key=a.startText+"|"+a.endText+"|"+a.phase;
     if(!groups.has(key)) groups.set(key,{...a, schools:[], n:0});
@@ -515,9 +529,10 @@ function renderApplyBoard(jobs){
   })));
   const order={open:0,soon:1,unknown:2,closed:3};
   rows.sort((a,b)=>(order[a.phase]-order[b.phase])||String(b.endText).localeCompare(String(a.endText)));
+  const shown=province==="全国"?rows.filter(r=>r.phase!=="closed").concat(rows.filter(r=>r.phase==="closed").slice(0,5)):rows;
   document.getElementById("apply-board-status").textContent=
-    city+" · 正在报名 "+rows.filter(r=>r.phase==="open").length+" 个窗口，未开始 "+rows.filter(r=>r.phase==="soon").length+" 个。时间全部来自公告原文。";
-  document.getElementById("apply-board-list").innerHTML=rows.map(r=>`
+    (province==="全国"?"全国":province+" · "+city)+" · 正在报名 "+rows.filter(r=>r.phase==="open").length+" 个窗口。全国视图只展开最近几条已截止窗口。";
+  document.getElementById("apply-board-list").innerHTML=shown.map(r=>`
     <div class="win apply-${esc(r.phase)}">
       <div class="meta"><span class="tag ${r.phase==="open"?"bz":r.phase==="soon"?"":"no"}">${esc(r.label)}</span></div>
       <p style="margin:6px 0 0"><b>开始 ${esc(r.startText)}</b>　<b>截止 ${esc(r.endText)}</b></p>
@@ -526,20 +541,34 @@ function renderApplyBoard(jobs){
 }
 function esc(s){const m={"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"};return String(s??"").replace(/[&<>"']/g,c=>m[c]);}
 
-let onlyBz=false, onlyMine=false, stage="全部", q="", city="西安市";
+let onlyBz=false, onlyMine=false, stage="全部", q="", city="全部", province="全国", typeF="全部";
+function scopedJobs(){
+  return allJobs().filter(j=>{
+    if(province==="全国" && j.isPortal) return false;
+    if(province!=="全国" && (j.province||"")!==province) return false;
+    if(city!=="全部" && (j.city||"")!==city) return false;
+    return true;
+  });
+}
+function typeMatch(job){
+  if(typeF==="全部") return true;
+  if(typeF==="事业编") return !!job.isBianzhiExplicit;
+  if(typeF==="私立") return job.recruitType==="私立" || job.schoolNature==="民办";
+  return job.recruitType===typeF;
+}
 
 function renderStats(jobs, matched){
   const heads=jobs.reduce((s,j)=>s+(Number(j.headcount)||0),0);
   const vf=matched.map(m=>valueFit(m.job,m.match));
   const high=vf.filter(v=>v.grade==="高").length;
   document.getElementById("stats").innerHTML=
-    [["本城岗位",jobs.length],["招聘人数",heads||"若干"],["明确事业编",jobs.filter(j=>j.isBianzhiExplicit).length],["正在报名",jobs.filter(j=>applyInfo(j).phase==="open").length+(city==="西安市"?1:0)]]
+    [["范围内岗位",jobs.filter(j=>!j.isPortal).length],["招聘人数",heads||"若干"],["明确事业编",jobs.filter(j=>j.isBianzhiExplicit).length],["正在报名",jobs.filter(j=>!j.isPortal && applyInfo(j).phase==="open").length]]
     .map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
 }
 function renderList(){
   if(!window.SEED||!window.SEED.length){document.getElementById("list").innerHTML='<div class="card">岗位数据还在加载。请刷新一次。</div>';return;}
   const p=state().profile;
-  const jobs=allJobs().filter(j=>(j.city||"西安市")===city);
+  const jobs=scopedJobs();
   const matched=jobs.map(job=>{
     const match=matchJob(job,p);
     return {job, match, value:valueFit(job, match), apply:applyInfo(job)};
@@ -550,20 +579,23 @@ function renderList(){
     if(onlyBz && !job.isBianzhiExplicit) return false;
     if(onlyMine && match.verdict!=="可以报" && match.verdict!=="可能可以报") return false;
     if(stage!=="全部" && job.stage!==stage) return false;
-    if(q && !(job.school+job.title+job.district+job.recruitType+(job.city||"")).includes(q)) return false;
+    if(!typeMatch(job)) return false;
+    if(q && !(job.school+job.title+job.district+job.recruitType+(job.city||"")+(job.province||"")).includes(q)) return false;
     return true;
   });
   const order={open:0,soon:1,unknown:2,closed:3};
   vis.sort((a,b)=>(order[a.apply.phase]-order[b.apply.phase])||String(b.job.applyEnd||"").localeCompare(String(a.job.applyEnd||"")));
   const box=document.getElementById("list");
-  if(!vis.length){box.innerHTML='<div class="card">'+esc(city)+'暂时没有符合筛选的体育岗。可切换城市，或上传该地官方岗位表。珠海、赣州、遂川若只有批次说明、没有校级明细，是因为岗位表还没解析到，禁止编造人数。</div>';return;}
+  if(!vis.length){box.innerHTML='<div class="card">'+esc(province==="全国"?"全国":province)+'暂时没有符合筛选的已核验体育岗。选中某个省会看到该省教育厅入口。下载官方岗位表后点「上传岗位表」，私立、合同、事业编都会按原文入库，不会编造。</div>';return;}
   box.innerHTML=vis.map(({job,match,value,apply})=>`
     <article class="card" data-id="${esc(job.id)}">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
         <div>
           <h3>${esc(job.school)} · ${esc(job.title)}</h3>
           <div class="meta">
-            <span class="tag bz">${esc(job.city||city)}</span>
+            <span class="tag bz">${esc(job.province||"")}</span>
+            <span class="tag">${esc(job.city||"")}</span>
+            <span class="tag">${esc(job.schoolNature||"公办")}</span>
             <span class="tag">${esc(job.district)}</span>
             <span class="tag">${esc(job.stage)}</span>
             <span class="tag ${job.isBianzhiExplicit?"bz":"no"}">${esc(job.recruitType)}${job.isBianzhiExplicit?"":" · 非明确事业编"}</span>
@@ -588,7 +620,7 @@ function renderList(){
     </article>`).join("");
 }
 function fieldRows(job){
-  const labels={city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
+  const labels={province:"省份",city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
   return Object.keys(labels).map(k=>{
     let v=job[k];
     if(k==="isBianzhiExplicit") v=job[k]?"是":"否";
@@ -749,13 +781,16 @@ function ingestGrid(grid, meta){
     const typeText=(row.join(" ")+(meta.note||""));
     const isBz=/事业单位公开招聘|事业编制|事业编/.test(typeText) && !/非编制|不是事业编|全员聘用/.test(typeText);
     added.push({
-      id:"up-"+Date.now()+"-"+i, year:2026, publishedAt:today(), city:city||"待核对", district:meta.district||"待核对",
-      school, schoolNature:"公办", stage:/小学/.test(title)?"小学":/初中/.test(title)?"初中":/高中/.test(title)?"高中":"不明确",
+      id:"up-"+Date.now()+"-"+i, year:2026, publishedAt:today(),
+      province: province==="全国"?"待核对":province,
+      city: city==="全部"?"待核对":city,
+      district:meta.district||"待核对",
+      school, schoolNature:/民办|私立/.test(typeText)?"民办":"公办", stage:/小学/.test(title)?"小学":/初中/.test(title)?"初中":/高中/.test(title)?"高中":"不明确",
       title, code:String(row[map.code??4]||U), headcount:Number(row[map.n??5])||null,
       education:String(row[map.edu??7]||U), degree:String(row[map.deg??8]||U),
       bachelorMajors:bm, masterMajors:gm, teacherCert:String(row[map.cert??10]||U),
       age:String(row[map.age??6]||U), freshGraduate:U, workExperience:String(row[map.work??11]||U),
-      sportsSpecialty:U, recruitType:isBz?"事业编":"不明确", isBianzhiExplicit:isBz,
+      sportsSpecialty:U, recruitType:/私立|民办/.test(typeText)?"私立":(isBz?"事业编":"不明确"), isBianzhiExplicit:isBz && !/私立|民办/.test(typeText),
       bianzhiEvidence:isBz?"上传表格或文件名中出现事业单位公开招聘等原文。":"上传表格未见事业编原文，记为不明确。",
       minServiceYears:U, applyStart:U, applyEnd:U, applicants:H, competitionRatio:H,
       examContent:U, writtenExam:U, interview:U, salary:U, performancePay:U, socialInsurance:U, housingFund:U,
@@ -845,8 +880,11 @@ function addManual(){
   if(type==="事业编" && !bz){alert("没有公告原文证据，不能登记为事业编。");return;}
   const s=state();
   s.extra.push({
-    id:"m-"+Date.now(), year:2027, publishedAt:today(), city:city, district:document.getElementById("n-dist").value.trim()||"待核对",
-    school, schoolNature:"公办", stage:document.getElementById("n-stage").value,
+    id:"m-"+Date.now(), year:2027, publishedAt:today(),
+    province: province==="全国"?"待核对":province,
+    city: city==="全部"?"待核对":city,
+    district:document.getElementById("n-dist").value.trim()||"待核对",
+    school, schoolNature: type==="私立"?"民办":"公办", stage:document.getElementById("n-stage").value,
     title:document.getElementById("n-title").value.trim()||"体育教师",
     code:U, headcount:+document.getElementById("n-n").value||null, education:U, degree:U, bachelorMajors:U, masterMajors:U,
     teacherCert:U, age:U, freshGraduate:U, workExperience:U, sportsSpecialty:U,
@@ -860,14 +898,28 @@ function addManual(){
   save(s); alert("已入库。"); go("jobs"); renderList();
 }
 
-document.getElementById("city-bar").innerHTML=CITIES.map(c=>`<button class="btn ${c===city?"on":""}" data-city="${c}">${c.replace("市","").replace("县","")}</button>`).join("");
+function refreshCityBar(){
+  const set=new Set(allJobs().filter(j=>province==="全国"||j.province===province).map(j=>j.city).filter(Boolean));
+  const cities=["全部",...[...set].sort()];
+  if(!cities.includes(city)) city="全部";
+  document.getElementById("city-bar").innerHTML=cities.map(c=>`<button class="btn ${c===city?"on":""}" data-city="${c}">${c==="全部"?"全部城市":c.replace(/市$|县$/,"")}</button>`).join("");
+  document.getElementById("h2-banner").classList.toggle("hidden", !(province==="全国"||province==="陕西"));
+}
+document.getElementById("prov").innerHTML=PROVINCES.map(p=>`<option value="${p}">${p}</option>`).join("");
+document.getElementById("prov").onchange=e=>{ province=e.target.value; city="全部"; refreshCityBar(); renderList(); };
 document.getElementById("city-bar").onclick=e=>{
   const c=e.target.dataset.city; if(!c) return;
   city=c;
   document.querySelectorAll("#city-bar .btn").forEach(b=>b.classList.toggle("on", b.dataset.city===city));
-  document.getElementById("h2-banner").classList.toggle("hidden", city!=="西安市");
   renderList();
 };
+document.getElementById("type-bar").onclick=e=>{
+  const t=e.target.dataset.type; if(!t) return;
+  typeF=t;
+  document.querySelectorAll("#type-bar .btn").forEach(b=>b.classList.toggle("on", b.dataset.type===typeF));
+  renderList();
+};
+refreshCityBar();
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
 document.getElementById("btn-bz").onclick=()=>{onlyBz=!onlyBz; document.getElementById("btn-bz").classList.toggle("on",onlyBz); renderList();};
 document.getElementById("btn-mine").onclick=()=>{onlyMine=!onlyMine; document.getElementById("btn-mine").classList.toggle("on",onlyMine); renderList();};
