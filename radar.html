@@ -609,7 +609,11 @@ function renderList(){
     return true;
   });
   const order={open:0,soon:1,unknown:2,closed:3};
-  vis.sort((a,b)=>(order[a.apply.phase]-order[b.apply.phase])||String(b.job.applyEnd||"").localeCompare(String(a.job.applyEnd||"")));
+  vis.sort((a,b)=>{
+    const ap=a.job.isPortal?1:0, bp=b.job.isPortal?1:0;
+    if(ap!==bp) return ap-bp;
+    return (order[a.apply.phase]-order[b.apply.phase])||String(b.job.applyEnd||"").localeCompare(String(a.job.applyEnd||""));
+  });
   const box=document.getElementById("list");
   if(!vis.length){box.innerHTML='<div class="card">'+esc(province==="全国"?"全国":province)+'暂时没有符合筛选的已核验体育岗。选中某个省会看到该省教育厅入口。下载官方岗位表后点「上传岗位表」，私立、合同、事业编都会按原文入库，不会编造。</div>';return;}
   box.innerHTML=vis.map(({job,match,value,apply})=>{
