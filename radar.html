@@ -75,7 +75,9 @@ input[type=search],input[type=text],input[type=number],select,textarea{
 .apply-unknown{border-left:4px solid #c4b8a5;color:var(--muted)}
 #apply-board .win{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
 .time-box{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#f7f3ea}
-.time-box h4{margin:0 0 8px;font-size:14px}
+.pay-box{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.pay-box h4{margin:0 0 8px;font-size:14px}
+.pay-miss{color:var(--muted)}
 .times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .times div b{display:block;font-size:12px;color:var(--muted);font-weight:500}
 .times strong{font-size:14px}
@@ -149,7 +151,7 @@ body.locked #gate{display:flex}
     <div class="toolbar">
       <button class="btn primary" id="btn-update">更新数据</button>
       <button class="btn" id="btn-bz">只看事业编</button>
-      <button class="btn" id="btn-mine">只看我能报</button>
+      <button class="btn" id="btn-pay">只看写了工资金额</button>
       <button class="btn" id="btn-export">导出Excel</button>
       <button class="btn" id="btn-upload">上传岗位表</button>
       <input id="file" type="file" accept=".xls,.xlsx,.csv" hidden>
@@ -232,6 +234,10 @@ body.locked #gate{display:flex}
         <label>招聘类型<select id="n-type"><option>不明确</option><option>事业编</option><option>全员聘用制</option><option>合同制</option><option>私立</option><option>特岗</option><option>人才引进</option></select></label>
         <label>官方公告网址<input id="n-url" type="text" placeholder="必须是公告链接"></label>
         <label>报名截止<input id="n-end" type="text" placeholder="例如 2027-03-04"></label>
+        <label>工资待遇<input id="n-salary" type="text" placeholder="照抄公告，没有就空着"></label>
+        <label>五险<input id="n-si" type="text" placeholder="照抄公告"></label>
+        <label>公积金<input id="n-hf" type="text" placeholder="照抄公告"></label>
+        <label>年薪<input id="n-annual" type="text" placeholder="公告没写年薪就空着"></label>
       </div>
       <p style="font-size:13px;color:var(--muted)">只有勾选「公告原文写明事业编」时才会标成事业编。没有原文证据，系统拒绝标事业编。</p>
       <label class="btn"><input id="n-bz" type="checkbox"> 公告原文写明事业编 / 事业单位公开招聘</label>
@@ -489,6 +495,19 @@ function valueFit(job, match){
   return {score, grade, why};
 }
 function allJobs(){return (window.SEED||[]).concat(state().extra)}
+function payView(job){
+  const show=v=> (v && v!==U && !/未公开/.test(String(v))) ? String(v) : "官方未公开";
+  const salary=show(job.salary);
+  let annual=show(job.annualSalary);
+  if(annual==="官方未公开"){
+    if(/半年薪|半年/.test(salary) && /万|元/.test(salary)) annual="公告只写了半年待遇，不折算成年薪";
+    else if(/月/.test(salary) && /\d/.test(salary)) annual="公告只写了月薪，不自行乘以12";
+    else if(/年薪/.test(salary) && /\d/.test(salary)) annual=salary;
+  }
+  const money=[job.salary, job.socialInsurance, job.housingFund, job.performancePay, job.annualSalary].join(" ");
+  const hasNum=/(?:\d+(?:\.\d+)?)\s*(?:万|元)/.test(money);
+  return {salary, perf:show(job.performancePay), si:show(job.socialInsurance), hf:show(job.housingFund), annual, hasNum};
+}
 function firstDate(s){
   if(!s || s===U || /未公开|待核对/.test(String(s))) return "";
   const m=String(s).match(/(\d{4})[-\/.年](\d{1,2})[-\/.月](\d{1,2})/);
@@ -566,7 +585,7 @@ function renderApplyBoard(jobs){
 }
 function esc(s){const m={"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"};return String(s??"").replace(/[&<>"']/g,c=>m[c]);}
 
-let onlyBz=false, onlyMine=false, stage="全部", q="", city="全部", province="全国", typeF="全部";
+let onlyBz=false, onlyMine=false, onlyPay=false, stage="全部", q="", city="全部", province="全国", typeF="全部";
 function scopedJobs(){
   return allJobs().filter(j=>{
     if(province==="全国" && j.isPortal) return false;
@@ -603,6 +622,7 @@ function renderList(){
   const vis=matched.filter(({job,match})=>{
     if(onlyBz && !job.isBianzhiExplicit) return false;
     if(onlyMine && match.verdict!=="可以报" && match.verdict!=="可能可以报") return false;
+    if(onlyPay && !payView(job).hasNum) return false;
     if(stage!=="全部" && job.stage!==stage) return false;
     if(!typeMatch(job)) return false;
     if(q && !(job.school+job.title+job.district+job.recruitType+(job.city||"")+(job.province||"")).includes(q)) return false;
@@ -618,6 +638,7 @@ function renderList(){
   if(!vis.length){box.innerHTML='<div class="card">'+esc(province==="全国"?"全国":province)+'暂时没有符合筛选的已核验体育岗。选中某个省会看到该省教育厅入口。下载官方岗位表后点「上传岗位表」，私立、合同、事业编都会按原文入库，不会编造。</div>';return;}
   box.innerHTML=vis.map(({job,match,value,apply})=>{
     const clock=recruitClock(job);
+    const pay=payView(job);
     return `
     <article class="card" data-id="${esc(job.id)}">
       <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start">
@@ -650,6 +671,16 @@ function renderList(){
           <div><b>现在</b><strong>${esc(apply.hint)}</strong></div>
         </div>
       </div>
+      <div class="pay-box">
+        <h4>工资 · 五险一金 · 年薪${pay.hasNum?"":" · 官方未写金额"}</h4>
+        <div class="times">
+          <div><b>工资待遇</b><strong class="${pay.salary==="官方未公开"?"pay-miss":""}">${esc(pay.salary)}</strong></div>
+          <div><b>绩效</b><strong class="${pay.perf==="官方未公开"?"pay-miss":""}">${esc(pay.perf)}</strong></div>
+          <div><b>五险（社保）</b><strong class="${pay.si==="官方未公开"?"pay-miss":""}">${esc(pay.si)}</strong></div>
+          <div><b>住房公积金</b><strong class="${pay.hf==="官方未公开"?"pay-miss":""}">${esc(pay.hf)}</strong></div>
+          <div><b>年薪</b><strong class="${/^官方未公开|不折算|不自行/.test(pay.annual)?"pay-miss":""}">${esc(pay.annual)}</strong></div>
+        </div>
+      </div>
       <ul class="reasons">${value.why.slice(0,3).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
       <div class="toolbar"><button class="btn" data-open="${esc(job.id)}">查看全部字段</button>
         ${job.announcementUrl && job.announcementUrl!==U?`<a class="btn" target="_blank" rel="noopener" href="${esc(job.announcementUrl)}">打开公告</a>`:""}
@@ -658,7 +689,7 @@ function renderList(){
   }).join("");
 }
 function fieldRows(job){
-  const labels={province:"省份",city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
+  const labels={province:"省份",city:"城市",year:"招聘年份",publishedAt:"公告发布日期",district:"区县",school:"学校",schoolNature:"学校性质",stage:"小学/初中/高中",title:"岗位名称",code:"岗位代码",headcount:"招聘人数",education:"学历要求",degree:"学位要求",bachelorMajors:"本科允许专业",masterMajors:"研究生允许专业",teacherCert:"教师资格证要求",age:"年龄",freshGraduate:"应届毕业生要求",workExperience:"工作经历",sportsSpecialty:"专项运动要求",recruitType:"招聘类型",isBianzhiExplicit:"是否明确事业编",minServiceYears:"最低服务年限",applyStart:"报名开始时间",applyEnd:"报名截止时间",applicants:"报名人数",competitionRatio:"竞争比",examContent:"考试内容",writtenExam:"笔试方式",interview:"面试方式",salary:"工资待遇",performancePay:"绩效待遇",socialInsurance:"社保",housingFund:"住房公积金",annualSalary:"年薪",announcementUrl:"官方公告URL",jobTableUrl:"岗位表URL",updatedAt:"数据更新时间",notes:"备注",sourceName:"数据来源",status:"报名状态",bianzhiEvidence:"编制证据"};
   return Object.keys(labels).map(k=>{
     let v=job[k];
     if(k==="isBianzhiExplicit") v=job[k]?"是":"否";
@@ -772,7 +803,7 @@ function exportExcel(){
   const rows=allJobs().map(j=>{
     const m=matchJob(j,p);
     const vf=valueFit(j,m);
-    return {城市:j.city||"西安市","合适度":m.verdict,"合适度原因":m.reasons.join("；"),"性价比":vf.grade,"性价比分数":vf.score,"性价比理由":vf.why.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
+    return {城市:j.city||"西安市","合适度":m.verdict,"合适度原因":m.reasons.join("；"),"性价比":vf.grade,"性价比分数":vf.score,"性价比理由":vf.why.join("；"),招聘年份:j.year,公告发布日期:j.publishedAt,区县:j.district,学校:j.school,学校性质:j.schoolNature,"小学/初中/高中":j.stage,岗位名称:j.title,岗位代码:j.code,招聘人数:j.headcount??U,学历要求:j.education,学位要求:j.degree,本科允许专业:j.bachelorMajors,研究生允许专业:j.masterMajors,教师资格证要求:j.teacherCert,年龄:j.age,应届毕业生要求:j.freshGraduate,工作经历:j.workExperience,专项运动要求:j.sportsSpecialty,招聘类型:j.recruitType,是否明确事业编:j.isBianzhiExplicit?"是":"否",最低服务年限:j.minServiceYears,报名开始时间:j.applyStart,报名截止时间:j.applyEnd,报名人数:j.applicants,竞争比:j.competitionRatio,考试内容:j.examContent,笔试方式:j.writtenExam,面试方式:j.interview,工资待遇:j.salary,绩效待遇:j.performancePay,社保:j.socialInsurance,住房公积金:j.housingFund,年薪:j.annualSalary||U,官方公告URL:j.announcementUrl,岗位表URL:j.jobTableUrl,数据更新时间:j.updatedAt,备注:j.notes};
   });
   loadXlsx().then(XLSX=>{
     const wb=XLSX.utils.book_new();
@@ -797,6 +828,11 @@ function guessHeader(cells){
     else if(/专业/.test(t)) map.major=i;
     else if(/资格/.test(t)) map.cert=i;
     else if(/年龄/.test(t)) map.age=i;
+    else if(/年薪/.test(t)) map.annual=i;
+    else if(/绩效/.test(t)) map.perf=i;
+    else if(/五险|社保/.test(t)) map.si=i;
+    else if(/公积金/.test(t)) map.hf=i;
+    else if(/工资|薪酬|月薪|待遇/.test(t) && map.salary==null) map.salary=i;
     else if(/其他条件|工作/.test(t)) map.work=i;
   });
   return map;
@@ -831,7 +867,10 @@ function ingestGrid(grid, meta){
       sportsSpecialty:U, recruitType:/私立|民办/.test(typeText)?"私立":(isBz?"事业编":"不明确"), isBianzhiExplicit:isBz && !/私立|民办/.test(typeText),
       bianzhiEvidence:isBz?"上传表格或文件名中出现事业单位公开招聘等原文。":"上传表格未见事业编原文，记为不明确。",
       minServiceYears:U, applyStart:U, applyEnd:U, applicants:H, competitionRatio:H,
-      examContent:U, writtenExam:U, interview:U, salary:U, performancePay:U, socialInsurance:U, housingFund:U,
+      examContent:U, writtenExam:U, interview:U,
+      salary:String(row[map.salary]||U), performancePay:String(row[map.perf]||U),
+      socialInsurance:String(row[map.si]||U), housingFund:String(row[map.hf]||U),
+      annualSalary:String(row[map.annual]||U),
       announcementUrl:U, jobTableUrl:"本地上传", updatedAt:today(),
       notes:"由用户上传岗位表解析，请人工核对列是否对上。", status:"待发布", sourceName:"用户上传岗位表", userAdded:true
     });
@@ -930,7 +969,12 @@ function addManual(){
     isBianzhiExplicit: !!(bz && type==="事业编"),
     bianzhiEvidence: bz?"登记时确认公告原文写明事业编/事业单位公开招聘。":"登记时未勾选原文证据，不得标事业编。",
     minServiceYears:U, applyStart:U, applyEnd:document.getElementById("n-end").value.trim()||U,
-    applicants:H, competitionRatio:H, examContent:U, writtenExam:U, interview:U, salary:U, performancePay:U, socialInsurance:U, housingFund:U,
+    applicants:H, competitionRatio:H, examContent:U, writtenExam:U, interview:U,
+    salary:document.getElementById("n-salary").value.trim()||U,
+    performancePay:U,
+    socialInsurance:document.getElementById("n-si").value.trim()||U,
+    housingFund:document.getElementById("n-hf").value.trim()||U,
+    annualSalary:document.getElementById("n-annual").value.trim()||U,
     announcementUrl:url, jobTableUrl:U, updatedAt:today(), notes:"2027监控手工登记", status:"报名中", sourceName:"手工登记", userAdded:true
   });
   save(s); alert("已入库。"); go("jobs"); renderList();
@@ -961,6 +1005,7 @@ refreshCityBar();
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
 document.getElementById("btn-bz").onclick=()=>{onlyBz=!onlyBz; document.getElementById("btn-bz").classList.toggle("on",onlyBz); renderList();};
 document.getElementById("btn-mine").onclick=()=>{onlyMine=!onlyMine; document.getElementById("btn-mine").classList.toggle("on",onlyMine); renderList();};
+document.getElementById("btn-pay").onclick=()=>{onlyPay=!onlyPay; document.getElementById("btn-pay").classList.toggle("on",onlyPay); renderList();};
 document.getElementById("btn-export").onclick=exportExcel;
 document.getElementById("btn-update").onclick=updateData;
 document.getElementById("btn-upload").onclick=()=>document.getElementById("file").click();
