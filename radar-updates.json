@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-29T13:40:02.122+08:00",
+  "updatedAt": "2026-10-29T20:53:25.024+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -41,7 +41,7 @@
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
       "ok": true,
       "error": null,
-      "found": 14
+      "found": 13
     },
     {
       "id": "yuexiu",
@@ -71,6 +71,16 @@
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "c6bde92504d918ca",
+      "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘人员公示（深圳北理莫斯科大学附属实验中学）",
+      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_13045524.html",
+      "peMention": false,
+      "kind": "公示",
+      "source": "深圳市教育局公办学校招聘",
+      "foundAt": "2026-10-29T20:53:25.024+08:00",
+      "new": true
+    },
     {
       "id": "39bbc13b31b7c4df",
       "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘名单公示（深圳市第二高级中学深汕实验学校）",
@@ -855,16 +865,6 @@
       "id": "2d9ff29f5a3011d6",
       "title": "深圳市高级中学高中园2026年公开招聘教师拟聘人员公示（二）",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968004.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "f35c849ed999d13d",
-      "title": "深圳市第二实验学校2025年4月（第二批）、2025年6月面向2025年应届毕业生公开招聘教师拟聘人员名单公示",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12965379.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
