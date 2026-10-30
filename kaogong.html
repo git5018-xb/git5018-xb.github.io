@@ -35,7 +35,10 @@ input,select{width:100%;border:1px solid var(--line);background:#fff;border-radi
 .badge.ok{background:var(--ok)}.badge.maybe{background:var(--warn)}.badge.no{background:var(--danger)}.badge.ask{background:var(--ask)}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .reasons{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
-.flash{background:#fff7e6;border-left:4px solid #f59e0b;padding:12px 14px;border-radius:10px;margin:10px 0}
+.watch{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 0}
+.watch h3{margin:0 0 6px;font-size:15px}
+.watch li{margin:6px 0}
+.watch .new{color:var(--pine);font-weight:600}
 .hidden{display:none!important}
 .time-box,.pay-box{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
 .time-box{background:#f7f3ea}.pay-box{background:#fff}
@@ -77,6 +80,10 @@ body.locked #gate{display:flex}
     <p>对照你的硕士专业、政治面貌和基层年限。工资职位表没写，就标「官方未公开」。</p>
   </div>
   <div class="flash">2027 国考报名已于 <b>2026-10-24 18:00</b> 截止，不能补报。已通过资格审查的，<b>11月1日 0:00 至 11月6日 24:00</b> 在专题网站确认缴费。公共科目笔试 <b>11月29日</b>（行测上午、申论下午）。来源：国家公务员局专题网站。</div>
+  <div class="watch" id="watch">
+    <h3>官网盯梢</h3>
+    <p>正在读取最近一次检查结果。</p>
+  </div>
   <div class="stats" id="stats"></div>
   <div class="toolbar">
     <button class="btn" id="btn-mine">只看我能报</button>
@@ -342,15 +349,40 @@ document.getElementById("btn-export").onclick=()=>{
   const csv="\ufeff"+[header.join(","),...rows.map(r=>header.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
   const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="体育生考公雷达.csv"; a.click();
 };
+function renderFeed(d){
+  const box=document.getElementById("watch");
+  if(!d){box.innerHTML="<h3>官网盯梢</h3><p>暂时读不到盯梢结果。职位库仍是 2026-10-30 的国考简章。</p>";return;}
+  const src=(d.sources||[]).map(s=>`${esc(s.name)}：${s.ok?"已检查 "+s.found+" 条":"没连上"}`).join("；");
+  const fresh=(d.hits||[]).filter(h=>h.isNew);
+  const show=(fresh.length?fresh:d.hits||[]).slice(0,8);
+  box.innerHTML=`<h3>官网盯梢</h3>
+    <p>上次检查：${esc(d.updatedAt||"")}。${esc(d.cadence||"")}</p>
+    <p>${esc(d.note||"")}</p>
+    <p style="color:var(--muted);font-size:13px">${src}</p>
+    <p>${fresh.length?`比上次多了 ${fresh.length} 条官方标题。`:"这次没有新标题。下面是已经在盯的公告。"} <button class="btn" id="btn-refresh-watch" type="button">刷新盯梢结果</button></p>
+    <ul>${show.map(h=>`<li>${h.isNew?'<span class="new">新</span> ':""}<a href="${esc(h.url)}" target="_blank" rel="noopener">${esc(h.title)}</a> <span style="color:var(--muted)">${esc(h.source)}</span></li>`).join("")}</ul>`;
+  document.getElementById("btn-refresh-watch").onclick=pullFeed;
+}
+async function pullFeed(){
+  const box=document.getElementById("watch");
+  try{
+    const r=await fetch("kaogong-updates.json?t="+Date.now());
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    renderFeed(await r.json());
+  }catch(e){
+    box.innerHTML="<h3>官网盯梢</h3><p>暂时读不到盯梢结果。职位库仍是 2026-10-30 的国考简章。</p>";
+  }
+}
 document.getElementById("gate-btn").onclick=async()=>{
   const h=await sha256hex(document.getElementById("gate-pass").value.trim());
   if(h!==GATE_HASH){document.getElementById("gate-err").textContent="口令不对。";return;}
   localStorage.setItem(GATE_KEY,"ok");
   document.body.classList.remove("locked");
   render();
+  pullFeed();
 };
 document.getElementById("gate-pass").addEventListener("keydown",e=>{if(e.key==="Enter") document.getElementById("gate-btn").click();});
-if(localStorage.getItem(GATE_KEY)==="ok"){document.body.classList.remove("locked"); render();}
+if(localStorage.getItem(GATE_KEY)==="ok"){document.body.classList.remove("locked"); render(); pullFeed();}
 </script>
 </body>
 </html>
