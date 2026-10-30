@@ -1,0 +1,254 @@
+{
+  "updatedAt": "2026-10-30T15:27:28.291+08:00",
+  "cadence": "北京时间大约每 2 小时检查一次。不是按秒刷新。",
+  "note": "只记录官网标题和链接。看到新公告不会自动写入职位库，也不会编造岗位、工资或报名人数。职位仍以 2026-10-30 入库的招考简章为准，直到有新的官方职位表。",
+  "sources": [
+    {
+      "id": "gk-articles",
+      "name": "国家公务员局2027国考公告",
+      "url": "http://bm.scs.gov.cn/kl2027",
+      "ok": true,
+      "error": null,
+      "found": 10
+    },
+    {
+      "id": "gk-files",
+      "name": "国家公务员局2027国考下载",
+      "url": "http://dl.scs.gov.cn/api/res/8a81f6eca0221f1401a0242759fc0000/1110",
+      "ok": true,
+      "error": null,
+      "found": 4
+    },
+    {
+      "id": "sx",
+      "name": "陕西人事考试网",
+      "url": "https://www.sxrsks.cn/website/home.aspx",
+      "ok": true,
+      "error": null,
+      "found": 8
+    }
+  ],
+  "newCount": 0,
+  "hits": [
+    {
+      "id": "3cfa7b3055f78dc9",
+      "title": "中央机关及其直属机构2027年度考试录用公务员网上报名与资格审查工作结束",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d1a15e545a01a177de215b78e0",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-26",
+      "kind": "考务进度",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "f26ddac9ed9edc97",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报名确认及准考证打印网址",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a15e574d01a171d4631078cb",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-25",
+      "kind": "考务进度",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "994c33868626be68",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报名即将开始",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a129c32801a132ba02710076",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "bc4bdcb8ecfb4d34",
+      "title": "中央机关及其直属机构2027年度考试录用公务员公告",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d1a129c3d401a132b7f658007d",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "49e7676540956e5e",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报考指南",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a129c66701a132bae3a70082",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "83f3286e50c71983",
+      "title": "中央机关及其直属机构2027年度考试录用公务员公共科目笔试考试大纲",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a129c66701a133a8b15b00df",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "51d5b0202b780a55",
+      "title": "2027年度中国证监会招考职位专业科目笔试考试大纲",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a135938a01a135d657580004",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "6174a78fe16e86f5",
+      "title": "2027年度国家金融监督管理总局招考职位专业科目笔试考试大纲",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a129c66701a1335b58c700c4",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "bc6fdf75bbb3dd47",
+      "title": "2027年度8个非通用语职位外语水平测试考试大纲",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d9a129c68f01a13352ab4900c3",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "74f1ad66b9005c20",
+      "title": "2027年度公安机关人民警察职位专业科目笔试考试大纲",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a129c32801a13351c24f00b3",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-13",
+      "kind": "公告",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "8758ad7d7487d57d",
+      "title": "官方下载：中央机关及其直属机构2027年度考试录用公务员招考简章.zip",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/download/gkdownloads.html",
+      "source": "国家公务员局2027国考专题",
+      "published": "",
+      "kind": "附件",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "8b04db8339568e53",
+      "title": "官方下载：电子社保卡扫码认证使用指南.pdf",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/download/gkdownloads.html",
+      "source": "国家公务员局2027国考专题",
+      "published": "",
+      "kind": "附件",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "7a86722cfa8d9023",
+      "title": "官方下载：2027年度考试录用公务员报名推荐表.doc",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/download/gkdownloads.html",
+      "source": "国家公务员局2027国考专题",
+      "published": "",
+      "kind": "附件",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "cffaf00dcc84fb22",
+      "title": "官方下载：2027年度考试录用公务员报名登记表.docx",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/download/gkdownloads.html",
+      "source": "国家公务员局2027国考专题",
+      "published": "",
+      "kind": "附件",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "f16a55dc22a280ca",
+      "title": "陕西省2026年统一考试录用公务员",
+      "url": "https://www.sxrsks.cn/website/jgsydw_list.aspx?action=Edit&id=1257",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "8c6f213b0e034619",
+      "title": "陕西省2025年统一考试录用公务员",
+      "url": "https://www.sxrsks.cn/website/jgsydw_list.aspx?action=Edit&id=1230",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "672af1917e7a489d",
+      "title": "陕西省2026年统一考试录用公务员笔试准考证打印入口",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8739",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "dccd0181fca28a4c",
+      "title": "陕西省2026年统一考试录用公务员报名入口",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8689",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "e1f5f6f675ad00ea",
+      "title": "陕西省2026年统一考试录用公务员报考指南",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8680",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "d89fb99434853670",
+      "title": "陕西省2026年统一考试录用公务员资格审核咨询电话",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8679",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "cfff85a0f6ecbbb3",
+      "title": "陕西省2026年统一考试录用公务员职位表",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8678",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
+    {
+      "id": "116729745a82ffef",
+      "title": "陕西省2026年统一考试录用公务员公告",
+      "url": "https://www.sxrsks.cn/website/jgsydw_show.aspx?id=8677",
+      "source": "陕西人事考试网",
+      "published": "",
+      "kind": "省考或公务员",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    }
+  ]
+}
