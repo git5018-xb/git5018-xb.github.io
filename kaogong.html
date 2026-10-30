@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#2d5a45">
+<title>体育生研究生考公雷达</title>
+<style>
+:root{--bg:#f3efe6;--paper:#fbf8f1;--ink:#1c1914;--muted:#6b6358;--line:#ddd4c6;--pine:#2d5a45;--pine-fg:#f6f3ec;--warn:#8a5a2b;--danger:#8b3a2f;--ask:#3d4f5f;--ok:#2d5a45}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif}
+button,input,select{font:inherit} button{cursor:pointer} a{color:var(--pine)}
+.wrap{max-width:1100px;margin:0 auto;padding:16px 16px 96px}
+header.app{position:sticky;top:0;z-index:20;background:rgba(251,248,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+header.app .inner{max-width:1100px;margin:0 auto;padding:12px 16px}
+header.app h1{margin:0;font-size:18px} header.app p{margin:2px 0 0;color:var(--muted);font-size:12px}
+.hero{background:linear-gradient(135deg,#2d5a45,#3d4f5f);color:#f6f3ec;border-radius:18px;padding:22px;margin:16px 0}
+.hero h2{margin:0 0 6px;font-size:22px}.hero p{margin:0;opacity:.9}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat b{display:block;font-size:22px}.stat span{color:var(--muted);font-size:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.btn{border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:10px 14px;min-height:44px}
+.btn.primary{background:var(--pine);color:var(--pine-fg);border-color:var(--pine)}
+.btn.on{background:#e7efe8;border-color:var(--pine);color:var(--pine)}
+input,select{width:100%;border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;min-height:44px}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px;margin:10px 0}
+.card h3{margin:0 0 6px;font-size:17px}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.tag{font-size:12px;border-radius:999px;padding:3px 8px;background:#ebe4d6}
+.tag.bz{background:#e7efe8;color:var(--pine)}.tag.no{background:#f4efe6;color:var(--warn)}
+.badge{display:inline-block;font-size:12px;border-radius:999px;padding:4px 10px;font-weight:600;color:#fff}
+.badge.ok{background:var(--ok)}.badge.maybe{background:var(--warn)}.badge.no{background:var(--danger)}.badge.ask{background:var(--ask)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.reasons{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:13px}
+.flash{background:#fff7e6;border-left:4px solid #f59e0b;padding:12px 14px;border-radius:10px;margin:10px 0}
+.hidden{display:none!important}
+.time-box,.pay-box{margin:10px 0;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.time-box{background:#f7f3ea}.pay-box{background:#fff}
+.time-box h4,.pay-box h4{margin:0 0 8px;font-size:14px}
+.times{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.times b{display:block;font-size:12px;color:var(--muted);font-weight:500}
+.sheet{position:fixed;inset:0;background:rgba(28,25,20,.45);z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet .panel{background:var(--paper);width:min(720px,100%);max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px}
+.kv{display:grid;grid-template-columns:108px 1fr;gap:8px 12px;font-size:14px}
+.kv b{color:var(--muted);font-weight:500}
+.bottom{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(4,1fr);background:var(--paper);border-top:1px solid var(--line);z-index:20}
+.bottom button{border:0;background:transparent;color:var(--muted);min-height:56px}
+.bottom button.on{color:var(--pine);font-weight:600}
+.cal{border-left:3px solid var(--pine);padding:4px 0 4px 12px;margin:12px 0}
+body.locked header.app,body.locked main,body.locked .bottom,body.locked #sheet{display:none!important}
+#gate{display:none;min-height:100dvh;align-items:center;justify-content:center;padding:24px}
+body.locked #gate{display:flex}
+#gate .card{width:min(420px,100%)}
+@media(min-width:900px){.bottom{display:none}}
+@media(max-width:720px){.times,.stats,.row{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body class="locked">
+<div id="gate"><div class="card">
+  <h2 style="margin-top:0">体育生研究生考公雷达</h2>
+  <p>口令和教师岗雷达相同。职位来自国家公务员局 2027 年度招考简章，不收录没写体育专业的岗位。</p>
+  <label>访问口令<input id="gate-pass" type="password" autocomplete="current-password"></label>
+  <p id="gate-err" style="color:#8b3a2f"></p>
+  <button class="btn primary" id="gate-btn">进入</button>
+</div></div>
+<header class="app"><div class="inner">
+  <h1>体育生研究生考公雷达</h1>
+  <p>2027 国考 · 只收职位表专业栏写明体育类的岗位</p>
+</div></header>
+<main class="wrap">
+<section id="page-jobs">
+  <div class="hero">
+    <h2>给体育专业硕士研究生对职位</h2>
+    <p>对照你的硕士专业、政治面貌和基层年限。工资职位表没写，就标「官方未公开」。</p>
+  </div>
+  <div class="flash">2027 国考报名已于 <b>2026-10-24 18:00</b> 截止，不能补报。已通过资格审查的，<b>11月1日 0:00 至 11月6日 24:00</b> 在专题网站确认缴费。公共科目笔试 <b>11月29日</b>（行测上午、申论下午）。来源：国家公务员局专题网站。</div>
+  <div class="stats" id="stats"></div>
+  <div class="toolbar">
+    <button class="btn" id="btn-mine">只看我能报</button>
+    <button class="btn" id="btn-grad">只看研究生专业写了体育</button>
+    <button class="btn" id="btn-export">导出Excel</button>
+    <select id="prov" style="max-width:160px"></select>
+    <input id="q" type="search" placeholder="搜部门 / 职位 / 地点" style="flex:1;min-width:180px">
+  </div>
+  <p style="color:var(--muted);font-size:13px">排序：先看你能不能报，再看研究生栏是否写明体育。没有官方工资，不按工资排序。</p>
+  <div id="list"></div>
+</section>
+<section id="page-me" class="hidden">
+  <h2>我的条件</h2>
+  <div class="card"><div class="row">
+    <label>毕业年份<select id="p-year"><option>2027</option><option>2026</option><option>2028</option></select></label>
+    <label>最高学历<select id="p-edu"><option>硕士研究生</option><option>本科</option></select></label>
+    <label>硕士专业<select id="p-major">
+      <option>体育教育训练学</option><option>运动人体科学</option><option>体育人文社会学</option>
+      <option>民族传统体育学</option><option>运动训练学硕</option><option>社会体育指导</option>
+      <option>体育教学（专硕）</option><option>运动训练（专硕）</option>
+    </select></label>
+    <label>政治面貌<select id="p-pol"><option>共青团员</option><option>中共党员</option><option>群众</option></select></label>
+    <label>基层工作年限<input id="p-grass" type="number" min="0" value="0"></label>
+  </div>
+  <p style="color:var(--muted);font-size:13px">2027 届硕士按最高学历报考。职位表只写了本科体育专业、没写研究生体育专业时，不会判成「可以报」。</p>
+  <button class="btn primary" id="btn-save">保存并重新判断</button>
+  </div>
+</section>
+<section id="page-time" class="hidden">
+  <h2>2027 国考时间</h2>
+  <div class="card">
+    <div class="cal"><b>2026-10-15 08:00 至 10-24 18:00</b><br>提交报考申请。已经结束。</div>
+    <div class="cal"><b>2026-10-15 08:00 至 10-26 18:00</b><br>资格审查。已经结束。</div>
+    <div class="cal"><b>2026-11-01 00:00 至 11-06 24:00</b><br>报名确认并缴费。过期视为放弃。没报上的不能在这一步补报。</div>
+    <div class="cal"><b>2026-11-23 00:00 至 11-29 15:00</b><br>打印准考证。</div>
+    <div class="cal"><b>2026-11-28 14:00–16:00</b><br>公安机关人民警察等职位的专业科目笔试。是否参加以职位表为准。</div>
+    <div class="cal"><b>2026-11-29</b><br>上午 9:00–11:00 行测，下午 14:00–17:00 申论。</div>
+    <p><a href="http://bm.scs.gov.cn/kl2027" target="_blank" rel="noopener">国家公务员局 2027 专题网站</a></p>
+  </div>
+  <h2>省考</h2>
+  <div class="card">
+    <p>2027 年各省公务员考试公告，本库还没有核到可入库的体育职位，不编造岗位。请到本省人事考试网下载职位表，用「体育」筛选。</p>
+    <div class="cal"><b>陕西省</b><br><a href="https://www.sxpta.com/" target="_blank" rel="noopener">陕西人事考试网</a></div>
+    <div class="cal"><b>广东省</b><br><a href="https://www.gdzz.cn/" target="_blank" rel="noopener">广东省人事考试网</a> 或 <a href="http://rsks.gd.gov.cn/" target="_blank" rel="noopener">省人社厅考试录用专栏</a></div>
+    <div class="cal"><b>国考职位表原文</b><br><a href="http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/download/gkdownloads.html" target="_blank" rel="noopener">专题网站相关下载（招考简章）</a></div>
+  </div>
+</section>
+<section id="page-src" class="hidden">
+  <h2>数据怎么来的</h2>
+  <div class="card">
+    <ul>
+      <li>只收录 2027 年度中央机关及其直属机构考试录用公务员招考简章里，「专业」一栏写明体育类的职位。</li>
+      <li>部门名称里有「体育」但专业是法学、英语的，不收。</li>
+      <li>工资、五险一金、年薪：这份职位表没有金额，全部显示「官方未公开」。</li>
+      <li>报名人数、竞争比：确认缴费结束后官网才会形成，现在不编。</li>
+      <li>更新时间：2026-10-30。以专题网站最新简章为准。</li>
+    </ul>
+  </div>
+</section>
+</main>
+<nav class="bottom">
+  <button data-go="jobs" class="on">职位</button>
+  <button data-go="me">我的条件</button>
+  <button data-go="time">时间</button>
+  <button data-go="src">来源</button>
+</nav>
+<div id="sheet" class="sheet hidden"><div class="panel" id="sheet-body"></div></div>
+<script src="kaogong-data.js"></script>
+<script>
+const GATE_HASH="a888493c7217cab3587d760a173206acd962923823b921d2d37422db23ed4d94";
+const GATE_KEY="gk-pe-gate";
+const PK="gk-pe-profile-v1";
+const U="官方未公开";
+const PROVS=["全部","北京","天津","河北","山西","内蒙古","辽宁","吉林","黑龙江","上海","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","广西","海南","重庆","四川","贵州","云南","西藏","陕西","甘肃","青海","宁夏","新疆","其他"];
+const SPECS={
+  "体育教育训练学":{name:"体育教育训练学",code:"040303",cat:"0403"},
+  "运动人体科学":{name:"运动人体科学",code:"040302",cat:"0403"},
+  "体育人文社会学":{name:"体育人文社会学",code:"040301",cat:"0403"},
+  "民族传统体育学":{name:"民族传统体育学",code:"040304",cat:"0403"},
+  "运动训练学硕":{name:"运动训练",code:"040303",cat:"0403"},
+  "社会体育指导":{name:"社会体育指导",code:"040301",cat:"0403"},
+  "体育教学（专硕）":{name:"体育教学",code:"045201",cat:"0452"},
+  "运动训练（专硕）":{name:"运动训练",code:"045202",cat:"0452"}
+};
+function sha256hex(text){
+  return crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)).then(buf=>[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join(""));
+}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&#38;","<":"&#60;",">":"&#62;","\"":"&#34;","'":"&#39;"}[c]));}
+function profile(){
+  const d={year:"2027",edu:"硕士研究生",major:"体育教育训练学",pol:"共青团员",grass:0};
+  try{return Object.assign(d, JSON.parse(localStorage.getItem(PK)||"{}"));}catch(e){return d;}
+}
+function saveProfile(p){localStorage.setItem(PK, JSON.stringify(p));}
+function provOf(place){
+  const s=place||"";
+  for(const p of PROVS){ if(p!=="全部" && p!=="其他" && s.startsWith(p)) return p; }
+  return "其他";
+}
+function gradLine(major){
+  const m=String(major||"").match(/(?:研究生|硕士)\s*[:：]\s*([\s\S]*)$/);
+  return m?m[1]:"";
+}
+function parenLimit(line, cat){
+  const re=new RegExp(cat+"[^。；;]{0,16}[（(]([^）)]+)[）)]");
+  const m=line.match(re);
+  return m?m[1]:"";
+}
+function majorFit(job, spec){
+  const g=gradLine(job.major);
+  if(!g) return "ask";
+  if(g.includes(spec.code)) return "ok";
+  if(spec.cat==="0403"){
+    if(!g.includes("0403")) return "no";
+    const limit=parenLimit(g,"0403");
+    if(limit) return (limit.includes(spec.name)||limit.includes(spec.code))?"ok":"no";
+    return "ok";
+  }
+  if(spec.cat==="0452"){
+    if(!g.includes("0452")) return "no";
+    const limit=parenLimit(g,"0452");
+    if(limit) return (limit.includes(spec.name)||limit.includes("运动训练")&&spec.name==="运动训练")?"ok":"no";
+    return "ok";
+  }
+  return "ask";
+}
+function needYears(s){
+  if(!s||/无限制/.test(s)) return 0;
+  if(/五/.test(s)) return 5;
+  if(/四/.test(s)) return 4;
+  if(/三/.test(s)) return 3;
+  if(/二|两/.test(s)) return 2;
+  if(/一/.test(s)) return 1;
+  return null;
+}
+function polFit(req, user){
+  if(!req||/不限/.test(req)) return "ok";
+  if(/党员/.test(req) && /团员/.test(req)) return (user==="中共党员"||user==="共青团员")?"ok":"no";
+  if(/中共党员/.test(req)) return user==="中共党员"?"ok":"no";
+  return "ask";
+}
+function matchJob(job,p){
+  const blockers=[], asks=[], warns=[], ok=[];
+  const spec=SPECS[p.major]||SPECS["体育教育训练学"];
+  if(p.edu==="硕士研究生" && /仅限本科|仅限大专/.test(job.edu)) blockers.push("职位学历是「"+job.edu+"」，硕士研究生不能报。");
+  if(p.edu==="本科" && /仅限硕士研究生|硕士研究生及以上/.test(job.edu)) blockers.push("职位要求硕士研究生，本科不能报。");
+  const mf=majorFit(job, spec);
+  if(mf==="no") blockers.push("研究生专业栏没有你的「"+p.major+"」（"+spec.code+" / "+spec.cat+"）。国考按最高学历专业报考。");
+  else if(mf==="ask") asks.push("职位表没有单独写出研究生体育专业。不能把本科体育专业直接当成硕士可报。");
+  else ok.push("研究生专业栏能对上「"+p.major+"」。");
+  const py=needYears(job.grass);
+  if(py==null) asks.push("基层工作年限写法不常见：「"+job.grass+"」。");
+  else if(Number(p.grass)<py) blockers.push("要求基层工作最低"+job.grass+"，你填的是 "+p.grass+" 年。");
+  else ok.push("基层年限符合（要求"+job.grass+"）。");
+  const pf=polFit(job.pol, p.pol);
+  if(pf==="no") blockers.push("政治面貌要求「"+job.pol+"」，你填的是「"+p.pol+"」。");
+  else if(pf==="ask") asks.push("政治面貌要求需要再看原文：「"+job.pol+"」。");
+  else ok.push("政治面貌符合（"+job.pol+"）。");
+  if(job.service && !/无限制/.test(job.service)) asks.push("服务基层项目经历要求：「"+job.service+"」。");
+  if(/体能|体测|人民警察/.test((job.note||"")+(job.title||"")+(job.intro||""))) warns.push("警务或备注里涉及体能、体测。系统不能判断你过不过。");
+  if(p.year!=="2027") warns.push("这批是 2027 年度国考，默认面向 2027 年毕业。你选的毕业年份是 "+p.year+"。");
+  let verdict="可以报";
+  if(blockers.length) verdict="不能报";
+  else if(asks.length) verdict="需要咨询招录机关";
+  else if(warns.length) verdict="可能可以报";
+  const reasons=[...blockers.map(t=>"不能报："+t),...asks.map(t=>"需要咨询："+t),...warns.map(t=>"提醒："+t),...ok.map(t=>"符合："+t)];
+  return {verdict, reasons};
+}
+let onlyMine=false, onlyGrad=false, prov="全部", q="";
+function jobs(){return window.GK||[];}
+function render(){
+  const p=profile();
+  const all=jobs().map(job=>({job, match:matchJob(job,p), prov:provOf(job.place)}));
+  const vis=all.filter(x=>{
+    if(prov!=="全部" && x.prov!==prov) return false;
+    if(onlyMine && x.match.verdict!=="可以报" && x.match.verdict!=="可能可以报") return false;
+    if(onlyGrad && !x.job.gradListed) return false;
+    if(q && !(x.job.org+x.job.bureau+x.job.title+x.job.place+x.job.code).includes(q)) return false;
+    return true;
+  });
+  const order={可以报:0,可能可以报:1,需要咨询招录机关:2,不能报:3};
+  vis.sort((a,b)=>(order[a.match.verdict]-order[b.match.verdict]) || ((b.job.gradListed?1:0)-(a.job.gradListed?1:0)) || (Number(b.job.n)||0)-(Number(a.job.n)||0));
+  const mine=all.filter(x=>x.match.verdict==="可以报"||x.match.verdict==="可能可以报").length;
+  document.getElementById("stats").innerHTML=[
+    ["体育类职位", all.length],
+    ["按我的条件或许可报", mine],
+    ["研究生栏写了体育", all.filter(x=>x.job.gradListed).length],
+    ["工资写了金额", 0]
+  ].map(([k,v])=>`<div class="stat"><b>${v}</b><span>${k}</span></div>`).join("");
+  const box=document.getElementById("list");
+  if(!vis.length){box.innerHTML='<div class="card">没有符合筛选的职位。陕西省工作地点在这批「专业栏写明体育」的国考职位里是 0 条，不是漏了。</div>';return;}
+  box.innerHTML=vis.map(({job,match})=>`
+    <article class="card">
+      <div style="display:flex;justify-content:space-between;gap:8px">
+        <div>
+          <h3>${esc(job.org)} · ${esc(job.title)}</h3>
+          <div class="meta">
+            <span class="tag bz">${esc(provOf(job.place))}</span>
+            <span class="tag">${esc(job.place)}</span>
+            <span class="tag">${esc(job.n)}人</span>
+            <span class="tag">${esc(job.edu)}</span>
+            <span class="tag ${job.gradListed?"bz":"no"}">${job.gradListed?"研究生栏写了体育":"研究生栏未写体育"}</span>
+          </div>
+        </div>
+        <span class="badge ${match.verdict==="可以报"?"ok":match.verdict==="可能可以报"?"maybe":match.verdict==="不能报"?"no":"ask"}">${esc(match.verdict)}</span>
+      </div>
+      <div class="time-box">
+        <h4>招聘时间 · 报名已截止</h4>
+        <div class="times">
+          <div><b>报名</b><strong>10-15 08:00 至 10-24 18:00</strong></div>
+          <div><b>确认缴费</b><strong>11-01 00:00 至 11-06 24:00</strong></div>
+          <div><b>笔试</b><strong>11-29 行测+申论</strong></div>
+        </div>
+      </div>
+      <div class="pay-box">
+        <h4>工资 · 五险一金 · 年薪 · 官方未写金额</h4>
+        <div class="times">
+          <div><b>工资</b><strong>${U}</strong></div>
+          <div><b>五险一金</b><strong>${U}</strong></div>
+          <div><b>年薪</b><strong>${U}</strong></div>
+        </div>
+      </div>
+      <ul class="reasons">${match.reasons.slice(0,4).map(r=>`<li>${esc(r)}</li>`).join("")}</ul>
+      <button class="btn" data-open="${esc(job.code)}">查看职位原文</button>
+    </article>`).join("");
+}
+function openJob(code){
+  const job=jobs().find(j=>j.code===code); if(!job) return;
+  const rows=[["部门",job.org],["用人司局",job.bureau],["职位",job.title],["职位代码",job.code],["职位简介",job.intro],["机构层级",job.level],["考试类别",job.examCat],["招考人数",job.n],["学历",job.edu],["学位",job.degree],["专业",job.major],["政治面貌",job.pol],["基层工作最低年限",job.grass],["服务基层项目",job.service],["面试阶段专业测试",job.proTest],["面试比例",job.ratio],["工作地点",job.place],["落户地点",job.settle],["备注",job.note],["咨询电话",job.phone],["部门网站",job.site],["工资",U],["来源","国家公务员局2027年度招考简章"]];
+  document.getElementById("sheet-body").innerHTML=`<h3 style="margin-top:0">${esc(job.title)}</h3><div class="kv">${rows.map(([k,v])=>`<b>${esc(k)}</b><div>${esc(v||U)}</div>`).join("")}</div><p><a target="_blank" rel="noopener" href="http://bm.scs.gov.cn/kl2027">打开国考专题网站</a></p><button class="btn" id="close-sheet">关闭</button>`;
+  document.getElementById("sheet").classList.remove("hidden");
+  document.getElementById("close-sheet").onclick=()=>document.getElementById("sheet").classList.add("hidden");
+}
+function go(name){
+  ["jobs","me","time","src"].forEach(id=>{
+    document.getElementById("page-"+id).classList.toggle("hidden", id!==name);
+  });
+  document.querySelectorAll(".bottom button").forEach(b=>b.classList.toggle("on", b.dataset.go===name));
+  if(name==="me") fillForm();
+}
+function fillForm(){
+  const p=profile();
+  document.getElementById("p-year").value=p.year;
+  document.getElementById("p-edu").value=p.edu;
+  document.getElementById("p-major").value=p.major;
+  document.getElementById("p-pol").value=p.pol;
+  document.getElementById("p-grass").value=p.grass;
+}
+document.getElementById("prov").innerHTML=PROVS.map(p=>`<option>${p}</option>`).join("");
+document.getElementById("prov").onchange=e=>{prov=e.target.value;render();};
+document.getElementById("q").oninput=e=>{q=e.target.value.trim();render();};
+document.getElementById("btn-mine").onclick=()=>{onlyMine=!onlyMine;document.getElementById("btn-mine").classList.toggle("on",onlyMine);render();};
+document.getElementById("btn-grad").onclick=()=>{onlyGrad=!onlyGrad;document.getElementById("btn-grad").classList.toggle("on",onlyGrad);render();};
+document.getElementById("btn-save").onclick=()=>{
+  saveProfile({year:document.getElementById("p-year").value,edu:document.getElementById("p-edu").value,major:document.getElementById("p-major").value,pol:document.getElementById("p-pol").value,grass:Number(document.getElementById("p-grass").value)||0});
+  go("jobs"); render();
+};
+document.getElementById("list").onclick=e=>{const id=e.target.dataset.open; if(id) openJob(id);};
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(b.dataset.go));
+document.getElementById("btn-export").onclick=()=>{
+  const p=profile();
+  const rows=jobs().map(j=>{const m=matchJob(j,p);return {判断:m.verdict,原因:m.reasons.join("；"),部门:j.org,司局:j.bureau,职位:j.title,代码:j.code,人数:j.n,学历:j.edu,专业:j.major,政治面貌:j.pol,基层年限:j.grass,工作地点:j.place,备注:j.note,工资:U};});
+  const header=Object.keys(rows[0]);
+  const csv="\ufeff"+[header.join(","),...rows.map(r=>header.map(h=>`"${String(r[h]??"").replace(/"/g,'""')}"`).join(","))].join("\n");
+  const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"})); a.download="体育生考公雷达.csv"; a.click();
+};
+document.getElementById("gate-btn").onclick=async()=>{
+  const h=await sha256hex(document.getElementById("gate-pass").value.trim());
+  if(h!==GATE_HASH){document.getElementById("gate-err").textContent="口令不对。";return;}
+  localStorage.setItem(GATE_KEY,"ok");
+  document.body.classList.remove("locked");
+  render();
+};
+document.getElementById("gate-pass").addEventListener("keydown",e=>{if(e.key==="Enter") document.getElementById("gate-btn").click();});
+if(localStorage.getItem(GATE_KEY)==="ok"){document.body.classList.remove("locked"); render();}
+</script>
+</body>
+</html>
