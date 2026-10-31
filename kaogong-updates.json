@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-30T23:07:15.144+08:00",
+  "updatedAt": "2026-10-31T13:56:29.470+08:00",
   "cadence": "北京时间大约每 2 小时检查一次。不是按秒刷新。",
   "note": "只记录官网标题和链接。看到新公告不会自动写入职位库，也不会编造岗位、工资或报名人数。职位仍以 2026-10-30 入库的招考简章为准，直到有新的官方职位表。",
   "sources": [
@@ -28,8 +28,28 @@
       "found": 8
     }
   ],
-  "newCount": 0,
+  "newCount": 1,
   "hits": [
+    {
+      "id": "5420c34330d5a9b9",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报名确认及准考证打印咨询电话",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d1a15e545a01a18fbfac7178f2",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-31",
+      "kind": "考务进度",
+      "firstSeen": "2026-10-31T13:56:29.470+08:00",
+      "isNew": true
+    },
+    {
+      "id": "f26ddac9ed9edc97",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报名确认及准考证打印网址",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a15e574d01a171d4631078cb",
+      "source": "国家公务员局2027国考专题",
+      "published": "2026-10-31",
+      "kind": "考务进度",
+      "firstSeen": "2026-10-30T15:27:25.212+08:00",
+      "isNew": false
+    },
     {
       "id": "3cfa7b3055f78dc9",
       "title": "中央机关及其直属机构2027年度考试录用公务员网上报名与资格审查工作结束",
@@ -41,19 +61,9 @@
       "isNew": false
     },
     {
-      "id": "f26ddac9ed9edc97",
-      "title": "中央机关及其直属机构2027年度考试录用公务员报名确认及准考证打印网址",
-      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d8a15e574d01a171d4631078cb",
-      "source": "国家公务员局2027国考专题",
-      "published": "2026-10-25",
-      "kind": "考务进度",
-      "firstSeen": "2026-10-30T15:27:25.212+08:00",
-      "isNew": false
-    },
-    {
-      "id": "994c33868626be68",
-      "title": "中央机关及其直属机构2027年度考试录用公务员报名即将开始",
-      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a129c32801a132ba02710076",
+      "id": "bc4bdcb8ecfb4d34",
+      "title": "中央机关及其直属机构2027年度考试录用公务员公告",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d1a129c3d401a132b7f658007d",
       "source": "国家公务员局2027国考专题",
       "published": "2026-10-13",
       "kind": "公告",
@@ -61,9 +71,9 @@
       "isNew": false
     },
     {
-      "id": "bc4bdcb8ecfb4d34",
-      "title": "中央机关及其直属机构2027年度考试录用公务员公告",
-      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d1a129c3d401a132b7f658007d",
+      "id": "994c33868626be68",
+      "title": "中央机关及其直属机构2027年度考试录用公务员报名即将开始",
+      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a129c32801a132ba02710076",
       "source": "国家公务员局2027国考专题",
       "published": "2026-10-13",
       "kind": "公告",
@@ -114,16 +124,6 @@
       "id": "bc6fdf75bbb3dd47",
       "title": "2027年度8个非通用语职位外语水平测试考试大纲",
       "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d9a129c68f01a13352ab4900c3",
-      "source": "国家公务员局2027国考专题",
-      "published": "2026-10-13",
-      "kind": "公告",
-      "firstSeen": "2026-10-30T15:27:25.212+08:00",
-      "isNew": false
-    },
-    {
-      "id": "74f1ad66b9005c20",
-      "title": "2027年度公安机关人民警察职位专业科目笔试考试大纲",
-      "url": "http://bm.scs.gov.cn/pp/gkweb/core/web/ui/business/article/articledetail.html?id=8a81f6d0a129c32801a13351c24f00b3",
       "source": "国家公务员局2027国考专题",
       "published": "2026-10-13",
       "kind": "公告",
