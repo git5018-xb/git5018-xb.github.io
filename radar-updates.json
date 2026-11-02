@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-01T21:14:35.625+08:00",
+  "updatedAt": "2026-11-02T13:55:00.546+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -49,7 +49,7 @@
       "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/",
       "ok": true,
       "error": null,
-      "found": 18
+      "found": 19
     },
     {
       "id": "zhuhai",
@@ -63,14 +63,24 @@
       "id": "fuzhou",
       "name": "福州市政府通知公告",
       "url": "https://www.fuzhou.gov.cn/zwgk/tzgg/",
-      "ok": true,
-      "error": null,
+      "ok": false,
+      "error": "fetch failed",
       "found": 0
     }
   ],
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "0081b27141b79274",
+      "title": "流花街公开招聘一名统计员的公告 2026-11-02",
+      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_11080973.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "广州市越秀区招考",
+      "foundAt": "2026-11-02T13:55:00.546+08:00",
+      "new": true
+    },
     {
       "id": "c6bde92504d918ca",
       "title": "深圳市市属公办中小学2026年6月公开招聘教师拟聘人员公示（深圳北理莫斯科大学附属实验中学）",
@@ -855,16 +865,6 @@
       "id": "763dfb6eb61b9061",
       "title": "深圳市云端学校关于深圳市公办中小学2025年12月面向2026年应届毕业生公开招聘教师拟聘人员公示（四）",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968420.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "2d9ff29f5a3011d6",
-      "title": "深圳市高级中学高中园2026年公开招聘教师拟聘人员公示（二）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968004.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
