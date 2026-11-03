@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-03T14:40:25.089+08:00",
+  "updatedAt": "2026-11-04T00:09:55.275+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -39,9 +39,9 @@
       "id": "szeb",
       "name": "深圳市教育局公办学校招聘",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/",
-      "ok": true,
-      "error": null,
-      "found": 13
+      "ok": false,
+      "error": "fetch failed",
+      "found": 0
     },
     {
       "id": "yuexiu",
@@ -57,7 +57,7 @@
       "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/",
       "ok": true,
       "error": null,
-      "found": 7
+      "found": 8
     },
     {
       "id": "fuzhou",
@@ -71,6 +71,16 @@
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "b0c004c9106d7ed5",
+      "title": "珠海市卫生健康局面向2027年应届毕业生公开招聘所属公立医院工作人员...",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3956330.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-11-04T00:09:55.275+08:00",
+      "new": true
+    },
     {
       "id": "0081b27141b79274",
       "title": "流花街公开招聘一名统计员的公告 2026-11-02",
@@ -855,16 +865,6 @@
       "id": "31069d7c608e27c8",
       "title": "深圳外国语小学关于深圳市公办中小学2025年12月面向2026年应届毕业生公开招聘教师拟聘人员公示（三）",
       "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12970748.html",
-      "peMention": false,
-      "kind": "公示",
-      "source": "深圳市教育局公办学校招聘",
-      "foundAt": "2026-09-07T23:48:40.439+08:00",
-      "new": true
-    },
-    {
-      "id": "763dfb6eb61b9061",
-      "title": "深圳市云端学校关于深圳市公办中小学2025年12月面向2026年应届毕业生公开招聘教师拟聘人员公示（四）",
-      "url": "https://szeb.sz.gov.cn/home/xxgk/zthd/jszp/gbxx/content/post_12968420.html",
       "peMention": false,
       "kind": "公示",
       "source": "深圳市教育局公办学校招聘",
