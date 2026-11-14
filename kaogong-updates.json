@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-14T00:33:12.619+08:00",
+  "updatedAt": "2026-11-14T14:43:38.219+08:00",
   "cadence": "北京时间大约每 2 小时检查一次。不是按秒刷新。",
   "note": "只记录官网标题和链接。看到新公告不会自动写入职位库，也不会编造岗位、工资或报名人数。职位仍以 2026-10-30 入库的招考简章为准，直到有新的官方职位表。",
   "sources": [
@@ -28,7 +28,7 @@
       "found": 8
     }
   ],
-  "newCount": 10,
+  "newCount": 0,
   "hits": [
     {
       "id": "5420c34330d5a9b9",
@@ -38,7 +38,7 @@
       "published": "2026-10-31",
       "kind": "考务进度",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "f26ddac9ed9edc97",
@@ -48,7 +48,7 @@
       "published": "2026-10-31",
       "kind": "考务进度",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "3cfa7b3055f78dc9",
@@ -58,7 +58,7 @@
       "published": "2026-10-26",
       "kind": "考务进度",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "bc4bdcb8ecfb4d34",
@@ -68,7 +68,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "994c33868626be68",
@@ -78,7 +78,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "49e7676540956e5e",
@@ -88,7 +88,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "83f3286e50c71983",
@@ -98,7 +98,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "51d5b0202b780a55",
@@ -108,7 +108,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "6174a78fe16e86f5",
@@ -118,7 +118,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "bc6fdf75bbb3dd47",
@@ -128,7 +128,7 @@
       "published": "2026-10-13",
       "kind": "公告",
       "firstSeen": "2026-11-14T00:33:12.619+08:00",
-      "isNew": true
+      "isNew": false
     },
     {
       "id": "8758ad7d7487d57d",
