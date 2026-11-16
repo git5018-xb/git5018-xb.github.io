@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-11-16T14:18:20.009+08:00",
+  "updatedAt": "2026-11-17T02:26:41.470+08:00",
   "cadence": "每个工作时段约 2 小时检查一次官方网站（不是按秒刷新）",
   "note": "只收录官方页面上的招聘/招考标题。没有岗位表时不会编造体育教师岗位，也不会自行标事业编。",
   "sources": [
@@ -15,9 +15,9 @@
       "id": "xa-h2",
       "name": "2026下半年市事业单位招聘公告页",
       "url": "https://www.xa.gov.cn/gk/rsxx/gwykl/2094612371989401601.html",
-      "ok": false,
-      "error": "This operation was aborted",
-      "found": 0
+      "ok": true,
+      "error": null,
+      "found": 4
     },
     {
       "id": "gaoxin",
@@ -71,6 +71,16 @@
   "peNew": 0,
   "newCount": 80,
   "hits": [
+    {
+      "id": "7205e22cf7435b6e",
+      "title": "珠海市教育局2026年秋季面向社会公开招聘直属学校事业编制教师公告",
+      "url": "https://www.zhuhai.gov.cn/zw/rsxx/gzzk/content/post_3939150.html",
+      "peMention": false,
+      "kind": "招聘公告",
+      "source": "珠海市公职招考",
+      "foundAt": "2026-11-17T02:26:41.470+08:00",
+      "new": true
+    },
     {
       "id": "0e31e427cf93bfc9",
       "title": "洪桥街公开招聘经济发展办公室专职统计员公告 2026-11-16",
@@ -859,16 +869,6 @@
       "kind": "招聘公告",
       "source": "广州市越秀区招考",
       "foundAt": "2026-09-10T19:13:00.442+08:00",
-      "new": true
-    },
-    {
-      "id": "2f0625560ab1c131",
-      "title": "广州市越秀区人民政府梅花村街道办事处面向社会公开招聘辅助人员公告 2026-09-09",
-      "url": "http://www.yuexiu.gov.cn/zwgk/rsxx/gkzkzp/zpgg/content/post_10996499.html",
-      "peMention": false,
-      "kind": "招聘公告",
-      "source": "广州市越秀区招考",
-      "foundAt": "2026-09-09T12:35:26.675+08:00",
       "new": true
     }
   ]
